@@ -44,7 +44,9 @@ public class SingerServiceImpl implements SingerService {
      */
     @Override
     public boolean delete(Integer id) {
-        return singerMapper.delete(id)>0;
+        int ret = singerMapper.delete(id);
+        singerMapper.updateAutoIncrement();
+        return ret>0;
     }
 
     /**

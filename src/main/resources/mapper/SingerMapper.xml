@@ -79,9 +79,7 @@
             <if test="pic != null">
                 pic = #{pic},
             </if>
-            <if test="birth != null">
-                birth = #{birth},
-            </if>
+            birth = #{birth},
             <if test="location != null">
                 location = #{location},
             </if>
@@ -95,7 +93,7 @@
     <delete id="delete" parameterType="java.lang.Integer">
         delete
         from singer
-        where id = #{id}
+        where id = #{id};
     </delete>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">

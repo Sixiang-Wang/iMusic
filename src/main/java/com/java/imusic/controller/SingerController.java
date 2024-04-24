@@ -44,17 +44,22 @@ public class SingerController {
         //把生日转换成Date格式
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date birthDate = new Date();
-        try {
-            birthDate = dateFormat.parse(birth);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(!birth.equals("null")){
+            try {
+                birthDate = dateFormat.parse(birth);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else{
+            birthDate=null;
         }
+
         //保存到歌手的对象中
         Singer singer = new Singer();
         singer.setName(name);
         singer.setSex(new Byte(sex));
         singer.setPic(pic);
-        singer.setBirth(birthDate);
+        if(singer.getSex()!=2) singer.setBirth(birthDate);
         singer.setLocation(location);
         singer.setIntroduction(introduction);
         boolean flag = singerService.insert(singer);
@@ -83,10 +88,14 @@ public class SingerController {
         //把生日转换成Date格式
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date birthDate = new Date();
-        try {
-            birthDate = dateFormat.parse(birth);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(!birth.equals("null")){
+            try {
+                birthDate = dateFormat.parse(birth);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else{
+            birthDate=null;
         }
         //保存到歌手的对象中
         Singer singer = new Singer();
@@ -94,9 +103,11 @@ public class SingerController {
         singer.setName(name);
         singer.setSex(new Byte(sex));
         singer.setBirth(birthDate);
+        if(singer.getSex()==2)singer.setBirth(null);
         singer.setLocation(location);
         singer.setIntroduction(introduction);
         boolean flag = singerService.update(singer);
+        System.out.println(singer.getBirth());
         if(flag){   //保存成功
             jsonObject.put(Consts.CODE,1);
             jsonObject.put(Consts.MSG,"修改成功");
