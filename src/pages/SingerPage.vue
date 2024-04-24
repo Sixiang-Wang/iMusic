@@ -134,6 +134,7 @@
 <script>
 import {setSinger, getAllSinger, updateSinger, delSinger} from '../api/index'
 import {mixin} from '../mixins/index'
+import th from 'element-ui/src/locale/lang/th'
 
 export default {
   mixins: [mixin],
@@ -175,7 +176,7 @@ export default {
   watch: {
     //搜索框里面的内容发生变化的时候，搜索结果table列表的内容跟着它的内容发生变化
     select_word: function () {
-      if (this.select_word == '') {
+      if (this.select_word === '') {
         this.tableData = this.tempData
       } else {
         this.tableData = []
@@ -204,22 +205,26 @@ export default {
         this.tableData = res
         this.currentPage = 1
       })
+
     },
     //添加歌手
     addSinger () {
       let d = this.registerForm.birth
-      let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+      let datetime = null
+      if (d) {
+        datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+      }
       let params = new URLSearchParams()
       params.append('name', this.registerForm.name)
       params.append('sex', this.registerForm.sex)
-      params.append('pic', '/img/singerPic/hhh.jpg')
+      params.append('pic', '/img/singerPic/default_avatar.jpg')
       params.append('birth', datetime)
       params.append('location', this.registerForm.location)
       params.append('introduction', this.registerForm.introduction)
 
       setSinger(params)
         .then(res => {
-          if (res.code == 1) {
+          if (res.code === 1) {
             this.getData()
             this.notify('添加成功', 'success')
           } else {
@@ -245,8 +250,12 @@ export default {
     },
     //保存编辑页面修改的数据
     editSave () {
-      let d = new Date(this.form.birth)
-      let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+      let dTmp = this.form.birth
+      let datetime = null
+      if (dTmp) {
+        let d = new Date(this.form.birth)
+        datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+      }
       let params = new URLSearchParams()
       params.append('id', this.form.id)
       params.append('name', this.form.name)
@@ -257,7 +266,7 @@ export default {
 
       updateSinger(params)
         .then(res => {
-          if (res.code == 1) {
+          if (res.code === 1) {
             this.getData()
             this.notify('修改成功', 'success')
           } else {
