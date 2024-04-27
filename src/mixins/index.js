@@ -29,6 +29,9 @@ export const mixin = {
     },
     // 获取生日
     attachBirth (val) {
+      if (val == null) {
+        return '未知'
+      }
       return String(val).substr(0, 10)
     },
     // 上传图片之前的校验

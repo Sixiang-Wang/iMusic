@@ -11,6 +11,7 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
+import th from 'element-ui/src/locale/lang/th'
 
 export default {
   name: 'song-audio',

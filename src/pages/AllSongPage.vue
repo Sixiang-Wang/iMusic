@@ -217,12 +217,12 @@ export default {
     getData () {
       this.tempData = []
       this.tableData = []
-      allSong()
-      songOfSingerId(this.singerId).then(res => {
+      allSong().then(res => {
         this.tempData = res
         this.tableData = res
         this.currentPage = 1
       })
+
     },
     /* 添加 */
     addSong () {

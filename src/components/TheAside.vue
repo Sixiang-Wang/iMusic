@@ -49,8 +49,12 @@ export default {
           icon: 'el-icon-document',
           index: 'SongList',
           title: '歌单管理'
+        },
+        {
+          icon: 'el-icon-document',
+          index: 'AllSong',
+          title: '歌曲管理'
         }
-
       ]
     }
   },
