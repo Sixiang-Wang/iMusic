@@ -35,6 +35,7 @@ public class SongController {
         //获取前端传来的参数
         String singerId = request.getParameter("singerId").trim();  //所属歌手id
         String name = request.getParameter("name").trim();          //歌名
+        System.out.println(name);
         String introduction = request.getParameter("introduction").trim();          //简介
         String pic = "/img/songPic/tubiao.jpg";                     //默认图片
         String lyric = request.getParameter("lyric").trim();     //歌词
