@@ -2,6 +2,13 @@ import {likeSongOfName} from "../api";
 
 export const mixin = {
   methods: {
+    // 提示信息
+    notify(title,type){
+      this.$notify({
+        title: title,
+        type: type
+      })
+    },
     // 获取图片地址
     attachImageUrl (srcurl){
       if(srcurl){
@@ -29,6 +36,22 @@ export const mixin = {
           console.log(err)
         })
       }
+    },
+    // 获取名字前半部分
+    replaceLName(str){
+      let arr = str.split('-');
+      return arr[0];
+    },
+    // 获取名字后半部分
+    replaceFName(str){
+      let arr = str.split('-');
+      return arr[1];
+    },
+    // 播放
+    toplay: function (id,url){
+      this.$store.commit('setId',id);
+      this.$store.commit('setUrl' ,this.$store.configure + url);
     }
+
   }
 }
