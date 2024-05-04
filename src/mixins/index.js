@@ -1,5 +1,6 @@
 import {likeSongOfName} from "../api";
 
+
 export const mixin = {
   methods: {
     // 提示信息
@@ -37,20 +38,25 @@ export const mixin = {
         })
       }
     },
-    // 获取名字前半部分
+    // 获取名字前半部分 -- 歌手名
     replaceLName(str){
       let arr = str.split('-');
       return arr[0];
     },
-    // 获取名字后半部分
+    // 获取名字后半部分-- 歌名
     replaceFName(str){
       let arr = str.split('-');
       return arr[1];
     },
     // 播放
-    toplay: function (id,url){
+    toplay: function (id,url,pic,index,name,lyric){
       this.$store.commit('setId',id);
       this.$store.commit('setUrl' ,this.$store.configure + url);
+      this.$store.commit('setPicUrl',this.$store.configure + pic);
+      this.$store.commit('setListIndex',index);
+      this.$store.commit('setTitle',this.replaceFName(name));
+      this.$store.commit('setArtist',this.replaceLName(name));
+      this.$store.commit('setLyric',lyric);
     }
 
   }
