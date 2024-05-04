@@ -19,7 +19,7 @@ export default new Router({
           component: resolve => require(['../pages/InfoPage.vue'], resolve)
         },
         {
-          path: '/Consumer',
+          path: '/User',
           component: resolve => require(['../pages/UserPage.vue'], resolve)
         },
         {

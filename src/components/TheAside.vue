@@ -37,7 +37,7 @@ export default {
         },
         {
           icon: 'el-icon-document',
-          index: 'Consumer',
+          index: 'User',
           title: '用户管理'
         },
         {
