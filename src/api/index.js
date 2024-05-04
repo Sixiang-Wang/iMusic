@@ -6,6 +6,8 @@ export const getLoginStatus = (params) => post(`admin/login/status`, params)
 // ============歌手相关================
 // 查询歌手
 export const getAllSinger = () => get(`singer/allSinger`)
+
+export const oneSingerOfName = (name) => get(`singer/oneSingerOfName?name=${name}`)
 // 添加歌手
 export const setSinger = (params) => post(`singer/add`, params)
 // 编辑歌手
@@ -47,15 +49,15 @@ export const delListSong = (songId, songListId) => get(`listSong/delete?songId=$
 
 // ============用户相关================
 // 查询用户
-export const getAllConsumer = () => get(`consumer/allConsumer`)
+export const getAllUser = () => get(`user/allUser`)
 // 添加用户
-export const setConsumer = (params) => post(`consumer/add`, params)
+export const setUser = (params) => post(`user/add`, params)
 // 编辑用户
-export const updateConsumer = (params) => post(`consumer/update`, params)
+export const updateUser = (params) => post(`user/update`, params)
 // 删除用户
-export const delConsumer = (id) => get(`consumer/delete?id=${id}`)
+export const delUser = (id) => get(`user/delete?id=${id}`)
 // 根据用户id查询该用户的详细信息
-export const getUserOfId = (id) => get(`/consumer/selectByPrimaryKey?id=${id}`)
+export const getUserOfId = (id) => get(`/user/selectByPrimaryKey?id=${id}`)
 
 // ===============收藏===================
 // 指定用户的收藏列表

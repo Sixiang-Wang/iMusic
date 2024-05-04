@@ -320,9 +320,9 @@ export default {
     //上传歌曲之前的校验
     beforeSongUpload (file) {
       var testMsg = file.name.substring(file.name.lastIndexOf('.') + 1)
-      if (testMsg != 'mp3') {
+      if (testMsg !== 'mp3' && testMsg !== 'MP3' && testMsg !== 'wav' && testMsg !== 'WAV' && testMsg !== 'flac' && testMsg !== 'FLAC') {
         this.$message({
-          message: '上传文件只能是mp3格式',
+          message: '请上传mp3、wav或flac文件',
           type: 'error'
         })
         return false

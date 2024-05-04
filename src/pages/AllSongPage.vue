@@ -1,11 +1,11 @@
 <template>
   <div class="table">
     <div class="crumbs">
-      <i class="el-icon-tickets"></i>歌曲信息-{{singerName}}
+      <i class="el-icon-tickets"></i>歌曲信息-{{ singerName }}
     </div>
     <div class="sub-title">
       <div v-if="toggle != false">
-        正在播放:{{toggle}}
+        正在播放:{{ toggle }}
       </div>
       <div v-if="toggle == false">
         正在播放:无
@@ -91,6 +91,10 @@
           <el-input type="text" name="name"></el-input>
         </div>
         <div>
+          <label>歌手/乐队</label>
+          <el-input type="text" name="singerName"></el-input>
+        </div>
+        <div>
           <label>专辑</label>
           <el-input type="text" name="introduction"></el-input>
         </div>
@@ -142,7 +146,7 @@
 import {mixin} from '../mixins/index'
 import {mapGetters} from 'vuex'
 import '@/assets/js/iconfont.js'
-import {songOfSingerId, updateSong, delSong, allSong} from '../api/index'
+import {updateSong, delSong, allSong, oneSingerOfName} from '../api/index'
 
 export default {
   mixins: [mixin],
@@ -222,37 +226,41 @@ export default {
         this.tableData = res
         this.currentPage = 1
       })
-
     },
     /* 添加 */
     addSong () {
       let _this = this
       var form = new FormData(document.getElementById('tf'))
-      form.append('singerId', this.singerId)
-      form.set('name', this.singerName + '-' + form.get('name'))
-      if (!form.get('lyric')) {
-        form.set('lyric', '[00:00:00]暂无歌词')
-      }
-      var req = new XMLHttpRequest()
-      req.onreadystatechange = function () {
-        /**
-        req.readyState == 4 获取到返回的完整数据
-        req.status == 200 和后台正常交互完成
-         **/
-        if (req.readyState === 4 && req.status === 200) {
-          let res = JSON.parse(req.response)
-          if (res.code) {
-            _this.getData()
-            _this.registerForm = {}
-            _this.notify(res.msg, 'success')
-          } else {
-            _this.notify('保存失败', 'error')
+      oneSingerOfName(form.get('singerName')).then(
+        res => {
+          form.append('singerId', res.id)
+          form.set('name', res.name + '-' + form.get('name'))
+
+          if (!form.get('lyric')) {
+            form.set('lyric', '[00:00:00]暂无歌词')
           }
+          var req = new XMLHttpRequest()
+          req.onreadystatechange = function () {
+            /**
+             req.readyState == 4 获取到返回的完整数据
+             req.status == 200 和后台正常交互完成
+             **/
+            if (req.readyState === 4 && req.status === 200) {
+              let res = JSON.parse(req.response)
+              if (res.code) {
+                _this.getData()
+                _this.registerForm = {}
+                _this.notify(res.msg, 'success')
+              } else {
+                _this.notify('保存失败', 'error')
+              }
+            }
+          }
+          req.open('post', `${_this.$store.state.HOST}/song/add`, false)
+          req.send(form)
+          _this.centerDialogVisible = false
         }
-      }
-      req.open('post', `${_this.$store.state.HOST}/song/add`, false)
-      req.send(form)
-      _this.centerDialogVisible = false
+      )
     },
     //弹出编辑页面
     handleEdit (row) {
@@ -290,7 +298,7 @@ export default {
     uploadUrl (id) {
       return `${this.$store.state.HOST}/song/updateSongPic?id=${id}`
     },
-    //删除一名歌手
+    //删除
     deleteRow () {
       delSong(this.idx)
         .then(res => {
@@ -320,9 +328,9 @@ export default {
     //上传歌曲之前的校验
     beforeSongUpload (file) {
       var testMsg = file.name.substring(file.name.lastIndexOf('.') + 1)
-      if (testMsg != 'mp3') {
+      if (testMsg !== 'mp3' && testMsg !== 'MP3' && testMsg !== 'wav' && testMsg !== 'WAV' && testMsg !== 'flac' && testMsg !== 'FLAC') {
         this.$message({
-          message: '上传文件只能是mp3格式',
+          message: '请上传mp3、wav或flac文件',
           type: 'error'
         })
         return false
@@ -332,7 +340,7 @@ export default {
     //上传歌曲成功之后要做的工作
     handleSongSuccess (res) {
       let _this = this
-      if (res.code == 1) {
+      if (res.code === 1) {
         _this.getData()
         _this.$notify({
           title: '上传成功',

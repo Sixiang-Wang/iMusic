@@ -12,8 +12,8 @@
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column label="用户图片" width="110" align="center">
         <template slot-scope="scope">
-          <div class="consumer-img">
-            <img :src="getUrl(scope.row.avator)" style="width:100%"/>
+          <div class="user-img">
+            <img :src="getUrl(scope.row.profilePicture)" style="width:100%"/>
           </div>
           <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeAvatorUpload"
                      :on-success="handleAvatorSuccess">
@@ -22,13 +22,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名" width="120" align="center"></el-table-column>
+      <el-table-column prop="name" label="昵称" width="120" align="center"></el-table-column>
       <el-table-column label="性别" width="50" align="center">
         <template slot-scope="scope">
           {{ changeSex(scope.row.sex) }}
         </template>
       </el-table-column>
       <el-table-column prop="phoneNum" label="手机号" width="120" align="center"></el-table-column>
-      <el-table-column prop="email" label="电子邮箱" width="240" align="center"></el-table-column>
+      <el-table-column prop="email" label="电子邮箱" width="200" align="center"></el-table-column>
       <el-table-column label="生日" width="120" align="center">
         <template slot-scope="scope">
           {{ attachBirth(scope.row.birth) }}
@@ -68,6 +69,9 @@
         <el-form-item prop="password" label="密码" size="mini">
           <el-input type="password" v-model="registerForm.password" placeholder="密码"></el-input>
         </el-form-item>
+        <el-form-item prop="name" label="昵称" size="mini">
+          <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
+        </el-form-item>
         <el-form-item label="性别" size="mini">
           <input type="radio" name="sex" value="0" v-model="registerForm.sex">&nbsp;女&nbsp;&nbsp;
           <input type="radio" name="sex" value="1" v-model="registerForm.sex">&nbsp;男
@@ -91,7 +95,7 @@
       </el-form>
       <span slot="footer">
                 <el-button size="mini" @click="centerDialogVisible = false">取消</el-button>
-                <el-button size="mini" @click="addConsumer">确定</el-button>
+                <el-button size="mini" @click="addUser">确定</el-button>
             </span>
     </el-dialog>
 
@@ -102,6 +106,9 @@
         </el-form-item>
         <el-form-item prop="password" label="密码" size="mini">
           <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
+        </el-form-item>
+        <el-form-item prop="name" label="昵称" size="mini">
+          <el-input v-model="form.name" placeholder="昵称"></el-input>
         </el-form-item>
         <el-form-item label="性别" size="mini">
           <input type="radio" name="sex" value="0" v-model="form.sex">&nbsp;女&nbsp;&nbsp;
@@ -140,7 +147,7 @@
 </template>
 
 <script>
-import {getAllConsumer, setConsumer, updateConsumer, delConsumer} from '../api/index'
+import {getAllUser, setUser, updateUser, delUser} from '../api/index'
 import {mixin} from '../mixins/index'
 
 export default {
@@ -158,7 +165,8 @@ export default {
         email: '',
         birth: '',
         introduction: '',
-        location: ''
+        location: '',
+        name: ''
       },
       form: {      //编辑框
         id: '',
@@ -169,7 +177,8 @@ export default {
         email: '',
         birth: '',
         introduction: '',
-        location: ''
+        location: '',
+        name: ''
       },
       tableData: [],
       tempData: [],
@@ -185,18 +194,21 @@ export default {
         password: [
           {required: true, message: '请输入密码', trigger: 'blur'}
         ],
+        name: [
+          {required: true, message: '请输入昵称', trigger: 'blur'}
+        ],
         phoneNum: [
-          {required: true, message: '请输入手机号', trigger: 'blur'}
+          {required: false, message: '请输入手机号', trigger: 'blur'}
         ],
         email: [
-          {required: true, message: '请输入电子邮箱', trigger: 'blur'},
+          {required: false, message: '请输入电子邮箱', trigger: 'blur'},
           {type: 'email', message: '请输入正确的电子邮箱地址', trigger: ['blur', 'change']}
         ],
         introduction: [
-          {required: true, message: '请输入签名', trigger: 'blur'}
+          {required: false, message: '请输入个性签名', trigger: 'blur'}
         ],
         location: [
-          {required: true, message: '请输入地区', trigger: 'blur'}
+          {required: false, message: '请输入地区', trigger: 'blur'}
         ]
       }
     }
@@ -210,7 +222,7 @@ export default {
   watch: {
     //搜索框里面的内容发生变化的时候，搜索结果table列表的内容跟着它的内容发生变化
     select_word: function () {
-      if (this.select_word == '') {
+      if (this.select_word === '') {
         this.tableData = this.tempData
       } else {
         this.tableData = []
@@ -234,14 +246,14 @@ export default {
     getData () {
       this.tempData = []
       this.tableData = []
-      getAllConsumer().then(res => {
+      getAllUser().then(res => {
         this.tempData = res
         this.tableData = res
         this.currentPage = 1
       })
     },
     //添加用户
-    addConsumer () {
+    addUser () {
       this.$refs['registerForm'].validate(valid => {
         if (valid) {
           let d = this.registerForm.birth
@@ -249,16 +261,17 @@ export default {
           let params = new URLSearchParams()
           params.append('username', this.registerForm.username)
           params.append('password', this.registerForm.password)
+          params.append('name', this.registerForm.name)
           params.append('sex', this.registerForm.sex)
           params.append('phoneNum', this.registerForm.phoneNum)
           params.append('email', this.registerForm.email)
           params.append('birth', datetime)
           params.append('introduction', this.registerForm.introduction)
           params.append('location', this.registerForm.location)
-          params.append('avator', '/img/user.jpg')
-          setConsumer(params)
+          params.append('profilePicture', '/img/user.jpg')
+          setUser(params)
             .then(res => {
-              if (res.code == 1) {
+              if (res.code === 1) {
                 this.getData()
                 this.notify('添加成功', 'success')
               } else {
@@ -271,7 +284,6 @@ export default {
           this.centerDialogVisible = false
         }
       })
-
     },
     //弹出编辑页面
     handleEdit (row) {
@@ -280,6 +292,7 @@ export default {
         id: row.id,
         username: row.username,
         password: row.password,
+        name: row.name,
         sex: row.sex,
         phoneNum: row.phoneNum,
         email: row.email,
@@ -298,6 +311,7 @@ export default {
           params.append('id', this.form.id)
           params.append('username', this.form.username)
           params.append('password', this.form.password)
+          params.append('name', this.form.name)
           params.append('sex', this.form.sex)
           params.append('phoneNum', this.form.phoneNum)
           params.append('email', this.form.email)
@@ -305,9 +319,9 @@ export default {
           params.append('introduction', this.form.introduction)
           params.append('location', this.form.location)
 
-          updateConsumer(params)
+          updateUser(params)
             .then(res => {
-              if (res.code == 1) {
+              if (res.code === 1) {
                 this.getData()
                 this.notify('修改成功', 'success')
               } else {
@@ -323,11 +337,11 @@ export default {
     },
     //更新图片
     uploadUrl (id) {
-      return `${this.$store.state.HOST}/consumer/updateConsumerPic?id=${id}`
+      return `${this.$store.state.HOST}/user/updateUserPic?id=${id}`
     },
     //删除一名用户
     deleteRow () {
-      delConsumer(this.idx)
+      delUser(this.idx)
         .then(res => {
           if (res) {
             this.getData()
@@ -354,7 +368,7 @@ export default {
   margin-bottom: 20px;
 }
 
-.consumer-img {
+.user-img {
   width: 100%;
   height: 80px;
   border-radius: 5px;

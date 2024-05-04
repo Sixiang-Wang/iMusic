@@ -20,7 +20,7 @@ export default new Router({
         },
         {
           path: '/Consumer',
-          component: resolve => require(['../pages/ConsumerPage.vue'], resolve)
+          component: resolve => require(['../pages/UserPage.vue'], resolve)
         },
         {
           path: '/Singer',

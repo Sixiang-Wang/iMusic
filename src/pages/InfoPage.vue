@@ -5,7 +5,7 @@
         <el-card>
           <div class="grid-content">
             <div class="grid-cont-center">
-              <div class="grid-num">{{ consumerCount }}</div>
+              <div class="grid-num">{{ userCount }}</div>
               <div>用户总数</div>
             </div>
           </div>
@@ -46,7 +46,7 @@
       <el-col :span="12">
         <h3 class="mgb20">用户性别比例</h3>
         <div style="background-color:white">
-          <ve-pie :data="consumerSex" :theme="options"></ve-pie>
+          <ve-pie :data="userSex" :theme="options"></ve-pie>
         </div>
       </el-col>
       <el-col :span="12">
@@ -73,21 +73,23 @@
   </div>
 </template>
 <script>
-import {getAllConsumer, allSong, getAllSinger, getAllSongList} from '../api/index'
+import {getAllUser, allSong, getAllSinger, getAllSongList} from '../api/index'
 
 export default {
   data () {
     return {
-      consumerCount: 0,       //用户总数
+      userCount: 0,       //用户总数
       songCount: 0,           //歌曲总数
       singerCount: 0,         //歌手数量
       songListCount: 0,        //歌单数量
-      consumer: [],            //所有用户
-      consumerSex: {           //按性别分类的用户数
+      user: [],            //所有用户
+      userSex: {           //按性别分类的用户数
         columns: ['性别', '总数'],
         rows: [
           {'性别': '男', '总数': 0},
-          {'性别': '女', '总数': 0}
+          {'性别': '女', '总数': 0},
+          {'性别': '不明', '总数': 0},
+          {'性别': '武装直升机', '总数': 0}
         ]
       },
       options: {
@@ -99,13 +101,13 @@ export default {
       songStyle: {           //按歌单风格分类
         columns: ['风格', '总数'],
         rows: [
-          {'风格': '华语', '总数': 0},
-          {'风格': '粤语', '总数': 0},
-          {'风格': '欧美', '总数': 0},
-          {'风格': '日韩', '总数': 0},
-          {'风格': 'BGM', '总数': 0},
-          {'风格': '轻音乐', '总数': 0},
-          {'风格': '乐器', '总数': 0}
+          {'风格': '古典', '总数': 0},
+          {'风格': '流行', '总数': 0},
+          {'风格': '摇滚', '总数': 0},
+          {'风格': '爵士', '总数': 0},
+          {'风格': '电子', '总数': 0},
+          {'风格': '说唱', '总数': 0},
+          {'风格': '民谣', '总数': 0}
         ]
       },
       singerSex: {           //按性别分类的歌手数
@@ -136,24 +138,24 @@ export default {
 
   },
   mounted () {
-    this.getConsumer()
+    this.getUser()
     this.getSong()
     this.getSinger()
     this.getSongList()
   },
   methods: {
-    getConsumer () {                     //用户总数
-      getAllConsumer().then(res => {
-        this.consumer = res
-        this.consumerCount = res.length
-        this.consumerSex.rows[0]['总数'] = this.setSex(1, this.consumer)
-        this.consumerSex.rows[1]['总数'] = this.setSex(0, this.consumer)
+    getUser () {                     //用户总数
+      getAllUser().then(res => {
+        this.user = res
+        this.userCount = res.length
+        this.userSex.rows[0]['总数'] = this.setSex(1, this.user)
+        this.userSex.rows[1]['总数'] = this.setSex(0, this.user)
       })
     },
     setSex (sex, val) {              //根据性别获取用户数
       let count = 0
       for (let item of val) {
-        if (sex == item.sex) {
+        if (sex === item.sex) {
           count++
         }
       }

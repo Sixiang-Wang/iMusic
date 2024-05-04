@@ -126,7 +126,7 @@ export default {
 
       listSongAdd(params)
         .then(res => {
-          if (res.code == 1) {
+          if (res.code === 1) {
             this.getData()
             this.notify('添加成功', 'success')
           } else {
