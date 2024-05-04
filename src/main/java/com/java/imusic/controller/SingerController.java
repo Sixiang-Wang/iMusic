@@ -107,7 +107,7 @@ public class SingerController {
         singer.setLocation(location);
         singer.setIntroduction(introduction);
         boolean flag = singerService.update(singer);
-        System.out.println(singer.getBirth());
+
         if(flag){   //保存成功
             jsonObject.put(Consts.CODE,1);
             jsonObject.put(Consts.MSG,"修改成功");
@@ -153,6 +153,13 @@ public class SingerController {
     public Object singerOfName(HttpServletRequest request){
         String name = request.getParameter("name").trim();          //歌手名字
         return singerService.singerOfName("%"+name+"%");
+    }
+
+    @RequestMapping(value = "/oneSingerOfName",method = RequestMethod.GET)
+    public Object oneSingerOfName(HttpServletRequest request){
+        String name = request.getParameter("name").trim();          //歌手名字
+        Singer singer = singerService.oneSingerOfName("%"+name+"%");
+        return singer;
     }
 
     /**

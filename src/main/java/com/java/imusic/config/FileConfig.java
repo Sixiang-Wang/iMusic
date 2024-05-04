@@ -23,5 +23,9 @@ public class FileConfig implements WebMvcConfigurer {
         registry.addResourceHandler("song/**").addResourceLocations(
                 "file:"+System.getProperty("user.dir")+System.getProperty("file.separator")+"song"+System.getProperty("file.separator")
         );
+
+        registry.addResourceHandler("profilePictureImages/**").addResourceLocations(
+                "file:"+System.getProperty("user.dir")+System.getProperty("file.separator")+"profilePictureImages"+System.getProperty("file.separator")
+        );
     }
 }

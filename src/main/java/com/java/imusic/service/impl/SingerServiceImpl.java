@@ -86,4 +86,8 @@ public class SingerServiceImpl implements SingerService {
     public List<Singer> singerOfSex(Integer sex) {
         return singerMapper.singerOfSex(sex);
     }
+
+    public Singer oneSingerOfName(String name){
+        return singerMapper.oneSingerOfName(name);
+    };
 }

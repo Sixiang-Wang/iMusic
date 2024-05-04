@@ -107,6 +107,7 @@
         select
         <include refid="Base_Column_List"/>
         from singer
+        where id > 0
     </select>
 
     <select id="singerOfName" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -114,6 +115,14 @@
         <include refid="Base_Column_List"/>
         from singer
         where name like #{name}
+    </select>
+
+    <select id="oneSingerOfName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from singer
+        where name like #{name}
+        limit 1
     </select>
 
     <select id="singerOfSex" resultMap="BaseResultMap" parameterType="java.lang.Integer">

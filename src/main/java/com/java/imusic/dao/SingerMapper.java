@@ -47,6 +47,7 @@ public interface SingerMapper {
      */
     public List<Singer> singerOfName(String name);
 
+    public Singer oneSingerOfName(String name);
     /**
      * 根据性别查询
      */

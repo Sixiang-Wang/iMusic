@@ -35,7 +35,6 @@ public class SongController {
         //获取前端传来的参数
         String singerId = request.getParameter("singerId").trim();  //所属歌手id
         String name = request.getParameter("name").trim();          //歌名
-        System.out.println(name);
         String introduction = request.getParameter("introduction").trim();          //简介
         String pic = "/img/songPic/tubiao.jpg";                     //默认图片
         String lyric = request.getParameter("lyric").trim();     //歌词
@@ -130,11 +129,18 @@ public class SongController {
      * 删除歌曲
      */
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
-    public Object deleteSinger(HttpServletRequest request){
+    public Object deleteSong(HttpServletRequest request){
         //-TODO 先查询到数据库中对应的文件地址，删除掉它再进行下面的代码
         String id = request.getParameter("id").trim();          //主键
+        String songUrl =  songService.selectByPrimaryKey(Integer.parseInt(id)).getUrl();
+        File songFile = new File("./"+songUrl);
         boolean flag = songService.delete(Integer.parseInt(id));
-        return flag;
+        boolean flag2 = songFile.delete();
+        int ret = 0;
+        if(flag) ret++;
+        if(flag2) ret+=2;
+        System.out.println(ret);
+        return ret;
     }
 
     /**
