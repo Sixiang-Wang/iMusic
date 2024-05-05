@@ -66,7 +66,7 @@
       <el-col :span="12">
         <h3 class="mgb20">歌手国籍分布</h3>
         <div style="background-color:white">
-          <ve-histogram :data="country" :theme="options1"></ve-histogram>
+          <ve-histogram :data="country" ></ve-histogram>
         </div>
       </el-col>
     </el-row>
@@ -104,10 +104,12 @@ export default {
           {'风格': '古典', '总数': 0},
           {'风格': '流行', '总数': 0},
           {'风格': '摇滚', '总数': 0},
+          {'风格': '金属', '总数': 0},
           {'风格': '爵士', '总数': 0},
           {'风格': '电子', '总数': 0},
           {'风格': '说唱', '总数': 0},
-          {'风格': '民谣', '总数': 0}
+          {'风格': '民谣', '总数': 0},
+          {'风格': '其他', '总数': 0}
         ]
       },
       singerSex: {           //按性别分类的歌手数
@@ -123,13 +125,13 @@ export default {
         columns: ['国籍', '总数'],
         rows: [
           {'国籍': '中国', '总数': 0},
-          {'国籍': '韩国', '总数': 0},
-          {'国籍': '日本', '总数': 0},
           {'国籍': '美国', '总数': 0},
-          {'国籍': '新加坡', '总数': 0},
-          {'国籍': '意大利', '总数': 0},
-          {'国籍': '马来西亚', '总数': 0},
-          {'国籍': '西班牙', '总数': 0}
+          {'国籍': '英国', '总数': 0},
+          {'国籍': '日本', '总数': 0},
+          {'国籍': '韩国', '总数': 0},
+          {'国籍': '德国', '总数': 0},
+          {'国籍': '法国', '总数': 0},
+          {'国籍': '其他', '总数': 0}
         ]
       }
     }
@@ -164,6 +166,9 @@ export default {
     getSong () {                      //歌曲总数
       allSong().then(res => {
         this.songCount = res.length
+        for (let item of res) {
+          this.getByStyle(item.style)
+        }
       })
     },
     getSinger () {                      //歌手数量
@@ -182,22 +187,40 @@ export default {
     getSongList () {                    //歌单数量
       getAllSongList().then(res => {
         this.songListCount = res.length
-        for (let item of res) {
-          this.getByStyle(item.style)
-        }
+
       })
     },
     getByStyle (style) {              //根据歌单风格获取数量
+      let foundStyle = 0
       for (let item of this.songStyle.rows) {
         if (style.includes(item['风格'])) {
           item['总数']++
+          foundStyle = 1
+        }
+      }
+      if (!foundStyle) {
+        for (let item of this.songStyle.rows) {
+          if (item['风格'] === '其他') {
+            item['总数']++
+            break
+          }
         }
       }
     },
     getByCountry (location) {              //根据国籍获取数量
+      let foundCountry = 0
       for (let item of this.country.rows) {
         if (location.includes(item['国籍'])) {
           item['总数']++
+          foundCountry = 1
+        }
+      }
+      if (!foundCountry) {
+        for (let item of this.country.rows) {
+          if (item['国籍'] === '其他') {
+            item['总数']++
+            break
+          }
         }
       }
     }

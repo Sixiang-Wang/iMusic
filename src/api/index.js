@@ -29,6 +29,8 @@ export const songOfSongName = (songName) => get(`song/songOfSongName?songName=${
 // 查询所有歌曲
 export const allSong = () => get(`song/allSong`)
 
+export const songOfStyle = (style) => get(`song/songOfStyle?style=${style}`)
+
 // ============歌单相关================
 // 查询歌单
 export const getAllSongList = () => get(`songList/allSongList`)

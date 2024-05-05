@@ -120,7 +120,7 @@ export default {
 
 <style scoped>
 .handle-box {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .handle-input {

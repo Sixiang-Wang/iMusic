@@ -40,9 +40,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="歌手-歌名" width="120" align="center"></el-table-column>
-      <el-table-column prop="introduction" label="专辑" width="150" align="center"></el-table-column>
-      <el-table-column label="歌词" align="center">
+      <el-table-column prop="name" label="歌手-歌名" width="150" align="center"></el-table-column>
+      <el-table-column prop="introduction" label="专辑" width="120" align="center"></el-table-column>
+      <el-table-column prop="style" label="风格" width="90" align="center"></el-table-column>
+      <el-table-column label="歌词" min-width="120" align="center">
         <template slot-scope="scope">
           <ul style="height:100px;overflow:scroll;">
             <li v-for="(item,index) in parseLyric(scope.row.lyric)" :key="index">
@@ -95,6 +96,10 @@
           <el-input type="text" name="introduction"></el-input>
         </div>
         <div>
+          <label>风格</label>
+          <el-input type="text" name="style"></el-input>
+        </div>
+        <div>
           <label>歌词</label>
           <el-input type="textarea" name="lyric"></el-input>
         </div>
@@ -116,6 +121,9 @@
         </el-form-item>
         <el-form-item prop="introduction" label="专辑" size="mini">
           <el-input v-model="form.introduction" placeholder="专辑"></el-input>
+        </el-form-item>
+        <el-form-item prop="style" label="风格" size="mini">
+          <el-input v-model="form.style" placeholder="风格"></el-input>
         </el-form-item>
         <el-form-item prop="lyric" label="歌词" size="mini">
           <el-input v-model="form.lyric" placeholder="歌词" type="textarea"></el-input>
@@ -157,13 +165,15 @@ export default {
         name: '',
         singerName: '',
         introduction: '',
-        lyric: ''
+        lyric: '',
+        style: ''
       },
       form: {      //编辑框
         id: '',
         name: '',
         introduction: '',
-        lyric: ''
+        lyric: '',
+        style: ''
       },
       tableData: [],
       tempData: [],
@@ -261,7 +271,8 @@ export default {
         id: row.id,
         name: row.name,
         introduction: row.introduction,
-        lyric: row.lyric
+        lyric: row.lyric,
+        style: row.style
       }
     },
     //保存编辑页面修改的数据
@@ -271,7 +282,7 @@ export default {
       params.append('name', this.form.name)
       params.append('introduction', this.form.introduction)
       params.append('lyric', this.form.lyric)
-
+      params.append('style', this.form.style)
       updateSong(params)
         .then(res => {
           if (res.code === 1) {
@@ -332,7 +343,7 @@ export default {
     //上传歌曲成功之后要做的工作
     handleSongSuccess (res) {
       let _this = this
-      if (res.code == 1) {
+      if (res.code === 1) {
         _this.getData()
         _this.$notify({
           title: '上传成功',
@@ -366,7 +377,7 @@ export default {
 
 <style scoped>
 .handle-box {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .song-img {

@@ -77,7 +77,12 @@
           <input type="radio" name="sex" value="1" v-model="registerForm.sex">&nbsp;男
         </el-form-item>
         <el-form-item prop="phoneNum" label="手机号" size="mini">
-          <el-input v-model="registerForm.phoneNum" placeholder="手机号"></el-input>
+          <el-input
+            v-model="registerForm.phoneNum" placeholder="手机号"
+            oninput="if(value.length>11)value=value.slice(0,11)"
+            onkeyup="this.value = this.value.replace(/[^\d]/g,'');"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item prop="email" label="电子邮箱" size="mini">
           <el-input v-model="registerForm.email" placeholder="电子邮箱"></el-input>
@@ -149,10 +154,26 @@
 <script>
 import {getAllUser, setUser, updateUser, delUser} from '../api/index'
 import {mixin} from '../mixins/index'
+import row from 'element-ui/packages/row'
 
 export default {
   mixins: [mixin],
   data () {
+    var checkPhone = (rule, value, callback) => { // 手机号验证
+      if (!value) {
+        callback()
+      } else {
+        const reg = /^1[3-9]\d{9}$/
+        const reg2 = /^[1-9]\d{10}$/
+        if (reg.test(value)) {
+          callback()
+        } else if (reg2.test(value)) {
+          return callback(new Error('请输入正确的中国地区手机号'))
+        } else {
+          return callback(new Error('请输入11位手机号'))
+        }
+      }
+    }
     return {
       centerDialogVisible: false, //添加弹窗是否显示
       editVisible: false,         //编辑弹窗是否显示
@@ -171,6 +192,7 @@ export default {
       form: {      //编辑框
         id: '',
         username: '',
+        usernameOrigin: '',
         password: '',
         sex: '',
         phoneNum: '',
@@ -178,7 +200,8 @@ export default {
         birth: '',
         introduction: '',
         location: '',
-        name: ''
+        name: '',
+        nameOrigin: ''
       },
       tableData: [],
       tempData: [],
@@ -198,7 +221,8 @@ export default {
           {required: true, message: '请输入昵称', trigger: 'blur'}
         ],
         phoneNum: [
-          {required: false, message: '请输入手机号', trigger: 'blur'}
+          {required: false, message: '请输入手机号', trigger: 'blur'},
+          {validator: checkPhone, trigger: ['blur', 'change']}
         ],
         email: [
           {required: false, message: '请输入电子邮箱', trigger: 'blur'},
@@ -257,7 +281,10 @@ export default {
       this.$refs['registerForm'].validate(valid => {
         if (valid) {
           let d = this.registerForm.birth
-          let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+          let datetime
+          if (d) {
+            datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+          }
           let params = new URLSearchParams()
           params.append('username', this.registerForm.username)
           params.append('password', this.registerForm.password)
@@ -275,7 +302,7 @@ export default {
                 this.getData()
                 this.notify('添加成功', 'success')
               } else {
-                this.notify('添加失败', 'error')
+                this.notify(`添加失败:${res.msg}`, 'error')
               }
             })
             .catch(err => {
@@ -291,8 +318,10 @@ export default {
       this.form = {
         id: row.id,
         username: row.username,
+        usernameOrigin: row.username,
         password: row.password,
         name: row.name,
+        nameOrigin: row.name,
         sex: row.sex,
         phoneNum: row.phoneNum,
         email: row.email,
@@ -305,13 +334,18 @@ export default {
     editSave () {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          let d = new Date(this.form.birth)
-          let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+          let d = this.form.birth
+          let datetime
+          if (d) {
+            datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+          }
           let params = new URLSearchParams()
           params.append('id', this.form.id)
           params.append('username', this.form.username)
+          params.append('usernameOrigin', this.form.usernameOrigin)
           params.append('password', this.form.password)
           params.append('name', this.form.name)
+          params.append('nameOrigin', this.form.nameOrigin)
           params.append('sex', this.form.sex)
           params.append('phoneNum', this.form.phoneNum)
           params.append('email', this.form.email)
@@ -325,7 +359,7 @@ export default {
                 this.getData()
                 this.notify('修改成功', 'success')
               } else {
-                this.notify('修改失败', 'error')
+                this.notify(`修改失败:${res.msg}`, 'error')
               }
             })
             .catch(err => {
@@ -365,7 +399,7 @@ export default {
 
 <style scoped>
 .handle-box {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .user-img {

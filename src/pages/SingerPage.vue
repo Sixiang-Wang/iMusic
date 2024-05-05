@@ -153,6 +153,7 @@ export default {
       form: {      //编辑框
         id: '',
         name: '',
+        nameOrigin: '',
         sex: '',
         birth: '',
         location: '',
@@ -227,7 +228,7 @@ export default {
             this.getData()
             this.notify('添加成功', 'success')
           } else {
-            this.notify('添加失败', 'error')
+            this.notify(`添加失败:${res.msg}`, 'error')
           }
         })
         .catch(err => {
@@ -241,6 +242,7 @@ export default {
       this.form = {
         id: row.id,
         name: row.name,
+        nameOrigin: row.name,
         sex: row.sex,
         birth: row.birth,
         location: row.location,
@@ -258,6 +260,7 @@ export default {
       let params = new URLSearchParams()
       params.append('id', this.form.id)
       params.append('name', this.form.name)
+      params.append('nameOrigin', this.form.nameOrigin)
       params.append('sex', this.form.sex)
       params.append('birth', datetime)
       params.append('location', this.form.location)
@@ -269,7 +272,7 @@ export default {
             this.getData()
             this.notify('修改成功', 'success')
           } else {
-            this.notify('修改失败', 'error')
+            this.notify(`修改失败:${res.msg}`, 'error')
           }
         })
         .catch(err => {
@@ -307,7 +310,7 @@ export default {
 
 <style scoped>
 .handle-box {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .singer-img {
