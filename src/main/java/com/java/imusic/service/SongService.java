@@ -57,4 +57,6 @@ public interface SongService {
      * 查询播放次数排前列的歌曲
      */
 	public List<Song> topSong();
+
+    public List<Song> songOfStyle(String style);
 }

@@ -32,6 +32,16 @@ public class Song implements Serializable {
     private String mvurl;
     /*歌曲播放次数*/
     private Integer nums;
+    /*风格*/
+    private String style;
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
 
     public String getMvurl() {
         return mvurl;

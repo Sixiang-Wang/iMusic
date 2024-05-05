@@ -110,4 +110,9 @@ public class SongServiceImpl implements SongService {
     public List<Song> topSong() {
         return songMapper.topSong();
     }
+
+    @Override
+    public List<Song> songOfStyle(String style){
+        return songMapper.songOfStyle(style);
+    };
 }

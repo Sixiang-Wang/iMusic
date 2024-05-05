@@ -38,6 +38,7 @@ public class SongController {
         String introduction = request.getParameter("introduction").trim();          //简介
         String pic = "/img/songPic/tubiao.jpg";                     //默认图片
         String lyric = request.getParameter("lyric").trim();     //歌词
+        String style = request.getParameter("style").trim();     //风格
 
         //上传歌曲文件
         if(mpFile.isEmpty()){
@@ -69,6 +70,7 @@ public class SongController {
             song.setPic(pic);
             song.setLyric(lyric);
             song.setUrl(storeUrlPath);
+            song.setStyle(style);
 
             boolean flag = songService.insert(song);
             if(flag){
@@ -107,13 +109,16 @@ public class SongController {
         String name = request.getParameter("name").trim();      //歌名
         String introduction = request.getParameter("introduction").trim();//专辑
         String lyric = request.getParameter("lyric").trim();    //歌词
+        String style = request.getParameter("style").trim();     //风格
 
         //保存到歌手的对象中
         Song song = new Song();
         song.setId(Integer.parseInt(id));
         song.setName(name);
         song.setIntroduction(introduction);
+        song.setStyle(style);
         song.setLyric(lyric);
+
         boolean flag = songService.update(song);
         if(flag){   //保存成功
             jsonObject.put(Consts.CODE,1);
@@ -338,6 +343,11 @@ public class SongController {
         return songService.topSong();
     }
 
+    @RequestMapping(value = "/songOfStyle",method = RequestMethod.GET)
+    public Object songOfStyle(HttpServletRequest request){
+        String style = request.getParameter("style");
+        return songService.songOfStyle(style);
+    }
 }
 
 

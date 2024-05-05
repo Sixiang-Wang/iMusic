@@ -15,6 +15,7 @@
                 property="updateTime"/>
         <result column="pic" jdbcType="VARCHAR" property="pic"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="style" jdbcType="VARCHAR" property="style"/>
     </resultMap>
 
     <resultMap id="ResultMapWithBLOBs" type="com.java.imusic.domain.Song"
@@ -23,11 +24,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,singer_id,name,introduction,create_time,update_time,pic,url
+        id,singer_id,name,introduction,create_time,update_time,pic,url,style
     </sql>
 
     <sql id="Blob_Column_List">
-        id,singer_id,name,introduction,create_time,update_time,pic,lyric,url
+        id,singer_id,name,introduction,create_time,update_time,pic,lyric,url,style
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.Song">
@@ -55,6 +56,9 @@
             <if test="url != null">
                 url,
             </if>
+            <if test="style != null">
+                style,
+            </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -78,6 +82,9 @@
             </if>
             <if test="url != null">
                 #{url},
+            </if>
+            <if test="style != null">
+                #{style},
             </if>
         </trim>
     </insert>
@@ -103,6 +110,9 @@
             </if>
             <if test="url != null">
                 url = #{url},
+            </if>
+            <if test="style != null">
+                style = #{style},
             </if>
         </set>
         where id = #{id}
@@ -162,6 +172,14 @@
         <include refid="Blob_Column_List"/>
         from song
         where singer_id = #{singerId}
+    </select>
+
+    <select id="songOfStyle" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.String">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where style = #{style}
     </select>
 
 </mapper>

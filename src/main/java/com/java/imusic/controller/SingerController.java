@@ -2,7 +2,9 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.Singer;
+import com.java.imusic.domain.User;
 import com.java.imusic.service.SingerService;
+import com.java.imusic.service.UserService;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,8 @@ public class SingerController {
 
     @Autowired
     private SingerService singerService;
-
+    @Autowired
+    private UserService userService;
     /**
      * 添加歌手
      */
@@ -54,6 +57,21 @@ public class SingerController {
             birthDate=null;
         }
 
+        if (name == null || name.equals("")) {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "歌手名字不能为空");
+            return jsonObject;
+        }
+
+        Singer singer1 = singerService.oneSingerOfName(name);
+        if (singer1 != null) {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "歌手重名");
+            return jsonObject;
+        }
+        if(sex.isEmpty()){
+            sex = "3";
+        }
         //保存到歌手的对象中
         Singer singer = new Singer();
         singer.setName(name);
@@ -81,6 +99,7 @@ public class SingerController {
         JSONObject jsonObject = new JSONObject();
         String id = request.getParameter("id").trim();          //主键
         String name = request.getParameter("name").trim();      //姓名
+        String nameOrigin = request.getParameter("nameOrigin").trim();
         String sex = request.getParameter("sex").trim();        //性别
         String birth = request.getParameter("birth").trim();    //生日
         String location = request.getParameter("location").trim();//地区
@@ -96,6 +115,23 @@ public class SingerController {
             }
         }else{
             birthDate=null;
+        }
+
+        if (name == null || name.equals("")) {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "歌手名字不能为空");
+            return jsonObject;
+        }
+
+        Singer singer1 = singerService.oneSingerOfName(name);
+        if (singer1 != null && !singer1.getName().equals(nameOrigin)) {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "歌手重名");
+            return jsonObject;
+        }
+
+        if(sex.isEmpty()){
+            sex = "3";
         }
         //保存到歌手的对象中
         Singer singer = new Singer();

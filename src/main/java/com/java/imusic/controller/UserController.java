@@ -5,7 +5,9 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.User;
+import com.java.imusic.service.SingerService;
 import com.java.imusic.service.UserService;
 import com.java.imusic.utils.CipherBean;
 import com.java.imusic.utils.Consts;
@@ -34,7 +36,8 @@ public class UserController {
     private CipherBean cipher;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private SingerService singerService;
 
     /**
      * 添加前端用户
@@ -68,7 +71,13 @@ public class UserController {
             jsonObject.put(Consts.MSG, "用户名已存在");
             return jsonObject;
         }
-
+        User user2 = userService.getUserWithName(name);
+        Singer singer = singerService.oneSingerOfName(name);
+        if (user2 != null || singer != null) {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "昵称已被占用");
+            return jsonObject;
+        }
         if (password == null || password.equals("")) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "密码不能为空");
@@ -76,14 +85,18 @@ public class UserController {
         }
 
         //把生日转换成Date格式
+        String tmpDate = request.getParameter("birth").trim();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date birthDate = new Date();
-        try {
-            birthDate = dateFormat.parse(birth);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(!tmpDate.equals("undefined")) {
+            try {
+                birthDate = dateFormat.parse(birth);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            birthDate = null;
         }
-
         //保存到前端用户的对象中
         User user = new User();
         user.setUsername(username);
@@ -103,7 +116,7 @@ public class UserController {
             return jsonObject;
         }
         jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "添加失败");
+        jsonObject.put(Consts.MSG, "保存到服务器失败");
         return jsonObject;
     }
 
@@ -115,6 +128,7 @@ public class UserController {
         JSONObject jsonObject = new JSONObject();
         String id = request.getParameter("id").trim();          //主键
         String username = request.getParameter("username").trim();     //账号
+        String usernameOrigin = request.getParameter("usernameOrigin").trim(); //原来账号
         String password = request.getParameter("password").trim();     //密码
         String sex = request.getParameter("sex").trim();               //性别
         String phoneNum = request.getParameter("phoneNum").trim();     //手机号
@@ -122,7 +136,8 @@ public class UserController {
         String birth = request.getParameter("birth").trim();           //生日
         String introduction = request.getParameter("introduction").trim();//签名
         String location = request.getParameter("location").trim();      //地区
-        String name = request.getParameter("name").trim();
+        String name = request.getParameter("name").trim();             //昵称
+        String nameOrigin = request.getParameter("nameOrigin").trim(); //原来昵称
 
         if (username == null || username.equals("")) {
             jsonObject.put(Consts.CODE, 0);
@@ -134,13 +149,32 @@ public class UserController {
             jsonObject.put(Consts.MSG, "密码不能为空");
             return jsonObject;
         }
+        User user1 = userService.getByUsername(username);
+        if (user1 != null && !user1.getUsername().equals(usernameOrigin)) {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "用户名已存在");
+            return jsonObject;
+        }
+        User user2 = userService.getUserWithName(name);
+        Singer singer = singerService.oneSingerOfName(name);
+        if ((user2 != null && !user2.getName().equals(nameOrigin)) || (singer != null && !singer.getName().equals(nameOrigin))) {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "昵称已被占用");
+            return jsonObject;
+        }
         //把生日转换成Date格式
+        String tmpDate = request.getParameter("birth").trim();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date birthDate = new Date();
-        try {
-            birthDate = dateFormat.parse(birth);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        System.out.println(tmpDate);
+        if(!tmpDate.equals("undefined")) {
+            try {
+                birthDate = dateFormat.parse(birth);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            birthDate = null;
         }
         //保存到前端用户的对象中
         User user = new User();

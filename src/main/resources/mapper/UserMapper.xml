@@ -120,9 +120,7 @@
             <if test="email != null">
                 email = #{email},
             </if>
-            <if test="birth != null">
-                birth = #{birth},
-            </if>
+            birth = #{birth},
             <if test="introduction != null">
                 introduction = #{introduction},
             </if>
@@ -197,6 +195,7 @@
         <include refid="Base_Column_List"/>
         from user
         where name=#{name}
+        limit 1
     </select>
 
 </mapper>
