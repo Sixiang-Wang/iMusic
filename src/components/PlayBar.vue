@@ -209,7 +209,7 @@ export default {
     // 拖拽中
     mousemove(e){
       if(!this.duration){
-        console.log("开发:现无歌曲，无法拖动");
+        // console.log("开发:现无歌曲，无法拖动");
         return false;
 
       }
@@ -291,6 +291,8 @@ export default {
         this.$store.commit('setPicUrl',this.$store.configure.HOST + this.listOfSongs[this.listIndex].pic);
         this.$store.commit('setTitle',this.replaceFName(this.listOfSongs[this.listIndex].name));
         this.$store.commit('setArtist',this.replaceLName(this.listOfSongs[this.listIndex].name));
+        console.log(this.listOfSongs[this.listIndex].lyric);
+        console.log("PlayBar");
         this.$store.commit('setLyric',this.parseLyric(this.listOfSongs[this.listIndex].lyric));
       }
     },
@@ -306,7 +308,7 @@ export default {
     },
     parseLyric(text){
       let lines = text.split("\n");         // 将歌词按行分解成数组
-      let pattern = /\[d{2}:d{2}.(\d{3}|\d{2})]/g;     // 时间格式的正则表达式
+      let pattern = /\[\d{2}:\d{2}.(\d{3}|\d{2})]/g;     // 时间格式的正则表达式
       let result = [];
       // 对于歌词格式不对的直接返回
       if(!(/\[.+]/.test(text))){
@@ -335,7 +337,7 @@ export default {
     },
     // 转向歌词页面
     toLyric(){
-      this.$router.push({path: `/lyric`})
+      this.$router.push({path: "/lyric"})
     }
   }
 }

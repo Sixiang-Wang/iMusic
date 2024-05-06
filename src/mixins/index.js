@@ -1,6 +1,5 @@
 import {likeSongOfName} from "../api";
 
-
 export const mixin = {
   methods: {
     // 提示信息
@@ -58,16 +57,19 @@ export const mixin = {
       this.$store.commit('setListIndex',index);
       this.$store.commit('setTitle',this.replaceFName(name));
       this.$store.commit('setArtist',this.replaceLName(name));
+      console.log(lyric);
+      console.log("mixins\\index")
+      console.log(this.parseLyric(lyric));
       this.$store.commit('setLyric',this.parseLyric(lyric));
     },
     // 解析歌词
     parseLyric(text){
       let lines = text.split("\n");         // 将歌词按行分解成数组
-      let pattern = /\[d{2}:d{2}.(\d{3}|\d{2})]/g;     // 时间格式的正则表达式
+      let pattern = /\[\d{2}:\d{2}.(\d{3}|\d{2})]/g;     // 时间格式的正则表达式
       let result = [];
       // 对于歌词格式不对的直接返回
       if(!(/\[.+]/.test(text))){
-        return [[0,text]]
+        return [[0,text]];
       }
       // 去掉前面不正确的行
       while(lines.length!==0 && !pattern.test(lines[0])){
