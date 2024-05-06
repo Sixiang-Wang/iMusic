@@ -141,64 +141,64 @@ const song = {
     },
     setIsPlay: (state, isPlay)=> {
       state.isPlay = isPlay;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(isPlay));
+      window.sessionStorage.setItem('isPlay',JSON.stringify(isPlay));
     },
     setUrl: (state,url) => {
       state.url = url;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(url));
+      window.sessionStorage.setItem('url',JSON.stringify(url));
     },
     setId: (state,id) => {
       state.id = id;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(id));
+      window.sessionStorage.setItem('id',JSON.stringify(id));
     },
     setPlayButtonUrl: (state,playButtonUrl) => {
       state.playButtonUrl = playButtonUrl;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(playButtonUrl));
+      window.sessionStorage.setItem('playButtonUrl',JSON.stringify(playButtonUrl));
     },
     setDuration: (state,duration) => {
       state.duration = duration;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(duration));
+      window.sessionStorage.setItem('duration',JSON.stringify(duration));
     },
     setCurTime: (state,curTime) => {
       state.curTime = curTime;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(curTime));
+      window.sessionStorage.setItem('curTime',JSON.stringify(curTime));
     },
     setChangeTime: (state,changeTime) => {
       state.changeTime = changeTime;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(changeTime));
+      window.sessionStorage.setItem('changeTime',JSON.stringify(changeTime));
     },
     setTitle: (state,title) => {
       state.title = title;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(title));
+      window.sessionStorage.setItem('title',JSON.stringify(title));
     },
     setArtist: (state,artist) => {
       state.artist = artist;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(artist));
+      window.sessionStorage.setItem('artist',JSON.stringify(artist));
     },
     setPicUrl: (state,picUrl) => {
       state.picUrl = picUrl;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(picUrl));
+      window.sessionStorage.setItem('picUrl',JSON.stringify(picUrl));
     },
     setAutoNext: (state,autoNext) => {
       state.autoNext = autoNext;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(autoNext));
+      window.sessionStorage.setItem('autoNext',JSON.stringify(autoNext));
     },
     setLyric: (state,lyric) => {
       state.lyric = lyric;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(lyric));
+      window.sessionStorage.setItem('lyric',JSON.stringify(lyric));
     },
     setTempList: (state,tempList) => {
       state.tempList = tempList;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(tempList));
+      window.sessionStorage.setItem('tempList',JSON.stringify(tempList));
     },
     setListIndex: (state,listIndex) => {
       state.listIndex = listIndex;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(listIndex));
+      window.sessionStorage.setItem('listIndex',JSON.stringify(listIndex));
     },
 
     setVolume: (state,volume) => {
       state.volume = volume;
-      window.sessionStorage.setItem('listOfSongs',JSON.stringify(volume));
+      window.sessionStorage.setItem('volume',JSON.stringify(volume));
     },
   }
 }

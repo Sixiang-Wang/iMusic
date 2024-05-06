@@ -53,6 +53,7 @@ export default {
       player.play();
       this.$store.commit('setIsPlay',true);
     },
+    // 播放完之后触发
     ended(){
       this.$store.commit('setIsPlay',false);
       this.$store.commit('setCurTime',0);
@@ -78,6 +79,6 @@ export default {
 
 <style>
   .song-audio{
-    display: inline;
+    display: none;
   }
 </style>

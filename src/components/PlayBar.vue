@@ -20,7 +20,7 @@
         </svg>
       </div>
       <!--    歌曲图片-->
-      <div class="item-img">
+      <div class="item-img" @click="toLyric">
         <img :src="picUrl" />
       </div>
       <!--    播放进度-->
@@ -106,7 +106,8 @@ export default {
       'curTime',     // 当前音乐的播放位置
       'showAside',      // 是否显示播放中的歌曲列表
       "listIndex",      // 当前歌曲在歌单中的位置
-      "listOfSongs"     // 当前歌单列表
+      "listOfSongs",     // 当前歌单列表
+      "autoNext",          // 自动播放下一首
     ])
   },
   mounted() {
@@ -140,7 +141,10 @@ export default {
     // 音量变化
     volume(){
       this.$store.commit('setVolume',this.volume / 100);
-
+    },
+    // 自动播放下一首
+    autoNext(){
+      this.next();
     }
   },
   methods:{
@@ -157,9 +161,9 @@ export default {
     formatSeconds(value){
       let theTime = parseInt(value);
       let result = '';
-      let hour = theTime / 3600;
-      let minute = (theTime / 60) % 60;
-      let second = theTime % 60;
+      let hour = Math.floor(theTime / 3600);
+      let minute = Math.floor((theTime / 60) % 60);
+      let second = Math.floor(theTime % 60);
       if(hour>0){
         if(hour<10){
           result = '0'+hour+':';
@@ -287,7 +291,7 @@ export default {
         this.$store.commit('setPicUrl',this.$store.configure.HOST + this.listOfSongs[this.listIndex].pic);
         this.$store.commit('setTitle',this.replaceFName(this.listOfSongs[this.listIndex].name));
         this.$store.commit('setArtist',this.replaceLName(this.listOfSongs[this.listIndex].name));
-        this.$store.commit('setLyric',this.listOfSongs[this.listIndex].lyric);
+        this.$store.commit('setLyric',this.parseLyric(this.listOfSongs[this.listIndex].lyric));
       }
     },
     // 获取名字前半部分 -- 歌手名
@@ -300,6 +304,39 @@ export default {
       let arr = str.split('-');
       return arr[1];
     },
+    parseLyric(text){
+      let lines = text.split("\n");         // 将歌词按行分解成数组
+      let pattern = /\[d{2}:d{2}.(\d{3}|\d{2})]/g;     // 时间格式的正则表达式
+      let result = [];
+      // 对于歌词格式不对的直接返回
+      if(!(/\[.+]/.test(text))){
+        return [[0,text]]
+      }
+      // 去掉前面不正确的行
+      while(lines.length!==0 && !pattern.test(lines[0])){
+        lines = lines.slice(1);
+      }
+      // 遍历每一行，形成一个带着两个元素的数组，第一个元素是以秒为计算单位的时间，第二个元素是歌词
+      for(let item of lines){
+        let time = item.match(pattern);     // 前面的时间段
+        let value = item.replace(pattern,'')    // 存后面的歌词
+        for(let item1 of time){
+          let t = item1.slice(1,-1).split(":");   // 取出时间，换算成数组
+          if(value!==''){
+            result.push([parseInt(t[0],10)*60+ parseInt(t[1]),value]);
+          }
+        }
+      }
+      // 按照第一个元素 -- 时间 -- 排序
+      result.sort(function (a , b){
+        return a[0] - b[0];
+      });
+      return result;
+    },
+    // 转向歌词页面
+    toLyric(){
+      this.$router.push({path: `/lyric`})
+    }
   }
 }
 </script>

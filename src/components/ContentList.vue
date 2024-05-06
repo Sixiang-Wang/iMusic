@@ -1,5 +1,3 @@
-<!--P73 P74 效果显示异常，原因不明-->
-
 <template>
   <div class="content-list">
     <ul class="section-content">

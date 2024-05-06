@@ -5,6 +5,7 @@ import MyMusic from "@/pages/MyMusic";
 import Singer from "@/pages/Singer";
 import SongList from "@/pages/SongList";
 import Search from "@/pages/Search"
+import Lyric from "@/pages/Lyric";
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +35,11 @@ export default new Router({
       name: 'search',
       component: Search
     },
+    {
+      path: '/lyric',
+      name: 'lyric',
+      component: Lyric
+    }
   ],
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }
