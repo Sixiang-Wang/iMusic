@@ -127,7 +127,7 @@
     <delete id="delete" parameterType="java.lang.Integer">
         delete
         from song
-        where id = #{id}
+        where id = #{id};
     </delete>
 
     <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
@@ -135,7 +135,7 @@
         select
         <include refid="Blob_Column_List"/>
         from song
-        where id=#{id}
+        where id=#{id};
     </select>
 
     <select id="allSong" resultMap="ResultMapWithBLOBs">

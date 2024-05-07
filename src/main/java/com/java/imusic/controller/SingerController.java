@@ -2,9 +2,12 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.Singer;
+import com.java.imusic.domain.Song;
 import com.java.imusic.domain.User;
 import com.java.imusic.service.SingerService;
+import com.java.imusic.service.SongService;
 import com.java.imusic.service.UserService;
+import com.java.imusic.service.impl.SongServiceImpl;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 歌手控制类
@@ -32,6 +36,8 @@ public class SingerController {
     private SingerService singerService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private SongService songService;
     /**
      * 添加歌手
      */
@@ -162,6 +168,23 @@ public class SingerController {
     public Object deleteSinger(HttpServletRequest request){
         String id = request.getParameter("id").trim();          //主键
         boolean flag = singerService.delete(Integer.parseInt(id));
+        List<Song> songs = songService.songOfSingerId(Integer.parseInt(id));
+        for (Song song : songs){
+            SongController songController = SongController.getSongController();
+            String songUrl =  song.getUrl();
+            File songFile = new File("./"+songUrl);
+
+            //不想删除歌曲用我
+            songService.update(song);
+
+            //想删除歌曲用我
+
+            boolean flag2 = songFile.delete();
+            if (!flag2)
+                System.out.println(songFile.toString() + ": 没找到或删除失败（来自SingerController-deleteSinger）");
+            song.setSingerId(-1);
+            songService.delete(song.getId());
+        }
         return flag;
     }
 

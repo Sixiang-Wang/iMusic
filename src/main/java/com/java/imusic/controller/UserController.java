@@ -1,9 +1,6 @@
 package com.java.imusic.controller;
 
-import cn.dev33.satoken.secure.SaSecureUtil;
-import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
-import cn.hutool.core.util.ObjectUtil;
+
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.User;
@@ -16,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -278,24 +277,27 @@ public class UserController {
      * 前端用户登录
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public SaResult login(HttpServletRequest request) {
-        StpUtil.logout();
+    public Object login(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");     //账号
         String passwordFont = request.getParameter("password");
         //加密前端传入的 密码
-        String realPassword = SaSecureUtil.aesEncrypt(cipher.getKey(), passwordFont);
         //根据用户名和密码获取数据库里面所有的信息
-        User user = userService.getUserWithAccount(username, realPassword);
+        User user = userService.getUserWithAccount(username, passwordFont);
         log.error("数据库中查到的user {}", user);
         //如果查到了用户
-        if (ObjectUtil.isNotNull(user)) {
+        if (user!=null) {
             log.error("=============查询到了user {}", user);
-            user.setPassword("***");
+
             //设置登录状态
-            StpUtil.login("user:" + user.getId());
-            return SaResult.ok("登录成功").setData(user);
+            jsonObject.put(Consts.CODE, 1);
+            jsonObject.put(Consts.MSG, "登录成功");
         }
-        return SaResult.error("用户名或密码错误-服务端");
+        else {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "登录失败");
+        }
+        return jsonObject;
     }
 
 
@@ -307,18 +309,22 @@ public class UserController {
      * @since 2023/3/2 23:12
      */
     @PostMapping("/{phoneNum}")
-    public SaResult loginWithPhoneNum(@PathVariable("phoneNum") String phoneNum, HttpSession session) {
+    public Object loginWithPhoneNum(@PathVariable("phoneNum") String phoneNum, HttpSession session) {
         //只要访问这个接口,就直接先给退出登录,清除cookie
-        StpUtil.logout();
+        JSONObject jsonObject = new JSONObject();
         User user = userService.getUserWithPhoneNum(phoneNum);
-        if (ObjectUtil.isNotNull(user)) {
+        if (user!=null) {
             log.error("=============查询到了user {}", user);
             user.setPassword("***");
             //设置登录状态
-            StpUtil.login("user:" + user.getId());
-            return SaResult.ok("登录成功").setData(user);
+            jsonObject.put(Consts.CODE, 1);
+            jsonObject.put(Consts.MSG, "登录成功");
         }
-        return SaResult.error("手机号码对应的帐号不存在,请先绑定手机号码");
+        else {
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "登录失败");
+        }
+        return jsonObject;
     }
 
     /**
@@ -329,31 +335,10 @@ public class UserController {
      * @since 2023/3/3 22:44
      */
     @PostMapping("/logout")
-    public void logout() {
+    public void logout(HttpServletRequest request) {
         System.out.println("===退出登录===");
-        StpUtil.logout();
+        //Cookie[] cookies = request.getCookies();
+        //StpUtil.logout();
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

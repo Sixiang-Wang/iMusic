@@ -3,7 +3,9 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.Song;
 import com.java.imusic.service.SongService;
+import com.java.imusic.service.impl.SongServiceImpl;
 import com.java.imusic.utils.Consts;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,8 @@ public class SongController {
 
     @Autowired
     private SongService songService;
+    @Getter
+    private static SongController songController;
 
     /**
      * 添加歌曲
@@ -144,9 +148,9 @@ public class SongController {
         int ret = 0;
         if(flag) ret++;
         if(flag2) ret+=2;
-        System.out.println(ret);
         return ret;
     }
+
 
     /**
      * 更新歌曲图片
