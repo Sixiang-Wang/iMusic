@@ -5,9 +5,9 @@
 </template>
 
 <script setup>
-  export default {
-    name: 'song-list'
-  }
+export default {
+  name: 'song-list'
+}
 </script>
 
 <style scoped>

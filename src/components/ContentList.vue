@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import {mixin} from "../mixins/index";
+import {mixin} from '../mixins/index'
 
 export default {
-  name:'content-list',
-  mixins : [mixin],
+  name: 'content-list',
+  mixins: [mixin],
   props: ['contentList']
 }
 </script>

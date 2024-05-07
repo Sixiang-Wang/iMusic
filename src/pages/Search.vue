@@ -9,30 +9,29 @@
 </template>
 
 <script>
-import searchSongs from "../components/search/SearchSongs.vue";
-import searchSongLists from "../components/search/SearchSongLists.vue";
+import searchSongs from '../components/search/SearchSongs.vue'
+import searchSongLists from '../components/search/SearchSongLists.vue'
 export default {
   name: 'search',
   components: {
     searchSongs,
     searchSongLists
   },
-  data() {
-    return{
+  data () {
+    return {
       toggle: 'Songs',
       currentView: 'searchSongs'
     }
   },
-  methods:{
+  methods: {
     // 切换组件
-    handleChangeView(component){
-      this.currentView = 'search'+component;
-      this.toggle = component;
+    handleChangeView (component) {
+      this.currentView = 'search' + component
+      this.toggle = component
     }
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import "../assets/css/search.scss";

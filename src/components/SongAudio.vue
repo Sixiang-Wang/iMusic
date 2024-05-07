@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'song-audio',
@@ -20,58 +20,57 @@ export default {
     ...mapGetters([
       'id',
       'url',
-      'isPlay',     // 是否播放中
+      'isPlay', // 是否播放中
       'listOfSongs',
-      'duration',    // 音乐时长
-      'curTime',      // 当前音乐的播放位置
-      'changeTime',  // 指定播放时刻
-      'autoNext',   //  用于自动触发播放下一首音乐
-      'volume'     // 音量
+      'duration', // 音乐时长
+      'curTime', // 当前音乐的播放位置
+      'changeTime', // 指定播放时刻
+      'autoNext', //  用于自动触发播放下一首音乐
+      'volume' // 音量
     ])
   },
-  watch:{
+  watch: {
     // 监听播放还是暂停
-    isPlay: function (){
-      this.togglePlay();
+    isPlay: function () {
+      this.togglePlay()
     },
     // 跳转到指定的播放时刻
-    changeTime(){
-      this.$refs.player.currentTime = this.changeTime;
+    changeTime () {
+      this.$refs.player.currentTime = this.changeTime
     },
     // 改变音量
-    volume(val){
-      this.$refs.player.volume =  val;
+    volume (val) {
+      this.$refs.player.volume = val
     }
 
   },
-  methods:{
+  methods: {
     // 获取链接后准备播放
-    startPlay(){
-      let player = this.$refs.player;
-      this.$store.commit('setDuration', player.duration);
+    startPlay () {
+      let player = this.$refs.player
+      this.$store.commit('setDuration', player.duration)
       // 开始播放
-      player.play();
-      this.$store.commit('setIsPlay',true);
+      player.play()
+      this.$store.commit('setIsPlay', true)
     },
     // 播放完之后触发
-    ended(){
-      this.$store.commit('setIsPlay',false);
-      this.$store.commit('setCurTime',0);
-      this.$store.commit('setAutoNext',!this.autoNext);
+    ended () {
+      this.$store.commit('setIsPlay', false)
+      this.$store.commit('setCurTime', 0)
+      this.$store.commit('setAutoNext', !this.autoNext)
     },
     // 开始 暂停
-    togglePlay(){
-      let player = this.$refs.player;
-      if(this.isPlay){
-        player.play();
-      }
-      else{
-        player.pause();
+    togglePlay () {
+      let player = this.$refs.player
+      if (this.isPlay) {
+        player.play()
+      } else {
+        player.pause()
       }
     },
     // 音乐播放时记录音乐的播放位置
-    timeupdate(){
-      this.$store.commit('setCurTime' , this.$refs.player.currentTime);
+    timeupdate () {
+      this.$store.commit('setCurTime', this.$refs.player.currentTime)
     }
   }
 }

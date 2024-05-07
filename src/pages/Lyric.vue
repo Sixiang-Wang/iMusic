@@ -15,44 +15,44 @@
 </template>
 
 <script>
-import {mixin} from "../mixins";
-import {mapGetters} from "vuex";
+import {mixin} from '../mixins'
+import {mapGetters} from 'vuex'
 export default {
-  name : 'lyric',
-  mixins : [mixin],
-  data() {
+  name: 'lyric',
+  mixins: [mixin],
+  data () {
     return {
-      lyr: []   // 当前歌曲的歌词
+      lyr: [] // 当前歌曲的歌词
     }
   },
-  computed:{
+  computed: {
     ...mapGetters([
-      'curTime',      // 当前歌曲播放到的位置
-      'id',     //  当前播放的歌曲id
-      'lyric',    //  歌词
-      'listIndex',    // 当前歌曲在歌单中的位置
-      'listOfSongs'    // 当前歌曲列表
+      'curTime', // 当前歌曲播放到的位置
+      'id', //  当前播放的歌曲id
+      'lyric', //  歌词
+      'listIndex', // 当前歌曲在歌单中的位置
+      'listOfSongs' // 当前歌曲列表
     ])
   },
-  created() {
-    this.lyr = this.lyric;
-    console.log(this.lyric);
+  created () {
+    this.lyr = this.lyric
+    console.log(this.lyric)
   },
-  watch:{
-    id:function (){
-      this.lyr = this.parseLyric(this.listOfSongs[this.listIndex].lyric);
+  watch: {
+    id: function () {
+      this.lyr = this.parseLyric(this.listOfSongs[this.listIndex].lyric)
     },
-    curTime:function (){
-      if(this.lyr.length>0){
-        for(let i =0 ;i <this.lyr.length;i++){
-          if(this.curTime >= this.lyr[i][0]){
-            for(let j =0 ;j<this.lyr.length ;j++){
-              document.querySelectorAll('.has-lyric li')[j].style.color = '#000';
-              document.querySelectorAll('.has-lyric li')[j].style.fontSize  = '15px';
+    curTime: function () {
+      if (this.lyr.length > 0) {
+        for (let i = 0; i < this.lyr.length; i++) {
+          if (this.curTime >= this.lyr[i][0]) {
+            for (let j = 0; j < this.lyr.length; j++) {
+              document.querySelectorAll('.has-lyric li')[j].style.color = '#000'
+              document.querySelectorAll('.has-lyric li')[j].style.fontSize = '15px'
             }
-            if(i>=0){
-              document.querySelectorAll('.has-lyric li')[i].style.color = '#95d2f6';
-              document.querySelectorAll('.has-lyric li')[i].style.fontSize = '25px';
+            if (i >= 0) {
+              document.querySelectorAll('.has-lyric li')[i].style.color = '#95d2f6'
+              document.querySelectorAll('.has-lyric li')[i].style.fontSize = '25px'
             }
           }
         }

@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import Swiper from "../components/Swiper.vue";
-import {getAllSinger,getAllSongList} from "../api/index";
-import ContentList from "../components/ContentList";
+import Swiper from '../components/Swiper.vue'
+import {getAllSinger, getAllSongList} from '../api/index'
+import ContentList from '../components/ContentList'
 
 export default {
   name: 'home',
@@ -22,28 +22,28 @@ export default {
   data () {
     return {
       songsList: [
-        {name:"歌单",list: []},
-        {name:"歌手",list: []},
+        {name: '歌单', list: []},
+        {name: '歌手', list: []}
       ]
     }
   },
   created () {
-    this.getSongList();
-    this.getSinger();
+    this.getSongList()
+    this.getSinger()
   },
   methods: {
-    getSongList(){//获取前十条歌单
+    getSongList () { // 获取前十条歌单
       getAllSongList().then((res) => {
-        this.songsList[0].list = res.slice(0,10)
+        this.songsList[0].list = res.slice(0, 10)
       }).catch((err) => {
-        console.log(err);
+        console.log(err)
       })
     },
-    getSinger(){//获取前十名歌手
-      getAllSinger().then((res) =>{
-        this.songsList[1].list = res.slice(0,10)
+    getSinger () { // 获取前十名歌手
+      getAllSinger().then((res) => {
+        this.songsList[1].list = res.slice(0, 10)
       }).catch((err) => {
-        console.log(err);
+        console.log(err)
       })
     }
   }

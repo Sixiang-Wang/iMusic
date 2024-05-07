@@ -13,13 +13,13 @@
 
 <script>
 
-import TheHeader from "./components/TheHeader.vue";
-import BoneDemo  from "./components/BoneDemo.vue";
-import ScrollTop from "./components/ScrollTop.vue";
-import TheFooter from "./components/TheFooter.vue";
-import SongAudio from "./components/SongAudio.vue";
-import PlayBar from "./components/PlayBar.vue";
-import TheAside from "./components/TheAside.vue";
+import TheHeader from './components/TheHeader.vue'
+import BoneDemo from './components/BoneDemo.vue'
+import ScrollTop from './components/ScrollTop.vue'
+import TheFooter from './components/TheFooter.vue'
+import SongAudio from './components/SongAudio.vue'
+import PlayBar from './components/PlayBar.vue'
+import TheAside from './components/TheAside.vue'
 export default {
   name: 'App',
   components: {

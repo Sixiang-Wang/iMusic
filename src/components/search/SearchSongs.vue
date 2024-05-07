@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {mixin} from "../../mixins";
-import AlbumContent from "../AlbumContent.vue";
+import {mapGetters} from 'vuex'
+import {mixin} from '../../mixins'
+import AlbumContent from '../AlbumContent.vue'
 
 export default {
   name: 'search-songs',
@@ -15,13 +15,13 @@ export default {
     AlbumContent
   },
   mixins: [mixin],
-  computed:{
+  computed: {
     ...mapGetters([
       'listOfSongs'
     ])
   },
-  mounted() {
-    this.getSong();
+  mounted () {
+    this.getSong()
   }
 }
 </script>

@@ -9,17 +9,17 @@
 </template>
 
 <script>
-import {swiperList} from "../assets/data/swiper";
+import {swiperList} from '../assets/data/swiper'
 
 export default {
-  name: "Swiper",
-  data() {
+  name: 'Swiper',
+  data () {
     return {
       swiperList: []
     }
   },
-  created() {
-    this.swiperList = swiperList;
+  created () {
+    this.swiperList = swiperList
   }
 }
 

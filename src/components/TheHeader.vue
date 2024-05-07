@@ -12,7 +12,7 @@
       </li>
       <li>
         <div class="header-search">
-          <input type="text" placeholder="搜索音乐" @keyup.enter="goSearch()" v-model:placeholder="keywords">
+          <input type="text" placeholder="搜索音乐" @keyup.enter="goSearch()" v-model="keywords">
             <div class="search-btn" @click="goSearch()">
               <svg class="icon">
                 <use xlink:href="#icon-sousuo"></use>
@@ -25,34 +25,35 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters} from 'vuex'
 import {navMsg} from '../assets/data/header'
 export default {
   name: 'the-header',
-  data() {
+  data () {
     return {
-      navMsg: [], //导航栏
-      keywords: '' //搜索关键字
+      navMsg: [], // 导航栏
+      keywords: '' // 搜索关键字
     }
   },
-  created() {
-    this.navMsg = navMsg;
+  created () {
+    this.navMsg = navMsg
   },
-  computed:{
-      ...mapGetters([
-        'activeName'
-      ])
+  computed: {
+    ...mapGetters([
+      'activeName'
+    ])
   },
   methods: {
-    goHome(){
-      this.$router.push({path: "/"});
+    goHome () {
+      this.$store.commit('setActiveName', '首页')
+      this.$router.push({path: '/'})
     },
-    goPage(path, name){
-      this.$store.commit('setActiveName',name)
-      this.$router.push({path: path});
+    goPage (path, name) {
+      this.$store.commit('setActiveName', name)
+      this.$router.push({path: path})
     },
-    goSearch() {
-      this.$router.push({path: '/search',query:{keywords: this.keywords}})
+    goSearch () {
+      this.$router.push({path: '/search', query: {keywords: this.keywords}})
     }
   }
 }

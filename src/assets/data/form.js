@@ -1,29 +1,29 @@
 // 匹配规则
 const rules = {
   username: [
-    { required: true, trigger: 'blur' }
+    {required: true, trigger: 'blur'}
   ],
   password: [
-    { required: true, trigger: 'blur' }
+    {required: true, trigger: 'blur'}
   ],
   sex: [
-    { required: true, message: '请选择性别', trigger: 'change' }
+    {required: true, message: '请选择性别', trigger: 'change'}
   ],
   phoneNum: [
-    { essage: '请选择日期', trigger: 'blur' }
+    {essage: '请选择日期', trigger: 'blur'}
   ],
   email: [
-    { message: '请输入邮箱地址', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+    {message: '请输入邮箱地址', trigger: 'blur'},
+    {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
   ],
   birth: [
-    { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
+    {required: true, type: 'date', message: '请选择日期', trigger: 'change'}
   ],
   introduction: [
-    { message: '请输入介绍', trigger: 'blur' }
+    {message: '请输入介绍', trigger: 'blur'}
   ],
   location: [
-    { message: '请输入地区', trigger: 'change' }
+    {message: '请输入地区', trigger: 'change'}
   ]
 }
 
