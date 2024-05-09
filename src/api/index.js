@@ -1,5 +1,7 @@
 import {get,post} from "./http"
 import songList from "../pages/SongList.vue";
+import Axios from "axios";
+
 
 // ============歌手相关=============
 // 查询歌手
@@ -22,3 +24,10 @@ export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${
 
 // ============用户相关==============
 export const getAllConsumer=()=>get(`consumer/allConsumer`);
+
+// 下载音乐
+export const download = (url) => Axios({
+  method: 'get',
+  url: url,
+  responseType: 'blob'
+});

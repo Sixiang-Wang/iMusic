@@ -60,7 +60,7 @@
           </svg>
         </div>
 <!--        下载-->
-        <div class="item">
+        <div class="item" @click="download">
           <svg class="icon">
             <use xlink:href="#icon-xiazai"></use>
           </svg>
@@ -78,6 +78,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {download} from "../api/index";
 
 export default {
   name: 'play-bar',
@@ -325,7 +326,33 @@ export default {
     // 转向歌词页面
     toLyric () {
       this.$router.push({path: '/lyric'})
+    },
+    // 下载音乐
+    download() {
+      console.log("download");
+      download(this.url)
+        .then(res=>{
+          let content = res.data;
+          let eleLink= document.createElement('a');
+          // 可考虑添加下载音乐格式的选项
+          eleLink.download = `${this.artist}-${this.title}.mp3`;
+          eleLink.style.dislpay = 'none';
+          // 把字符内容转换成blob地址
+          let blob = new Blob([content]);
+          eleLink.href = URL.createObjectURL(blob);
+          // 把链接地址加到document里
+          document.body.appendChild(eleLink);
+          // 触发点击
+          eleLink.click();
+          // 然后移除这个新加的控件
+          document.body.removeChild(eleLink);
+
+        })
+        .catch(err => {
+          console.log(err);
+        })
     }
+
   }
 }
 </script>
