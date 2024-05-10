@@ -2,7 +2,7 @@ import {likeSongOfName} from "../api";
 
 const song = {
   state: {
-    listOfSongs: [ ],  //当前歌曲列表
+    listOfSongs: [],  //当前歌曲列表
     isPlay: false,     // 是否播放中
     url: '',           // 歌曲地址
     id: '',             // 歌曲id

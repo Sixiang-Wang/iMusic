@@ -22,8 +22,8 @@ export default {
   data () {
     return {
       songsList: [
-        {name: '歌单', list: []},
-        {name: '歌手', list: []}
+        {name: '歌 单', list: []},
+        {name: '歌 手', list: []}
       ]
     }
   },

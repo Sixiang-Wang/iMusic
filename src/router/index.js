@@ -6,6 +6,8 @@ import Singer from "@/pages/Singer";
 import SongList from "@/pages/SongList";
 import Search from "@/pages/Search"
 import Lyric from "@/pages/Lyric";
+import SingerAlbum from "@/pages/SingerAlbum.vue";
+import SongListAlbum from "@/pages/SongListAlbum.vue";
 import SignUp from "@/pages/SignUp";
 import LoginIn from "@/pages/LoginIn";
 import Setting from "@/pages/Setting";
@@ -57,6 +59,16 @@ export default new Router({
       path: '/setting',
       name: 'setting',
       component: Setting
+    },
+    {
+      path: '/singer-album/:id',
+      name: 'singer-album',
+      component: SingerAlbum
+    },
+    {
+      path: '/song-list-album/:id',
+      name: 'song-list-album',
+      component: SongListAlbum
     }
   ],
   scrollBehavior (to, from, savedPosition) {
