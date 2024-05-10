@@ -12,8 +12,6 @@ export const mixin = {
     // 获取图片地址
     attachImageUrl (srcurl){
       if(srcurl){
-        // console.log(this.$store.state.configure.HOST);
-        // console.log(this.$store.state.configure.HOST + srcurl);
         return this.$store.state.configure.HOST + srcurl;
       }
       else{

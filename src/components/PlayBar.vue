@@ -1,5 +1,10 @@
 <template>
-  <div class="play-bar">
+  <div class="play-bar" :class="{show:!toggle}">
+    <div @click="toggle=!toggle" class="item-up" :class="{turn:!toggle}">
+      <svg class="icon">
+        <use xlink:href="#icon-jiantou-xia-cuxiantiao"></use>
+      </svg>
+    </div>
     <div class="kongjian">
 <!--      上一首-->
       <div class="item" @click="prev">
@@ -91,7 +96,8 @@ export default {
       progressLength: 0, // 进度条的总长度
       mouseStartX: 0, // 拖拽开始位置
       tag: false, // 拖拽开始结束的标志,当开始拖拽值为true
-      volume: 50 // 音量默认为50
+      volume: 50, // 音量默认为50
+      toggle : true // 显示隐藏播放器页面
     }
   },
   computed: {
