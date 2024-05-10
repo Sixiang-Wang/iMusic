@@ -288,11 +288,11 @@ export default {
     deleteRow () {
       delSinger(this.idx)
         .then(res => {
-          if (res) {
+          if (res.code === 1) {
             this.getData()
             this.notify('删除成功', 'success')
           } else {
-            this.notify('删除失败', 'error')
+            this.notify(`删除失败:${res.msg}`, 'error')
           }
         })
         .catch(err => {
