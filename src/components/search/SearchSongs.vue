@@ -18,10 +18,21 @@ export default {
   computed: {
     ...mapGetters([
       'listOfSongs'
-    ])
+    ]),
+    keywords(){
+      return this.$route.query.keywords || '';
+    }
   },
   mounted () {
     this.getSong()
+  },
+  watch: {
+    keywords(newVal, oldVal){
+      if (newVal !== oldVal)
+      {
+        this.getSong();
+      }
+    }
   }
 }
 </script>
