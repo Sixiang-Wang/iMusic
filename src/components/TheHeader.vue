@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     goHome () {
-      this.$store.commit('setActiveName', '首页')
+      this.$store.commit('setActive-Name', '首页')
       this.$router.push({path: '/'})
     },
     goPage (path, name) {
