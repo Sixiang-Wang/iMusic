@@ -86,8 +86,15 @@ public class SongListController {
      */
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public Object deleteSongList(HttpServletRequest request){
-        String id = request.getParameter("id").trim();          //主键
-        boolean flag = songListService.delete(Integer.parseInt(id));
+        Integer id = Integer.parseInt(request.getParameter("id").trim());
+        SongList songList = songListService.selectByPrimaryKey(id);
+        String oldPic = songList.getPic();
+        File oldPicFile = new File("./"+oldPic);
+        if(!oldPic.equals("/img/songListPic/default.jpg")){
+            if(!oldPicFile.delete())
+                System.out.println("删除歌单图片失败-deleteSongList");
+        }
+        boolean flag = songListService.delete(id);
         return flag;
     }
 
@@ -140,6 +147,8 @@ public class SongListController {
      */
     @RequestMapping(value = "/updateSongListPic",method = RequestMethod.POST)
     public Object updateSongListPic(@RequestParam("file") MultipartFile avatorFile, @RequestParam("id")int id){
+        SongList songList = songListService.selectByPrimaryKey(id);
+        String oldPic = songList.getPic();
         JSONObject jsonObject = new JSONObject();
         if(avatorFile.isEmpty()){
             jsonObject.put(Consts.CODE,0);
@@ -162,18 +171,23 @@ public class SongListController {
         String storeAvatorPath = "/img/songListPic/"+fileName;
         try {
             avatorFile.transferTo(dest);
-            SongList songList = new SongList();
             songList.setId(id);
             songList.setPic(storeAvatorPath);
             boolean flag = songListService.update(songList);
-            if(flag){
-                jsonObject.put(Consts.CODE,1);
-                jsonObject.put(Consts.MSG,"上传成功");
-                jsonObject.put("pic",storeAvatorPath);
+            if(!flag){
+                jsonObject.put(Consts.CODE,0);
+                jsonObject.put(Consts.MSG,"上传失败");
                 return jsonObject;
             }
-            jsonObject.put(Consts.CODE,0);
-            jsonObject.put(Consts.MSG,"上传失败");
+            jsonObject.put(Consts.CODE,1);
+            jsonObject.put(Consts.MSG,"上传成功");
+            jsonObject.put("pic",storeAvatorPath);
+
+            File oldPicFile = new File("./"+oldPic);
+            if(!oldPic.equals("/img/songListPic/default.jpg")){
+                if(!oldPicFile.delete())
+                    System.out.println("删除歌单旧图片失败-deleteSongList");
+            }
             return jsonObject;
         } catch (IOException e) {
             jsonObject.put(Consts.CODE,0);

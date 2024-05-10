@@ -265,9 +265,12 @@ public class UserController {
         }
 
         String singerPicUrl = singer.getPic();
-        File singerPic = new File("./"+singerPicUrl);
-        if(!singerPic.delete())
-            System.out.println(singerPicUrl+":\n"+"歌手头像不存在或删除失败:SingerController-deleteSinger");
+        if(!singerPicUrl.equals("/img/Pic/default_avatar.jpg")){
+            File singerPic = new File("./"+singerPicUrl);
+            if(!singerPic.delete())
+                System.out.println(singerPicUrl+":\n"+"歌手头像不存在或删除失败:SingerController-deleteSinger");
+
+        }
 
         List<Song> songs = songService.songOfSingerId(user.getSingerID());
         for (Song song : songs){
@@ -283,9 +286,10 @@ public class UserController {
             //想删除歌曲用我
             if(!songFile.delete())
                 System.out.println(songUrl+":\n"+"歌曲源不存在或删除失败:SingerController-deleteSinger"); ;
-            if(!picFile.delete())
-                System.out.println(picUrl+":\n"+"歌曲图片不存在或删除失败:SingerController-deleteSinger");
-
+            if(!picUrl.equals("/img/songPic/default.jpg")){
+                if(!picFile.delete())
+                    System.out.println(picUrl+":\n"+"歌曲图片不存在或删除失败:SingerController-deleteSinger");
+            }
             if(!songService.delete(song.getId())){
                 jsonObject.put(Consts.CODE,0);
                 jsonObject.put(Consts.MSG,"删除用户歌曲失败");
@@ -326,7 +330,7 @@ public class UserController {
             return jsonObject;
         }
         //文件名=当前时间到毫秒+原来的文件名
-        String fileName = profilePictureFile.getOriginalFilename() + System.currentTimeMillis();
+        String fileName = System.currentTimeMillis() + profilePictureFile.getOriginalFilename() ;
         //文件路径
         String filePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "img/Pic";
         //如果文件路径不存在，新增该路径
@@ -342,7 +346,8 @@ public class UserController {
             profilePictureFile.transferTo(dest);
             User user = userService.getUserWithID(id);
             user.setProfilePicture(storeProfilePicturePath);
-            Singer singer = new Singer();
+            Singer singer = singerService.selectByPrimaryKey(user.getSingerID());
+            String oldPic = singer.getPic();
             singer.setId(user.getSingerID());
             singer.setPic(storeProfilePicturePath);
             boolean flag = userService.update(user);
@@ -360,6 +365,12 @@ public class UserController {
             jsonObject.put(Consts.CODE, 1);
             jsonObject.put(Consts.MSG, "上传成功");
             jsonObject.put("profilePicture", storeProfilePicturePath);
+
+            if(oldPic!=null&&!oldPic.equals("/img/Pic/default_avatar.jpg")){
+                File singerPic = new File("./" + oldPic);
+                if (!singerPic.delete())
+                    System.out.println(oldPic + ":\n" + "歌手头像不存在或删除失败:SingerController-deleteSinger");
+            }
             return jsonObject;
         } catch (IOException e) {
             jsonObject.put(Consts.CODE, 0);

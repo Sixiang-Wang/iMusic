@@ -40,7 +40,7 @@ public class SongController {
         String singerId = request.getParameter("singerId").trim();  //所属歌手id
         String name = request.getParameter("name").trim();          //歌名
         String introduction = request.getParameter("introduction").trim();          //简介
-        String pic = "/img/songPic/tubiao.jpg";                     //默认图片
+        String pic = "/img/songPic/default.jpg";                     //默认图片
         String lyric = request.getParameter("lyric").trim();     //歌词
         String style = request.getParameter("style").trim();     //风格
 
@@ -147,9 +147,11 @@ public class SongController {
         File picFile = new File("./"+picUrl);
         boolean flag = songService.delete(Integer.parseInt(id));
         if(!songFile.delete())
-            System.out.println("歌曲源删除失败:SongController-deleteSong"); ;
-        if(!picFile.delete())
-            System.out.println("歌曲图片删除失败:SongController-deleteSong");
+            System.out.println("歌曲源删除失败:SongController-deleteSong");
+        if(!picUrl.equals("/img/songPic/default.jpg")){
+            if(!picFile.delete())
+                System.out.println("歌曲图片删除失败:SongController-deleteSong");
+        }
         return flag;
     }
 
@@ -166,12 +168,14 @@ public class SongController {
             return jsonObject;
         }
         //文件名=当前时间到毫秒+原来的文件名
-        String fileName = System.currentTimeMillis()+avatorFile.getOriginalFilename();
+        String fileName = System.currentTimeMillis() + avatorFile.getOriginalFilename();
         //文件路径
         String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"img"
                 +System.getProperty("file.separator")+"songPic";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
+        Song song = songService.selectByPrimaryKey(id);
+        String oldPic = song.getPic();
         if(!file1.exists()){
             file1.mkdir();
         }
@@ -181,18 +185,23 @@ public class SongController {
         String storeAvatorPath = "/img/songPic/"+fileName;
         try {
             avatorFile.transferTo(dest);
-            Song song = new Song();
             song.setId(id);
             song.setPic(storeAvatorPath);
             boolean flag = songService.update(song);
-            if(flag){
-                jsonObject.put(Consts.CODE,1);
-                jsonObject.put(Consts.MSG,"上传成功");
-                jsonObject.put("pic",storeAvatorPath);
+            if(!flag){
+                jsonObject.put(Consts.CODE,0);
+                jsonObject.put(Consts.MSG,"上传失败");
                 return jsonObject;
             }
-            jsonObject.put(Consts.CODE,0);
-            jsonObject.put(Consts.MSG,"上传失败");
+            jsonObject.put(Consts.CODE,1);
+            jsonObject.put(Consts.MSG,"上传成功");
+            jsonObject.put("pic",storeAvatorPath);
+
+            if(!oldPic.equals("/img/songPic/default.jpg")){
+                File oldPicFile = new File("./" + oldPic);
+                if(!oldPicFile.delete())
+                    System.out.println("旧歌曲图片删除失败:SongController-updateSongPic");
+            }
             return jsonObject;
         } catch (IOException e) {
             jsonObject.put(Consts.CODE,0);
@@ -209,6 +218,8 @@ public class SongController {
     @RequestMapping(value = "/updateSongUrl",method = RequestMethod.POST)
     public Object updateSongUrl(@RequestParam("file") MultipartFile avatorFile, @RequestParam("id")int id){
         JSONObject jsonObject = new JSONObject();
+        Song song = songService.selectByPrimaryKey(id);
+        String oldUrl = song.getUrl();
         if(avatorFile.isEmpty()){
             jsonObject.put(Consts.CODE,0);
             jsonObject.put(Consts.MSG,"文件上传失败");
@@ -226,21 +237,26 @@ public class SongController {
         //实际的文件地址
         File dest = new File(filePath+System.getProperty("file.separator")+fileName);
         //存储到数据库里的相对文件地址
-        String storeAvatorPath = "/song/"+fileName;
+        String storeSongPath = "/song/"+fileName;
         try {
             avatorFile.transferTo(dest);
-            Song song = new Song();
             song.setId(id);
-            song.setUrl(storeAvatorPath);
+            song.setUrl(storeSongPath);
             boolean flag = songService.update(song);
-            if(flag){
-                jsonObject.put(Consts.CODE,1);
-                jsonObject.put(Consts.MSG,"上传成功");
-                jsonObject.put("avator",storeAvatorPath);
+            if(!flag){
+                jsonObject.put(Consts.CODE,0);
+                jsonObject.put(Consts.MSG,"上传失败");
                 return jsonObject;
             }
-            jsonObject.put(Consts.CODE,0);
-            jsonObject.put(Consts.MSG,"上传失败");
+            jsonObject.put(Consts.CODE,1);
+            jsonObject.put(Consts.MSG,"上传成功");
+            jsonObject.put("song",storeSongPath);
+
+            File oldFile = new File("./"+oldUrl);
+
+            if(!oldFile.delete())
+                System.out.println("旧歌曲删除失败:SongController-updateSongUrl");
+
             return jsonObject;
         } catch (IOException e) {
             jsonObject.put(Consts.CODE,0);
