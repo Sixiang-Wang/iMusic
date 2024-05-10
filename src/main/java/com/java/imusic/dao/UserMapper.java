@@ -73,6 +73,20 @@ public interface UserMapper {
      * @since 2023/3/3 22:47
      */
     User getUserWithName(@Param("name") String name);
+
+    /**
+     * 找到用户ID最大值
+     * @return Integer
+     */
+    public Integer lastUserID();
+
+
+    /**
+     * 通过ID找到用户
+     * @param id
+     * @return User
+     */
+    User getUserWithID(Integer id);
 }
 
 

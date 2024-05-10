@@ -122,4 +122,20 @@ public class UserServiceImpl implements UserService {
     public User getUserWithName(String name){
         return userMapper.getUserWithName(name);
     };
+
+
+    /**
+     * 找到用户ID最大值
+     * @return Integer
+     */
+    public Integer lastUserID(){return userMapper.lastUserID(); };
+
+    /**
+     * 通过ID找到用户
+     * @param id
+     * @return User
+     */
+    public User getUserWithID(Integer id){
+        return userMapper.getUserWithID(id);
+    };
 }

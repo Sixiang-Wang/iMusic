@@ -245,7 +245,7 @@ public class SingerController {
         String fileName = System.currentTimeMillis()+avatorFile.getOriginalFilename();
         //文件路径
         String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"img"
-                +System.getProperty("file.separator")+"singerPic";
+                +System.getProperty("file.separator")+"Pic";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
         if(!file1.exists()){
@@ -254,7 +254,7 @@ public class SingerController {
         //实际的文件地址
         File dest = new File(filePath+System.getProperty("file.separator")+fileName);
         //存储到数据库里的相对文件地址
-        String storeAvatorPath = "/img/singerPic/"+fileName;
+        String storeAvatorPath = "/img/Pic/"+fileName;
         try {
             avatorFile.transferTo(dest);
             Singer singer = new Singer();

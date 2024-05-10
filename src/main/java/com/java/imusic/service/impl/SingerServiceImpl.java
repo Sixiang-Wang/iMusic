@@ -90,4 +90,6 @@ public class SingerServiceImpl implements SingerService {
     public Singer oneSingerOfName(String name){
         return singerMapper.oneSingerOfName(name);
     };
+
+    public Integer lastSingerID(){return singerMapper.lastSingerID(); };
 }

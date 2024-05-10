@@ -22,6 +22,16 @@ public class Singer implements Serializable {
     /*简介*/
     private String introduction;
 
+    private Integer userID;
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
     public Integer getId() {
         return id;
     }

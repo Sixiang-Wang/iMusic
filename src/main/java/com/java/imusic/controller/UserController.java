@@ -71,8 +71,8 @@ public class UserController {
             return jsonObject;
         }
         User user2 = userService.getUserWithName(name);
-        Singer singer = singerService.oneSingerOfName(name);
-        if (user2 != null || singer != null) {
+        Singer singer2 = singerService.oneSingerOfName(name);
+        if (user2 != null || singer2 != null) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "昵称已被占用");
             return jsonObject;
@@ -96,6 +96,10 @@ public class UserController {
         } else {
             birthDate = null;
         }
+
+        Integer userID = userService.lastUserID()+1;
+        Integer singerID = singerService.lastSingerID()+1;
+
         //保存到前端用户的对象中
         User user = new User();
         user.setUsername(username);
@@ -108,14 +112,35 @@ public class UserController {
         user.setLocation(location);
         user.setProfilePicture(profilePicture);
         user.setName(name);
+        user.setSingerID(singerID);
+        user.setId(userID);
+
         boolean flag = userService.insert(user);
-        if (flag) {   //保存成功
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "添加成功");
+        if (!flag) {   //保存成功
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "添加用户失败");
             return jsonObject;
         }
-        jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "保存到服务器失败");
+
+        Singer singer = new Singer();
+        singer.setId(singerID);
+        singer.setName(name);
+        singer.setBirth(birthDate);
+        singer.setIntroduction(introduction);
+        singer.setPic(profilePicture);
+        singer.setSex(new Byte(sex));
+        singer.setLocation(location);
+        singer.setUserID(userID);
+
+        flag = singerService.insert(singer);
+        if (!flag) {   //保存成功
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "添加用户歌手失败");
+            return jsonObject;
+        }
+
+        jsonObject.put(Consts.CODE, 1);
+        jsonObject.put(Consts.MSG, "添加成功");
         return jsonObject;
     }
 
@@ -155,8 +180,8 @@ public class UserController {
             return jsonObject;
         }
         User user2 = userService.getUserWithName(name);
-        Singer singer = singerService.oneSingerOfName(name);
-        if ((user2 != null && !user2.getName().equals(nameOrigin)) || (singer != null && !singer.getName().equals(nameOrigin))) {
+        Singer singer1 = singerService.oneSingerOfName(name);
+        if ((user2 != null && !user2.getName().equals(nameOrigin)) || (singer1 != null && !singer1.getName().equals(nameOrigin))) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "昵称已被占用");
             return jsonObject;
@@ -176,7 +201,7 @@ public class UserController {
             birthDate = null;
         }
         //保存到前端用户的对象中
-        User user = new User();
+        User user = userService.getUserWithID(Integer.parseInt(id));
         user.setId(Integer.parseInt(id));
         user.setUsername(username);
         user.setPassword(password);
@@ -188,13 +213,29 @@ public class UserController {
         user.setLocation(location);
         user.setName(name);
         boolean flag = userService.update(user);
-        if (flag) {   //保存成功
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "修改成功");
+        if (!flag) {   //保存成功
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "用户修改失败");
             return jsonObject;
         }
-        jsonObject.put(Consts.CODE, 0);
-        jsonObject.put(Consts.MSG, "修改失败");
+
+        Singer singer = new Singer();
+        singer.setId(user.getSingerID());
+        singer.setSex(new Byte(sex));
+        singer.setBirth(birthDate);
+        singer.setIntroduction(introduction);
+        singer.setLocation(location);
+        singer.setName(name);
+
+        flag = singerService.update(singer);
+        if (!flag) {   //保存成功
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "用户对应歌手修改失败");
+            return jsonObject;
+        }
+
+        jsonObject.put(Consts.CODE, 1);
+        jsonObject.put(Consts.MSG, "修改成功");
         return jsonObject;
     }
 
@@ -205,7 +246,9 @@ public class UserController {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public Object deleteUser(HttpServletRequest request) {
         String id = request.getParameter("id").trim();          //主键
+        User user = userService.getUserWithID(Integer.parseInt(id));
         boolean flag = userService.delete(Integer.parseInt(id));
+        singerService.delete(user.getSingerID());
         return flag;
     }
 
@@ -240,7 +283,7 @@ public class UserController {
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis() + profilePictureFile.getOriginalFilename();
         //文件路径
-        String filePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "profilePictureImages";
+        String filePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "img/Pic";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
         if (!file1.exists()) {
@@ -249,7 +292,7 @@ public class UserController {
         //实际的文件地址
         File dest = new File(filePath + System.getProperty("file.separator") + fileName);
         //存储到数据库里的相对文件地址
-        String storeProfilePicturePath = "/profilePictureImages/" + fileName;
+        String storeProfilePicturePath = "/img/Pic/" + fileName;
         try {
             profilePictureFile.transferTo(dest);
             User user = new User();

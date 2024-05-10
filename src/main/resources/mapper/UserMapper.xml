@@ -20,10 +20,11 @@
         <result column="update_time" jdbcType="TIMESTAMP"
                 property="updateTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="singer_id" jdbcType="INTEGER" property="singerID"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,username,password,sex,phone_num,email,birth,introduction,location,profilePicture,create_time,update_time,name
+        id,username,password,sex,phone_num,email,birth,introduction,location,profilePicture,create_time,update_time,name,singer_id
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.User">
@@ -63,6 +64,9 @@
             <if test="name != null">
                 name,
             </if>
+            <if test="singerID != null">
+                singer_id,
+            </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -99,6 +103,9 @@
             <if test="name != null">
                 #{name},
             </if>
+            <if test="singerID != null">
+                #{singerID},
+            </if>
         </trim>
     </insert>
 
@@ -133,6 +140,9 @@
             update_time = now(),
             <if test="name != null">
                 name = #{name},
+            </if>
+            <if test="singerID != null">
+                singer_id = #{singerID},
             </if>
         </set>
         where id = #{id}
@@ -195,6 +205,20 @@
         <include refid="Base_Column_List"/>
         from user
         where name=#{name}
+        limit 1
+    </select>
+
+    <select id="lastUserID" resultType="java.lang.Integer">
+        select max(id)
+        from user
+    </select>
+
+    <select id="getUserWithID"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id=#{id}
         limit 1
     </select>
 

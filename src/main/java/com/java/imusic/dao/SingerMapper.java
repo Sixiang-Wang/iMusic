@@ -52,6 +52,8 @@ public interface SingerMapper {
      * 根据性别查询
      */
     public List<Singer> singerOfSex(Integer sex);
+
+    public Integer lastSingerID();
 }
 
 

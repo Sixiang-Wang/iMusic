@@ -44,4 +44,5 @@ public interface SingerService {
     public List<Singer> singerOfSex(Integer sex);
 
     public Singer oneSingerOfName(String name);
+    public Integer lastSingerID();
 }

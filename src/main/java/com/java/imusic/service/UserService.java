@@ -49,7 +49,6 @@ public interface UserService {
      * @param username: 帐号
      * @param password: 密码
      * @return com.java.imusic.domain.User
-     * @since 2023/3/3 13:49
      */
     User getUserWithAccount(String username, String password);
 
@@ -58,7 +57,6 @@ public interface UserService {
      *
      * @param phoneNum:
      * @return com.java.imusic.domain.User
-     * @since 2023/3/3 14:23
      */
     User getUserWithPhoneNum(String phoneNum);
 
@@ -67,7 +65,19 @@ public interface UserService {
      *
      * @param name:  用户id
      * @return com.java.imusic.domain.User
-     * @since 2023/3/3 22:47
      */
     User getUserWithName(String name);
+
+    /**
+     * 找到用户ID最大值
+     * @return Integer
+     */
+    public Integer lastUserID();
+
+    /**
+     * 通过ID找到用户
+     * @param id
+     * @return User
+     */
+    User getUserWithID(Integer id);
 }

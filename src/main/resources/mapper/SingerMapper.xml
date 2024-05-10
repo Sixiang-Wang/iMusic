@@ -11,10 +11,11 @@
         <result column="birth" jdbcType="TIMESTAMP" property="birth"/>
         <result column="location" jdbcType="VARCHAR" property="location"/>
         <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="user_id" jdbcType="INTEGER" property="userID"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,sex,pic,birth,location,introduction
+        id,name,sex,pic,birth,location,introduction,user_id
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.Singer">
@@ -41,6 +42,9 @@
             <if test="introduction != null">
                 introduction,
             </if>
+            <if test="userID != null">
+                user_id,
+            </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -64,6 +68,9 @@
             <if test="introduction != null">
                 #{introduction},
             </if>
+            <if test="userID != null">
+                #{userID},
+            </if>
         </trim>
     </insert>
 
@@ -85,6 +92,9 @@
             </if>
             <if test="introduction != null">
                 introduction = #{introduction},
+            </if>
+            <if test="userID != null">
+                user_id = #{userID},
             </if>
         </set>
         where id = #{id}
@@ -130,6 +140,11 @@
         <include refid="Base_Column_List"/>
         from singer
         where sex = #{sex}
+    </select>
+
+    <select id="lastSingerID" resultType="java.lang.Integer">
+        select max(id)
+        from singer
     </select>
 
 </mapper>
