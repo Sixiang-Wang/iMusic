@@ -166,26 +166,53 @@ public class SingerController {
      */
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public Object deleteSinger(HttpServletRequest request){
-        String id = request.getParameter("id").trim();          //主键
-        boolean flag = singerService.delete(Integer.parseInt(id));
+        JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id").trim();//主键
+
+        Singer singer = singerService.selectByPrimaryKey(Integer.parseInt(id));
+
+        if(singer.getUserID()!=null && singer.getUserID()>0){
+            jsonObject.put(Consts.CODE,0);
+            jsonObject.put(Consts.MSG,"这是一个用户歌手，请从用户管理删除");
+            return jsonObject;
+        }
+
+        if(!singerService.delete(Integer.parseInt(id))){
+            jsonObject.put(Consts.CODE,0);
+            jsonObject.put(Consts.MSG,"删除歌手失败");
+            return jsonObject;
+        }
+        String singerPicUrl = singer.getPic();
+        File singerPic = new File("./"+singerPicUrl);
+        if(!singerPic.delete())
+            System.out.println(singerPicUrl+":\n"+"歌手头像不存在或删除失败:SingerController-deleteSinger");
+
         List<Song> songs = songService.songOfSingerId(Integer.parseInt(id));
         for (Song song : songs){
-            SongController songController = SongController.getSongController();
-            String songUrl =  song.getUrl();
+            String songUrl = song.getUrl();
+            String picUrl = song.getPic();
             File songFile = new File("./"+songUrl);
+            File picFile = new File("./"+picUrl);
 
             //不想删除歌曲用我
+            song.setSingerId(-1);
             songService.update(song);
 
             //想删除歌曲用我
+            if(!songFile.delete())
+                System.out.println(songUrl+":\n"+"歌曲源不存在或删除失败:SingerController-deleteSinger"); ;
+            if(!picFile.delete())
+                System.out.println(picUrl+":\n"+"歌曲图片不存在或删除失败:SingerController-deleteSinger");
 
-            boolean flag2 = songFile.delete();
-            if (!flag2)
-                System.out.println(songFile.toString() + ": 没找到或删除失败（来自SingerController-deleteSinger）");
-            song.setSingerId(-1);
-            songService.delete(song.getId());
+            if(!songService.delete(song.getId())){
+                jsonObject.put(Consts.CODE,0);
+                jsonObject.put(Consts.MSG,"删除歌手歌曲失败");
+                return jsonObject;
+            };
         }
-        return flag;
+        jsonObject.put(Consts.CODE,1);
+        jsonObject.put(Consts.MSG,"删除成功");
+        return jsonObject;
     }
 
     /**

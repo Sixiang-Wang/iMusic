@@ -3,8 +3,10 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.Singer;
+import com.java.imusic.domain.Song;
 import com.java.imusic.domain.User;
 import com.java.imusic.service.SingerService;
+import com.java.imusic.service.SongService;
 import com.java.imusic.service.UserService;
 import com.java.imusic.utils.CipherBean;
 import com.java.imusic.utils.Consts;
@@ -23,6 +25,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 前端用户控制类
@@ -37,7 +40,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private SingerService singerService;
-
+    @Autowired
+    private SongService songService;
     /**
      * 添加前端用户
      */
@@ -245,11 +249,52 @@ public class UserController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public Object deleteUser(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
         String id = request.getParameter("id").trim();          //主键
         User user = userService.getUserWithID(Integer.parseInt(id));
         boolean flag = userService.delete(Integer.parseInt(id));
-        singerService.delete(user.getSingerID());
-        return flag;
+        if(!flag){
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "用户删除失败");
+        }
+        Singer singer = singerService.selectByPrimaryKey(user.getSingerID());
+        if(!singerService.delete(user.getSingerID())){
+            jsonObject.put(Consts.CODE,0);
+            jsonObject.put(Consts.MSG,"删除用户对应歌手失败");
+            return jsonObject;
+        }
+
+        String singerPicUrl = singer.getPic();
+        File singerPic = new File("./"+singerPicUrl);
+        if(!singerPic.delete())
+            System.out.println(singerPicUrl+":\n"+"歌手头像不存在或删除失败:SingerController-deleteSinger");
+
+        List<Song> songs = songService.songOfSingerId(user.getSingerID());
+        for (Song song : songs){
+            String songUrl = song.getUrl();
+            String picUrl = song.getPic();
+            File songFile = new File("./"+songUrl);
+            File picFile = new File("./"+picUrl);
+
+            //不想删除歌曲用我
+            song.setSingerId(-1);
+            songService.update(song);
+
+            //想删除歌曲用我
+            if(!songFile.delete())
+                System.out.println(songUrl+":\n"+"歌曲源不存在或删除失败:SingerController-deleteSinger"); ;
+            if(!picFile.delete())
+                System.out.println(picUrl+":\n"+"歌曲图片不存在或删除失败:SingerController-deleteSinger");
+
+            if(!songService.delete(song.getId())){
+                jsonObject.put(Consts.CODE,0);
+                jsonObject.put(Consts.MSG,"删除用户歌曲失败");
+                return jsonObject;
+            }
+        }
+        jsonObject.put(Consts.CODE, 1);
+        jsonObject.put(Consts.MSG, "用户删除成功");
+        return jsonObject;
     }
 
     /**
@@ -281,7 +326,7 @@ public class UserController {
             return jsonObject;
         }
         //文件名=当前时间到毫秒+原来的文件名
-        String fileName = System.currentTimeMillis() + profilePictureFile.getOriginalFilename();
+        String fileName = profilePictureFile.getOriginalFilename() + System.currentTimeMillis();
         //文件路径
         String filePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "img/Pic";
         //如果文件路径不存在，新增该路径
@@ -295,18 +340,26 @@ public class UserController {
         String storeProfilePicturePath = "/img/Pic/" + fileName;
         try {
             profilePictureFile.transferTo(dest);
-            User user = new User();
-            user.setId(id);
+            User user = userService.getUserWithID(id);
             user.setProfilePicture(storeProfilePicturePath);
+            Singer singer = new Singer();
+            singer.setId(user.getSingerID());
+            singer.setPic(storeProfilePicturePath);
             boolean flag = userService.update(user);
-            if (flag) {
-                jsonObject.put(Consts.CODE, 1);
-                jsonObject.put(Consts.MSG, "上传成功");
-                jsonObject.put("profilePicture", storeProfilePicturePath);
+            if (!flag) {
+                jsonObject.put(Consts.CODE, 0);
+                jsonObject.put(Consts.MSG, "上传用户图片失败");
                 return jsonObject;
             }
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "上传失败");
+            flag = singerService.update(singer);
+            if (!flag) {
+                jsonObject.put(Consts.CODE, 0);
+                jsonObject.put(Consts.MSG, "更新用户歌手图片失败");
+                return jsonObject;
+            }
+            jsonObject.put(Consts.CODE, 1);
+            jsonObject.put(Consts.MSG, "上传成功");
+            jsonObject.put("profilePicture", storeProfilePicturePath);
             return jsonObject;
         } catch (IOException e) {
             jsonObject.put(Consts.CODE, 0);

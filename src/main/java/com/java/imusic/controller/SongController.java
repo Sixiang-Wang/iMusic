@@ -139,16 +139,18 @@ public class SongController {
      */
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public Object deleteSong(HttpServletRequest request){
-        //-TODO 先查询到数据库中对应的文件地址，删除掉它再进行下面的代码
         String id = request.getParameter("id").trim();          //主键
-        String songUrl =  songService.selectByPrimaryKey(Integer.parseInt(id)).getUrl();
+        Song song = songService.selectByPrimaryKey(Integer.parseInt(id));
+        String songUrl = song.getUrl();
+        String picUrl = song.getPic();
         File songFile = new File("./"+songUrl);
+        File picFile = new File("./"+picUrl);
         boolean flag = songService.delete(Integer.parseInt(id));
-        boolean flag2 = songFile.delete();
-        int ret = 0;
-        if(flag) ret++;
-        if(flag2) ret+=2;
-        return ret;
+        if(!songFile.delete())
+            System.out.println("歌曲源删除失败:SongController-deleteSong"); ;
+        if(!picFile.delete())
+            System.out.println("歌曲图片删除失败:SongController-deleteSong");
+        return flag;
     }
 
 
