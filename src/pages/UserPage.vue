@@ -295,7 +295,7 @@ export default {
           params.append('birth', datetime)
           params.append('introduction', this.registerForm.introduction)
           params.append('location', this.registerForm.location)
-          params.append('profilePicture', '/img/user.jpg')
+          params.append('profilePicture', '/img/Pic/default_avatar.jpg')
           setUser(params)
             .then(res => {
               if (res.code === 1) {

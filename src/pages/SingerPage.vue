@@ -16,7 +16,7 @@
             <img :src="getUrl(scope.row.pic)" style="width:100%"/>
           </div>
           <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeAvatorUpload"
-                     :on-success="handleAvatorSuccess">
+                     :on-success="handleAvatorSuccess" >
             <el-button size="mini">更新图片</el-button>
           </el-upload>
         </template>

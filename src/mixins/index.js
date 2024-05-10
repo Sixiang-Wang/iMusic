@@ -36,7 +36,7 @@ export const mixin = {
     },
     // 上传图片之前的校验
     beforeAvatorUpload (file) {
-      const isJPG = (file.type === 'image/jpeg') || (file.type === 'image/png')
+      const isJPG = (file.type === 'image/jpg') || (file.type === 'image/jpeg') || (file.type === 'image/png')
       if (!isJPG) {
         this.$message.error('上传头像图片只能是jpg或png格式')
         return false
@@ -59,7 +59,7 @@ export const mixin = {
         })
       } else {
         _this.$notify({
-          title: '上传失败',
+          title: `上传失败: ${res.msg}`,
           type: 'error'
         })
       }
