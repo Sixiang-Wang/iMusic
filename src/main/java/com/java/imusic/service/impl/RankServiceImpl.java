@@ -25,6 +25,8 @@ public class RankServiceImpl implements RankService {
         return rankMapper.insert(rank)>0;
     }
 
+
+    public boolean update(Rank rank){ return rankMapper.update(rank)>0; }
     /**
      * 查总分
      *
@@ -54,8 +56,13 @@ public class RankServiceImpl implements RankService {
     public int rankOfSongListId(Integer songListId) {
         int rankNum = rankMapper.selectRankNum(songListId);
         if(rankNum==0){
-            return 5;
+            return -1;
         }
         return rankMapper.selectScoreSum(songListId)/rankNum;
+    }
+
+    @Override
+    public Rank getRank(Rank rankOrigin){
+        return rankMapper.getRank(rankOrigin);
     }
 }

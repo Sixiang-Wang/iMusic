@@ -11,6 +11,7 @@ public interface RankService {
      */
     public boolean insert(Rank rank);
 
+    public boolean update(Rank rank);
     /**
      * 查总分
      */
@@ -25,4 +26,6 @@ public interface RankService {
      * 计算平均分
      */
     public int rankOfSongListId(Integer songListId);
+
+    public Rank getRank(Rank rankOrigin);
 }

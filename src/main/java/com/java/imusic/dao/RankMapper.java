@@ -13,6 +13,7 @@ public interface RankMapper {
      */
     public int insert(Rank rank);
 
+    public int update(Rank rank);
     /**
      * 查总分
      */
@@ -22,6 +23,8 @@ public interface RankMapper {
      * 查总评分人数
      */
     public int selectRankNum(Integer songListId);
+
+    public Rank getRank(Rank rank);
 }
 
 
