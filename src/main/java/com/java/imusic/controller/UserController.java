@@ -387,15 +387,13 @@ public class UserController {
     public Object login(HttpServletRequest request, HttpServletResponse response) {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");     //账号
-        String passwordFont = request.getParameter("password");
+        String password = request.getParameter("password");
         //加密前端传入的 密码
         //根据用户名和密码获取数据库里面所有的信息
-        User user = userService.getUserWithAccount(username, passwordFont);
-        log.error("数据库中查到的user {}", user);
-        //如果查到了用户
-        if (user!=null) {
-            log.error("=============查询到了user {}", user);
+        boolean flag = userService.verifyPassword(username,password);
 
+        //如果查到了用户
+        if (flag) {
             //设置登录状态
             jsonObject.put(Consts.CODE, 1);
             jsonObject.put(Consts.MSG, "登录成功");
