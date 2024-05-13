@@ -89,7 +89,10 @@ export const mixin = {
         return a[0] - b[0];
       });
       return result;
-    }
+    },
+    getBirth(value){
+      return value.substr(0,10);
+    },
 
   }
 }

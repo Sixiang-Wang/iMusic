@@ -41,7 +41,7 @@ export default {
   computed: {
     ...mapGetters(
       [
-        "listOfSongs",  //当前播放列表
+        "listOfSongs",  //当前歌单歌曲列表
         "tempList",     //当前歌单
       ]
     ),
