@@ -8,10 +8,10 @@
         <li v-if="singer.sex === 0 || singer.sex === 1">
           {{ getSex(singer.sex) }}
         </li>
-        <li>生日: {{ getBirth(singer.birth) }}</li>
+        <li>生日: {{ attachBirth(singer.birth) }}</li>
       </ul>
     </div>
-    
+
   </div>
 
 </template>

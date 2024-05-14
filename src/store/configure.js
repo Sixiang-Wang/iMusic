@@ -4,6 +4,7 @@ const configure = {
     activeName:  '' ,  //当前选中的菜单名
     showAside : false ,      // 是否显示播放中的歌曲列表
     loginIn : false,      // 用户是否已登录
+    isActive : false,           // 当前歌曲是否已收藏
     // isPlay: false,//是否播放中
     // url: '',//歌曲地址
     // id: ''//歌曲id
@@ -28,7 +29,14 @@ const configure = {
       if(!loginIn){
         loginIn = JSON.parse(window.sessionStorage.getItem('loginIn'))
       }
-      return loginIn
+      return loginIn;
+    },
+    isActive: state => {
+      let isActive = state.isActive
+      if(!isActive){
+        isActive = JSON.parse(window.sessionStorage.getItem('isActive'))
+      }
+      return isActive;
     }
   },
   mutations: {
@@ -44,6 +52,10 @@ const configure = {
       state.loginIn = loginIn
       window.sessionStorage.setItem('loginIn',JSON.stringify(loginIn))
     },
+    setIsActive: (state,isActive) => {
+      state.isActive = isActive
+      window.sessionStorage.setItem('isActive',JSON.stringify(isActive))
+    }
   }
 
 }

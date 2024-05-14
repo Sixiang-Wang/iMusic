@@ -32,9 +32,24 @@ export const SignUp = params => post(`/user/add`, params);
 
 // 登录
 export const LoginIn = params => post(`/user/login`, params);
+// 根据用户id查询该用户的详细信息
+export const getUserOfId = (id) => get(`/consumer/selectByPrimaryKey?id=${id}`);
 // 下载音乐
 export const download = (url) => Axios({
   method: 'get',
   url: url,
   responseType: 'blob'
 });
+// =============== 评价 ==================
+// =============== 评论 ==================
+// 提交评论
+export const setComment = (params) => post(`/comment/add`, params);
+// 点赞
+export const setLike = (params) => post(`/comment/like`, params);
+// 返回当前歌单或歌曲的评论区列表
+
+// =============== 收藏 ==================
+// 新增收藏
+export const setCollect = (params) => post(`/collect/add` ,params);
+// 指定用户的收藏列表
+export const getCollectOfUserId = (userId) => get(`/collect/collectOfUserId?userId=${userId}`);

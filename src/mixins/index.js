@@ -1,6 +1,13 @@
-import {likeSongOfName} from "../api";
+import {getCollectOfUserId, likeSongOfName} from "../api";
+import {mapGetters} from "vuex";
 
 export const mixin = {
+  computed: {
+    ...mapGetters([
+      'loginIn',    // 用户是否已登录
+      'userId'      // 当前登录用户的id
+    ])
+  },
   methods: {
     // 提示信息
     notify(title,type){
@@ -55,10 +62,21 @@ export const mixin = {
       this.$store.commit('setListIndex',index);
       this.$store.commit('setTitle',this.replaceFName(name));
       this.$store.commit('setArtist',this.replaceLName(name));
-      console.log(lyric);
-      console.log("mixins\\index")
-      console.log(this.parseLyric(lyric));
       this.$store.commit('setLyric',this.parseLyric(lyric));
+
+      this.$store.commit('setIsActive' , false);
+      if(this.loginIn){
+        getCollectOfUserId(this.userId)
+          .then(res => {
+            // 日后优化
+            for(let item of res){
+              if(item.songId === id){
+                this.$store.commit('setIsActive', true);
+                break;
+              }
+            }
+          })
+      }
     },
     // 解析歌词
     parseLyric(text){
@@ -90,7 +108,7 @@ export const mixin = {
       });
       return result;
     },
-    getBirth(value){
+    attachBirth(value){
       return value.slice(0,10);
     },
 

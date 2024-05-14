@@ -98,6 +98,7 @@ export default {
     goMenuList(path) {
       if(path === 0){
         this.$store.commit('setLoginIn' , false);
+        this.$store.commit('setIsActive' , false);
         this.$router.go(0);
       }
       else{
