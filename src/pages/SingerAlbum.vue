@@ -5,13 +5,21 @@
         <img :src = 'attachImageUrl(singer.pic)' alt = "">
       </div>
       <ul class = "info">
+        <li>{{ singer.name }}</li>
         <li v-if="singer.sex === 0 || singer.sex === 1">
           {{ getSex(singer.sex) }}
         </li>
-        <li>生日: {{ attachBirth(singer.birth) }}</li>
+<!--        <li>生日: {{ getBirth(singer.birth) }}</li>-->
+        <li>简介: {{ singer.introduction }}</li>
       </ul>
     </div>
-
+    <div class="album-content">
+      <div class="songs-body">
+        <album-content :songList="listOfSongs">
+          <template slot="title">歌 单</template>
+        </album-content>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -25,6 +33,7 @@ import singer from "./Singer.vue";
 
 export default {
   name: 'singer-album',
+  components: {AlbumContent},
   // components: {AlbumContent},
   mixins: [mixin],
   data() {
@@ -46,7 +55,7 @@ export default {
   created() {
     this.singerId = this.$route.params.id;
     this.singer = this.tempList;
-    // this.getSongList();
+    this.getSongList();
   },
   methods: {
     getSongList() {

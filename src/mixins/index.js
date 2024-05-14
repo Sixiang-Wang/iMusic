@@ -108,8 +108,8 @@ export const mixin = {
       });
       return result;
     },
-    attachBirth(value){
-      return value.slice(0,10);
+    getBirth(value){
+      return value.substr(0,10);
     },
 
   }

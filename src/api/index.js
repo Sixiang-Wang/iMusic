@@ -12,11 +12,14 @@ export const getAllSinger =() =>get(`singer/allSinger`);
 export const songOfSingerId =(id) =>get(`song/singer/detail?singerId=${id}`);
 // 根据歌曲id查询歌曲对象
 export const songOfSongId =(id) => get(`song/detail?songId=${id}`);
-// 根据歌手名字模糊查询歌曲
+// 根据歌曲名字模糊查询歌曲
 export const likeSongOfName =(keywords) => get(`song/likeSongOfName?songName=${keywords}`);
 // ============歌单相关==============
 // 查询歌曲
-export const getAllSongList =() => get(`songList/allSongList`);
+export const getAllSongList =() => get(`songList/allSongList`);//获得所有歌单
+
+//根据歌单标题模糊查询歌单
+export const likeTitle =(keywords) => get(`songList/likeTitle?title=${keywords}`);
 
 // =============歌单的歌曲相关========
 // 根据歌曲id查询歌曲列表
