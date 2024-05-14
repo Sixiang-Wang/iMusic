@@ -2,7 +2,7 @@ const user = {
   state: {
       userId : '',       // 用户id
       username : '',     // 用户名
-      avator : '',       // 头像
+      avatar : '',       // 头像
   },
   getters: {
     userId: state => {
@@ -19,12 +19,12 @@ const user = {
       }
       return username
     },
-    avator: state => {
-      let avator = state.avator
-      if(!avator){
-        avator = JSON.parse(window.sessionStorage.getItem('avator'))
+    avatar: state => {
+      let avatar = state.avatar
+      if(!avatar){
+        avatar = JSON.parse(window.sessionStorage.getItem('avatar'))
       }
-      return avator
+      return avatar
     }
   },
   mutations: {
@@ -36,9 +36,9 @@ const user = {
       state.username = username
       window.sessionStorage.setItem('username',JSON.stringify(username))
     },
-    setAvator: (state,avator) => {
-      state.avator = avator
-      window.sessionStorage.setItem('avator',JSON.stringify(avator))
+    setAvatar: (state,avatar) => {
+      state.avatar = avatar
+      window.sessionStorage.setItem('avatar',JSON.stringify(avatar))
     },
   }
 

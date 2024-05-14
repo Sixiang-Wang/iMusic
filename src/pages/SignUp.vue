@@ -9,6 +9,9 @@
       <el-form-item prop="username" label="用户名">
         <el-input v-model="registerForm.username" placeholder="用户名"></el-input>
       </el-form-item>
+      <el-form-item prop="name" label="昵称">
+        <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
+      </el-form-item>
       <el-form-item prop="password" label="密码">
         <el-input type="password" v-model="registerForm.password" placeholder="密码"></el-input>
       </el-form-item>
@@ -50,7 +53,7 @@
 import loginLogo from '../components/LoginLogo.vue';
 import {rules,cities} from "../assets/data/form.js";
 import {mixin} from '../mixins';
-import {SignUp} from '../api/index.js'
+import {SignUp} from '../api/index'
 export default {
   name : 'sign-up',
   mixins : [mixin],
@@ -61,6 +64,7 @@ export default {
     return  {
       registerForm: {
         username: '',     //用户名
+        name: '',         // 昵称
         password: '',     // 密码
         sex: '',          // 性别
         phoneNum: '',     // 手机
@@ -84,6 +88,7 @@ export default {
       let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
       let params = new URLSearchParams();
       params.append('username',this.registerForm.username);
+      params.append('name',this.registerForm.name);
       params.append('password',this.registerForm.password);
       params.append('sex',this.registerForm.sex);
       params.append('phoneNum',this.registerForm.phoneNum);
@@ -91,13 +96,15 @@ export default {
       params.append('birth', datetime);
       params.append('introduction',this.registerForm.introduction);
       params.append('location',this.registerForm.location);
-      params.append('avator','/img/user.jpg');
+      params.append('profilePicture','/img/user.jpg');
+
       SignUp(params)
         .then(res => {
           if(res.code === 1){
             _this.notify('注册成功', 'success');
             setTimeout(function (){
-              _this.$router.push({path : '/'});
+              _this.changeIndex('登录');
+              _this.$router.push({path : `/login-in`});
             }, 2000);
           }
           else{
@@ -110,6 +117,9 @@ export default {
     },
     goback(index){
       this.$router.go(index);
+    },
+    changeIndex(value){
+      this.$store.commit('setActiveName' , value);
     }
   }
 }

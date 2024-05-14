@@ -25,13 +25,13 @@ export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${
 // ============用户相关==============
 
 // 查询用户
-export const getAllConsumer=()=>get(`consumer/allConsumer`);
+export const getAllUser=()=>get(`consumer/allUser`);
 
 // 注册
-export const SignUp = params => post(`/consumer/add`, params);
+export const SignUp = params => post(`/user/add`, params);
 
 // 登录
-export const LoginIn = params => post(`/consumer/add`, params);
+export const LoginIn = params => post(`/user/login`, params);
 // 下载音乐
 export const download = (url) => Axios({
   method: 'get',

@@ -3,6 +3,9 @@ const rules = {
   username: [
     {required: true, trigger: 'blur'}
   ],
+  name: [
+    {required: true, trigger: 'blur'}
+  ],
   password: [
     {required: true, trigger: 'blur'}
   ],

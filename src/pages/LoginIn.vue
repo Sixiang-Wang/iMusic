@@ -26,7 +26,7 @@
 <script>
 import loginLogo from '../components/LoginLogo.vue';
 import {mixin} from '../mixins';
-import {LoginIn, loginIn} from '../api/index'
+import {LoginIn} from '../api/index';
 
 export default {
   name: 'sign-up',
@@ -56,8 +56,6 @@ export default {
   methods: {
     handleLoginIn() {
       let _this = this;
-      let d = this.loginForm.birth;
-      let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
       let params = new URLSearchParams();
       params.append('username', this.loginForm.username);
       params.append('password', this.loginForm.password);
@@ -66,18 +64,17 @@ export default {
           if (res.code === 1) {
             _this.notify('登录成功', 'success');
             _this.$store.commit('setLoginIn' , true);
-            _this.$store.commit('setUserId' , res.userMsg.id);
-            _this.$store.commit('setAvator' , res.userMsg.avator);
+            _this.$store.commit('setUsername', res.username);
             setTimeout(function () {
-              this.changeIndex('首页')
-              _this.$router.push({path: '/'});
-            }, 2000);
+              _this.changeIndex('首页');
+              _this.$router.push({path: `/`});
+            }, 1000);
           } else {
             _this.notify('用户名或密码错误', 'error');
           }
         })
         .catch(err => {
-          _this.notify('用户名或密码错误', 'error');
+          _this.notify(err, 'error');
         })
     },
     goSignUp() {

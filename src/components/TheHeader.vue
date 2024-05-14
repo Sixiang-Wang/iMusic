@@ -26,7 +26,7 @@
     </ul>
     <div class="header-right" v-show="loginIn">
       <div id="user">
-        <img :src = 'attachImageUrl(avator)'>
+        <img :src = 'attachImageUrl(avatar)'>
       </div>
       <ul class="menu">
         <li v-for="(item,index) in menuList" :key="index" @click="goMenuList(item.path)">{{item.name}}</li>
@@ -37,7 +37,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import {navMsg , loginMsg} from '../assets/data/header';
+import {navMsg , loginMsg, menuList} from '../assets/data/header';
 
 export default {
   name: 'the-header',
@@ -58,7 +58,7 @@ export default {
     ...mapGetters([
       'activeName',
       'loginIn',
-      'avator'
+      'avatar'
     ])
   },
   mounted() {
@@ -101,7 +101,7 @@ export default {
         this.$router.go(0);
       }
       else{
-        this.$router.push({path : path});
+        this.$router.push({path : path});git
       }
     }
   }
