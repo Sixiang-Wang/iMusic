@@ -101,8 +101,8 @@ public class UserController {
             birthDate = null;
         }
 
-        Integer userID = userService.lastUserID()+1;
-        Integer singerID = singerService.lastSingerID()+1;
+        //Integer userID = userService.lastUserID()+1;
+        //Integer singerID = singerService.lastSingerID()+1;
 
         //保存到前端用户的对象中
         User user = new User();
@@ -116,8 +116,8 @@ public class UserController {
         user.setLocation(location);
         user.setProfilePicture(profilePicture);
         user.setName(name);
-        user.setSingerID(singerID);
-        user.setId(userID);
+        //user.setSingerID(singerID);
+        //user.setId(userID);
 
         boolean flag = userService.insert(user);
         if (!flag) {   //保存成功
@@ -126,8 +126,10 @@ public class UserController {
             return jsonObject;
         }
 
+        Integer userID = userService.lastUserID();
+
         Singer singer = new Singer();
-        singer.setId(singerID);
+
         singer.setName(name);
         singer.setBirth(birthDate);
         singer.setIntroduction(introduction);
@@ -140,6 +142,17 @@ public class UserController {
         if (!flag) {   //保存成功
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "添加用户歌手失败");
+            return jsonObject;
+        }
+
+        Integer singerID = singerService.lastSingerID();
+        user.setId(userID);
+        user.setSingerID(singerID);
+
+        flag = userService.update(user);
+        if (!flag) {   //保存成功
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "用户保存失败");
             return jsonObject;
         }
 

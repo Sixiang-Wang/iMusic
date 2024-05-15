@@ -100,6 +100,16 @@
         where id=#{id}
     </delete>
 
+    <delete id="deleteAllOfSong" parameterType="java.lang.Integer">
+        delete from comment
+        where song_id=#{songId}
+    </delete>
+
+    <delete id="deleteAllOfSongList" parameterType="java.lang.Integer">
+        delete from comment
+        where song_list_id=#{songListId}
+    </delete>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>

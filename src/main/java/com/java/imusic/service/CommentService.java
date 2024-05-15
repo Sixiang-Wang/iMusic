@@ -23,6 +23,12 @@ public interface CommentService {
      */
     public boolean delete(Integer id);
 
+    public boolean deleteAllOfSong(Integer songId);
+
+
+
+    public boolean deleteAllOfSongList(Integer songListId);
+
     /**
      * 根据主键查询整个对象
      */

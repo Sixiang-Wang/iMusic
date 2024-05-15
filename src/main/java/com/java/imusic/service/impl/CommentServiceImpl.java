@@ -46,6 +46,15 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.delete(id)>0;
     }
 
+    public boolean deleteAllOfSong(Integer songId){
+       return commentMapper.deleteAllOfSong(songId) > 0;
+    }
+
+
+
+    public boolean deleteAllOfSongList(Integer songListId){
+        return commentMapper.deleteAllOfSongList(songListId) > 0;
+    }
     /**
      * 根据主键查询整个对象
      *
