@@ -59,7 +59,7 @@ public class UserController {
         String birth = request.getParameter("birth").trim();           //生日
         String introduction = request.getParameter("introduction").trim();//签名
         String location = request.getParameter("location").trim();      //地区
-        String profilePicture = request.getParameter("profilePicture").trim();          //头像地址
+        String profilePicture = "/img/Pic/default_avatar.jpg";          //头像地址
         String name = request.getParameter("name").trim();
 
         if (username == null || username.equals("")) {
@@ -401,15 +401,18 @@ public class UserController {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");     //账号
         String password = request.getParameter("password");
+
         //加密前端传入的 密码
         //根据用户名和密码获取数据库里面所有的信息
         boolean flag = userService.verifyPassword(username,password);
-
+        User user = userService.getByUsername(username);
         //如果查到了用户
         if (flag) {
             //设置登录状态
             jsonObject.put(Consts.CODE, 1);
             jsonObject.put(Consts.MSG, "登录成功");
+            jsonObject.put("username",username);
+            jsonObject.put("avatar",user.getProfilePicture());
         }
         else {
             jsonObject.put(Consts.CODE, 0);
