@@ -65,6 +65,7 @@ export default {
             _this.notify('登录成功', 'success');
             _this.$store.commit('setLoginIn' , true);
             _this.$store.commit('setUsername', res.username);
+            _this.$store.commit('setAvatar', res.avatar);
             setTimeout(function () {
               _this.changeIndex('首页');
               _this.$router.push({path: `/`});

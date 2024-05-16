@@ -97,7 +97,7 @@ export default {
         return this.$store.state.configure.HOST + srcurl;
       }
       else{
-        return '../assets/img/user.jpg';
+        return this.$store.state.configure.HOST + '/img/Pic/default_avatar.jpg';
       }
     },
     goMenuList(path) {
