@@ -84,8 +84,11 @@ export default {
   methods: {
     SignUp(){
       let _this = this;
-      let d = this.registerForm.birth;
-      let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+      let d = this.registerForm.birth
+      let datetime
+      if (d) {
+        datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+      }
       let params = new URLSearchParams();
       params.append('username',this.registerForm.username);
       params.append('name',this.registerForm.name);
@@ -96,7 +99,7 @@ export default {
       params.append('birth', datetime);
       params.append('introduction',this.registerForm.introduction);
       params.append('location',this.registerForm.location);
-      params.append('profilePicture','/img/user.jpg');
+      params.append('profilePicture','/img/Pic/default_avatar.jpg');
 
       SignUp(params)
         .then(res => {
@@ -108,7 +111,7 @@ export default {
             }, 2000);
           }
           else{
-            _this.notify('注册失败', 'error');
+            _this.notify(`注册失败:${res.msg}`, 'error');
           }
         })
         .catch(err => {
