@@ -20,7 +20,7 @@ const rules = {
     {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
   ],
   birth: [
-    {required: true, message: '请选择日期', trigger: 'change'}
+    {message: '请选择日期', trigger: 'change'}
   ],
   introduction: [
     {message: '请输入介绍', trigger: 'blur'}
