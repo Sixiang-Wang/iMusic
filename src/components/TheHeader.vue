@@ -107,7 +107,7 @@ export default {
         this.$router.go(0);
       }
       else{
-        this.$router.push({path : path});git
+        this.$router.push({path : path});
       }
     }
   }

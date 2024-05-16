@@ -5,7 +5,6 @@
       <ul class="setting-aside">
         <li v-for="(item ,index) in settingList" :key="index" :class="{activeColor: activeName===item.name}"
           @click="handleClick(item)">
-
           {{item.name}}
         </li>
       </ul>

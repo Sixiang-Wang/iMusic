@@ -20,7 +20,6 @@
             <el-radio-group v-model="registerForm.sex">
               <el-radio :label="0">女</el-radio>
               <el-radio :label="1">男</el-radio>
-              <!--          <el-radio :label="2">保密</el-radio>-->
             </el-radio-group>
           </el-form-item>
           <el-form-item prop="phoneNum" label="手机">
@@ -109,7 +108,10 @@ export default {
     saveMsg() {
       let _this = this;
       let d = new Date(this.registerForm.birth);
-      let datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+      let datetime
+      if (d) {
+        datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+      }
       let params = new URLSearchParams();
       params.append('id' , this.userId);
       params.append('username', this.registerForm.username);
@@ -121,10 +123,10 @@ export default {
       params.append('birth', datetime);
       params.append('introduction', this.registerForm.introduction);
       params.append('location', this.registerForm.location);
-
       updateUserMsg(params)
         .then(res => {
           if (res.code === 1) {
+            this.notify('dd')
             this.$store.commit('setUsername',this.registerForm.username);
             _this.notify('修改成功', 'success');
             setTimeout(function () {
@@ -134,7 +136,7 @@ export default {
             _this.notify('修改失败', 'error');
           }
         })
-        .catch(err => {
+        .catch(error => {
           _this.notify('修改失败', 'error');
         })
     },

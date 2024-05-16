@@ -61,9 +61,10 @@ export default {
   },
   methods:{
     getMsg(userId){
+      // console.log('userid:'+this.userId);
       getUserOfId(userId)
         .then(res => {
-          this.avatar = res.avatar;
+          this.avatar = res.profilePicture;
           this.username = res.username;
           this.name = res.name;
           if(res.sex === 0){
@@ -88,7 +89,9 @@ export default {
           this.collection = res;
           // 通过歌曲id获取歌曲信息
           for(let item of this.collection){
-            this.getSongsOfId(item.songId);
+            if(item.songId !== null){
+              this.getSongsOfId(item.songId);
+            }
           }
         })
         .catch(err => {

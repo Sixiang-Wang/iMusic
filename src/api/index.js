@@ -28,17 +28,18 @@ export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${
 // ============用户相关==============
 
 // 查询用户
-export const getAllUser=()=>get(`consumer/allUser`);
+export const getAllUser=()=>get(`user/allUser`);
 
 // 注册
-export const SignUp = params => post(`/user/add`, params);
+export const SignUp = params => post(`user/add`, params);
 
 // 登录
-export const LoginIn = params => post(`/user/login`, params);
-// 根据用户id查询该用户的详细信息
-export const getUserOfId = (id) => get(`/consumer/selectByPrimaryKey?id=${id}`);
-// 根据用户id查询该用户的详细信息
-export const updateUserMsg = (params) => post(`/consumer/update`, params);
+export const LoginIn = params => post(`user/login`, params);
+// 查询该用户的详细信息
+export const getUserOfId = (id) => get(`user/selectByPrimaryKey?id=${id}`);
+
+// 更新
+export const updateUserMsg = params => post(`user/update`, params);
 // 下载音乐
 export const download = (url) => Axios({
   method: 'get',
@@ -48,13 +49,13 @@ export const download = (url) => Axios({
 // =============== 评价 ==================
 // =============== 评论 ==================
 // 提交评论
-export const setComment = (params) => post(`/comment/add`, params);
+export const setComment = (params) => post(`comment/add`, params);
 // 点赞
-export const setLike = (params) => post(`/comment/like`, params);
+export const setLike = (params) => post(`comment/like`, params);
 // 返回当前歌单或歌曲的评论区列表
 
 // =============== 收藏 ==================
 // 新增收藏
-export const setCollect = (params) => post(`/collect/add` ,params);
+export const setCollect = (params) => post(`collect/add` ,params);
 // 指定用户的收藏列表
-export const getCollectOfUserId = (userId) => get(`/collect/collectOfUserId?userId=${userId}`);
+export const getCollectOfUserId = (userId) => get(`collect/collectOfUserId?userId=${userId}` , userId);

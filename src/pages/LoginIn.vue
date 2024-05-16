@@ -36,6 +36,7 @@ export default {
   },
   data() {
     return {
+      userId : '',
       loginForm: {
         username: '',     //用户名
         password: ''     // 密码
@@ -64,6 +65,7 @@ export default {
           if (res.code === 1) {
             _this.notify('登录成功', 'success');
             _this.$store.commit('setLoginIn' , true);
+            _this.$store.commit('setUserId' , res.userId);
             _this.$store.commit('setUsername', res.username);
             _this.$store.commit('setAvatar', res.avatar);
             setTimeout(function () {

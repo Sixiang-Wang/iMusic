@@ -10,7 +10,7 @@ const user = {
       if(!userId){
         userId = JSON.parse(window.sessionStorage.getItem('userId'));
       }
-      return userId
+      return userId;
     },
     username: state => {
       let username = state.username

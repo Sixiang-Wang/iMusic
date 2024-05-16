@@ -65,6 +65,7 @@ export function post(url,data={}){
         resolve(response.data);
       })
       .catch(err =>{
+        console.log(err)
         return (err);
       })
   })
