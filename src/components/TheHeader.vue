@@ -76,12 +76,17 @@ export default {
   },
   methods: {
     goHome () {
-      this.$store.commit('setActive-Name', '首页')
+      this.$store.commit('setActiveName', '首页')
       this.$router.push({path: '/'})
     },
     goPage (path, name) {
-      this.$store.commit('setActiveName', name)
-      this.$router.push({path: path})
+      if(!this.loginIn && path==='/my-music'){
+        this.$notify({title: '请先登录' , type: 'success'});
+      }
+      else{
+        this.$store.commit('setActiveName', name)
+        this.$router.push({path: path})
+      }
     },
     goSearch () {
       this.$router.push({path: '/search', query: {keywords: this.keywords}})

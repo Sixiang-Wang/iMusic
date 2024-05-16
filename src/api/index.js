@@ -37,6 +37,8 @@ export const SignUp = params => post(`/user/add`, params);
 export const LoginIn = params => post(`/user/login`, params);
 // 根据用户id查询该用户的详细信息
 export const getUserOfId = (id) => get(`/consumer/selectByPrimaryKey?id=${id}`);
+// 根据用户id查询该用户的详细信息
+export const updateUserMsg = (params) => post(`/consumer/update`, params);
 // 下载音乐
 export const download = (url) => Axios({
   method: 'get',

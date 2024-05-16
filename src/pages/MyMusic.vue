@@ -16,6 +16,11 @@
       <div class="album-title">
         个性签名: {{introduction}}
       </div>
+      <div class="songs-body">
+        <album-content :song-list="collectList">
+          <template slot="title">我的收藏</template>
+        </album-content>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +57,7 @@ export default {
   },
   mounted() {
     this.getMsg(this.userId);
+    this.getCollection(this.userId);
   },
   methods:{
     getMsg(userId){
@@ -66,12 +72,40 @@ export default {
           else if(res.sex === 1){
             this.userSex = '男';
           }
-          this.birth = this.attachBirth(res.birth);
+          this.birth = this.getBirth(res.birth);
           this.location = res.location;
           this.introduction = res.introduction;
 
         })
+        .catch(err => {
+          console.log(err);
+        })
+    },
+    // 获取我的收藏列表
+    getCollection(userId){
+      getCollectOfUserId(userId)
+        .then(res => {
+          this.collection = res;
+          // 通过歌曲id获取歌曲信息
+          for(let item of this.collection){
+            this.getSongsOfId(item.songId);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },
+    // 通过歌曲id获取歌曲信息
+    getSongsOfId(id){
+      songOfSongId(id)
+        .then(res => {
+          this.collectList.push(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
     }
+
   }
 }
 </script>
