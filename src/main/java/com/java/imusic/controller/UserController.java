@@ -324,6 +324,15 @@ public class UserController {
     }
 
     /**
+     * 根据Username查询整个对象
+     */
+    @RequestMapping(value = "/getByUsername", method = RequestMethod.GET)
+    public Object getByUsername(HttpServletRequest request) {
+        String username = request.getParameter("username").trim();          //username
+        return userService.getByUsername(username);
+    }
+
+    /**
      * 查询所有前端用户
      */
     @RequestMapping(value = "/allUser", method = RequestMethod.GET)
@@ -411,6 +420,7 @@ public class UserController {
             //设置登录状态
             jsonObject.put(Consts.CODE, 1);
             jsonObject.put(Consts.MSG, "登录成功");
+            jsonObject.put("userId",user.getId());
             jsonObject.put("username",username);
             jsonObject.put("avatar",user.getProfilePicture());
         }
