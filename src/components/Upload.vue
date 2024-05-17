@@ -19,6 +19,7 @@
 <script>
 import {mapGetters} from "vuex";
 import {mixin} from "../mixins";
+import avatar from "element-ui/packages/avatar";
 
 export default {
   name: 'upload',
@@ -37,7 +38,7 @@ export default {
     handleAvatarSuccess(res){
       // console.log(res);
       if(res.code === 1){
-        this.$store.commit('setAvatar' ,res.avatar);
+        this.$store.commit('setAvatar' ,res.profilePicture);
         this.$notify({title:'修改成功',type:'success'});
       }
       else{
