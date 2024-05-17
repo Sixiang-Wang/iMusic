@@ -21,8 +21,10 @@ const user = {
     },
     avatar: state => {
       let avatar = state.avatar
+      //console.log(window.sessionStorage.getItem('avatar'));
       if(!avatar){
-        avatar = JSON.parse(window.sessionStorage.getItem('avatar'))
+        if(window.sessionStorage.getItem('avatar') !== "undefined")
+          avatar = JSON.parse(window.sessionStorage.getItem('avatar'))
       }
       return avatar
     }

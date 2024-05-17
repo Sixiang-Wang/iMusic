@@ -7,7 +7,7 @@
                  :before-remove="beforeAvatarUpload">
         <i class="el-icon-upload"></i>
         <div>
-          将文件拖到此处，或<span style="color: blue">修改头像</span>
+          将文件拖到此处，或 <span style="color: blue">修改头像</span>
         </div>
         <div slot="tip">
           只能上传jpg/png文件，且不能超过10MB
@@ -31,10 +31,11 @@ export default {
   methods:{
     // 上传地址
     uploadUrl(){
-      return `${this.$store.state.configure.HOST}/user/updateUserUrl?id=${this.userId}`;
+      return `${this.$store.state.configure.HOST}/user/updateUserPic?id=${this.userId}`;
     },
     // 上传成功
-    handleAvatarSuccess(res, file){
+    handleAvatarSuccess(res){
+      // console.log(res);
       if(res.code === 1){
         this.$store.commit('setAvatar' ,res.avatar);
         this.$notify({title:'修改成功',type:'success'});
@@ -45,7 +46,8 @@ export default {
     },
     // 上传之前的校验
     beforeAvatarUpload(file){
-      const isJPG = file.type==='image/jpeg';
+      // console.log(file.type);
+      const isJPG = file.type==='image/jpg';
       const isLt10M = file.size / 1024 / 1024 < 10;
       if(!isJPG){
         this.$notify({title:'上传头像图片只能是JPG格式',type:'error'});

@@ -81,7 +81,7 @@ export default {
     },
     goPage (path, name) {
       if(!this.loginIn && path==='/my-music'){
-        this.$notify({title: '请先登录' , type: 'success'});
+        this.$notify({title: '请先进行登录' , type: 'warning'});
       }
       else{
         this.$store.commit('setActiveName', name)
@@ -93,6 +93,7 @@ export default {
     },
     // 获取图片地址
     attachImageUrl (srcurl){
+      console.log(srcurl);
       if(srcurl){
         return this.$store.state.configure.HOST + srcurl;
       }
