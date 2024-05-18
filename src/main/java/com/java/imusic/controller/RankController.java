@@ -59,7 +59,7 @@ public class RankController {
     /**
      * 计算平均分
      */
-    @RequestMapping(value = "/rank",method = RequestMethod.GET)
+    @RequestMapping(value = "/rank/rankOfSongListId",method = RequestMethod.GET)
     public Object rankOfSongListId(HttpServletRequest request){
         String songListId = request.getParameter("songListId");
         return rankService.rankOfSongListId(Integer.parseInt(songListId));
