@@ -57,6 +57,25 @@ public class RankController {
         jsonObject.put(Consts.MSG,"评价失败");
         return jsonObject;
     }
+    @RequestMapping(value = "/rank/rankOfSongListIdAndUserId",method = RequestMethod.GET)
+    public Object rankOfSongListIdAndUserId(HttpServletRequest request){
+        JSONObject jsonObject = new JSONObject();
+        String songListId = request.getParameter("songListId");
+        String userId = request.getParameter("UserId");
+        Rank rank = new Rank();
+        rank.setSongListId(Integer.parseInt(songListId));
+        rank.setUserId(Integer.parseInt(userId));
+        Rank rankNew =  rankService.getRank(rank);
+        if(rankNew==null){
+            jsonObject.put(Consts.CODE,0);
+            jsonObject.put(Consts.MSG,"无评分");
+            return jsonObject;
+        }
+        jsonObject.put(Consts.CODE,1);
+        jsonObject.put(Consts.MSG,"查询成功");
+        jsonObject.put("rank",rankNew.getScore());
+        return jsonObject;
+    }
 
     /**
      * 计算平均分
