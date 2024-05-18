@@ -19,7 +19,7 @@
         <div>
           <h3>评分</h3>
           <div>
-            <el-rate v-model = "star" disabled></el-rate>
+            <el-rate v-model = "star"  disabled></el-rate>
           </div>
         </div>
         <!--        <span>{{ average }}</span>-->
@@ -27,9 +27,11 @@
         <div>
           <h3>评价</h3>
           <div @click = "addRank()">
-            <el-rate v-model = "rank" allow-half show-text ></el-rate>
+            <el-rate v-model = "rank" allow-half  show-text ></el-rate>
           </div>
+
         </div>
+        <span>{{ selfRank }}</span>
 
       </div>
 
@@ -38,8 +40,6 @@
           <template slot = "title">歌 单</template>
         </album-content>
       </div>
-
-      <template slot = "title">歌 单</template>
     </div>
   </div>
 </template>
@@ -47,9 +47,8 @@
 <script>
 import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
-import {listSongDetail, songOfSongId, commitRank, getRankOfSongListId} from "../api";
+import {listSongDetail, songOfSongId, commitRank, getRankOfSongListId, getRankOfSongListIdAndUserId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
-import th from "element-ui/src/locale/lang/th";
 
 export default {
   name: 'song-list-album',
@@ -61,6 +60,7 @@ export default {
       songListId: '',
       average: 0,
       rank: 0,
+      selfRank: 0
     }
   },
   computed: {
@@ -102,12 +102,27 @@ export default {
     getRank(id) {
       getRankOfSongListId(id).then(res =>
       {
-
-        this.average = res;
+        if (res === -1)
+        {
+          this.average = '暂无';
+        }
+        else
+        {
+          this.average = res;
+        }
       }).catch(error =>
       {
         console.log('error in get rank of songList\n' + error);
       })
+
+      let params = new URLSearchParams();
+      params.append('songListId',this.songListId);
+      params.append('userId', this.userId);
+      getRankOfSongListIdAndUserId(params).then(res =>
+        {
+          this.notify(res.rank)
+          this.selfRank = res.rank
+        })
     },
     addRank() {
       if (!this.loginIn)

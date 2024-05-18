@@ -54,8 +54,9 @@ export const download = (url) => Axios({
 export const commitRank = (param) => post(`rank/add`,param);
 //获取歌单的平均分
 export const getRankOfSongListId = (songListId) => get(`rank/rankOfSongListId?songListId=${songListId}`)
+export const getRankOfSongListIdAndUserId = (params) => post(`rank/rankOfSongListIdAndUserId`,params)
 // =============== 评论 ==================
-// 提交评论
+// 提交评
 export const setComment = (params) => post(`comment/add`, params);
 // 点赞
 export const setLike = (params) => post(`comment/like`, params);
