@@ -122,9 +122,7 @@ export default {
         params.append('userId', this.userId);
 
         params.append('score', this.rank * 2);
-        this.notify(1111)
         commitRank(params).then(res => {
-
           if (res.code === 1)
           {
             this.notify('评分成功','success');
@@ -132,7 +130,7 @@ export default {
           }
           else
           {
-            this.notify(`评分失败+${res.msg}`,'error');
+            this.notify(`评分失败:${res.msg}`,'error');
           }
         }).catch(error =>
         {
