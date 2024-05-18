@@ -18,6 +18,9 @@ export const likeSongOfName =(keywords) => get(`song/likeSongOfName?songName=${k
 // 查询歌曲
 export const getAllSongList =() => get(`songList/allSongList`);//获得所有歌单
 
+//添加歌单
+export const setSongList = (params) => post(`songList/add`, params);
+
 //根据歌单标题模糊查询歌单
 export const likeTitle =(keywords) => get(`songList/likeTitle?title=${keywords}`);
 

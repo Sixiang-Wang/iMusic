@@ -116,3 +116,6 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/css/my-music.scss';
 </style>
+<style lang="scss" scoped>
+@import "../assets/css/the-header.scss";
+</style>

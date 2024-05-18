@@ -1,6 +1,6 @@
 <template>
   <div class="the-header">
-    <div class="header-logo" @click="goHome">
+    <div class="header-logo" @click="goHome()">
       <svg class="icon">
         <use xlink:href="#icon-erji"></use>
       </svg>
