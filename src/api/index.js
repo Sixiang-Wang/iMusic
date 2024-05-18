@@ -50,6 +50,10 @@ export const download = (url) => Axios({
   responseType: 'blob'
 });
 // =============== 评价 ==================
+//提交评分
+export const commitRank = (param) => post(`rank/add`,param);
+//获取歌单的平均分
+export const getRankOfSongListId = (songListId) => get(`rank/rankOfSongListId?songListId=${songListId}`)
 // =============== 评论 ==================
 // 提交评论
 export const setComment = (params) => post(`comment/add`, params);

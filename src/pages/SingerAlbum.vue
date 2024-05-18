@@ -13,12 +13,17 @@
         <li>简介: {{ singer.introduction }}</li>
       </ul>
     </div>
-    <div class="album-content">
-      <div class="songs-body">
-        <album-content :songList="listOfSongs">
-          <template slot="title">歌 单</template>
-        </album-content>
+
+    <div class = "album-content">
+      <div class = "album-title">
+        <p>{{ tempList.title }}</p>
       </div>
+
+    <div class = "songs-body">
+      <album-content :songList = "listOfSongs">
+        <template slot = "title">歌 单</template>
+      </album-content>
+    </div>
     </div>
   </div>
 
@@ -29,7 +34,6 @@ import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
 import {songOfSingerId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
-import singer from "./Singer.vue";
 
 export default {
   name: 'singer-album',
@@ -40,6 +44,7 @@ export default {
     return {
       singerId: '',
       singer: {},
+
     }
   },
   computed: {
