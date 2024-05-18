@@ -1,10 +1,13 @@
 package com.java.imusic.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
  * 评价
  */
+@Data
 public class Rank implements Serializable {
     /*主键*/
     private Integer id;

@@ -15,7 +15,7 @@
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.Rank">
-        insert into rank
+        insert into `rank`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -47,7 +47,7 @@
     </insert>
 
     <update id="update" parameterType="com.java.imusic.domain.Rank">
-        update rank
+        update `rank`
         <set>
             <if test="id != null">
                 id = #{id},
@@ -66,22 +66,22 @@
     </update>
 
     <select id="selectScoreSum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
-        select COALESCE(sum(score),0) as score
-        from rank
+        select sum(score) as score
+        from `rank`
         where song_list_id = #{songListId}
     </select>
 
     <select id="selectRankNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
-        select COALESCE(count(id),0) as num
-        from rank
+        select count(*) as num
+        from `rank`
         where song_list_id = #{songListId}
     </select>
 
     <select id="getRank" resultType="com.java.imusic.domain.Rank" parameterType="com.java.imusic.domain.Rank">
         select *
-        from rank
+        from `rank`
         where song_list_id = #{songListId}
-        and user_id = #{userID}
+        and user_id = #{userId}
         limit 1
     </select>
 </mapper>

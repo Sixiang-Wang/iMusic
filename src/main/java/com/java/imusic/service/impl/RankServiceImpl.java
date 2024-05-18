@@ -55,6 +55,7 @@ public class RankServiceImpl implements RankService {
     @Override
     public int rankOfSongListId(Integer songListId) {
         int rankNum = rankMapper.selectRankNum(songListId);
+        System.out.println(rankNum);
         if(rankNum==0){
             return -1;
         }
@@ -63,6 +64,7 @@ public class RankServiceImpl implements RankService {
 
     @Override
     public Rank getRank(Rank rankOrigin){
+        System.out.println(rankOrigin.getSongListId() +":" + rankOrigin.getUserId());
         return rankMapper.getRank(rankOrigin);
     }
 }

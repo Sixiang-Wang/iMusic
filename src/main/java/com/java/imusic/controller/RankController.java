@@ -30,10 +30,12 @@ public class RankController {
         Rank rank = new Rank();
         rank.setSongListId(Integer.parseInt(songListId));
         rank.setUserId(Integer.parseInt(userId));
+
+
         Rank rankNew = rankService.getRank(rank);
         if(rankNew != null){
             rankNew.setScore(Integer.parseInt(score));
-            boolean flag = rankService.update(rank);
+            boolean flag = rankService.update(rankNew);
             if(flag){
                 jsonObject.put(Consts.CODE,1);
                 jsonObject.put(Consts.MSG,"评价更新成功");
