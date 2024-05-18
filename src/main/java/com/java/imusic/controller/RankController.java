@@ -57,11 +57,11 @@ public class RankController {
         jsonObject.put(Consts.MSG,"评价失败");
         return jsonObject;
     }
-    @RequestMapping(value = "/rank/rankOfSongListIdAndUserId",method = RequestMethod.GET)
+    @RequestMapping(value = "/rank/rankOfSongListIdAndUserId",method = RequestMethod.POST)
     public Object rankOfSongListIdAndUserId(HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
         String songListId = request.getParameter("songListId");
-        String userId = request.getParameter("UserId");
+        String userId = request.getParameter("userId");
         Rank rank = new Rank();
         rank.setSongListId(Integer.parseInt(songListId));
         rank.setUserId(Integer.parseInt(userId));
