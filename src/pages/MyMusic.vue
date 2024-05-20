@@ -1,26 +1,31 @@
 <template>
   <div class="my-music">
-    <div class="album-slide">
+    <div class="album-header">
       <div class="album-img">
-        <img :src="attachImageUrl(avatar)">
+        <img :src="attachImageUrl(avatar)" alt="">
       </div>
-      <ul class="album-info">
-        <li>用户名: {{username}}</li>
-        <li>昵称: {{name}}</li>
-        <li>性别: {{userSex}}</li>
-        <li>生日: {{birth}}</li>
-        <li>故乡: {{location}}</li>
-      </ul>
+      <div class="basic-info-under-avatar">
+        {{username}}
+        <br>
+      </div>
+      <div class="album-menu">
+        <ul>
+          <li :class="{current: item.name === activeName}" v-for="item in navMsg" :key="item.path" @click="goPage(item.path, item.name)">
+            {{item.name}}
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="album-content">
-      <div class="album-title">
-        个性签名: {{introduction}}
-      </div>
-      <div class="songs-body">
-        <album-content :song-list="collectList">
-          <template slot="title">我的收藏</template>
-        </album-content>
-      </div>
+    <div>
+      <router-view></router-view>
+<!--    </div>-->
+<!--    <div class="album-content">-->
+<!--      <div class="album-title">-->
+<!--        个性签名: {{introduction}}-->
+<!--      </div>-->
+<!--      <div class="songs-body">-->
+
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -30,6 +35,7 @@ import {mixin} from '../mixins';
 import {mapGetters} from "vuex";
 import {getUserOfId , getCollectOfUserId , songOfSongId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
+import {navMsg} from "../assets/data/menuOfMyMusic";
 export default {
   name: 'myMusic',
   mixins : [mixin],
@@ -38,6 +44,8 @@ export default {
   },
   data() {
     return {
+      navMsg: [],     //菜单栏
+      activeName: '个人信息',
       avatar : '',    // 用户头像
       username : '',     // 用户名
       name : '',        // 昵称
@@ -46,7 +54,7 @@ export default {
       location: '',       //  故乡
       introduction: '' ,   //  个性签名
       collection: [] ,     // 收藏的歌曲列表
-      collectList : [],     // 收藏的歌曲列表（带歌曲详情）
+      // collectList : [],     // 收藏的歌曲列表（带歌曲详情）
     }
   },
   computed:{
@@ -55,11 +63,18 @@ export default {
       'userId'          // 当前登录用户id
     ])
   },
+  created() {
+    this.navMsg = navMsg;
+  },
   mounted() {
     this.getMsg(this.userId);
     this.getCollection(this.userId);
   },
   methods:{
+    goPage(path, name) {
+      this.activeName = name;
+      this.$router.push({path: path})
+    },
     getMsg(userId){
       // console.log('userid:'+this.userId);
       getUserOfId(userId)
@@ -82,32 +97,7 @@ export default {
           console.log(err);
         })
     },
-    // 获取我的收藏列表
-    getCollection(userId){
-      getCollectOfUserId(userId)
-        .then(res => {
-          this.collection = res;
-          // 通过歌曲id获取歌曲信息
-          for(let item of this.collection){
-            if(item.songId !== null){
-              this.getSongsOfId(item.songId);
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    },
-    // 通过歌曲id获取歌曲信息
-    getSongsOfId(id){
-      songOfSongId(id)
-        .then(res => {
-          this.collectList.push(res);
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    }
+
 
   }
 }

@@ -11,6 +11,11 @@ import SongListAlbum from "@/pages/SongListAlbum.vue";
 import SignUp from "@/pages/SignUp";
 import LoginIn from "@/pages/LoginIn";
 import Setting from "@/pages/Setting";
+import Personal from "@/pages/Personal.vue";
+import MyFavor from "@/pages/MyFavor.vue";
+import MySongList from "@/pages/MySongList.vue";
+import MySongs from "@/pages/MySongs.vue";
+import MyCare from "@/pages/MyCare.vue";
 Vue.use(Router)
 
 export default new Router({
@@ -23,7 +28,39 @@ export default new Router({
     {
       path: '/my-music',
       name: 'my-music',
-      component: MyMusic
+      component: MyMusic,
+      children: [
+        {
+          path: '',
+          name: 'personal-information',
+          component: Personal
+        },
+        {
+          path: 'personal',
+          name: 'personal-information',
+          component: Personal
+        },
+        {
+          path: 'my-favor',
+          name: 'my-favor',
+          component: MyFavor
+        },
+        {
+          path: 'my-songList',
+          name: 'my-songList',
+          component: MySongList
+        },
+        {
+          path: 'my-songs',
+          name: 'my-songs',
+          component: MySongs
+        },
+        {
+          path: 'my-care',
+          name: 'my-care',
+          component: MyCare
+        },
+      ]
     },
     {
       path: '/singer',
