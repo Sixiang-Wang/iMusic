@@ -8,6 +8,7 @@
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="pic" jdbcType="VARCHAR" property="pic"/>
         <result column="style" jdbcType="VARCHAR" property="style"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
     </resultMap>
 
     <resultMap id="ResultMapWithBLOBs" type="com.java.imusic.domain.SongList" extends="BaseResultMap">
@@ -15,11 +16,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,pic,style
+        id,title,pic,style,user_id
     </sql>
 
     <sql id="Blob_Column_List">
-        id,title,pic,style,introduction
+        id,title,pic,style,introduction,user_id
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.SongList">
@@ -40,6 +41,9 @@
             <if test="style != null">
                 style,
             </if>
+            <if test="userId != null">
+                user_id,
+            </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -56,6 +60,9 @@
             </if>
             <if test="style != null">
                 #{style},
+            </if>
+            <if test="userId != null">
+                #{userId},
             </if>
         </trim>
     </insert>
@@ -75,6 +82,9 @@
             <if test="style != null">
                 style = #{style},
             </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
         </set>
         where id = #{id}
     </update>
@@ -89,6 +99,13 @@
         <include refid="Blob_Column_List"/>
         from song_list
         where id=#{id}
+    </select>
+
+    <select id="selectByUserId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Blob_Column_List"/>
+        from song_list
+        where user_id=#{userId}
     </select>
 
     <select id="allSongList" resultMap="ResultMapWithBLOBs">

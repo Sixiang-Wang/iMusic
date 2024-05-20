@@ -56,7 +56,6 @@ public class SongServiceImpl implements SongService {
     @Override
     public Song selectByPrimaryKey(Integer id) {
         Song song = songMapper.selectByPrimaryKey(id);
-        System.out.println(song.getName());
         return songMapper.selectByPrimaryKey(id);
     }
 

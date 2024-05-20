@@ -108,6 +108,16 @@ public class SongListController {
     }
 
     /**
+     * 根据userId查询整个对象
+     */
+    @RequestMapping(value = "/selectByUserId",method = RequestMethod.GET)
+    public Object selectByUserId(HttpServletRequest request){
+        String userId = request.getParameter("userId").trim();          //userId
+        return songListService.selectByUserId(Integer.parseInt(userId));
+    }
+
+
+    /**
      * 查询所有歌单
      */
     @RequestMapping(value = "/allSongList",method = RequestMethod.GET)

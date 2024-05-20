@@ -109,7 +109,7 @@ public class CollectController {
     @RequestMapping(value = "/collectSongOfUserId", method = RequestMethod.GET)
     public Object collectSongOfUserId(HttpServletRequest request) {
         String uId = request.getParameter("userId");
-        System.out.println("当前用户：" + uId);
+
         int userId = -1;
         if (!uId.isEmpty()) {
             userId = Integer.parseInt(uId);
@@ -124,6 +124,7 @@ public class CollectController {
                     collectSong.add(songService.selectByPrimaryKey(collect.getSongId()));
                 }
             }
+
             return collectSong;
         }
         return null;

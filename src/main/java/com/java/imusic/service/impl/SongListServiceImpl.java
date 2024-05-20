@@ -95,4 +95,12 @@ public class SongListServiceImpl implements SongListService {
     public List<SongList> likeStyle(String style) {
         return songListMapper.likeStyle(style);
     }
+
+    /**
+     * 根据userId查询整个对象
+     */
+    @Override
+    public List<SongList> selectByUserId(Integer userId){
+        return songListMapper.selectByUserId(userId);
+    }
 }
