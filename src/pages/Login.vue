@@ -19,7 +19,7 @@
 
 <script>
 import {mixin} from '../mixins/index'
-import {getLoginStatus} from '../api/index'
+import {getLoginStatus, preLogin} from '../api/index'
 
 export default {
   mixins: [mixin],
@@ -55,6 +55,15 @@ export default {
           }
         })
     }
+  },
+  mounted () {
+    preLogin()
+      .then((res) => {
+        if (res.code === 1) {
+          this.$router.push('/Info')
+          this.notify('自动登录成功', 'success')
+        }
+      })
   }
 }
 </script>

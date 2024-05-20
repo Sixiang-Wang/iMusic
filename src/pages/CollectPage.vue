@@ -32,7 +32,7 @@
 
 <script>
 import {mixin} from '../mixins/index'
-import {songOfSongId, getCollectOfUserId, deleteCollection} from '../api/index'
+import {songOfSongId, getCollectSongOfUserId, deleteCollection} from '../api/index'
 
 export default {
   mixins: [mixin],
@@ -50,7 +50,7 @@ export default {
   watch: {
     //搜索框里面的内容发生变化的时候，搜索结果table列表的内容跟着它的内容发生变化
     select_word: function () {
-      if (this.select_word == '') {
+      if (this.select_word === '') {
         this.tableData = this.tempData
       } else {
         this.tableData = []
@@ -70,15 +70,18 @@ export default {
     getData () {
       this.tempData = []
       this.tableData = []
-      getCollectOfUserId(this.$route.query.id).then(res => {
+      getCollectSongOfUserId(this.$route.query.id).then(res => {
         for (let item of res) {
-          this.getSong(item.songId)
+          this.tempData.push(item)
+          this.tableData.push(item)
+          //直接省去了getSong
         }
       })
     },
     //根据歌曲id查询歌曲对象，放到tempData和tableData里面
     getSong (id) {
-      songOfSongId(id)
+      let songId = id
+      songOfSongId(songId)
         .then(res => {
           this.tempData.push(res)
           this.tableData.push(res)

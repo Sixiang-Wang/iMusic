@@ -3,6 +3,8 @@ import {get, post} from './http'
 // 判断管理员是否登录成功
 export const getLoginStatus = (params) => post(`admin/login/status`, params)
 
+export const preLogin = () => post(`admin/login/preLogin`)
+export const logout = () => post(`admin/login/logout`)
 // ============歌手相关================
 // 查询歌手
 export const getAllSinger = () => get(`singer/allSinger`)
@@ -64,6 +66,7 @@ export const getUserOfId = (id) => get(`/user/selectByPrimaryKey?id=${id}`)
 // ===============收藏===================
 // 指定用户的收藏列表
 export const getCollectOfUserId = (userId) => get(`/collect/collectOfUserId?userId=${userId}`)
+export const getCollectSongOfUserId = (userId) => get(`/collect/collectSongOfUserId?userId=${userId}`)
 // 删除用户收藏的歌曲
 export const deleteCollection = (userId, songId) => get(`collect/delete?userId=${userId}&songId=${songId}`)
 

@@ -28,7 +28,9 @@
 </template>
 
 <script>
+import {mixin} from '../mixins/index'
 import bus from '../assets/js/bus'
+import {logout} from '../api'
 
 export default {
   data () {
@@ -75,9 +77,18 @@ export default {
       this.fullscreen = !this.fullscreen
     },
     handleCommand (command) {
+      this.$notify
       if (command === 'logout') {
         localStorage.removeItem('userName')
-        this.$router.push('/')
+        logout()
+          .then((res) => {
+            if (res.code === 1) {
+              setTimeout(() => {
+                this.$notify({title:"退出登录"})
+                this.$router.push('/')
+              }, 100)
+            }
+          })
       }
     }
   }

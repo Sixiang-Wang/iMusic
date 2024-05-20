@@ -28,6 +28,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="style" label="风格" width="120" align="center"></el-table-column>
+      <el-table-column prop="name" label="创建者" width="120" align="center"></el-table-column>
       <el-table-column label="歌曲管理" width="110" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="songEdit(scope.row.id)">歌曲管理</el-button>
@@ -104,7 +105,7 @@
 </template>
 
 <script>
-import {getAllSongList, setSongList, updateSongList, delSongList} from '../api/index'
+import {getAllSongList, setSongList, updateSongList, delSongList, getUserOfId} from '../api/index'
 import {mixin} from '../mixins/index'
 
 export default {
@@ -167,10 +168,26 @@ export default {
     getData () {
       this.tempData = []
       this.tableData = []
+
       getAllSongList().then(res => {
-        this.tempData = res
-        this.tableData = res
-        this.currentPage = 1
+        let promises = []
+        res.forEach(item => {
+          // 将每个promise添加到数组中
+          promises.push(
+            getUserOfId(item.userId).then(response => {
+              item.name = response.name
+              if (item.userId <= 0) {
+                item.name = '系统歌单'
+              }
+            })
+          )
+        })
+
+        Promise.all(promises).then(() => {
+          this.tempData = res
+          this.tableData = res
+          this.currentPage = 1
+        })
       })
     },
     //添加歌单
@@ -183,7 +200,7 @@ export default {
 
       setSongList(params)
         .then(res => {
-          if (res.code == 1) {
+          if (res.code === 1) {
             this.getData()
             this.notify('添加成功', 'success')
           } else {
@@ -215,7 +232,7 @@ export default {
 
       updateSongList(params)
         .then(res => {
-          if (res.code == 1) {
+          if (res.code === 1) {
             this.getData()
             this.notify('修改成功', 'success')
           } else {
