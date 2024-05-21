@@ -1,16 +1,19 @@
 // 匹配规则
 const rules = {
   username: [
-    {required: true, trigger: 'blur'}
+    {required: false, trigger: 'blur'}
   ],
   name: [
-    {required: true, trigger: 'blur'}
+    {required: false, trigger: 'blur'}
+  ],
+  code: [
+    { required: false, message: '请输入验证码', trigger: 'blur' }
   ],
   password: [
-    {required: true, trigger: 'blur'}
+    {required: false, trigger: 'blur'}
   ],
   duplicatePassword : [
-    {required: true, trigger: 'blur'}
+    {required: false, trigger: 'blur'}
   ],
   sex: [
     {required: false, message: '请选择性别', trigger: 'change'}

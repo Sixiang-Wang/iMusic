@@ -36,6 +36,9 @@ export const getAllUser=()=>get(`user/allUser`);
 // 注册
 export const SignUp = params => post(`user/add`, params);
 
+// 发送验证码
+export const validate = email => get(`mail/sendMail?to=${email}`);
+
 // 登录
 export const LoginIn = params => post(`user/login`, params);
 // 查询该用户的详细信息

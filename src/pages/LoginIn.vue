@@ -49,10 +49,10 @@ export default {
       },
       rules: {
         username : [
-          {required : true , trigger : 'blur' , message: '请输入用户名'}
+          {required : false , trigger : 'blur' , message: '请输入用户名'}
         ],
         password : [
-          {required : true , trigger : 'blur' , message: '请输入密码'}
+          {required : false , trigger : 'blur' , message: '请输入密码'}
         ]
       },
       passwordVisible: false

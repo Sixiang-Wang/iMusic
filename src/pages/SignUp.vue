@@ -12,6 +12,17 @@
       <el-form-item prop="name" label="昵称">
         <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
       </el-form-item>
+      <el-form-item prop="email" label="邮箱">
+        <el-input v-model="registerForm.email" placeholder="邮箱"></el-input>
+      </el-form-item>
+      <el-form-item prop="code" label="验证码">
+        <div class="code-input-group">
+          <el-input v-model="code" placeholder="验证码"></el-input>
+          <el-button class="input-with-button" :loading="codeLoading" :disabled="isDisable" @click="sendMsg">
+            {{ statusMsg }}
+          </el-button>
+        </div>
+      </el-form-item>
       <el-form-item prop="password" label="密码">
         <el-input
           type="password"
@@ -38,7 +49,7 @@
 import loginLogo from '../components/LoginLogo.vue';
 import {rules,cities} from "../assets/data/form.js";
 import {mixin} from '../mixins';
-import {SignUp} from '../api/index'
+import {SignUp, validate} from '../api/index'
 export default {
   name : 'sign-up',
   mixins : [mixin],
@@ -47,6 +58,10 @@ export default {
   },
   data(){
     return  {
+      statusMsg: '',      // 验证码有关
+      isDisable: false,
+      codeLoading: false,
+      verifyCode : '',    // 标准验证码
       registerForm: {
         username: '',     //用户名
         name: '',         // 昵称
@@ -61,18 +76,23 @@ export default {
       duplicatePassword : '', // 重复密码
       cities: [],     // 所有的地区 -- 省
       rules: {},   // 表单提交的规则
-      passwordVisible: false,
-
+      code : '',    // 验证码
+      passwordVisible: false
     }
   },
   created() {
+    this.statusMsg = '获取验证码';
     this.rules = rules;
     this.cities = cities;
   },
   methods: {
     SignUp(){
       if(this.registerForm.password !== this.duplicatePassword){
-        this.notify('输入密码不一致','error');
+        this.notify('两次输入密码不一致','error');
+        return;
+      }
+      if(this.verifyCode !== this.code){
+        this.notify('验证码不正确','error');
         return;
       }
       let _this = this;
@@ -85,7 +105,7 @@ export default {
       params.append('username',this.registerForm.username);
       params.append('name',this.registerForm.name);
       params.append('password',this.registerForm.password);
-      this.registerForm.sex = '女';
+      this.registerForm.sex = 3; //  保密
       params.append('sex',this.registerForm.sex);
       params.append('phoneNum',this.registerForm.phoneNum);
       params.append('email',this.registerForm.email);
@@ -109,6 +129,38 @@ export default {
         .catch(err => {
           _this.notify('注册失败', 'error');
         })
+    },
+    sendMsg: function() {
+      // 22373297@buaa.edu.cn
+      const self = this
+      let timerId;
+      console.log(timerId)
+      if (timerId) {
+        return false
+      }
+      this.codeLoading = true
+      validate(this.registerForm.email).then(res => {
+        this.notify('发送成功，验证码有效期 1 分钟', 'success');
+        let count = 60
+        this.verifyCode = res.verifyCode;
+        self.codeLoading = false
+        self.isDisable = true
+        self.statusMsg = `${count--} 秒后重新发送`
+        timerId = window.setInterval(function () {
+          self.statusMsg = `${count--} 秒后重新发送`
+          if (count <= -1) {
+            console.log('clear' + timerId);
+            window.clearInterval(timerId);
+            self.verifyCode = "******";
+            self.isDisable = false;
+            self.statusMsg = '获取验证码';
+          }
+        }, 1000)
+      }).catch(err => {
+        this.isDisable = false
+        this.statusMsg = '获取验证码'
+        this.codeLoading = false
+      })
     },
     goback(index){
       this.$router.go(index);
