@@ -406,7 +406,7 @@ public class UserController {
      * 前端用户登录
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Object login(HttpServletRequest request, HttpServletResponse response) {
+    public Object login(HttpServletRequest request, HttpSession session,HttpServletResponse response) {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");     //账号
         String password = request.getParameter("password");
@@ -414,26 +414,33 @@ public class UserController {
         //加密前端传入的 密码
         //根据用户名和密码获取数据库里面所有的信息
         boolean flag = userService.verifyPassword(username,password);
-        User user = userService.getByUsername(username);
         //如果查到了用户
-        if (flag) {
-            //设置登录状态
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "登录成功");
-            jsonObject.put("userId",user.getId());
-            jsonObject.put("username",username);
-            jsonObject.put("avatar",user.getProfilePicture());
-        }
-        else {
+        if (!flag) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "登录失败");
+            return jsonObject;
         }
+        //设置登录状态
+        jsonObject.put(Consts.CODE, 1);
+        jsonObject.put(Consts.MSG, "登录成功");
+        User user = userService.getByUsername(username);
+        jsonObject.put("userId",user.getId());
+        jsonObject.put("username",username);
+        jsonObject.put("avatar",user.getProfilePicture());
+        Cookie cookie_username = new Cookie("cookie_username",username);
+        Cookie cookie_password = new Cookie("cookie_password",password);
+        cookie_username.setMaxAge(60 * 60);//1h
+        cookie_password.setMaxAge(60 * 60);//1h
+        cookie_username.setPath(request.getContextPath());
+        cookie_password.setPath(request.getContextPath());
+        response.addCookie(cookie_username);
+        response.addCookie(cookie_password);
         return jsonObject;
     }
 
 
     /**
-     * 二维码手机登录
+     * 手机登录
      *
      * @param phoneNum: 手机号码
      * @return cn.dev33.satoken.util.SaResult
@@ -466,10 +473,48 @@ public class UserController {
      * @since 2023/3/3 22:44
      */
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request) {
+    public void logout(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
         System.out.println("===退出登录===");
-        //Cookie[] cookies = request.getCookies();
-        //StpUtil.logout();
+        session.removeAttribute(Consts.NAME);
+        Cookie cookie_password = new Cookie("cookie_password","");
+        Cookie cookie_username = new Cookie("cookie_username","");
+        cookie_password.setMaxAge(0);
+        cookie_username.setMaxAge(0);
+        cookie_password.setPath(request.getContextPath());
+        cookie_username.setPath(request.getContextPath());
+        response.addCookie(cookie_password);
+        response.addCookie(cookie_username);
+    }
+
+    @RequestMapping(value = "/preLogin",method = RequestMethod.POST)
+    public Object preLogin(HttpServletRequest request){
+        JSONObject jsonObject = new JSONObject();
+        String username = "";
+        String password = "";
+        Cookie[] cookies = request.getCookies();
+        if(cookies!=null){
+            for(Cookie item:cookies){
+                if(item.getName().equals("cookie_username")){
+                    username = item.getValue();
+                }
+                else if(item.getName().equals("cookie_password")){
+                    password = item.getValue();
+                }
+            }
+        }
+        System.out.println(username+" "+password);
+        boolean flag = userService.verifyPassword(username,password);
+        if(!flag){
+            jsonObject.put(Consts.CODE,0);
+            jsonObject.put(Consts.MSG,"用户名或密码错误");
+            return jsonObject;
+        }
+        User user = userService.getByUsername(username);
+        jsonObject.put(Consts.CODE,1);
+        jsonObject.put(Consts.MSG,"登录成功");
+        jsonObject.put("username",username);
+        jsonObject.put("userId",user.getId());
+        return jsonObject;
     }
 
 }

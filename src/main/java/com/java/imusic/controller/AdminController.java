@@ -40,7 +40,7 @@ public class AdminController {
         jsonObject.put(Consts.MSG,"登录成功");
         session.setAttribute(Consts.NAME,name);
         Cookie cookie_name = new Cookie("cookie_name",name);
-        Cookie cookie_password = new Cookie("cookie_password",name);
+        Cookie cookie_password = new Cookie("cookie_password",password);
         cookie_name.setMaxAge(60 * 60);//1h
         cookie_password.setMaxAge(60 * 60);//1h
         cookie_name.setPath(request.getContextPath());
@@ -75,6 +75,7 @@ public class AdminController {
         }
         jsonObject.put(Consts.CODE,1);
         jsonObject.put(Consts.MSG,"登录成功");
+        jsonObject.put("name",name);
         return jsonObject;
     }
 
