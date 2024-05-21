@@ -10,7 +10,13 @@
           <el-input v-model="loginForm.username" placeholder="用户名"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="密码">
-          <el-input type="password" v-model="loginForm.password" placeholder="密码"></el-input>
+          <el-input
+            type="password"
+            v-model="loginForm.password"
+            placeholder="密码"
+            :show-password="true"
+          ></el-input>
+          <i @click="togglePasswordVisibility"></i>
         </el-form-item>
 
         <div class="login-btn">
@@ -48,7 +54,8 @@ export default {
         password : [
           {required : true , trigger : 'blur' , message: '请输入密码'}
         ]
-      }
+      },
+      passwordVisible: false
     }
   },
   mounted() {
@@ -86,6 +93,9 @@ export default {
     },
     changeIndex(value){
       this.$store.commit('setActiveName' , value);
+    },
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
     }
   }
 }
