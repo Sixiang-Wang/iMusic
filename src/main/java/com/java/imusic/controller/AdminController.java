@@ -3,6 +3,7 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.service.AdminService;
 import com.java.imusic.utils.Consts;
+import com.java.imusic.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,8 +20,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private MailUtil mailUtil;
 
     /**
      * 判断是否登录成功

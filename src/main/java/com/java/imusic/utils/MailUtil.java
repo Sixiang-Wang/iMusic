@@ -1,4 +1,4 @@
-package com.java.imusic.controller;
+package com.java.imusic.utils;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
