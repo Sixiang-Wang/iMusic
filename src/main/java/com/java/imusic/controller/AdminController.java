@@ -2,7 +2,6 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.service.AdminService;
-import com.java.imusic.service.impl.MailUtil;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,7 +57,6 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/login/preLogin",method = RequestMethod.POST)
     public Object preLogin(HttpServletRequest request){
-        mailUtil.sendMail("machenyu2004@163.com");
         JSONObject jsonObject = new JSONObject();
         String name = "";
         String password = "";

@@ -3,7 +3,9 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.Collect;
 import com.java.imusic.domain.Song;
+import com.java.imusic.domain.SongList;
 import com.java.imusic.service.CollectService;
+import com.java.imusic.service.SongListService;
 import com.java.imusic.service.SongService;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class CollectController {
     private CollectService collectService;
     @Autowired
     private SongService songService;
+    @Autowired
+    private SongListService songListService;
 
     /**
      * 添加收藏
@@ -104,7 +108,7 @@ public class CollectController {
     }
 
     /**
-     * 查询某个用户的推荐歌曲列表
+     * 查询某个用户的收藏歌曲列表
      */
     @RequestMapping(value = "/collectSongOfUserId", method = RequestMethod.GET)
     public Object collectSongOfUserId(HttpServletRequest request) {
@@ -130,26 +134,31 @@ public class CollectController {
         return null;
     }
 
+    /**
+     * 查询某个用户的收藏歌单列表
+     */
+    @RequestMapping(value = "/collectSongListOfUserId", method = RequestMethod.GET)
+    public Object collectSongListOfUserId(HttpServletRequest request) {
+        String uId = request.getParameter("userId");
+
+        int userId = -1;
+        if (!uId.isEmpty()) {
+            userId = Integer.parseInt(uId);
+        }
+
+        if (userId > 0) {
+            // 查到所有用户的收藏列表
+            List<Collect> list = collectService.allCollect();
+            List<SongList> collectSongList = new ArrayList<>();
+            for (Collect collect : list) {
+                if(collect.getType()==0){
+                    collectSongList.add(songListService.selectByPrimaryKey(collect.getSongListId()));
+                }
+            }
+            return collectSongList;
+        }
+        return null;
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
