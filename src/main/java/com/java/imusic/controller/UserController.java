@@ -514,6 +514,7 @@ public class UserController {
         jsonObject.put(Consts.MSG,"登录成功");
         jsonObject.put("username",username);
         jsonObject.put("userId",user.getId());
+        jsonObject.put("avatar",user.getProfilePicture());
         return jsonObject;
     }
 
