@@ -9,24 +9,27 @@ const rules = {
   password: [
     {required: true, trigger: 'blur'}
   ],
+  duplicatePassword : [
+    {required: true, trigger: 'blur'}
+  ],
   sex: [
-    {required: true, message: '请选择性别', trigger: 'change'}
+    {required: false, message: '请选择性别', trigger: 'change'}
   ],
   phoneNum: [
-    {essage: '请选择日期', trigger: 'blur'}
+    {required: false, message: '请选择日期', trigger: 'blur'}
   ],
   email: [
-    {message: '请输入邮箱地址', trigger: 'blur'},
+    {required: false, message: '请输入邮箱地址', trigger: 'blur'},
     {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
   ],
   birth: [
-    {message: '请选择日期', trigger: 'change'}
+    {required: false, message: '请选择日期', trigger: 'change'}
   ],
   introduction: [
-    {message: '请输入介绍', trigger: 'blur'}
+    {required: false, message: '请输入介绍', trigger: 'blur'}
   ],
   location: [
-    {message: '请输入地区', trigger: 'change'}
+    {required: false, message: '请输入地区', trigger: 'change'}
   ]
 }
 

@@ -5,7 +5,7 @@
     <div class="signUp-head">
       <span>用户注册</span>
     </div>
-    <el-form :model="registerForm" ref="registerForm" label-width="70px" class="demo-ruleForm" :rules="rules">
+    <el-form :model="registerForm" ref="registerForm" label-width="80px" class="demo-ruleForm" :rules="rules">
       <el-form-item prop="username" label="用户名">
         <el-input v-model="registerForm.username" placeholder="用户名"></el-input>
       </el-form-item>
@@ -13,30 +13,16 @@
         <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
       </el-form-item>
       <el-form-item prop="password" label="密码">
-        <el-input type="password" v-model="registerForm.password" placeholder="密码"></el-input>
+        <el-input
+          type="password"
+          v-model="registerForm.password"
+          placeholder="密码"
+          :show-password="true"
+        ></el-input>
+        <i @click="togglePasswordVisibility"></i>
       </el-form-item>
-      <el-form-item prop="sex" label="性别">
-        <el-radio-group v-model="registerForm.sex">
-          <el-radio :label="0">女</el-radio>
-          <el-radio :label="1">男</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item prop="phoneNum" label="手机">
-        <el-input v-model="registerForm.phoneNum" placeholder="手机"></el-input>
-      </el-form-item>
-      <el-form-item prop="email" label="邮箱">
-        <el-input v-model="registerForm.email" placeholder="邮箱"></el-input>
-      </el-form-item>
-      <el-form-item prop="birth" label="生日">
-        <el-date-picker v-model="registerForm.birth" placeholder="选择日期" style="width: 100%;"></el-date-picker>
-      </el-form-item>
-      <el-form-item prop="introduction" label="个性签名">
-        <el-input v-model="registerForm.introduction" placeholder="个性签名"></el-input>
-      </el-form-item>
-      <el-form-item prop="location" label="地区">
-        <el-select v-model="registerForm.location" placeholder="地区" style="width: 100%;">
-          <el-option v-for="item in cities" :key="item.index" :label="item.label" :value="item.value"></el-option>
-        </el-select>
+      <el-form-item prop="duplicatePassword" label="重复密码">
+        <el-input type="password" v-model="duplicatePassword" placeholder="重复密码"></el-input>
       </el-form-item>
       <div class="login-btn">
         <el-button @click="goback(-1)">取消</el-button>
@@ -72,8 +58,11 @@ export default {
         introduction: '',    //签名
         location: ''      // 地区
       },
+      duplicatePassword : '', // 重复密码
       cities: [],     // 所有的地区 -- 省
-      rules: {}   // 表单提交的规则
+      rules: {},   // 表单提交的规则
+      passwordVisible: false,
+
     }
   },
   created() {
@@ -82,6 +71,10 @@ export default {
   },
   methods: {
     SignUp(){
+      if(this.registerForm.password !== this.duplicatePassword){
+        this.notify('输入密码不一致','error');
+        return;
+      }
       let _this = this;
       let d = this.registerForm.birth
       let datetime
@@ -92,6 +85,7 @@ export default {
       params.append('username',this.registerForm.username);
       params.append('name',this.registerForm.name);
       params.append('password',this.registerForm.password);
+      this.registerForm.sex = '女';
       params.append('sex',this.registerForm.sex);
       params.append('phoneNum',this.registerForm.phoneNum);
       params.append('email',this.registerForm.email);
@@ -99,7 +93,6 @@ export default {
       params.append('introduction',this.registerForm.introduction);
       params.append('location',this.registerForm.location);
       params.append('profilePicture','/img/Pic/default_avatar.jpg');
-
       SignUp(params)
         .then(res => {
           if(res.code === 1){
@@ -122,11 +115,14 @@ export default {
     },
     changeIndex(value){
       this.$store.commit('setActiveName' , value);
+    },
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/css/info.scss';
+@import '../assets/css/sign-up.scss';
 </style>

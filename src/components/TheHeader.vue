@@ -105,7 +105,13 @@ export default {
       if(path === 0){
         this.$store.commit('setLoginIn' , false);
         this.$store.commit('setIsActive' , false);
-        this.$router.go(0);
+        if(this.$route.path !== '/'){
+          setTimeout(() => {
+            this.$router.push({ path: '/' });
+          }, 1000);
+        } // 延迟1秒执行路由跳转
+        this.$notify({title : '退出成功' , type : 'success'});
+        // this.$router.go(0);
       }
       else{
         this.$router.push({path : path});

@@ -96,7 +96,7 @@ export default {
           this.registerForm.username = res.username;
           this.registerForm.name = res.name;
           this.registerForm.password = res.password;
-          this.registerForm.sex = res.sex;
+          this.registerForm.sex = res.sex ;
           this.registerForm.phoneNum = res.phoneNum;
           this.registerForm.email = res.email;
           this.registerForm.birth = res.birth;
