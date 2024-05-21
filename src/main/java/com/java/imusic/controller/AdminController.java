@@ -2,6 +2,7 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.service.AdminService;
+import com.java.imusic.service.impl.MailUtil;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,9 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private MailUtil mailUtil;
 
     /**
      * 判断是否登录成功
@@ -36,9 +40,11 @@ public class AdminController {
             return jsonObject;
         }
 
+
         jsonObject.put(Consts.CODE,1);
         jsonObject.put(Consts.MSG,"登录成功");
         session.setAttribute(Consts.NAME,name);
+
         Cookie cookie_name = new Cookie("cookie_name",name);
         Cookie cookie_password = new Cookie("cookie_password",password);
         cookie_name.setMaxAge(60 * 60);//1h
@@ -52,6 +58,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/login/preLogin",method = RequestMethod.POST)
     public Object preLogin(HttpServletRequest request){
+        mailUtil.sendMail("machenyu2004@163.com");
         JSONObject jsonObject = new JSONObject();
         String name = "";
         String password = "";
