@@ -20,7 +20,7 @@
         <result column="update_time" jdbcType="TIMESTAMP"
                 property="updateTime"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="singer_id" jdbcType="INTEGER" property="singerID"/>
+        <result column="singer_id" jdbcType="INTEGER" property="singerId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -64,7 +64,7 @@
             <if test="name != null">
                 name,
             </if>
-            <if test="singerID != null">
+            <if test="singerId != null">
                 singer_id,
             </if>
         </trim>
@@ -103,8 +103,8 @@
             <if test="name != null">
                 #{name},
             </if>
-            <if test="singerID != null">
-                #{singerID},
+            <if test="singerId != null">
+                #{singerId},
             </if>
         </trim>
     </insert>
@@ -141,8 +141,8 @@
             <if test="name != null">
                 name = #{name},
             </if>
-            <if test="singerID != null">
-                singer_id = #{singerID},
+            <if test="singerId != null">
+                singer_id = #{singerId},
             </if>
         </set>
         where id = #{id}

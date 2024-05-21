@@ -102,7 +102,7 @@ public class UserController {
         }
 
         //Integer userID = userService.lastUserID()+1;
-        //Integer singerID = singerService.lastSingerID()+1;
+        //Integer singerId = singerService.lastSingerID()+1;
 
         //保存到前端用户的对象中
         User user = new User();
@@ -116,7 +116,7 @@ public class UserController {
         user.setLocation(location);
         user.setProfilePicture(profilePicture);
         user.setName(name);
-        //user.setSingerID(singerID);
+        //user.setSingerID(singerId);
         //user.setId(userID);
 
         boolean flag = userService.insert(user);
@@ -145,9 +145,9 @@ public class UserController {
             return jsonObject;
         }
 
-        Integer singerID = singerService.lastSingerID();
+        Integer singerId = singerService.lastSingerID();
         user.setId(userID);
-        user.setSingerID(singerID);
+        user.setSingerId(singerId);
 
         flag = userService.update(user);
         if (!flag) {   //保存成功
@@ -237,7 +237,7 @@ public class UserController {
         }
 
         Singer singer = new Singer();
-        singer.setId(user.getSingerID());
+        singer.setId(user.getSingerId());
         singer.setSex(new Byte(sex));
         singer.setBirth(birthDate);
         singer.setIntroduction(introduction);
@@ -270,8 +270,8 @@ public class UserController {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "用户删除失败");
         }
-        Singer singer = singerService.selectByPrimaryKey(user.getSingerID());
-        if(!singerService.delete(user.getSingerID())){
+        Singer singer = singerService.selectByPrimaryKey(user.getSingerId());
+        if(!singerService.delete(user.getSingerId())){
             jsonObject.put(Consts.CODE,0);
             jsonObject.put(Consts.MSG,"删除用户对应歌手失败");
             return jsonObject;
@@ -285,7 +285,7 @@ public class UserController {
 
         }
 
-        List<Song> songs = songService.songOfSingerId(user.getSingerID());
+        List<Song> songs = songService.songOfSingerId(user.getSingerId());
         for (Song song : songs){
             String songUrl = song.getUrl();
             String picUrl = song.getPic();
@@ -368,9 +368,9 @@ public class UserController {
             profilePictureFile.transferTo(dest);
             User user = userService.getUserWithID(id);
             user.setProfilePicture(storeProfilePicturePath);
-            Singer singer = singerService.selectByPrimaryKey(user.getSingerID());
+            Singer singer = singerService.selectByPrimaryKey(user.getSingerId());
             String oldPic = singer.getPic();
-            singer.setId(user.getSingerID());
+            singer.setId(user.getSingerId());
             singer.setPic(storeProfilePicturePath);
             boolean flag = userService.update(user);
             if (!flag) {

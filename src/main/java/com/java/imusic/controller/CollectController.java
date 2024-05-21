@@ -60,15 +60,15 @@ public class CollectController {
         }
 
         //保存到收藏的对象中
-        Collect Collect = new Collect();
-        Collect.setUserId(Integer.parseInt(userId));
-        Collect.setType(typeByte);
+        Collect collect = new Collect();
+        collect.setUserId(Integer.parseInt(userId));
+        collect.setType(typeByte);
         if(typeByte == 0)
-            Collect.setSongId(Integer.parseInt(songId));
+            collect.setSongId(Integer.parseInt(songId));
         else if(typeByte == 1)
-            Collect.setSongListId(Integer.parseInt(songListId));
+            collect.setSongListId(Integer.parseInt(songListId));
 
-        boolean flag = collectService.insert(Collect);
+        boolean flag = collectService.insert(collect);
         if (flag) {   //保存成功
             jsonObject.put(Consts.CODE, 1);
             jsonObject.put(Consts.MSG, "收藏成功");

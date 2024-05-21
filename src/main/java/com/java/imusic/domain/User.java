@@ -35,5 +35,5 @@ public class User {
     private Date updateTime;
     /*用户昵称*/
     private String name;
-    private Integer singerID;
+    private Integer singerId;
 }
