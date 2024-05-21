@@ -93,7 +93,7 @@ export default {
     },
     // 获取图片地址
     attachImageUrl (srcurl){
-      console.log(srcurl);
+      // console.log(srcurl);
       if(srcurl){
         return this.$store.state.configure.HOST + srcurl;
       }

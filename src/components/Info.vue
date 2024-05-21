@@ -71,6 +71,8 @@ export default {
         introduction: '',    //签名
         location: ''      // 地区
       },
+      usernameOrigin : '', // 原始用户名
+      nameOrigin : '',      // 原始昵称
       cities: [],     // 所有的地区 -- 省
       rules: {}   // 表单提交的规则
     }
@@ -100,6 +102,10 @@ export default {
           this.registerForm.birth = res.birth;
           this.registerForm.introduction = res.introduction;
           this.registerForm.location = res.location
+          // 获得用户的原始账号（用户名）
+          this.usernameOrigin = this.registerForm.username;
+          // 获得用户的原始昵称
+          this.nameOrigin = this.registerForm.name;
         })
         .catch(err => {
           console.log(err);
@@ -115,7 +121,9 @@ export default {
       let params = new URLSearchParams();
       params.append('id' , this.userId);
       params.append('username', this.registerForm.username);
+      params.append('usernameOrigin',this.usernameOrigin);
       params.append('name', this.registerForm.name);
+      params.append('nameOrigin', this.nameOrigin);
       params.append('password', this.registerForm.password);
       params.append('sex', this.registerForm.sex);
       params.append('phoneNum', this.registerForm.phoneNum);
@@ -123,6 +131,9 @@ export default {
       params.append('birth', datetime);
       params.append('introduction', this.registerForm.introduction);
       params.append('location', this.registerForm.location);
+      // params.forEach((value, key)=>{
+      //   console.log(key, value);
+      // })
       updateUserMsg(params)
         .then(res => {
           if (res.code === 1) {
@@ -130,8 +141,9 @@ export default {
             this.$store.commit('setUsername',this.registerForm.username);
             _this.notify('修改成功', 'success');
             setTimeout(function () {
-              _this.router.push({path : '/'});
-            }, 2000);
+              _this.changeIndex('首页');
+              _this.$router.push({path : '/'});
+            }, 1000);
           } else {
             _this.notify('修改失败', 'error');
           }
