@@ -5,7 +5,7 @@
         <img :src="attachImageUrl(avatar)" alt="">
       </div>
       <div class="basic-info-under-avatar">
-        {{username}}
+        {{ name }}
         <br>
       </div>
       <div class="album-menu">
@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import {mixin} from '../mixins';
+import {mixin} from '../../mixins';
 import {mapGetters} from "vuex";
-import {getUserOfId , getCollectOfUserId , songOfSongId} from "../api";
-import AlbumContent from "../components/AlbumContent.vue";
-import {navMsg} from "../assets/data/menuOfMyMusic";
+import {getUserOfId , getCollectOfUserId , songOfSongId} from "../../api";
+import AlbumContent from "../../components/AlbumContent.vue";
+import {navMsg} from "../../assets/data/menuOfMyMusic";
 export default {
   name: 'myMusic',
   mixins : [mixin],
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       navMsg: [],     //菜单栏
-      activeName: '个人信息',
+      activeName: '我的收藏',
       avatar : '',    // 用户头像
       username : '',     // 用户名
       name : '',        // 昵称
@@ -104,8 +104,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/css/my-music.scss';
+@import '../../assets/css/my-music';
 </style>
 <style lang="scss" scoped>
-@import "../assets/css/the-header.scss";
+@import "../../assets/css/the-header";
 </style>

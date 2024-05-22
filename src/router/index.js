@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home'
-import MyMusic from "@/pages/MyMusic";
+import MyMusic from "@/pages/MyMusic/MyMusic.vue";
 import Singer from "@/pages/Singer";
 import SongList from "@/pages/SongList";
 import Search from "@/pages/Search"
@@ -11,11 +11,12 @@ import SongListAlbum from "@/pages/SongListAlbum.vue";
 import SignUp from "@/pages/SignUp";
 import LoginIn from "@/pages/LoginIn";
 import Setting from "@/pages/Setting";
-import Personal from "@/pages/Personal.vue";
-import MyFavor from "@/pages/MyFavor.vue";
-import MySongList from "@/pages/MySongList.vue";
-import MySongs from "@/pages/MySongs.vue";
-import MyCare from "@/pages/MyCare.vue";
+import MyFavor from "@/pages/MyMusic/MyFavor.vue";
+import MySongList from "@/pages/MyMusic/MySongList.vue";
+import MySongs from "@/pages/MyMusic/MySongs.vue";
+import MyCare from "@/pages/MyMusic/MyCare.vue";
+import FavorSongs from "@/pages/MyMusic/FavorSongs.vue";
+import FavorSongList from "@/pages/MyMusic/FavorSongList.vue";
 Vue.use(Router)
 
 export default new Router({
@@ -32,18 +33,30 @@ export default new Router({
       children: [
         {
           path: '',
-          name: 'personal-information',
-          component: Personal
-        },
-        {
-          path: 'personal',
-          name: 'personal-information',
-          component: Personal
+          name: 'my-favor',
+          component: MyFavor
         },
         {
           path: 'my-favor',
           name: 'my-favor',
-          component: MyFavor
+          component: MyFavor,
+          children: [
+            {
+              path: '',
+              name: 'songs',
+              component: FavorSongs,
+            },
+            {
+              path: 'songs',
+              name: 'songs',
+              component: FavorSongs,
+            },
+            {
+              path: 'songList',
+              name: 'songList',
+              component: FavorSongList,
+            },
+          ]
         },
         {
           path: 'my-songList',

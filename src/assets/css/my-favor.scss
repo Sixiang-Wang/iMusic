@@ -1,0 +1,22 @@
+@import "var.scss";
+.album-menu {
+  height: 50px;
+  padding: $header-padding;
+  background: white;
+  box-sizing: border-box;
+
+  li {
+    margin: 10px 20px;
+    //padding: $header-nav-padding;
+    font-size: $font-size-header;
+    color: $color-black;
+    text-align: center;
+    border-bottom: none;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+}
+
+.current {
+  color: darkcyan !important
+}

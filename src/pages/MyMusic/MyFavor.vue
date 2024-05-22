@@ -1,23 +1,29 @@
-
 <template>
-  <album-content :song-list="collectList"></album-content>
+  <div>
+    <div class="album-menu">
+      <ul>
+        <li :class="{current: this.activeName === 'songs' }"
+            @click="goPage('songs','/my-music/my-favor/songs')">歌曲</li>
+        <li :class="{current: this.activeName === 'songList' }"
+            @click="goPage('songList','/my-music/my-favor/songList')">歌单</li>
+      </ul>
+    </div>
+    <router-view></router-view>
+  </div>
 </template>
 
-<style scoped lang = "scss">
 
-</style>
 <script>
 
-import AlbumContent from "../components/AlbumContent.vue";
-import {getCollectOfUserId, songOfSongId} from "../api";
+import AlbumContent from "../../components/AlbumContent.vue";
+import {getCollectOfUserId, songOfSongId} from "../../api";
 import {mapGetters} from "vuex";
 
 export default {
   components: {AlbumContent},
   data() {
     return {
-      activeName: '个人信息',
-      username : '',     // 用户
+      activeName: 'songs',
       collection: [] ,     // 收藏的歌曲列表
       collectList : [],     // 收藏的歌曲列表（带歌曲详情）
     }
@@ -31,6 +37,10 @@ export default {
     this.getCollection(this.userId);
   },
   methods: {
+    goPage(name,path){
+      this.activeName = name;
+      this.$router.push({path: path})
+    },
     // 获取我的收藏列表
     getCollection(userId){
       getCollectOfUserId(userId)
@@ -60,3 +70,7 @@ export default {
   }
 }
 </script>
+
+<style scoped lang = "scss">
+@import "../../assets/css/my-favor";
+</style>

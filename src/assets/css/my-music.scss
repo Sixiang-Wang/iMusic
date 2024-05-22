@@ -18,8 +18,8 @@
 
 /*顶部*/
 .album-header {
-  margin-top: $header-height ;
-  background-image: url("../assets/img/starsky.jpg");
+  margin-top: $header-height;
+  background-image: url('../../assets/img/starsky.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -38,6 +38,7 @@
     border-radius: 50%;
     overflow: hidden;
     border: 5px solid $color-white;
+
     img {
       width: 100%;
     }
@@ -50,6 +51,7 @@
     font-size: 32px;
     color: $color-white;
   }
+
   .album-menu {
     margin-top: 80px;
     position: relative;
@@ -59,6 +61,7 @@
     padding: $header-padding;
     //background-color: $theme-header-color;
     box-sizing: border-box;
+
     li {
       margin: $header-nav-margin;
       padding: $header-nav-padding;
@@ -71,40 +74,13 @@
 
     }
   }
+
   .current {
     color: darkcyan !important
 
   }
-  /*信息*/
-  .album-info {
-    color: $color-white;
-    width: 500px;
-    font-size: 20px;
-    font-weight: 500;
-    margin-top: 10px;
-    margin-left: 30%;
-    padding: 30px 30px;
-    position: relative;
-    li {
-      width: 100%;
-      line-height: 40px;
-    }
-  }
 }
 
-/*歌单内容*/
-.album-content {
-  margin-left: 300px;
-  padding: 40px 100px;
-  /*歌单题目*/
-  .album-title {
-    font-size: 30px;
-    font-weight: 600;
-  }
 
-  .songs-body {
-    margin-top: 50px;
-  }
-}
 
 
