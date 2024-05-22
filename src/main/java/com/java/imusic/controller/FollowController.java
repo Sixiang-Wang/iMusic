@@ -45,7 +45,7 @@ public class FollowController {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public Object deleteFollow(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-        Integer id = Integer.parseInt(request.getParameter("userId"));           //id
+        Integer id = Integer.parseInt(request.getParameter("id"));           //id
 
         boolean flag = followService.delete(id)>0;
         if(!flag){
