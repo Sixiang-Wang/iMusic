@@ -29,6 +29,10 @@ public interface FollowMapper {
      */
     public Follow selectByPrimaryKey(Integer id);
 
+
+
+    public Follow selectByUserIdAndSingerId(@Param("userId")Integer userId,@Param("singerId")Integer singerId);
+
     /**
      * 查用户关注的人
      * @param id

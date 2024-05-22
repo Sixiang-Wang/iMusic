@@ -57,6 +57,12 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
+    public Follow selectByUserIdAndSingerId(Integer userId,Integer singerId){
+        return followMapper.selectByUserIdAndSingerId(userId,singerId);
+    }
+
+
+    @Override
     public List<Follow> getByUserId(Integer userId) {
         return followMapper.getByUserId(userId);
     }

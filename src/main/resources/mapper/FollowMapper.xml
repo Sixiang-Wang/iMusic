@@ -66,6 +66,15 @@
         where id=#{id}
     </select>
 
+    <select id="selectByUserIdAndSingerId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from follow
+        where user_id=#{userId}
+        and singer_id=#{singerId}
+        limit 1
+    </select>
+
     <select id="allFollow" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
