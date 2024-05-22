@@ -61,6 +61,7 @@ export default {
       .then((res) => {
         if (res.code === 1) {
           this.$router.push('/Info')
+          localStorage.setItem('userName', res.name)
           this.notify('自动登录成功', 'success')
         }
       })

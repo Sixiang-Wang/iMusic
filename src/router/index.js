@@ -49,6 +49,10 @@ export default new Router({
         {
           path: '/Comment',
           component: resolve => require(['../pages/CommentPage.vue'], resolve)
+        },
+        {
+          path: '/Follow',
+          component: resolve => require(['../pages/FollowPage.vue'], resolve)
         }
 
       ]

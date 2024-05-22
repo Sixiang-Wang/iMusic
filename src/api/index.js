@@ -9,6 +9,8 @@ export const logout = () => post(`admin/login/logout`)
 // 查询歌手
 export const getAllSinger = () => get(`singer/allSinger`)
 
+export const getSingerById = (singerId) => get(`singer/selectByPrimaryKey?id=${singerId}`)
+
 export const oneSingerOfName = (name) => get(`singer/oneSingerOfName?name=${name}`)
 // 添加歌手
 export const setSinger = (params) => post(`singer/add`, params)
@@ -75,3 +77,10 @@ export const deleteCollection = (userId, songId) => get(`collect/delete?userId=$
 export const getCommentOfSongListId = (songListId) => get(`/comment/commentOfSongListId?songListId=${songListId}`)
 // 删除评论
 export const deleteComment = (id) => get(`comment/delete?id=${id}`)
+
+// =========mail
+//
+export const sendMail = (to) => get(`/mail/sendMail?to=${to}`)
+
+export const getFollowByUserId = (userId) => get(`/follow/getByUserId?userId=${userId}`)
+export const deleteFollow = (id) => get(`/follow/delete?id=${id}`)

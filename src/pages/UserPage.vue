@@ -40,11 +40,16 @@
       <el-table-column label="收藏" width="80" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="getCollect(data[scope.$index].id)">收藏</el-button>
+          <br>
+          <el-button size="mini" @click="getFollow(data[scope.$index].id)">关注</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150" align="center">
+      <el-table-column label="操作" width="120" align="center">
         <template slot-scope="scope">
+          <el-button size="mini"  @click="handleMail(scope.row)">骚扰</el-button>
+          <br>
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <br>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -152,7 +157,7 @@
 </template>
 
 <script>
-import {getAllUser, setUser, updateUser, delUser} from '../api/index'
+import {getAllUser, setUser, updateUser, delUser, sendMail} from '../api/index'
 import {mixin} from '../mixins/index'
 import row from 'element-ui/packages/row'
 
@@ -312,6 +317,12 @@ export default {
         }
       })
     },
+    handleMail (row) {
+      sendMail(row.email)
+        .then(res => {
+          this.notify(`向${row.email}发送了验证码${res.verifyCode}`)
+        })
+    },
     //弹出编辑页面
     handleEdit (row) {
       this.editVisible = true
@@ -334,7 +345,8 @@ export default {
     editSave () {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          let d = this.form.birth
+          let d = new Date(this.form.birth)
+
           let datetime
           if (d) {
             datetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
@@ -392,6 +404,9 @@ export default {
     //转向该用户的收藏列表
     getCollect (id) {
       this.$router.push({path: '/collect', query: {id}})
+    },
+    getFollow (id) {
+      this.$router.push({path: '/follow', query: {id}})
     }
   }
 }
