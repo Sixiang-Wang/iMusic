@@ -82,13 +82,22 @@ public class CollectController {
     /**
      * 删除收藏
      */
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public Object deleteCollect(HttpServletRequest request) {
+    @RequestMapping(value = "/deleteCollectSong", method = RequestMethod.GET)
+    public Object deleteCollectSong(HttpServletRequest request) {
         String userId = request.getParameter("userId");           //用户id
         String songId = request.getParameter("songId");           //歌曲id
-        boolean flag = collectService.deleteByUserIdSongId(Integer.parseInt(userId), Integer.parseInt(songId));
-        return flag;
+        return collectService.deleteByUserIdSongId(Integer.parseInt(userId), Integer.parseInt(songId));
     }
+
+    @RequestMapping(value = "/deleteCollectSongList", method = RequestMethod.GET)
+    public Object deleteCollectSongList(HttpServletRequest request) {
+        String userId = request.getParameter("userId");           //用户id
+        String songListId = request.getParameter("songListId");           //歌曲id
+        return collectService.deleteByUserIdSongId(Integer.parseInt(userId), Integer.parseInt(songListId));
+    }
+
+
+
 
     /**
      * 查询所有收藏
