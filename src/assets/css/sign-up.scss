@@ -48,7 +48,7 @@
 }
 .gradient-background {
   /* 设置元素的背景为冷色调的径向渐变 */
-  background: linear-gradient(to right, #56CCF2, #2F80ED, #91D2FA);
+  background: linear-gradient(to top,  rgb(242, 225, 218),rgb(71, 198, 192));
 
   /* 确保渐变背景覆盖整个元素 */
   min-height: 100vh; /* 使用视口高度的100% */
