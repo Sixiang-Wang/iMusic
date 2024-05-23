@@ -53,8 +53,29 @@ public class FollowController {
     public Object deleteFollow(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         Integer id = Integer.parseInt(request.getParameter("id"));           //id
-
         boolean flag = followService.delete(id)>0;
+        if(!flag){
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "取消失败");
+            return jsonObject;
+        }
+        jsonObject.put(Consts.CODE, 1);
+        jsonObject.put(Consts.MSG, "取消成功");
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/deleteByUserIdAndSingerId", method = RequestMethod.GET)
+    public Object deleteByUserIdAndSingerId(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        Integer singerId = Integer.parseInt(request.getParameter("singerId"));
+        Follow follow = followService.selectByUserIdAndSingerId(userId,singerId);
+        if(follow==null){
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "未关注");
+            return jsonObject;
+        }
+        boolean flag = followService.delete(follow.getId())>0;
         if(!flag){
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "取消失败");
