@@ -127,10 +127,9 @@ public class CollectController {
         if (!uId.isEmpty()) {
             userId = Integer.parseInt(uId);
         }
-
         if (userId > 0) {
             // 查到所有用户的收藏列表
-            List<Collect> list = collectService.allCollect();
+            List<Collect> list = collectService.collectOfUserId(userId);
             List<Song> collectSong = new ArrayList<>();
             for (Collect collect : list) {
                 if(collect.getType()==0){
