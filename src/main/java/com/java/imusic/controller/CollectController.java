@@ -169,5 +169,19 @@ public class CollectController {
         return null;
     }
 
+    @RequestMapping(value = "/existCollectSong", method = RequestMethod.GET)
+    public Object existCollectSong(HttpServletRequest request) {
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        Integer songId = Integer.parseInt(request.getParameter("songId"));
+        return collectService.existSongId(userId,songId);
+    }
+
+    @RequestMapping(value = "/existCollectSongList", method = RequestMethod.GET)
+    public Object existCollectSongList(HttpServletRequest request) {
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        Integer songListId = Integer.parseInt(request.getParameter("songListId"));
+        return collectService.existSongListId(userId,songListId);
+    }
+
 }
 
