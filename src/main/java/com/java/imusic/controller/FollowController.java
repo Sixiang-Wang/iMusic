@@ -24,6 +24,13 @@ public class FollowController {
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Integer singerId = Integer.parseInt(request.getParameter("singerId"));
 
+
+        if(followService.existFollow(userId,singerId)){
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "已关注");
+            return jsonObject;
+        }
+
         Follow follow = new Follow();
         follow.setUserId(userId);
         follow.setSingerId(singerId);
@@ -69,6 +76,13 @@ public class FollowController {
         Integer userId = Integer.parseInt(request.getParameter("userId").trim());
         Integer singerId = Integer.parseInt(request.getParameter("singerId").trim());
         return followService.selectByUserIdAndSingerId(userId,singerId);
+    }
+
+    @RequestMapping(value = "/existFollow", method = RequestMethod.GET)
+    public Object existFollow(HttpServletRequest request) {
+        Integer userId = Integer.parseInt(request.getParameter("userId").trim());
+        Integer singerId = Integer.parseInt(request.getParameter("singerId").trim());
+        return followService.existFollow(userId,singerId);
     }
 
     @RequestMapping(value = "/getByUserId", method = RequestMethod.GET)

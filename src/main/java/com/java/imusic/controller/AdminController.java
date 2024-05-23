@@ -45,8 +45,8 @@ public class AdminController {
 
         Cookie cookie_name = new Cookie("cookie_name",name);
         Cookie cookie_password = new Cookie("cookie_password",password);
-        cookie_name.setMaxAge(60 * 60);//1h
-        cookie_password.setMaxAge(60 * 60);//1h
+        cookie_name.setMaxAge(24 * 60 * 60);
+        cookie_password.setMaxAge(24 * 60 * 60);
         cookie_name.setPath(request.getContextPath());
         cookie_password.setPath(request.getContextPath());
         response.addCookie(cookie_name);

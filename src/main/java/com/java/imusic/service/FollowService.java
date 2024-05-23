@@ -28,6 +28,8 @@ public interface FollowService {
 
     public Follow selectByUserIdAndSingerId(Integer userId,Integer singerId);
 
+    public Boolean existFollow(Integer userId,Integer singerId);
+
     /**
      * 查用户关注的人
      * @param id
@@ -55,4 +57,6 @@ public interface FollowService {
      * @return
      */
     public Integer getCountBySingerId(Integer id);
+
+
 }

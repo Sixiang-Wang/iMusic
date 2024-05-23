@@ -61,6 +61,10 @@ public class FollowServiceImpl implements FollowService {
         return followMapper.selectByUserIdAndSingerId(userId,singerId);
     }
 
+    @Override
+    public Boolean existFollow(Integer userId,Integer singerId){
+        return followMapper.existFollow(userId,singerId) > 0;
+    }
 
     @Override
     public List<Follow> getByUserId(Integer userId) {

@@ -33,6 +33,7 @@ public interface FollowMapper {
 
     public Follow selectByUserIdAndSingerId(@Param("userId")Integer userId,@Param("singerId")Integer singerId);
 
+    public Integer existFollow(@Param("userId")Integer userId,@Param("singerId")Integer singerId);
     /**
      * 查用户关注的人
      * @param id
