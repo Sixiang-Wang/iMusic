@@ -39,7 +39,10 @@
     width: 25%;
   }
   .item-intro {
-    width: 40%;
+    width: 35%;
+  }
+  .icon.active {
+    color: red !important;
   }
 }
 
@@ -49,7 +52,7 @@
 }
 
 .icon {
-  @include icon(1.3em, $color-blue-active);
-  vertical-align: -0.3em;
+  @include icon(1.3em, $color-grey);
+  vertical-align: -0.4em;
   right: 5px;
 }

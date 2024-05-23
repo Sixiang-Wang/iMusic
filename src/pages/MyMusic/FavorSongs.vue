@@ -5,12 +5,11 @@
 <script>
 import AlbumContent from "../../components/AlbumContent.vue";
 import {mapGetters} from "vuex";
-import {getCollectOfUserId, songOfSongId} from "../../api";
+import {collectSongOfUserId} from "../../api";
 export default {
   components: {AlbumContent},
   data() {
     return {
-      collection: [] ,     // 收藏的歌曲列表
       collectList : [],     // 收藏的歌曲列表（带歌曲详情）
     }
   },
@@ -19,35 +18,16 @@ export default {
       'userId'          // 当前登录用户id
     ]),
   },
-  mounted() {
+  created() {
     this.getCollection(this.userId);
   },
   methods: {
-    // 获取我的收藏列表
-    getCollection(userId){
-      getCollectOfUserId(userId)
-        .then(res => {
-          this.collection = res;
-          // 通过歌曲id获取歌曲信息
-          for(let item of this.collection){
-            if(item.songId !== null){
-              this.getSongsOfId(item.songId);
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-    },
-    //通过歌曲id获取歌曲信息
-    getSongsOfId(id){
-      songOfSongId(id)
-        .then(res => {
-          this.collectList.push(res);
-        })
-        .catch(err => {
-          console.log(err);
-        })
+    getCollection(userId) {
+      collectSongOfUserId(userId).then(res => {
+        this.collectList = res;
+      }).catch(error => {
+        console.log('get collection of songs fails\n' + error);
+      })
     }
   }
 }

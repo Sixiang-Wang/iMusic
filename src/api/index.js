@@ -7,6 +7,9 @@ import Axios from "axios";
 // 查询歌手
 export const getAllSinger =() =>get(`singer/allSinger`);
 
+export const getSingerById = (id) => get(`singer/selectByPrimaryKey?id=${id}`)
+
+export const getOneSingerByName = (name) => get(`singer/oneSingerOfName?name=${name}`)
 // ============歌曲相关=============
 // 根据歌手id查询歌曲
 export const songOfSingerId =(id) =>get(`song/singer/detail?singerId=${id}`);
@@ -66,7 +69,20 @@ export const setLike = (params) => post(`comment/like`, params);
 // 返回当前歌单或歌曲的评论区列表
 
 // =============== 收藏 ==================
+// 判断歌曲是否已收藏
+export const existCollectSong = (userId, songId) => get(`collect/existCollectSong?userId=${userId}&songId=${songId}`);
+
+// 判断歌单是否已收藏
+export const existCollectSongList = (userId, songListId) => get(`collect/existCollectSongList?userId=${userId}&songListId=${songListId}`);
 // 新增收藏
 export const setCollect = (params) => post(`collect/add` ,params);
+// 取消收藏
+export const deleteCollectSong = (userId,songId) => get(`collect/deleteCollectSong?userId=${userId}&songId=${songId}`);
+export const deleteCollectSongList = (userId,songListId) => get(`collect/deleteCollectSongList?userId=${userId}&songListId=${songListId}`);
 // 指定用户的收藏列表
 export const getCollectOfUserId = (userId) => get(`collect/collectOfUserId?userId=${userId}` , userId);
+
+//获取用户的收藏歌曲，返回一个list
+export const collectSongOfUserId = (userId) => get(`collect/collectSongOfUserId?userId=${userId}`, userId);
+//获取用户的收藏歌单，返回一个list
+export const collectSongListOfUserId = (userId) => get(`collect/collectSongListOfUserId?userId=${userId}`, userId);

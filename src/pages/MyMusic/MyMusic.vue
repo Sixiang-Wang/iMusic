@@ -33,7 +33,7 @@
 <script>
 import {mixin} from '../../mixins';
 import {mapGetters} from "vuex";
-import {getUserOfId , getCollectOfUserId , songOfSongId} from "../../api";
+import {getUserOfId} from "../../api";
 import AlbumContent from "../../components/AlbumContent.vue";
 import {navMsg} from "../../assets/data/menuOfMyMusic";
 export default {

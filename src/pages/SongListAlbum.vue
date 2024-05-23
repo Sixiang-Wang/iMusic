@@ -60,8 +60,7 @@ export default {
       songListId: '',
       average: 0,
       rank: 0,
-      selfRank: 0,
-      star: this.average / 2,
+      selfRank: 0
     }
   },
   computed: {
@@ -74,6 +73,7 @@ export default {
         "userId"
       ]
     ),
+    star: this.average / 2,
   },
   created() {
     this.songListId = this.$route.params.id;
@@ -120,7 +120,6 @@ export default {
       params.append('userId', this.userId);
       getRankOfSongListIdAndUserId(params).then(res =>
         {
-          // this.notify(res.rank)
           this.selfRank = res.rank
         })
     },

@@ -83,7 +83,8 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {download, getCollectOfUserId, setCollect} from "../api/index";
+import {deleteCollectSong, download, getCollectOfUserId, setCollect} from "../api/index";
+import th from "element-ui/src/locale/lang/th";
 
 export default {
   name: 'play-bar',
@@ -153,7 +154,7 @@ export default {
     // 自动播放下一首
     autoNext () {
       this.next()
-    }
+    },
   },
   methods: {
     // 控制音乐播放与暂停
@@ -386,10 +387,12 @@ export default {
               this.notify('收藏成功' , 'success');
             }
             else if(res.code === 2){
-              this.notify('已收藏'  , 'warning');
+              this.$store.commit('setIsActive',false);
+              deleteCollectSong(this.userId,this.id);
+              this.notify('取消成功', 'success');
             }
             else{
-              this.notify('收藏失败' , 'error');
+              this.notify('收藏失败', 'error');
             }
           })
       }
