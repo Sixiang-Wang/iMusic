@@ -35,13 +35,20 @@ public class SongListController {
         String pic = request.getParameter("pic").trim();        //歌单图片
         String introduction = request.getParameter("introduction").trim();//简介
         String style = request.getParameter("style").trim();    //风格
-
+        String userIdS = request.getParameter("userId");
+        int userId;
+        if (userIdS==null || userIdS.isEmpty()){
+            userId = -1;
+        } else{
+            userId = Integer.parseInt(userIdS);
+        }
         //保存到歌单的对象中
         SongList songList = new SongList();
         songList.setTitle(title);
         songList.setPic(pic);
         songList.setIntroduction(introduction);
         songList.setStyle(style);
+        songList.setUserId(userId);
         boolean flag = songListService.insert(songList);
         if(flag){   //保存成功
             jsonObject.put(Consts.CODE,1);
