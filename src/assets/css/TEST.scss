@@ -1,0 +1,59 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>动态变换背景</title>  
+<style>  
+  body, html {  
+    margin: 0;  
+    padding: 0;  
+    height: 100%;  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+    background-color: #f0f0ff; /* 淡蓝色背景 */  
+  }  
+  
+  .container {  
+    position: relative;  
+    width: 300px;  
+    height: 200px;  
+    overflow: hidden; /* 隐藏超出容器的内容 */  
+  }  
+  
+  .container::before {  
+    content: "";  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    width: 100%;  
+    height: 100%;  
+    background:   
+      radial-gradient(circle at 50% 50%, transparent 0, transparent 30%, white 30%, white 50%, pink 50%, pink 70%, transparent 70%, transparent 100%);  
+    /* 使用径向渐变来模拟不规则形状 */  
+    animation: colorChange 3s infinite; /* 应用动画 */  
+  }  
+  
+  @keyframes colorChange {  
+    0% {  
+      background-position: 50% 50%; /* 初始位置 */  
+    }  
+    50% {  
+      background-position: 100% 0; /* 中间位置，模拟形状移动 */  
+      background:   
+        radial-gradient(circle at 100% 0, transparent 0, transparent 30%, pink 30%, pink 50%, white 50%, white 70%, transparent 70%, transparent 100%);  
+      /* 中间帧改变渐变颜色和位置 */  
+    }  
+    100% {  
+      background-position: 50% 50%; /* 回到初始位置，但颜色已经改变 */  
+    }  
+  }  
+</style>  
+</head>  
+<body>  
+  
+<div class="container"></div>  
+  
+</body>  
+</html>

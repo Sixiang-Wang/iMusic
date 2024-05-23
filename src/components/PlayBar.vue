@@ -38,7 +38,7 @@
               <div ref="curProgress" class="cur-progress" :style="{width: curLength + '%'}"></div>
             </div>
 <!--            拖动点-->
-            <div ref="idot" class="idot" :style="{left: curLength + '%'}" @mousedown="mousedown" @mouseup="mouseup"></div>
+            <div ref="idot" class="idot" :style="{left: curLength -1 + '%' }" @mousedown="mousedown" @mouseup="mouseup"></div>
           </div>
         </div>
 <!--        播放结束时间-->
