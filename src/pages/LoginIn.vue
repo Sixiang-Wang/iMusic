@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <loginLogo />
+  <div class="gradient-background">
+<!--    <loginLogo />-->
     <div class="signUp">
       <div class="signUp-head">
         <span>用户登录</span>
@@ -18,7 +18,6 @@
           ></el-input>
           <i @click="togglePasswordVisibility"></i>
         </el-form-item>
-
         <div class="login-btn">
           <el-button @click="goSignUp">注册</el-button>
           <el-button type="primary" @click="handleLoginIn">登录</el-button>

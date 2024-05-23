@@ -3,14 +3,14 @@
     <p class="title">修改头像</p>
     <hr />
     <div class="section">
-      <el-upload drag :action="uploadUrl()" :show-file-list="false" :on-success="handleAvatarSuccess"
-                 :before-remove="beforeAvatarUpload">
+      <el-upload class="custom-upload" drag :action="uploadUrl()" :show-file-list="false" :on-success="handleAvatarSuccess"
+                 :before-remove="beforeAvatarUpload"   :on-change="handleFileChange">
         <i class="el-icon-upload"></i>
-        <div>
+        <div class="custom-font">
           将文件拖到此处，或 <span style="color: blue">修改头像</span>
         </div>
-        <div slot="tip">
-          只能上传jpg/png文件，且不能超过10MB
+        <div slot="tip" class="upload-tip">
+          只能上传 jpg 文件，且不能超过10MB
         </div>
       </el-upload>
     </div>
@@ -24,6 +24,12 @@ import avatar from "element-ui/packages/avatar";
 export default {
   name: 'upload',
   mixins: [mixin],
+  data() {
+    return {
+      imageSrc: '', // 用于存储图片的DataURL
+      scaledCropedImage: null, // 用于存储缩放和裁剪后的图片
+    };
+  },
   computed:{
     ...mapGetters([
       'userId'
@@ -49,9 +55,10 @@ export default {
     beforeAvatarUpload(file){
       // console.log(file.type);
       const isJPG = file.type==='image/jpg';
+      // const isPNG = file.type==='image/png';
       const isLt10M = file.size / 1024 / 1024 < 10;
       if(!isJPG){
-        this.$notify({title:'上传头像图片只能是JPG格式',type:'error'});
+        this.$notify({title:'上传头像图片只能是 JPG 格式',type:'error'});
         return false;
       }
       if(!isLt10M){
@@ -59,7 +66,7 @@ export default {
         return false;
       }
       return true;
-    }
+    },
   }
 }
 </script>

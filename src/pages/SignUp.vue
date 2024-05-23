@@ -1,6 +1,6 @@
 <template>
-<div>
-  <loginLogo />
+<div class="gradient-background">
+<!--  <loginLogo />-->
   <div class="signUp">
     <div class="signUp-head">
       <span>用户注册</span>
