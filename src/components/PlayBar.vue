@@ -87,7 +87,6 @@ import {download, getCollectOfUserId, setCollect} from "../api/index";
 
 export default {
   name: 'play-bar',
-
   data () {
     return {
       nowTime: '00:00', // 当前播放进度的时间
@@ -210,6 +209,7 @@ export default {
     },
     // 拖拽中
     mousemove (e) {
+      // console.log(this.tag);
       if (!this.duration) {
         // console.log("开发:现无歌曲，无法拖动");
         return false

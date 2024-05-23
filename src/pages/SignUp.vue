@@ -136,9 +136,18 @@ export default {
       let timerId;
       console.log(timerId)
       if (timerId) {
-        return false
+        return false;
       }
-      this.codeLoading = true
+      this.codeLoading = true;
+      let errorTimerId = window.setTimeout(() => {
+        this.notify('请求超时，请稍后再试', 'error');
+        window.clearTimeout(errorTimerId);
+        self.verifyCode = "******";
+        self.codeLoading = false
+        self.isDisable = false;
+        self.statusMsg = '获取验证码';
+      }, 6000); // 6秒后触发
+
       validate(this.registerForm.email).then(res => {
         this.notify('发送成功，验证码有效期 1 分钟', 'success');
         let count = 60
@@ -148,6 +157,7 @@ export default {
         self.statusMsg = `${count--} 秒后重新发送`
         timerId = window.setInterval(function () {
           self.statusMsg = `${count--} 秒后重新发送`
+          window.clearTimeout(errorTimerId);
           if (count <= -1) {
             console.log('clear' + timerId);
             window.clearInterval(timerId);
@@ -160,6 +170,7 @@ export default {
         this.isDisable = false
         this.statusMsg = '获取验证码'
         this.codeLoading = false
+        window.clearTimeout(errorTimerId);
       })
     },
     goback(index){

@@ -52,3 +52,30 @@
 .lyric-fade-leave-active {
   transition: all 0.3s ease;
 }
+
+/* 基础样式 */
+.has-lyric li {
+  color: #000;
+  font-size: 15px;
+  transition: color 0.5s ease, transform 0.5s ease; /* 平滑过渡颜色和大小变化 */
+}
+
+/* 高亮样式 */
+.has-lyric li.highlight {
+  color: #27fdfd; /* 高亮颜色 */
+  font-size: 25px; /* 高亮时的字体大小 */
+  transform: translateY(-10px); /* 向上移动，突出显示 */
+  animation: highlight-pulse 1s infinite; /* 添加动画 */
+}
+
+/* 高亮动画 */
+@keyframes highlight-pulse {
+  0%, 100% {
+    transform: translateY(-10px) scale(1.1); /* 稍微放大 */
+  }
+  50% {
+    transform: translateY(-10px) scale(1); /* 恢复正常大小 */
+  }
+}
+
+

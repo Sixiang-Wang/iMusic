@@ -31,13 +31,14 @@ export default {
       'id', //  当前播放的歌曲id
       'lyric', //  歌词
       'listIndex', // 当前歌曲在歌单中的位置
-      'listOfSongs' // 当前歌曲列表
+      'listOfSongs', // 当前歌曲列表
     ])
   },
   created () {
     this.lyr = this.lyric
-    console.log(this.lyric)
+    // console.log(this.lyric)
   },
+
   watch: {
     id: function () {
       this.lyr = this.parseLyric(this.listOfSongs[this.listIndex].lyric)
@@ -46,19 +47,26 @@ export default {
       if (this.lyr.length > 0) {
         for (let i = 0; i < this.lyr.length; i++) {
           if (this.curTime >= this.lyr[i][0]) {
-            for (let j = 0; j < this.lyr.length; j++) {
-              document.querySelectorAll('.has-lyric li')[j].style.color = '#000'
-              document.querySelectorAll('.has-lyric li')[j].style.fontSize = '15px'
-            }
+            const lyrics = document.querySelectorAll('.has-lyric li');
+            lyrics.forEach((lyric, index) => {
+              lyric.style.color = '#000';
+              lyric.style.fontSize = '15px';
+              lyric.classList.remove('highlight'); // 移除高亮类
+            });
             if (i >= 0) {
-              document.querySelectorAll('.has-lyric li')[i].style.color = '#95d2f6'
-              document.querySelectorAll('.has-lyric li')[i].style.fontSize = '25px'
+              const currentLyric = document.querySelectorAll('.has-lyric li')[i];
+              if (currentLyric) {
+                currentLyric.style.color = '#27fdfd';
+                currentLyric.style.fontSize = '25px';
+                currentLyric.style.border = true;
+                currentLyric.classList.add('highlight');
+              }
             }
           }
         }
       }
     }
-  }
+  },
 }
 </script>
 

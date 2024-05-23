@@ -81,26 +81,41 @@
           background: $color-blue-shallow;
           height: 18px;
           //margin-top: -15px;
-          border-radius: 10px; /* 设置较小的圆角 */  
-          //overflow: hidden; /* 确保超出进度的部分不会显示 */  
+          border-radius: 10px; /* 设置较小的圆角 */
+          //overflow: hidden; /* 确保超出进度的部分不会显示 */
           .bg {
             height: 100%;
+
             .cur-progress {
               height: 100%;
               background: $color-blue-active;
-              border-radius: 10px; /* 设置较小的圆角 */  
-              //overflow: hidden; /* 确保超出进度的部分不会显示 */ 
+              border-radius: 10px; /* 设置较小的圆角 */
+              //overflow: hidden; /* 确保超出进度的部分不会显示 */
             }
           }
+
           .idot {
             width: 24px;
             height: 24px;
             position: relative;
             border-radius: 50%;
-            background-color: #4B0082;
-            top: -21px;
+            background-color: #4B0082; /* 紫色背景 */
+            border: 2px solid #FFFFFF; /* 添加白色边框 */
+            top: -21px; /* 调整到进度条的中心线上 */
             left: 114514px;
             z-index: 1;
+            //cursor: grab;
+            transition: transform 0.2s, border-color 0.2s; /* 添加边框颜色的过渡效果 */
+          }
+
+          .idot:active {
+            //cursor: grabbing;
+            transform: scale(1.2);
+            border-color: #AA00FF; /* 鼠标按下时改变边框颜色为深紫色，增加对比度 */
+          }
+
+          .idot:hover {
+            border-color: #D0BFFF; /* 鼠标悬停时改变边框颜色为浅紫色，增加视觉效果 */
           }
         }
       }
