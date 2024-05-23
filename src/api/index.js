@@ -84,3 +84,4 @@ export const sendMail = (to) => get(`/mail/sendMail?to=${to}`)
 
 export const getFollowByUserId = (userId) => get(`/follow/getByUserId?userId=${userId}`)
 export const deleteFollow = (id) => get(`/follow/delete?id=${id}`)
+export const existFollow = (userId, singerId) => get(`/follow/existFollow?userId=${userId}&singerId=${singerId}`)

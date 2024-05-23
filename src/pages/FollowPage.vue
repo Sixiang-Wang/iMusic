@@ -33,11 +33,9 @@
 <script>
 import {mixin} from '../mixins/index'
 import {
-  songOfSongId,
-  getCollectSongOfUserId,
-  deleteCollection,
+
   getFollowByUserId,
-  getUserOfId,
+
   getSingerById, deleteFollow
 } from '../api/index'
 
@@ -73,7 +71,6 @@ export default {
     this.getData()
   },
   methods: {
-    //查询该用户所有收藏的歌曲
     getData () {
       this.tempData = []
       this.tableData = []
@@ -87,8 +84,6 @@ export default {
         }
       })
     },
-
-    //删除一条歌曲
     deleteRow () {
       deleteFollow(this.idx.id)
         .then(res => {
@@ -104,7 +99,6 @@ export default {
         })
       this.delVisible = false
     },
-    //批量删除已经选择的项
     delAll () {
       for (let item of this.multipleSelection) {
         this.handleDelete(item)

@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import {setSinger, getAllSinger, updateSinger, delSinger} from '../api/index'
+import {setSinger, getAllSinger, updateSinger, delSinger, existFollow} from '../api/index'
 import {mixin} from '../mixins/index'
 import th from 'element-ui/src/locale/lang/th'
 
