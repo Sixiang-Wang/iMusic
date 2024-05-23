@@ -2,8 +2,8 @@
   <div class="content-list">
     <ul class="section-content">
       <li class="content-item" v-for="(item,index) in contentList" :key="index">
-          <div class="kuo">
-            <img class="item-img" :src="attachImageUrl(item.pic)">
+          <div class="kuo" @click="goAlbum(item)">
+            <img class="item-img" :src="attachImageUrl(item.pic)" alt="">
             <div class="mask">
               <svg class="icon">
                 <use xlink:href="#icon-bofang"></use>
@@ -22,8 +22,22 @@ import {mixin} from '../mixins/index'
 export default {
   name: 'content-list',
   mixins: [mixin],
-  props: ['contentList']
+  props: ['contentList'],
+  methods: {
+    goAlbum(item){
+      this.$store.commit('setTempList',item);
+      if (item.name)
+      {
+        this.$router.push({path:`singer-album/${item.id}`});
+      }
+      else
+      {
+        this.$router.push({path:`song-list-album/${item.id}`});
+      }
+    }
+  }
 }
+
 </script>
 
 <style lang="scss" scoped>

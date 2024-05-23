@@ -1,69 +1,86 @@
 @import "var.scss";
 
 .my-music {
-  margin-top: $header-height;
-  padding-top: 150px;
-  background-color: $theme-background-color;
-
-  &::before {
-    /*背景*/
-    content: "";
-    background-color: $theme-color;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: $header-height + 150px;
-  }
+  //margin-top: $header-height;
+  //padding-top: 150px;
+  //background-color: $theme-background-color;
+  //
+  //&::before {
+  //  /*背景*/
+  //  content: "";
+  //  background-color: $theme-color;
+  //  position: absolute;
+  //  top: 0;
+  //  width: 100%;
+  //  height: $header-height + 150px;
+  //}
 }
 
-/*左侧*/
-.album-slide {
-  float: left;
-  width: 400px;
+/*顶部*/
+.album-header {
+  margin-top: $header-height;
+  background-image: url('../../assets/img/starsky.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 400px;
 
   // 图片
   .album-img {
-    height: 200px;
-    width: 200px;
+    margin-top: $header-height - 30px;
+    height: 150px;
+    width: 150px;
     display: inline-block;
     position: relative;
-    top: -100px;
-    left: 50px;
+    left: 45%;
+    text-align: center;
     border-radius: 50%;
     overflow: hidden;
     border: 5px solid $color-white;
+
     img {
       width: 100%;
     }
   }
 
-  /*信息*/
-  .album-info {
-    color: $color-black;
-    width: 500px;
-    font-size: 20px;
-    font-weight: 500;
-    margin-top: -100px;
-    margin-left: 100px;
-    padding: 30px 30px;
+  .basic-info-under-avatar {
+    position: relative;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 32px;
+    color: $color-white;
+  }
+
+  .album-menu {
+    margin-top: 80px;
+    position: relative;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: $header-padding;
+    //background-color: $theme-header-color;
+    box-sizing: border-box;
+
     li {
-      width: 100%;
-      line-height: 40px;
+      margin: $header-nav-margin;
+      padding: $header-nav-padding;
+      font-size: $font-size-header;
+      color: $color-white;
+      text-align: center;
+      border-bottom: none;
+      box-sizing: border-box;
+      cursor: pointer;
+
     }
   }
-}
 
-/*歌单内容*/
-.album-content {
-  margin-left: 300px;
-  padding: 40px 100px;
-  /*歌单题目*/
-  .album-title {
-    font-size: 30px;
-    font-weight: 600;
-  }
+  .current {
+    color: darkcyan !important
 
-  .songs-body {
-    margin-top: 50px;
   }
 }
+
+
+
+

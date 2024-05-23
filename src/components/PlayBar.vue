@@ -1,5 +1,10 @@
 <template>
-  <div class="play-bar">
+  <div class="play-bar" :class="{show:!toggle}">
+    <div @click="toggle=!toggle" class="item-up" :class="{turn:!toggle}">
+      <svg class="icon">
+        <use xlink:href="#icon-jiantou-xia-cuxiantiao"></use>
+      </svg>
+    </div>
     <div class="kongjian">
 <!--      上一首-->
       <div class="item" @click="prev">
@@ -54,8 +59,8 @@
           <el-slider class="volume" v-model="volume" :vertical="true"></el-slider>
         </div>
 <!--        收藏-->
-        <div class="item">
-          <svg class="icon">
+        <div class="item" @click="collection">
+          <svg :class="{active: isActive}" class="icon">
             <use xlink:href="#icon-xihuan-shi"></use>
           </svg>
         </div>
@@ -78,7 +83,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {download} from "../api/index";
+import {download, getCollectOfUserId, setCollect} from "../api/index";
 
 export default {
   name: 'play-bar',
@@ -91,7 +96,8 @@ export default {
       progressLength: 0, // 进度条的总长度
       mouseStartX: 0, // 拖拽开始位置
       tag: false, // 拖拽开始结束的标志,当开始拖拽值为true
-      volume: 50 // 音量默认为50
+      volume: 50, // 音量默认为50
+      toggle : true // 显示隐藏播放器页面
     }
   },
   computed: {
@@ -108,7 +114,10 @@ export default {
       'showAside', // 是否显示播放中的歌曲列表
       'listIndex', // 当前歌曲在歌单中的位置
       'listOfSongs', // 当前歌单列表
-      'autoNext' // 自动播放下一首
+      'autoNext', // 自动播放下一首
+      'loginIn',   // 用户是否已登录
+      'userId',    // 当前登录用户的id
+      'isActive'    // 当前播放歌曲是否已收藏
     ])
   },
   mounted () {
@@ -274,14 +283,25 @@ export default {
     // 播放音乐
     toplay: function (url) {
       if (url && url !== this.url) {
-        this.$store.commit('setId', this.listOfSongs[this.listIndex].id)
-        this.$store.commit('setUrl', this.$store.configure.HOST + url)
-        this.$store.commit('setPicUrl', this.$store.configure.HOST + this.listOfSongs[this.listIndex].pic)
-        this.$store.commit('setTitle', this.replaceFName(this.listOfSongs[this.listIndex].name))
-        this.$store.commit('setArtist', this.replaceLName(this.listOfSongs[this.listIndex].name))
-        console.log(this.listOfSongs[this.listIndex].lyric)
-        console.log('PlayBar')
-        this.$store.commit('setLyric', this.parseLyric(this.listOfSongs[this.listIndex].lyric))
+        this.$store.commit('setId', this.listOfSongs[this.listIndex].id);
+        this.$store.commit('setUrl', this.$store.state.configure.HOST + url);
+        this.$store.commit('setPicUrl', this.$store.state.configure.HOST + this.listOfSongs[this.listIndex].pic);
+        this.$store.commit('setTitle', this.replaceFName(this.listOfSongs[this.listIndex].name));
+        this.$store.commit('setArtist', this.replaceLName(this.listOfSongs[this.listIndex].name));
+        this.$store.commit('setLyric', this.parseLyric(this.listOfSongs[this.listIndex].lyric));
+
+        if(this.loginIn){
+          getCollectOfUserId(this.userId)
+            .then(res => {
+              // 日后优化
+              for(let item of res){
+                if(item.songId === id){
+                  this.$store.commit('setIsActive', true);
+                  break;
+                }
+              }
+            })
+        }
       }
     },
     // 获取名字前半部分 -- 歌手名
@@ -351,6 +371,38 @@ export default {
         .catch(err => {
           console.log(err);
         })
+    },
+    // 收藏
+    collection(){
+      if(this.loginIn){
+        var params = new URLSearchParams();
+        params.append('userId', this.userId);
+        params.append('type', 0);
+        params.append('songId', this.id);
+        setCollect(params)
+          .then(res => {
+            if(res.code === 1){
+              this.$store.commit('setIsActive' ,true);
+              this.notify('收藏成功' , 'success');
+            }
+            else if(res.code === 2){
+              this.notify('已收藏'  , 'warning');
+            }
+            else{
+              this.notify('收藏失败' , 'error');
+            }
+          })
+      }
+      else{
+        this.notify('请先进行登录' , 'warning');
+      }
+    },
+    // 提示信息
+    notify(title, type) {
+      this.$notify({
+        title: title,
+        type: type
+      })
     }
 
   }

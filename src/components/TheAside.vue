@@ -15,13 +15,17 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {getCollectOfUserId} from "../api";
 export default {
   name: 'the-aside',
   computed: {
     ...mapGetters([
       'showAside', // 是否显示播放中的歌曲列表
       'listOfSongs', // 当前歌曲列表
-      'id' // 播放中的音乐id
+      'id',          // 播放中的音乐id
+      'loginIn',   // 用户是否已登录
+      'userId',    // 当前登录用户的id
+      'isActive'    // 当前播放歌曲是否已收藏
     ])
   },
   mounted () {
@@ -44,14 +48,25 @@ export default {
     // 播放
     toplay: function (id, url, pic, index, name, lyric) {
       this.$store.commit('setId', id)
-      this.$store.commit('setUrl', this.$store.configure + url)
-      this.$store.commit('setPicUrl', this.$store.configure + pic)
+      this.$store.commit('setUrl', this.$store.state.configure.HOST + url)
+      this.$store.commit('setPicUrl', this.$store.state.configure.HOST + pic)
       this.$store.commit('setListIndex', index)
       this.$store.commit('setTitle', this.replaceFName(name))
       this.$store.commit('setArtist', this.replaceLName(name))
-      console.log(lyric)
-      console.log('TheAside')
       this.$store.commit('setLyric', this.parseLyric(lyric))
+
+      if(this.loginIn){
+        getCollectOfUserId(this.userId)
+          .then(res => {
+            // 日后优化
+            for(let item of res){
+              if(item.songId === id){
+                this.$store.commit('setIsActive', true);
+                break;
+              }
+            }
+          })
+      }
     },
     // 解析歌词
     parseLyric (text) {

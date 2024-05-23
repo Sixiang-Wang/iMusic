@@ -29,6 +29,30 @@
   }
 }
 
-.pagination {
-  @include layout;
+.corner-plus-button {
+  position: fixed;
+  top: 80px; /* 根据需要调整距离顶部的距离 */
+  right: 30px; /* 根据需要调整距离右侧的距离 */
+  width: 100px; /* 圆角正方形的宽度 */
+  height: 100px; /* 圆角正方形的高度 */
+  border-radius: 20px; /* 圆角半径，根据需要调整 */
+  background-color: forestgreen;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  cursor: pointer; /* 鼠标悬停时显示为可点击 */
+  z-index: 1000; /* 确保按钮位于其他元素之上 */
+  transition: box-shadow 0.3s ease
+  /* 还可以添加其他样式，如阴影、过渡效果等 */
 }
+
+.corner-plus-button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 悬停时添加阴影效果 */
+}
+
+.plus-sign {
+  color: white; /* 加号颜色为白色 */
+  font-size: 64px; /* 加号字体大小，根据需要调整 */
+  /* 还可以添加其他样式，如字体粗细等 */
+}
+

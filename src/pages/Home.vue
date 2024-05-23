@@ -22,24 +22,24 @@ export default {
   data () {
     return {
       songsList: [
-        {name: '歌单', list: []},
-        {name: '歌手', list: []}
+        {name: '歌 单', list: []},
+        {name: '歌 手', list: []}
       ]
     }
   },
   created () {
-    this.getSongList()
-    this.getSinger()
+    this.getSongListOfTen()
+    this.getSingerOfTen()
   },
   methods: {
-    getSongList () { // 获取前十条歌单
+    getSongListOfTen () { // 获取前十条歌单
       getAllSongList().then((res) => {
         this.songsList[0].list = res.slice(0, 10)
       }).catch((err) => {
         console.log(err)
       })
     },
-    getSinger () { // 获取前十名歌手
+    getSingerOfTen () { // 获取前十名歌手
       getAllSinger().then((res) => {
         this.songsList[1].list = res.slice(0, 10)
       }).catch((err) => {

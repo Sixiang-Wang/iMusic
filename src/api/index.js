@@ -12,22 +12,61 @@ export const getAllSinger =() =>get(`singer/allSinger`);
 export const songOfSingerId =(id) =>get(`song/singer/detail?singerId=${id}`);
 // 根据歌曲id查询歌曲对象
 export const songOfSongId =(id) => get(`song/detail?songId=${id}`);
-// 根据歌手名字模糊查询歌曲
+// 根据歌曲名字模糊查询歌曲
 export const likeSongOfName =(keywords) => get(`song/likeSongOfName?songName=${keywords}`);
 // ============歌单相关==============
 // 查询歌曲
-export const getAllSongList =() => get(`songList/allSongList`);
+export const getAllSongList =() => get(`songList/allSongList`);//获得所有歌单
+
+//添加歌单
+export const setSongList = (params) => post(`songList/add`, params);
+
+//根据歌单标题模糊查询歌单
+export const likeTitle =(keywords) => get(`songList/likeTitle?title=${keywords}`);
 
 // =============歌单的歌曲相关========
 // 根据歌曲id查询歌曲列表
 export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${songListId}`);
 
 // ============用户相关==============
-export const getAllConsumer=()=>get(`consumer/allConsumer`);
 
+// 查询用户
+export const getAllUser=()=>get(`user/allUser`);
+
+// 注册
+export const SignUp = params => post(`user/add`, params);
+
+// 发送验证码
+export const validate = email => get(`mail/sendMail?to=${email}`);
+
+// 登录
+export const LoginIn = params => post(`user/login`, params);
+// 查询该用户的详细信息
+export const getUserOfId = (id) => get(`user/selectByPrimaryKey?id=${id}`);
+
+// 更新
+export const updateUserMsg = params => post(`user/update`, params);
 // 下载音乐
 export const download = (url) => Axios({
   method: 'get',
   url: url,
   responseType: 'blob'
 });
+// =============== 评价 ==================
+//提交评分
+export const commitRank = (param) => post(`rank/add`,param);
+//获取歌单的平均分
+export const getRankOfSongListId = (songListId) => get(`rank/rankOfSongListId?songListId=${songListId}`)
+export const getRankOfSongListIdAndUserId = (params) => post(`rank/rankOfSongListIdAndUserId`,params)
+// =============== 评论 ==================
+// 提交评
+export const setComment = (params) => post(`comment/add`, params);
+// 点赞
+export const setLike = (params) => post(`comment/like`, params);
+// 返回当前歌单或歌曲的评论区列表
+
+// =============== 收藏 ==================
+// 新增收藏
+export const setCollect = (params) => post(`collect/add` ,params);
+// 指定用户的收藏列表
+export const getCollectOfUserId = (userId) => get(`collect/collectOfUserId?userId=${userId}` , userId);
