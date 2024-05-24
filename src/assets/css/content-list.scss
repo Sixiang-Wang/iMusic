@@ -22,44 +22,56 @@
   &:hover .item-img {
     transform: scale(1.1);
   }
-  .item-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    margin: 10px 8px;
-  }
+}
+.kuo {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* 保持宽高比，这里假设宽高比为1:1，根据实际需求调整 */
+  overflow: hidden;
 }
 
 .item-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片覆盖整个容器，同时保持长宽比 */
   transition: all 0.4s ease;
-}
-
-.kuo,
-.mask {
-  width: 100%;
-  padding-bottom: 100%;
-  height: 0;
-  overflow: hidden;
 }
 
 .mask {
   position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: rgba(52, 47, 41, 0.4);
-  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
-  @include layout(center);
-  > .icon {
-    position: absolute;
-    top: 40%;
-  }
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
+  transition: opacity 0.3s ease-in-out;
+}
+
+.mask .icon {
+  fill: #f0f0f0; /* 设置图标颜色 */
+}
+
+.kuo:hover .mask {
+  opacity: 1;
+}
+
+.item-name {
+  margin-top: 10px; /* 与图片底部保持一定间隔 */
+  text-align: center; /* 文字居中显示 */
+  overflow-x: hidden; /* 默认隐藏水平滚动条 */
+  max-width: 100%; /* 最大宽度为100% */
+  white-space: nowrap // 文本不换行
+  /* 其他样式... */
+}
+.item-name:hover {
+  overflow-x: auto; /* 鼠标悬停时显示水平滚动条 */
 }
 
 .icon {

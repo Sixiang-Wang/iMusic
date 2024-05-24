@@ -10,7 +10,7 @@
               </svg>
             </div>
           </div>
-        <p class="item-name">{{item.name || item.title}}</p>
+          <p class="item-name">{{item.name || item.title}}</p>
       </li>
     </ul>
   </div>

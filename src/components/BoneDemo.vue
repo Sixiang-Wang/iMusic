@@ -32,10 +32,10 @@ export default {
           window.addEventListener('mousedown', function (e) {
             pushBalls(randBetween(10, 20), e.clientX, e.clientY)
             document.body.classList.add('is-pressed')
-            // longPress = setTimeout(function () {
-            //   document.body.classList.add('is-longpress')
-            //   longPressed = true
-            // }, 500)
+            longPress = setTimeout(function () {
+              document.body.classList.add('is-longpress')
+              longPressed = true
+            }, 500)
           }, false)
           window.addEventListener('mouseup', function (e) {
             clearInterval(longPress)
