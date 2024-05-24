@@ -93,7 +93,7 @@ public class CollectController {
     public Object deleteCollectSongList(HttpServletRequest request) {
         String userId = request.getParameter("userId");           //用户id
         String songListId = request.getParameter("songListId");           //歌曲id
-        return collectService.deleteByUserIdSongId(Integer.parseInt(userId), Integer.parseInt(songListId));
+        return collectService.deleteByUserIdSongListId(Integer.parseInt(userId), Integer.parseInt(songListId));
     }
 
 
