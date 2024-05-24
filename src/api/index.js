@@ -86,3 +86,13 @@ export const getCollectOfUserId = (userId) => get(`collect/collectOfUserId?userI
 export const collectSongOfUserId = (userId) => get(`collect/collectSongOfUserId?userId=${userId}`, userId);
 //获取用户的收藏歌单，返回一个list
 export const collectSongListOfUserId = (userId) => get(`collect/collectSongListOfUserId?userId=${userId}`, userId);
+
+// ===================关注==================
+// 添加关注
+export const addFollow = (params) => post(`follow/add`,params);
+
+// 取消关注
+export const deleteFollow = (userId, singerId) => get(`follow/deleteByUserIdAndSingerId?userId=${userId}&singerId=${singerId}`);
+
+// 是否关注
+export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=${userId}&singerId=${singerId};`)

@@ -60,7 +60,8 @@ export default {
       return this.songLists.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
     },
     ...mapGetters([
-        'loginIn'
+        'loginIn',
+        'userId',
       ]
     )
   },
@@ -87,19 +88,23 @@ export default {
     },
     addSongList () {
       let params = new URLSearchParams()
-      params.append('title', this.registerForm.title)
+      params.append('title', this.addForm.title)
       params.append('pic', '/img/songListPic/default.jpg')
-      params.append('introduction', this.registerForm.introduction)
-      params.append('style', this.registerForm.style)
-
+      params.append('introduction', this.addForm.introduction)
+      params.append('style', this.addForm.style)
+      params.append('userId',this.userId)
       setSongList(params)
         .then(res => {
           if (res.code === 1) {
-            this.getData()
             this.notify('添加成功', 'success')
+            getAllSongList().then(res =>
+            {
+              this.songLists = res;
+            });
           } else {
             this.notify('添加失败', 'error')
           }
+
         })
         .catch(err => {
           console.log(err)

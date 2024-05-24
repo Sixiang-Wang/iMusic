@@ -26,6 +26,7 @@ export default {
       songLists: [],
       currentPage: 1,
       pageSize: 15,
+      isFollow: '收藏',
     }
   },
   computed: {
@@ -42,7 +43,7 @@ export default {
   methods: {
     handlePageChange(newPage) {
       this.currentPage = newPage;
-    }
+    },
   }
 }
 </script>

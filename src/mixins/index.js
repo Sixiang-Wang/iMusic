@@ -109,6 +109,8 @@ export const mixin = {
       return result;
     },
     getBirth(value){
+      if(value == null)
+        return '不明';
       return value.slice(0,10);
     },
 
