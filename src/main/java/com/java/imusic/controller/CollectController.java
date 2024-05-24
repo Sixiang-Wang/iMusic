@@ -159,7 +159,7 @@ public class CollectController {
             List<Collect> list = collectService.collectOfUserId(userId);
             List<SongList> collectSongList = new ArrayList<>();
             for (Collect collect : list) {
-                if(collect.getType()==0){
+                if(collect.getType()==1){
                     collectSongList.add(songListService.selectByPrimaryKey(collect.getSongListId()));
                 }
             }
