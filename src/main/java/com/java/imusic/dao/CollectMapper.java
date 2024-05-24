@@ -26,6 +26,8 @@ public interface CollectMapper {
      */
     public int deleteByUserIdSongId(@Param("userId") Integer userId, @Param("songId") Integer songId);
 
+
+    public int deleteByUserIdSongListId(@Param("userId") Integer userId, @Param("songListId") Integer songListId);
     /**
      * 查询所有收藏
      */

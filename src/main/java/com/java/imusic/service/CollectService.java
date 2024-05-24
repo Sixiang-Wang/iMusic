@@ -24,6 +24,7 @@ public interface CollectService {
      */
     public boolean deleteByUserIdSongId(Integer userId, Integer songId);
 
+    public boolean deleteByUserIdSongListId(Integer userId, Integer songListId);
     /**
      * 查询所有收藏
      */

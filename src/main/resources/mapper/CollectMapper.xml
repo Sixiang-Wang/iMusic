@@ -66,6 +66,12 @@
         where user_id = #{userId} and song_id = #{songId}
     </delete>
 
+    <delete id="deleteByUserIdSongListId" parameterType="java.lang.Integer">
+        delete from collect
+        where user_id = #{userId} and song_list_id = #{songListId}
+    </delete>
+
+
     <select id="allCollect" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
