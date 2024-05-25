@@ -138,7 +138,7 @@ export default {
       updateUserMsg(params)
         .then(res => {
           if (res.code === 1) {
-            this.notify('dd')
+            // this.notify('dd')
             this.$store.commit('setUsername',this.registerForm.username);
             _this.notify('修改成功', 'success');
             setTimeout(function () {
