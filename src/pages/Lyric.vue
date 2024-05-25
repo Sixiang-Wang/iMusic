@@ -100,7 +100,7 @@ export default {
         for (let i = 0; i < this.lyr.length; i++) {
           if (currentTime >= this.lyr[i][0]) {
             let top = this.$refs.lyr.children[0].children[i].offsetTop;
-            let halfViewHeight = 200;
+            let halfViewHeight = 280;
             let lyricHeight = 40;
 
             // 重置所有歌词颜色和样式
