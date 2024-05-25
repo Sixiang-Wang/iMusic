@@ -33,6 +33,29 @@
       .icon.active {
         color: red !important;
       }
+
+      .info {
+        position: absolute;
+        width: 60px;
+        height: 30px;
+        line-height: 30px;
+        border: 1px solid #242424;
+        color: ghostwhite;
+        background-color: #242424;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: bold;
+        top: 54px;
+        right: 14px;
+        display: none;
+      }
+      .show-info {
+        display: block;
+        transform: translateY(-81px);
+        animation-duration: 1s;
+      }
+
       .volume {
         position: absolute;
         display: none;
@@ -50,6 +73,7 @@
       height: $play-bar-height;
       img {
         width: 100%;
+        margin-top: 5px;
       }
     }
 
@@ -133,4 +157,8 @@
 
 .icon {
   @include icon(1.2em, $color-black);
+}
+
+.play {
+  @include icon(1.2em, #ccc);
 }

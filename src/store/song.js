@@ -17,10 +17,20 @@ const song = {
     lyric: [],        // 未处理的歌词数据
     tempList: {},     // 单个歌单信息
     listIndex: null,  // 当前歌曲在歌单中的位置
-    volume: 50      // 音量
+    volume: 50,      // 音量
+
+    introduction: "",
 
   },
   getters: {
+
+    introduction: (state) => {
+      state.introduction = JSON.parse(
+        window.sessionStorage.getItem("introduction")
+      );
+      return state.introduction;
+    },
+
     listOfSongs: state =>{
       let listOfSongs = state.listOfSongs
       if(!listOfSongs.length){
@@ -135,6 +145,15 @@ const song = {
     }
   },
   mutations: {
+
+    setIntroduction: (state, introduction) => {
+      state.introduction = introduction;
+      window.sessionStorage.setItem(
+        "introduction",
+        JSON.stringify(introduction)
+      );
+    },
+
     setListOfSongs: (state, listOfSongs) => {
       state.listOfSongs = listOfSongs;
       window.sessionStorage.setItem('listOfSongs',JSON.stringify(listOfSongs));

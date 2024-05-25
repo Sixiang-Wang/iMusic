@@ -52,8 +52,9 @@
   }
 
   .content {
+    max-height: 100vh;
     .lyric-title {
-      margin-top: 90px;
+      margin-top: 15vh;
       text-align: center;
       color: #fff;
       font-weight: bold;
