@@ -1,24 +1,37 @@
 <template>
-  <div class="container" :style="{ '--bg-url': this.backgroundImage }">
-    <div class="left-side">
-      <img class="album-image" :src=this.picUrl alt="音乐封面">
-      <div class="music-info">
-        <h2>音乐：{{ this.title }}</h2>
-        <p>歌手：{{ this.artist }}</p>
+  <div class="box">
+    <div class="the-aside">
+      <div class="img">
+        <img style="width: 100%" :src="picUrl" alt="音乐图片"/>
+      </div>
+      <div class="show">
+        <h3>
+          {{ "歌手:  " }}<span>{{ artist }}</span>
+        </h3>
+        <h3 style="margin-top: 20px">
+          {{ "所属专辑:  " }}<span>暂无专辑</span>
+        </h3>
       </div>
     </div>
-
-    <div class="right-side" ref="rightSide">
-      <h1 class="lyric-title">歌词</h1>
-      <!--    有歌词-->
-      <ul class="has-lyric" v-if="lyr.length" key="index">
-        <li v-for="(item,index) in lyr" v-bind:key="index">
-          {{ item[1] }}
-        </li>
-      </ul>
-      <!--    无歌词-->
-      <div v-else class="no-lyric" key="no-lyric">
-        <span>暂无歌词</span>
+    <div class="content">
+      <div class="lyric-title">
+        <h1>{{ title }}</h1>
+        <h3 style="font-weight: normal; color: #fff">
+          {{ artist + "-" + title }}
+        </h3>
+      </div>
+      <div class="song-lyric" ref="lyr">
+        <ul class="has-lyric" v-if="lyr.length">
+          <li v-for="(item, index) in lyr" :key="index">
+            {{ item[1] }}
+          </li>
+        </ul>
+        <ul class="no-lyric" v-if="lyr.length === 0">
+          <li>暂无歌词</li>
+        </ul>
+      </div>
+      <div class="comment">
+        <song-comment :play-id="id" :type="0"></song-comment>
       </div>
     </div>
   </div>
@@ -28,119 +41,100 @@
 <script>
 import {mixin} from '../mixins'
 import {mapGetters} from 'vuex'
+// import Comment from "../components/Comment";
+// import SongComment from "../components/SongComment";
 
 export default {
-  name: 'lyric',
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Lyric",
+  // eslint-disable-next-line vue/no-unused-components
+  // components: { SongComment, Comment },
   mixins: [mixin],
   data() {
     return {
-      lyr: [], // 当前歌曲的歌词
-      backgroundImage: '', // 背景图片
-
-      isManuallyScrolled: false, // 跟踪手动滚动状态
-      scrollTimer: null, // 用于存储setTimeout的引用
-    }
+      lyr: [],
+      manualScrolling: false, // 标志跟踪手动滚动
+      scrollTimer: null, // 定时器变量
+    };
   },
   computed: {
     ...mapGetters([
-      'curTime', // 当前歌曲播放到的位置
-      'id', //  当前播放的歌曲id
-      'lyric', //  歌词
-      'listIndex', // 当前歌曲在歌单中的位置
-      'listOfSongs', // 当前歌曲列表
-      'title', // 歌名
-      'artist', // 歌手名
-      'picUrl', // 正在播放的音乐的图片
-    ])
+      "id",
+      "url",
+      "curTime",
+      "lyric",
+      "listIndex",
+      "listOfSongs",
+      "title",
+      "artist",
+      "picUrl",
+    ]),
   },
   created() {
-    this.lyr = this.lyric
-    this.backgroundImage = this.picUrl
-    // console.log(this.lyric)
+    this.lyr = this.lyric;
+    this.$store.commit("setCurTime", 0);
   },
-
-  methods: {
-
-    handleManualScroll() {
-      this.isManuallyScrolled = true;
-      clearTimeout(this.scrollTimer); // 清除可能存在的旧定时器
-      this.scrollTimer = setTimeout(() => {
-        this.isManuallyScrolled = false; // 1.0秒后重置手动滚动状态
-      }, 1000);
+  watch: {
+    url() {
+      this.$store.commit("setCurTime", 0);
+      this.lyr = this.parseLyric(this.listOfSongs[this.listIndex].lyric);
     },
-
-    scrollLeftSideToHighlightedLyric() {
-      if (!this.isManuallyScrolled) {
-        const highlightedLyricElement = document.querySelector('.has-lyric .highlight');
-        if (highlightedLyricElement) {
-          const container = this.$refs.rightSide;
-          const containerRect = container.getBoundingClientRect();
-          const elementRect = highlightedLyricElement.getBoundingClientRect();
-
-          // 计算容器可视区域的中间点
-          const middlePoint = containerRect.height / 2;
-
-          // 计算高亮歌词元素的中间点相对于容器顶部的位置
-          const elementMiddle = elementRect.top + elementRect.height / 2 - containerRect.top;
-
-          // 设置scrollTop使得高亮歌词居中
-          container.scrollTop = container.scrollTop + (elementMiddle - middlePoint);
-
-          // 确保滚动不会超出容器范围（可选，根据需求调整）
-          const maxScrollTop = container.scrollHeight - containerRect.height;
-          if (container.scrollTop > maxScrollTop) {
-            container.scrollTop = maxScrollTop;
-          }
-        }
+    curTime(val) {
+      if (val === 0 || !this.manualScrolling) {
+        this.scrollToCurrentLine(val);
+      }
+    },
+    // 当手动滚动时，设置标志并清除定时器
+    manualScrolling(newVal) {
+      if (newVal) {
+        clearTimeout(this.scrollTimer);
+        this.scrollTimer = setTimeout(() => {
+          this.manualScrolling = false;
+        }, 2000);
       }
     },
   },
-
-  mounted() {
-    // 绑定滚动事件监听器以检测手动滚动
-    this.$refs.rightSide.addEventListener('scroll', this.handleManualScroll);
-  },
-
-  beforeDestroy() {
-    // 在组件销毁前移除滚动事件监听器
-    this.$refs.rightSide.removeEventListener('scroll', this.handleManualScroll);
-  },
-
-  watch: {
-    id: function () {
-      this.lyr = this.parseLyric(this.listOfSongs[this.listIndex].lyric)
-    },
-    curTime: function () {
+  methods: {
+    scrollToCurrentLine(currentTime) {
       if (this.lyr.length > 0) {
         for (let i = 0; i < this.lyr.length; i++) {
-          if (this.curTime >= this.lyr[i][0]) {
-            const lyrics = document.querySelectorAll('.has-lyric li');
-            lyrics.forEach((lyric, index) => {
-              lyric.style.color = '#000000';
-              lyric.style.fontSize = '15px';
-              lyric.classList.remove('highlight'); // 移除高亮类
-            });
-            if (i >= 0) {
-              const currentLyric = document.querySelectorAll('.has-lyric li')[i];
-              if (currentLyric) {
-                currentLyric.style.color = '#1e66d5';
-                currentLyric.style.fontSize = '20px';
-                currentLyric.style.border = true;
-                currentLyric.classList.add('highlight');
+          if (currentTime >= this.lyr[i][0]) {
+            let top = this.$refs.lyr.children[0].children[i].offsetTop;
+            let halfViewHeight = 200;
+            let lyricHeight = 40;
 
-                this.scrollLeftSideToHighlightedLyric();
+            // 重置所有歌词颜色和样式
+            for (let j = 0; j < this.lyr.length; j++) {
+              document.querySelectorAll(".has-lyric li")[j].style.color = "#fff";
+              document.querySelectorAll(".has-lyric li")[j].style.fontSize = "16px";
+              document.querySelectorAll(".has-lyric li")[j].style.fontWeight = "normal";
+              document.querySelectorAll(".has-lyric li")[j].style.opacity = "0.5";
+            }
+
+            if (i >= 0) {
+              document.querySelectorAll(".has-lyric li")[i].style.color = "#31c27c";
+              document.querySelectorAll(".has-lyric li")[i].style.fontSize = "20px";
+              document.querySelectorAll(".has-lyric li")[i].style.fontWeight = "bold";
+              document.querySelectorAll(".has-lyric li")[i].style.opacity = "1";
+
+              if (top > halfViewHeight + lyricHeight) {
+                this.$refs.lyr.scrollTop = top - halfViewHeight;
               }
             }
           }
         }
       }
-    },
-  }
-
-
-}
+    }
+  },
+  // 在mounted生命周期钩子中添加监听滚动事件
+  mounted() {
+    this.$refs.lyr.addEventListener('scroll', () => {
+      this.manualScrolling = true;
+    });
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-@import "../assets/css/lyric.scss";
+<style scoped lang="scss">
+@import "../assets/css/lyric";
 </style>

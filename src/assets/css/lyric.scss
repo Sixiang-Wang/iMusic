@@ -1,69 +1,13 @@
-@import "var.scss";
+.box {
 
-.container {
-  box-sizing: border-box;
-  position: relative; /* 添加相对定位 */
   display: flex;
-  align-items: flex-start;
-  //margin: auto;
-  margin-top: $header-height + 10px;
-  margin-bottom: $play-bar-height;
-  height: 72vh;
+  background-color: darkslategrey;
 
-  //background-color: $color-black;
-  //background-image: var(--bg-url); /* 实际音乐封面图片路径 */
-  //background-blur: 5px; /* 添加模糊效果 */
-  //background-size: cover; /* 背景图片铺满整个容器 */
-  //background-position: center; /* 图片居中 */
+  .the-aside {
+    width: 400px;
 
-  padding: 20px;
-
-  & > * {
-    box-sizing: border-box;
-  }
-
-  .left-side {
-    flex: 1;
-    flex-direction: column; /* 使子元素沿垂直方向排列 */
-    width: 50%; // 根据需要调整宽度
-    height: 72vh;
-    margin-right: 25px;
-    border-radius: 12px;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 10px rgba(0, 0, 0, 0.08);
-
-    //background-color: $color-player-bg;
-    background: linear-gradient(-45deg, #e3f6ec, #a3d8f4, #e3f6ec, #a3d8f4);
-    background-size: 400% 400%;
-    animation: Animation 10s ease infinite;
-
-    @keyframes Animation {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-
-    .album-image {
-      position: relative; /* 添加相对定位 */
-      //width: 50%;
-      margin-top: 8%;
-      left: 30%; /* 让元素左边距离容器左边50% */
-      border-radius: 50%; /* 将图片变为圆形 */
-      height: auto;
-      max-height: 50%;
-      object-fit: cover;
-
-      animation: rotate 15s linear infinite; /* 添加旋转动画 */
-    }
-
-    @keyframes rotate {
+    // 定义旋转动画
+    @keyframes rotate-image {
       0% {
         transform: rotate(0deg);
       }
@@ -72,128 +16,109 @@
       }
     }
 
-    .music-info {
-      margin-top: 20px;
-      text-align: center;
+    .img {
+      display: inline-block; // 确保元素能够围绕其中心旋转
+      width: 300px;
+      height: 300px;
+      border: 5px solid;
+      border-radius: 50%; // 形成圆形
+      border-color: #c0c0c0; // 更改边框颜色
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 1); // 添加阴影效果，参数依次为：水平偏移、垂直偏移、模糊半径、颜色透明度
 
-      h2 {
-        margin-bottom: 5px;
-      }
+      overflow: hidden;
+      background-color: #fff;
+      margin: 20vh 5vw 5vh; // 外边距属性
 
-      p {
-        font-size: 16px;
-        color: $color-player-author;
-      }
+      // 添加旋转动画
+      animation: rotate-image 18s linear infinite; // 动画名称、持续时间、速度曲线、循环次数
+
     }
+
+    .show {
+      font-size: 16px;
+      margin-left: 5vw; // 外边距属性
+    }
+
+    .show h3 {
+      font-weight: normal;
+      margin-left: 80px;
+      color: #fff;
+    }
+
+    .show h3 span {
+      color: #2aa3ef;
+    }
+
   }
 
-  .right-side {
-    width: 50%; // 根据需要调整宽度
-    border-radius: 12px;
-    font-family: $font-family;
-
-    flex: 1;
-    height: 72vh; // 设置高度为视口高度
-    overflow-y: auto; // 添加滚动条
-    padding: 20px 0;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 10px rgba(0, 0, 0, 0.08);
-
-    background-color: $color-player-bg;
-    backdrop-filter: blur(10px); // 调整模糊程度
-    //background: linear-gradient(-45deg, #e3f6ec, #a3d8f4, #e3f6ec, #a3d8f4);
-    //background-size: 400% 400%;
-    //animation: Animation 10s ease infinite;
-    //
-    //@keyframes Animation {
-    //  0% {
-    //    background-position: 0% 50%;
-    //  }
-    //  50% {
-    //    background-position: 100% 50%;
-    //  }
-    //  100% {
-    //    background-position: 0% 50%;
-    //  }
-    //}
-
-
+  .content {
     .lyric-title {
+      margin-top: 90px;
       text-align: center;
-      height: 60px;
-      line-height: 60px;
-      border-bottom: 2px solid $color-black;
+      color: #fff;
+      font-weight: bold;
     }
 
-    .has-lyric {
-      font-size: 18px;
-      padding: 20px 0;
-      width: 100%;
-      height: 100%;
-      min-height: 170px;
-      text-align: center;
+    .song-lyric {
+      margin: 10px auto;
+      width: 500px;
+      height: 400px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      border-radius: 12px;
+      padding: 0 20px 50px 20px;
+      font-family: sans-serif;
+      scroll-behavior: smooth;
 
-      li {
+      .has-lyric {
+        font-size: 16px;
+        padding: 30px 0;
         width: 100%;
-        height: 40px;
-        line-height: 40px;
-        transition: color 1s ease, transform 1s ease; /* 使用cubic-bezier缓动函数 */
-      }
-    }
-
-    .no-lyric {
-      margin: 200px 0;
-      width: 100%;
-      text-align: center;
-
-      span {
-        font-size: 18px;
+        min-height: 170px;
         text-align: center;
+        transition: opacity 2s ease-in-out; // 添加过渡效果
+
+        li {
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          color: #fff;
+          opacity: 0.5;
+        }
+      }
+
+      .no-lyric {
+        margin: 200px 0;
+        width: 100%;
+        text-align: center;
+
+        span {
+          font-size: 16px;
+          text-align: center;
+        }
       }
     }
-  }
-}
 
-.lyric-fade-enter,
-.lyric-fade-leave-to {
-  transform: translateX(30px);
-  opacity: 0;
-}
+    .lyric-fade-enter,
+    .lyric-fade-leave-to {
+      transform: translateX(30px);
+      opacity: 0;
+    }
 
-.lyric-fade-enter-active,
-.lyric-fade-leave-active {
-  transition: all 0.3s ease;
-}
+    .lyric-fade-enter-active,
+    .lyric-fade-leave-active {
+      transition: all 0.3s ease;
+    }
 
-/* 基础样式 */
-.has-lyric li {
-  color: #000000;
-  font-size: 15px;
-  transition: color 0.5s ease, transform 0.5s ease; /* 平滑过渡颜色和大小变化 */
-}
+    .song-lyric::-webkit-scrollbar {
+      display: none;
+    }
 
-/* 高亮样式 */
-.has-lyric li.highlight {
-  color: #0544a5; /* 高亮颜色 */
-  font-size: 25px; /* 高亮时的字体大小 */
-  font-weight: bold;
-  //transform: translateY(-10px); /* 向上移动，突出显示 */
-  transition: color 1s ease; /* 使用cubic-bezier缓动函数 */
-  background-color: rgba(126, 166, 174, 0.18); /* 更深的青绿色背景色，与高亮颜色搭配 */
+    .comment {
+      width: 500px;
+      margin: 10px auto 100px;
+    }
 
-  //animation: highlight-pulse 1s infinite; /* 添加动画 */
-}
-
-/* 高亮动画 */
-@keyframes highlight-pulse {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  90% {
-    transform: translateY(-10px) scale(1.1); /* 缩放比例从1.1减至1 */
-  }
-  100% {
-    transform: translateY(0) scale(1);
   }
 }
 
