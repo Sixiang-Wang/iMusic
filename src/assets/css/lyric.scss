@@ -33,12 +33,24 @@
 
     .album-image {
       position: relative; /* 添加相对定位 */
-      width: 50%;
+      //width: 50%;
       height: auto;
       max-height: 50%;
       object-fit: cover;
       left: 25%;
       margin-top: 30px;
+
+      border-radius: 50%; /* 将图片变为圆形 */
+      animation: rotate 15s linear infinite; /* 添加旋转动画 */
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     .music-info {
@@ -116,7 +128,7 @@
 
 /* 基础样式 */
 .has-lyric li {
-  color: #000;
+  color: #000000;
   font-size: 15px;
   transition: color 0.5s ease, transform 0.5s ease; /* 平滑过渡颜色和大小变化 */
 }

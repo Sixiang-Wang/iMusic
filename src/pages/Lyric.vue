@@ -116,7 +116,7 @@ export default {
           if (this.curTime >= this.lyr[i][0]) {
             const lyrics = document.querySelectorAll('.has-lyric li');
             lyrics.forEach((lyric, index) => {
-              lyric.style.color = '#000';
+              lyric.style.color = '#000000';
               lyric.style.fontSize = '15px';
               lyric.classList.remove('highlight'); // 移除高亮类
             });
