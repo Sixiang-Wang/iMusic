@@ -2,7 +2,8 @@
   <div class = "singer-album">
     <div class = "album-slide">
       <div class = "singer-img">
-        <img :src = 'attachImageUrl(singer.pic)' alt = "">
+        <img v-if="imageUrl" :src = 'imageUrl' alt = "">
+        <img alt="" v-else  src="../assets/img/singer.png" />
       </div>
       <ul class = "info">
         <li>{{ singer.name }}</li>
@@ -43,6 +44,7 @@ export default {
       singerId: '',
       singer: {},
       isFollow: '关注',
+      imageUrl: null,
     }
   },
   computed: {
@@ -75,6 +77,9 @@ export default {
         this.isFollow = '关注';
       }
     })
+  },
+  mounted() {
+    this.initialize();
   },
   methods: {
     handleFollow() {
@@ -121,7 +126,30 @@ export default {
         return '组合';
       }
       return '';
-    }
+    },
+
+    async attachImageUrl(srcurl) {
+      if (srcurl) {
+        const imageUrl = this.$store.state.configure.HOST + srcurl;
+
+        try {
+          const response = await fetch(imageUrl, { method: 'HEAD' });
+          if (response.ok) {
+            this.imageUrl = imageUrl;
+          } else {
+            this.imageUrl = null; // 图片不存在，设置为null
+          }
+        } catch (_) {
+          this.imageUrl = null; // 请求错误，设置为null
+        }
+      } else {
+        this.imageUrl = null; // 未提供srcurl，设置为null
+      }
+    },
+    async initialize() {
+      await this.attachImageUrl(this.avatar);
+    },
+
   }
 
 }
