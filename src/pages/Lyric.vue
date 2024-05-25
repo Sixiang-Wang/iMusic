@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :style="{ '--bg-url': this.backgroundImage }">
     <div class="left-side">
       <img class="album-image" :src=this.picUrl alt="音乐封面">
       <div class="music-info">
@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="right-side">
+    <div class="right-side" ref="rightSide">
       <h1 class="lyric-title">歌词</h1>
       <!--    有歌词-->
       <ul class="has-lyric" v-if="lyr.length" key="index">
@@ -35,7 +35,10 @@ export default {
   data() {
     return {
       lyr: [], // 当前歌曲的歌词
-      lastScrollTime: null, // 记录最近一次手动滚动的时间
+      backgroundImage: '', // 背景图片
+
+      isManuallyScrolled: false, // 跟踪手动滚动状态
+      scrollTimer: null, // 用于存储setTimeout的引用
     }
   },
   computed: {
@@ -52,7 +55,55 @@ export default {
   },
   created() {
     this.lyr = this.lyric
+    this.backgroundImage = this.picUrl
     // console.log(this.lyric)
+  },
+
+  methods: {
+
+    handleManualScroll() {
+      this.isManuallyScrolled = true;
+      clearTimeout(this.scrollTimer); // 清除可能存在的旧定时器
+      this.scrollTimer = setTimeout(() => {
+        this.isManuallyScrolled = false; // 1.0秒后重置手动滚动状态
+      }, 1000);
+    },
+
+    scrollLeftSideToHighlightedLyric() {
+      if (!this.isManuallyScrolled) {
+        const highlightedLyricElement = document.querySelector('.has-lyric .highlight');
+        if (highlightedLyricElement) {
+          const container = this.$refs.rightSide;
+          const containerRect = container.getBoundingClientRect();
+          const elementRect = highlightedLyricElement.getBoundingClientRect();
+
+          // 计算容器可视区域的中间点
+          const middlePoint = containerRect.height / 2;
+
+          // 计算高亮歌词元素的中间点相对于容器顶部的位置
+          const elementMiddle = elementRect.top + elementRect.height / 2 - containerRect.top;
+
+          // 设置scrollTop使得高亮歌词居中
+          container.scrollTop = container.scrollTop + (elementMiddle - middlePoint);
+
+          // 确保滚动不会超出容器范围（可选，根据需求调整）
+          const maxScrollTop = container.scrollHeight - containerRect.height;
+          if (container.scrollTop > maxScrollTop) {
+            container.scrollTop = maxScrollTop;
+          }
+        }
+      }
+    },
+  },
+
+  mounted() {
+    // 绑定滚动事件监听器以检测手动滚动
+    this.$refs.rightSide.addEventListener('scroll', this.handleManualScroll);
+  },
+
+  beforeDestroy() {
+    // 在组件销毁前移除滚动事件监听器
+    this.$refs.rightSide.removeEventListener('scroll', this.handleManualScroll);
   },
 
   watch: {
@@ -73,17 +124,20 @@ export default {
               const currentLyric = document.querySelectorAll('.has-lyric li')[i];
               if (currentLyric) {
                 currentLyric.style.color = '#1e66d5';
-                currentLyric.style.fontSize = '25px';
+                currentLyric.style.fontSize = '20px';
                 currentLyric.style.border = true;
                 currentLyric.classList.add('highlight');
 
+                this.scrollLeftSideToHighlightedLyric();
               }
             }
           }
         }
       }
-    }
+    },
   }
+
+
 }
 </script>
 
