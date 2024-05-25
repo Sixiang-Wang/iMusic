@@ -38,6 +38,10 @@
     border-radius: 50%;
     overflow: hidden;
     border: 5px solid $color-white;
+    background-image: url('../../assets/img/user.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 
     img {
       width: 100%;

@@ -29,7 +29,7 @@ export default {
     getSongList(){
       if (!this.$route.query.keywords)
       {
-        this.notify('null input','warning');
+        this.notify('您输入的内容为空','warning');
       }
       else
       {

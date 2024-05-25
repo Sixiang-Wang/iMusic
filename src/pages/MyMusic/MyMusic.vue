@@ -2,7 +2,9 @@
   <div class="my-music">
     <div class="album-header">
       <div class="album-img">
-        <img :src="attachImageUrl(avatar)" alt="">
+        <img :src="imageUrl" :alt="avatar" v-if="imageUrl" />
+        <img alt="" v-else  src="../../assets/img/user.jpg" />
+
       </div>
       <div class="basic-info-under-avatar">
         {{ name }}
@@ -55,6 +57,9 @@ export default {
       introduction: '' ,   //  个性签名
       collection: [] ,     // 收藏的歌曲列表
       // collectList : [],     // 收藏的歌曲列表（带歌曲详情）
+
+      imageUrl: null,
+
     }
   },
   computed:{
@@ -69,6 +74,7 @@ export default {
   mounted() {
     this.getMsg(this.userId);
     this.getCollection(this.userId);
+    this.initialize();
   },
   methods:{
     goPage(path, name) {
@@ -92,6 +98,8 @@ export default {
           this.location = res.location;
           this.introduction = res.introduction;
 
+          this.attachImageUrl(this.avatar);
+
         })
         .catch(err => {
           console.log(err);
@@ -99,6 +107,27 @@ export default {
     },
 
 
+    async attachImageUrl(srcurl) {
+      if (srcurl) {
+        const imageUrl = this.$store.state.configure.HOST + srcurl;
+
+        try {
+          const response = await fetch(imageUrl, { method: 'HEAD' });
+          if (response.ok) {
+            this.imageUrl = imageUrl;
+          } else {
+            this.imageUrl = null; // 图片不存在，设置为null
+          }
+        } catch (_) {
+          this.imageUrl = null; // 请求错误，设置为null
+        }
+      } else {
+        this.imageUrl = null; // 未提供srcurl，设置为null
+      }
+    },
+    async initialize() {
+      await this.attachImageUrl(this.avatar);
+    },
   }
 }
 </script>
