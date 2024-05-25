@@ -53,13 +53,13 @@
     .album-image {
       position: relative; /* 添加相对定位 */
       //width: 50%;
+      margin-top: 8%;
+      left: 30%; /* 让元素左边距离容器左边50% */
+      border-radius: 50%; /* 将图片变为圆形 */
       height: auto;
       max-height: 50%;
       object-fit: cover;
-      left: 25%;
-      margin-top: 30px;
 
-      border-radius: 50%; /* 将图片变为圆形 */
       animation: rotate 15s linear infinite; /* 添加旋转动画 */
     }
 
