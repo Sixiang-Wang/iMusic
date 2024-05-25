@@ -1,47 +1,47 @@
 <template>
-<div class="gradient-background">
-<!--  <loginLogo />-->
-  <div class="signUp">
-    <div class="signUp-head">
-      <span>用户注册</span>
-    </div>
-    <el-form :model="registerForm" ref="registerForm" label-width="80px" class="demo-ruleForm" :rules="rules">
-      <el-form-item prop="username" label="用户名">
-        <el-input v-model="registerForm.username" placeholder="用户名"></el-input>
-      </el-form-item>
-      <el-form-item prop="name" label="昵称">
-        <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
-      </el-form-item>
-      <el-form-item prop="email" label="邮箱">
-        <el-input v-model="registerForm.email" placeholder="邮箱"></el-input>
-      </el-form-item>
-      <el-form-item prop="code" label="验证码">
-        <div class="code-input-group">
-          <el-input v-model="code" placeholder="验证码"></el-input>
-          <el-button class="input-with-button" :loading="codeLoading" :disabled="isDisable" @click="sendMsg">
-            {{ statusMsg }}
-          </el-button>
-        </div>
-      </el-form-item>
-      <el-form-item prop="password" label="密码">
-        <el-input
-          type="password"
-          v-model="registerForm.password"
-          placeholder="密码"
-          :show-password="true"
-        ></el-input>
-        <i @click="togglePasswordVisibility"></i>
-      </el-form-item>
-      <el-form-item prop="duplicatePassword" label="重复密码">
-        <el-input type="password" v-model="duplicatePassword" placeholder="重复密码"></el-input>
-      </el-form-item>
-      <div class="login-btn">
-        <el-button @click="goback(-1)">取消</el-button>
-        <el-button type="primary" @click="SignUp">确定</el-button>
+  <div class="gradient-background">
+  <!--  <loginLogo />-->
+    <div class="signUp">
+      <div class="signUp-head">
+        <span>用户注册</span>
       </div>
-    </el-form>
+      <el-form :model="registerForm" ref="registerForm" label-width="80px" class="demo-ruleForm" :rules="rules">
+        <el-form-item prop="username" label="用户名">
+          <el-input v-model="registerForm.username" placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-form-item prop="name" label="昵称">
+          <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
+        </el-form-item>
+        <el-form-item prop="email" label="邮箱">
+          <el-input v-model="registerForm.email" placeholder="邮箱"></el-input>
+        </el-form-item>
+        <el-form-item prop="code" label="验证码">
+          <div class="code-input-group">
+            <el-input v-model="code" placeholder="验证码"></el-input>
+            <el-button class="input-with-button" :loading="codeLoading" :disabled="isDisable" @click="sendMsg">
+              {{ statusMsg }}
+            </el-button>
+          </div>
+        </el-form-item>
+        <el-form-item prop="password" label="密码">
+          <el-input
+            type="password"
+            v-model="registerForm.password"
+            placeholder="密码"
+            :show-password="true"
+          ></el-input>
+          <i @click="togglePasswordVisibility"></i>
+        </el-form-item>
+        <el-form-item prop="duplicatePassword" label="重复密码">
+          <el-input type="password" v-model="duplicatePassword" placeholder="重复密码"></el-input>
+        </el-form-item>
+        <div class="login-btn">
+          <el-button @click="goback(-1)">取消</el-button>
+          <el-button type="primary" @click="SignUp">确定</el-button>
+        </div>
+      </el-form>
+    </div>
   </div>
-</div>
 </template>
 
 

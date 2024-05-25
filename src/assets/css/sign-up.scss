@@ -5,12 +5,15 @@
   position: absolute;
   top: 50%; /* 垂直居中 */
   left: 50%; /* 水平居中 */
-  background: linear-gradient(-45deg, #e3f6ec, #a3d8f4); /* 从浅蓝色渐变到深蓝色 */
+  background: linear-gradient(-45deg, #e3f6ec, #a3d8f4, #e3f6ec, #a3d8f4);
+  background-size: 400% 400%;
   border-radius: 10px;
   width: 450px;
+  opacity: 1.0;
   margin: 0; /* 清除原有的外边距 */
   padding: 30px 30px;
   transform: translate(-50%, -50%); /* 使用CSS的transform属性来调整位置 */
+  animation: Animation 10s ease infinite;
 
   .signUp-head {
     text-align: center;
@@ -46,10 +49,24 @@
   }
 
 }
+@keyframes Animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 .gradient-background {
   /* 设置元素的背景为冷色调的径向渐变 */
-  background: linear-gradient(to top,  rgb(242, 225, 218),rgb(71, 198, 192));
-
+  //background: linear-gradient(to top,  rgb(242, 225, 218),rgb(71, 198, 192));
+  background: linear-gradient(-45deg, rgb(242, 225, 218),rgb(71, 198, 192), #a3d8f4, #23d5ab);
+  background-size: 400% 400%;
+  opacity: 0.8;
+  animation: gradientAnimation 15s ease infinite;
   /* 确保渐变背景覆盖整个元素 */
   min-height: 100vh; /* 使用视口高度的100% */
   /* 使元素中的文本可读 */
@@ -61,3 +78,18 @@
   color: white; /* 文本颜色为白色，以确保在冷色调背景上可读 */
   padding: 20px;
 }
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+    opacity: 0.8;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.8;
+  }
+}
+
