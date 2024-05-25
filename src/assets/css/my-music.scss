@@ -19,7 +19,7 @@
 /*顶部*/
 .album-header {
   margin-top: $header-height;
-  background-image: url('../../assets/img/starsky.jpg');
+  background-image: url('../../assets/img/voiceTube.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -38,7 +38,7 @@
     border-radius: 50%;
     overflow: hidden;
     border: 5px solid $color-white;
-    background-image: url('../../assets/img/user.jpg');
+    //background-image: url('../../assets/img/user.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -72,6 +72,7 @@
       margin: $header-nav-margin;
       padding: $header-nav-padding;
       font-size: $font-size-header;
+      font-weight: bold;
       color: $color-white;
       text-align: center;
       border-bottom: none;
