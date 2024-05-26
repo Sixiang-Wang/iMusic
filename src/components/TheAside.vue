@@ -2,12 +2,22 @@
   <transition name="slide-fade">
     <div class="the-aside" v-if="showAside">
       <h2 class="title">播放列表</h2>
-      <ul class="menus">
-        <li v-for="{item,index} in listOfSongs" :key="index" :class="{'is-play' :id === item.id}"
-        @click="toplay(item.id,item.url,item.pic,item.index,item.name,item.lyric)">
-          {{replaceFName(item.name)}}
-        </li>
-      </ul>
+
+      <div class="menus">
+        <ul v-if="listOfSongs.length">
+          <li v-for="(item,index) in listOfSongs" :key="index" :class="{'is-play': id === item.id}"
+              @click="toplay(item.id, item.url, item.pic, item.index, item.name, item.lyric)">
+            <img
+              :src="getUrl(item.pic)"
+              alt="歌曲封面"
+              :class="{ 'song-cover': true, 'is-play-song-cover': id === item.id }"
+            />
+            {{ replaceFName(item.name) }}
+          </li>
+        </ul>
+        <p v-else class="no-music">当前播放列表无音乐</p>
+      </div>
+
     </div>
   </transition>
 
@@ -16,8 +26,12 @@
 <script>
 import {mapGetters} from 'vuex'
 import {getCollectOfUserId} from "../api";
+import {mixin} from "../mixins";
+import {url} from "nightwatch/examples/pages/home";
+
 export default {
   name: 'the-aside',
+  mixins: [mixin],
   computed: {
     ...mapGetters([
       'showAside', // 是否显示播放中的歌曲列表
@@ -28,23 +42,38 @@ export default {
       'isActive'    // 当前播放歌曲是否已收藏
     ])
   },
-  mounted () {
+
+  mounted() {
     let _this = this
     document.addEventListener('click', function () {
       _this.$store.commit('setShowAside', false)
     }, true)
+
+    if (!this.listOfSongs) {
+      this.$store.commit("setListOfSongs", [])
+    }
+
   },
+
   methods: {
+    url() {
+      return url
+    },
     // 获取名字前半部分 -- 歌手名
-    replaceLName (str) {
+    replaceLName(str) {
       let arr = str.split('-')
       return arr[0]
     },
     // 获取名字后半部分-- 歌名
-    replaceFName (str) {
+    replaceFName(str) {
       let arr = str.split('-')
       return arr[1]
     },
+
+    getUrl(str) {
+      return this.$store.state.configure.HOST + str
+    },
+
     // 播放
     toplay: function (id, url, pic, index, name, lyric) {
       this.$store.commit('setId', id)
@@ -55,12 +84,12 @@ export default {
       this.$store.commit('setArtist', this.replaceLName(name))
       this.$store.commit('setLyric', this.parseLyric(lyric))
 
-      if(this.loginIn){
+      if (this.loginIn) {
         getCollectOfUserId(this.userId)
           .then(res => {
             // 日后优化
-            for(let item of res){
-              if(item.songId === id){
+            for (let item of res) {
+              if (item.songId === id) {
                 this.$store.commit('setIsActive', true);
                 break;
               }
@@ -69,7 +98,7 @@ export default {
       }
     },
     // 解析歌词
-    parseLyric (text) {
+    parseLyric(text) {
       let lines = text.split('\n') // 将歌词按行分解成数组
       let pattern = /\[\d{2}:\d{2}.(\d{3}|\d{2})]/g // 时间格式的正则表达式
       let result = []

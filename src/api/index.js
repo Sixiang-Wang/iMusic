@@ -80,12 +80,12 @@ export const setCollect = (params) => post(`collect/add` ,params);
 export const deleteCollectSong = (userId,songId) => get(`collect/deleteCollectSong?userId=${userId}&songId=${songId}`);
 export const deleteCollectSongList = (userId,songListId) => get(`collect/deleteCollectSongList?userId=${userId}&songListId=${songListId}`);
 // 指定用户的收藏列表
-export const getCollectOfUserId = (userId) => get(`collect/collectOfUserId?userId=${userId}` , userId);
+export const getCollectOfUserId = (userId) => get(`collect/collectOfUserId?userId=${userId}`);
 
 //获取用户的收藏歌曲，返回一个list
-export const collectSongOfUserId = (userId) => get(`collect/collectSongOfUserId?userId=${userId}`, userId);
+export const collectSongOfUserId = (userId) => get(`collect/collectSongOfUserId?userId=${userId}`);
 //获取用户的收藏歌单，返回一个list
-export const collectSongListOfUserId = (userId) => get(`collect/collectSongListOfUserId?userId=${userId}`, userId);
+export const collectSongListOfUserId = (userId) => get(`collect/collectSongListOfUserId?userId=${userId}`);
 
 // ===================关注==================
 // 添加关注

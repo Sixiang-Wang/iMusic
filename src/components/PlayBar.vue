@@ -11,6 +11,7 @@
         <svg class="icon">
           <use xlink:href="#icon-ziyuanldpi"></use>
         </svg>
+        <h1>这个：{{'#icon-ziyuanldpi'}}</h1>
       </div>
       <!-- 播放-->
       <div class="item" @click="togglePlay">
@@ -364,6 +365,7 @@ export default {
 
     // 显示播放中的歌曲列表
     changeAside() {
+      // console.log("显示播放列表")
       this.$store.commit('setShowAside', true)
     },
     // 上一首

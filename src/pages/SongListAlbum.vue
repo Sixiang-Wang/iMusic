@@ -89,6 +89,8 @@ export default {
         {
           songOfSongId(item.songId).then(res2 =>
           {
+            // console.log("res2: ")
+            // console.log(res2);
             this.songList.push(res2);
           })
         }
