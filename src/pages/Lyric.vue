@@ -22,7 +22,7 @@
       </div>
       <div class="song-lyric" ref="lyr">
         <ul class="has-lyric" v-if="lyr.length">
-          <li v-for="(item, index) in lyr" :key="index">
+          <li v-for="(item, index) in lyr" :key="index" @click="playAtTime(item[0])">
             {{ item[1] }}
           </li>
         </ul>
@@ -55,6 +55,7 @@ export default {
       lyr: [],
       manualScrolling: false, // 标志跟踪手动滚动
       scrollTimer: null, // 定时器变量
+      cur_time: 0,
     };
   },
   computed: {
@@ -124,7 +125,11 @@ export default {
           }
         }
       }
-    }
+    },
+
+    playAtTime(timeInSeconds) {
+      this.$store.commit('setChangeTime', timeInSeconds)
+    },
   },
   // 在mounted生命周期钩子中添加监听滚动事件
   mounted() {
