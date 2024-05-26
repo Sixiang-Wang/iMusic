@@ -34,7 +34,9 @@ export default {
       {
         this.$router.push({path:`song-list-album/${item.id}`});
       }
-    }
+    },
+
+
   }
 }
 

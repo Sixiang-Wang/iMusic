@@ -1,6 +1,6 @@
 <template>
-  <div class = "singer">
-    <content-list :contentList = "currentLists"></content-list>
+  <div class="singer">
+    <content-list :contentList="currentLists"></content-list>
     <div class="pagination">
       <el-pagination
         style="text-align: center"
@@ -35,8 +35,7 @@ export default {
     },
   },
   mounted() {
-    getAllSinger().then(res =>
-    {
+    getAllSinger().then(res => {
       this.songLists = res;
     });
   },
@@ -48,6 +47,6 @@ export default {
 }
 </script>
 
-<style lang = "scss" scoped>
+<style lang="scss" scoped>
 @import "../assets/css/singer";
 </style>

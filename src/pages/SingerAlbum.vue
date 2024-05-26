@@ -2,7 +2,7 @@
   <div class = "singer-album">
     <div class = "album-slide">
       <div class = "singer-img">
-        <img v-if="imageUrl" :src = 'imageUrl' alt = "">
+        <img v-if="this.imageUrl" :src = 'this.imageUrl' alt = "">
         <img alt="" v-else  src="../assets/img/singer.png" />
       </div>
       <ul class = "info">
@@ -33,6 +33,7 @@ import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
 import {addFollow, deleteFollow, existFollow, getSingerById, songOfSingerId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
+import th from "element-ui/src/locale/lang/th";
 
 export default {
   name: 'singer-album',
@@ -45,6 +46,7 @@ export default {
       singer: {},
       isFollow: '关注',
       imageUrl: null,
+      pic:"",
     }
   },
   computed: {
@@ -65,6 +67,8 @@ export default {
     getSingerById(this.singerId).then(res =>
     {
       this.singer = res;
+      this.pic=this.singer.pic;
+      this.initialize();
     })
     this.getSongList();
     existFollow(this.userId, this.singerId).then(res =>
@@ -77,9 +81,7 @@ export default {
         this.isFollow = '关注';
       }
     })
-  },
-  mounted() {
-    this.initialize();
+
   },
   methods: {
     handleFollow() {
@@ -132,6 +134,7 @@ export default {
       if (srcurl) {
         const imageUrl = this.$store.state.configure.HOST + srcurl;
 
+
         try {
           const response = await fetch(imageUrl, { method: 'HEAD' });
           if (response.ok) {
@@ -147,7 +150,7 @@ export default {
       }
     },
     async initialize() {
-      await this.attachImageUrl(this.avatar);
+      await this.attachImageUrl(this.pic);
     },
 
   }

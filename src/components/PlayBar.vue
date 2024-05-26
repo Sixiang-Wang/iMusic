@@ -11,7 +11,7 @@
         <svg class="icon">
           <use xlink:href="#icon-ziyuanldpi"></use>
         </svg>
-        <h1>这个：{{'#icon-ziyuanldpi'}}</h1>
+        <h1>这个：{{ '#icon-ziyuanldpi' }}</h1>
       </div>
       <!-- 播放-->
       <div class="item" @click="togglePlay">
