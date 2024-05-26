@@ -91,7 +91,7 @@ export default {
         clearTimeout(this.scrollTimer);
         this.scrollTimer = setTimeout(() => {
           this.manualScrolling = false;
-        }, 2000);
+        }, 3500);
       }
     },
   },
@@ -128,7 +128,8 @@ export default {
     },
 
     playAtTime(timeInSeconds) {
-      this.$store.commit('setChangeTime', timeInSeconds)
+      this.$store.commit('setChangeTime', timeInSeconds);
+      this.scrollToCurrentLine(timeInSeconds);
     },
   },
   // 在mounted生命周期钩子中添加监听滚动事件
