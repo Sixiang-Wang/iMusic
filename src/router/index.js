@@ -53,6 +53,10 @@ export default new Router({
         {
           path: '/Follow',
           component: resolve => require(['../pages/FollowPage.vue'], resolve)
+        },
+        {
+          path: '/Recovery',
+          component: resolve => require(['../pages/Recovery.vue'], resolve)
         }
 
       ]

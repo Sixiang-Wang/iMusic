@@ -32,8 +32,10 @@ export const songOfSongId = (id) => get(`song/detail?songId=${id}`)
 export const songOfSongName = (songName) => get(`song/songOfSongName?songName=${songName}`)
 // 查询所有歌曲
 export const allSong = () => get(`song/allSong`)
-
+export const allInvisible = () => get(`song/allInvisible`)
 export const songOfStyle = (style) => get(`song/songOfStyle?style=${style}`)
+export const invisibleSong = (id) => get(`song/invisible?id=${id}`)
+export const visibleSong = (id) => get(`song/visible?id=${id}`)
 
 // ============歌单相关================
 // 查询歌单

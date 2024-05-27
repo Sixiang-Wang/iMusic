@@ -12,7 +12,6 @@
       <div class="handle-box">
         <el-button type="primary" size="mini" @click="delAll">批量删除</el-button>
         <el-input v-model="select_word" size="mini" placeholder="请输入歌曲名" class="handle-input"></el-input>
-        <el-button type="primary" size="mini" @click="centerDialogVisible = true">添加歌曲</el-button>
       </div>
     </div>
     <el-table size="mini" ref="multipleTable" border style="width:100%" height="680px" :data="data"
@@ -49,100 +48,28 @@
           </ul>
         </template>
       </el-table-column>
-      <el-table-column label="资源更新" align="center" width="100">
-        <template slot-scope="scope">
-          <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeAvatorUpload"
-                     :on-success="handleAvatorSuccess">
-            <el-button size="mini">更新图片</el-button>
-          </el-upload>
-          <br/>
-          <el-upload :action="uploadSongUrl(scope.row.id)" :before-upload="beforeSongUpload"
-                     :on-success="handleSongSuccess">
-            <el-button size="mini">更新歌曲</el-button>
-          </el-upload>
-        </template>
-      </el-table-column>
 
       <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-          <br>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
           <br>
-          <el-button size="mini"  @click="invisibleRow(scope.row.id)">下架</el-button>
+          <el-button size="mini"  @click="visibleRow(scope.row.id)">恢复</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="pagination">
       <el-pagination
-        :key="paginationKey"
         background
         layout="total,prev,pager,next"
-        :current-page.sync="currentPage"
+        :current-page="currentPage"
         :page-size="pageSize"
         :total="tableData.length"
         @current-change="handleCurrentChange"
       >
       </el-pagination>
     </div>
-
-    <el-dialog title="添加歌曲" :visible.sync="centerDialogVisible" width="400px" center>
-      <el-form :model="registerForm" ref="registerForm" label-width="80px" action="" id="tf">
-        <div>
-          <label>歌名</label>
-          <el-input type="text" name="name"></el-input>
-        </div>
-        <div>
-          <label>歌手/乐队</label>
-          <el-input type="text" name="singerName"></el-input>
-        </div>
-        <div>
-          <label>专辑</label>
-          <el-input type="text" name="introduction"></el-input>
-        </div>
-        <div>
-          <label>风格</label>
-          <el-input type="text" name="style"></el-input>
-        </div>
-        <div>
-          <label>歌词</label>
-          <el-input type="textarea" name="lyric"></el-input>
-        </div>
-        <div>
-          <label>歌曲上传</label>
-          <input type="file" name="file">
-        </div>
-      </el-form>
-      <span slot="footer">
-                <el-button size="mini" @click="centerDialogVisible = false">取消</el-button>
-                <el-button size="mini" @click="addSong">确定</el-button>
-            </span>
-    </el-dialog>
-
-    <el-dialog title="修改歌曲" :visible.sync="editVisible" width="400px" center>
-      <el-form :model="form" ref="form" label-width="80px">
-        <el-form-item prop="name" label="歌手-歌名" size="mini">
-          <el-input v-model="form.name" placeholder="歌手-歌名"></el-input>
-        </el-form-item>
-        <el-form-item prop="introduction" label="专辑" size="mini">
-          <el-input v-model="form.introduction" placeholder="专辑"></el-input>
-        </el-form-item>
-        <el-form-item prop="style" label="风格" size="mini">
-          <el-input v-model="form.style" placeholder="风格"></el-input>
-        </el-form-item>
-        <el-form-item prop="lyric" label="歌词" size="mini">
-          <el-input v-model="form.lyric" placeholder="歌词" type="textarea"></el-input>
-        </el-form-item>
-
-      </el-form>
-      <span slot="footer">
-                <el-button size="mini" @click="editVisible = false">取消</el-button>
-                <el-button size="mini" @click="editSave">确定</el-button>
-            </span>
-    </el-dialog>
-
     <el-dialog title="删除歌曲" :visible.sync="delVisible" width="300px" center>
-      <div align="center">删除不可恢复，是否确定删除？</div>
+      <div align="center">彻底删除不可恢复，是否确定删除？</div>
       <span slot="footer">
                 <el-button size="mini" @click="delVisible = false">取消</el-button>
                 <el-button size="mini" @click="deleteRow">确定</el-button>
@@ -155,7 +82,7 @@
 import {mixin} from '../mixins/index'
 import {mapGetters} from 'vuex'
 import '@/assets/js/iconfont.js'
-import {updateSong, delSong, allSong, oneSingerOfName, invisibleSong} from '../api/index'
+import {updateSong, delSong, allSong, oneSingerOfName, invisibleSong, visibleSong, allInvisible} from '../api/index'
 
 export default {
   mixins: [mixin],
@@ -183,7 +110,6 @@ export default {
       tableData: [],
       tempData: [],
       select_word: '',
-      paginationKey: 0,
       pageSize: 5,    //分页每页大小
       currentPage: 1,  //当前页
       idx: -1,          //当前选择项
@@ -233,104 +159,18 @@ export default {
     getData () {
       this.tempData = []
       this.tableData = []
-      allSong().then(res => {
+      allInvisible().then(res => {
         this.tempData = res
         this.tableData = res
         this.currentPage = 1
       })
-    },
-    getData2 (cur) {
-      if (!cur) cur = 1
-      this.tempData = []
-      this.tableData = []
-      allSong().then(res => {
-        this.tempData = res
-        this.tableData = res
-        let len = res.length
-        this.currentPage = cur
-        if (len / this.pageSize <= cur - 1) {
-          this.currentPage = 1
-        }
-      })
-    },
-    /* 添加 */
-    addSong () {
-      let _this = this
-      var form = new FormData(document.getElementById('tf'))
-      oneSingerOfName(form.get('singerName')).then(
-        res => {
-          form.append('singerId', res.id)
-          form.set('name', res.name + '-' + form.get('name'))
-
-          if (!form.get('lyric')) {
-            form.set('lyric', '[00:00:00]暂无歌词')
-          }
-          var req = new XMLHttpRequest()
-          req.onreadystatechange = function () {
-            /**
-             req.readyState == 4 获取到返回的完整数据
-             req.status == 200 和后台正常交互完成
-             **/
-            if (req.readyState === 4 && req.status === 200) {
-              let res = JSON.parse(req.response)
-              if (res.code) {
-                _this.getData2()
-                _this.registerForm = {}
-                _this.notify(res.msg, 'success')
-              } else {
-                _this.notify('保存失败', 'error')
-              }
-            }
-          }
-          req.open('post', `${_this.$store.state.HOST}/song/add`, false)
-          req.send(form)
-          _this.centerDialogVisible = false
-        }
-      )
-    },
-    //弹出编辑页面
-    handleEdit (row) {
-      this.editVisible = true
-      this.form = {
-        id: row.id,
-        name: row.name,
-        introduction: row.introduction,
-        lyric: row.lyric,
-        style: row.style
-      }
-    },
-    //保存编辑页面修改的数据
-    editSave () {
-      let params = new URLSearchParams()
-      params.append('id', this.form.id)
-      params.append('name', this.form.name)
-      params.append('introduction', this.form.introduction)
-      params.append('lyric', this.form.lyric)
-      params.append('style', this.form.style)
-      updateSong(params)
-        .then(res => {
-          if (res.code === 1) {
-            this.getData2()
-            this.notify('修改成功', 'success')
-          } else {
-            this.notify('修改失败', 'error')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      this.editVisible = false
-    },
-    //更新图片
-    uploadUrl (id) {
-      return `${this.$store.state.HOST}/song/updateSongPic?id=${id}`
     },
     //删除
     deleteRow () {
       delSong(this.idx)
         .then(res => {
           if (res) {
-            this.getData2()
+            this.getData()
             this.notify('删除成功', 'success')
           } else {
             this.notify('删除失败', 'error')
@@ -341,14 +181,14 @@ export default {
         })
       this.delVisible = false
     },
-    invisibleRow (id) {
-      invisibleSong(id)
+    visibleRow (id) {
+      visibleSong(id)
         .then(res => {
           if (res) {
-            this.getData2(this.currentPage)
-            this.notify('下架成功', 'success')
+            this.getData()
+            this.notify('恢复成功', 'success')
           } else {
-            this.notify('下架失败', 'error')
+            this.notify('恢复失败', 'error')
           }
         })
     },
@@ -362,38 +202,6 @@ export default {
         result.push(value)
       }
       return result
-    },
-    //上传歌曲之前的校验
-    beforeSongUpload (file) {
-      var testMsg = file.name.substring(file.name.lastIndexOf('.') + 1)
-      if (testMsg !== 'mp3' && testMsg !== 'MP3' && testMsg !== 'wav' && testMsg !== 'WAV' && testMsg !== 'flac' && testMsg !== 'FLAC') {
-        this.$message({
-          message: '请上传mp3、wav或flac文件',
-          type: 'error'
-        })
-        return false
-      }
-      return true
-    },
-    //上传歌曲成功之后要做的工作
-    handleSongSuccess (res) {
-      let _this = this
-      if (res.code === 1) {
-        _this.getData2()
-        _this.$notify({
-          title: '上传成功',
-          type: 'success'
-        })
-      } else {
-        _this.$notify({
-          title: '上传失败',
-          type: 'error'
-        })
-      }
-    },
-    //更新歌曲url
-    uploadSongUrl (id) {
-      return `${this.$store.state.HOST}/song/updateSongUrl?id=${id}`
     },
     //切换播放歌曲
     setSongUrl (url, name) {

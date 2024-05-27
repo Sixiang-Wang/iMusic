@@ -54,6 +54,11 @@ export default {
           icon: 'el-icon-document',
           index: 'AllSong',
           title: '歌曲管理'
+        },
+        {
+          icon: 'el-icon-document',
+          index: 'Recovery',
+          title: '下架恢复'
         }
       ]
     }
