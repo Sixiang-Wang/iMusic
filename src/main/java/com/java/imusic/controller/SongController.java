@@ -1,6 +1,7 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.dao.SongMapper;
 import com.java.imusic.domain.Song;
 import com.java.imusic.service.SongService;
 import com.java.imusic.service.impl.SongServiceImpl;
@@ -26,6 +27,8 @@ public class SongController {
 
     @Autowired
     private SongService songService;
+    @Autowired
+    private SongMapper songMapper;
     @Getter
     private static SongController songController;
 
@@ -152,6 +155,29 @@ public class SongController {
             if(!picFile.delete())
                 System.out.println("歌曲图片删除失败:SongController-deleteSong");
         }
+        return flag;
+    }
+
+    @RequestMapping(value = "/invisible",method = RequestMethod.GET)
+    public Object invisibleSong(HttpServletRequest request){
+        String id = request.getParameter("id").trim();          //主键
+        Song song = songService.selectByPrimaryKey(Integer.parseInt(id));
+        song.setVisible(0);
+        boolean flag = songService.update(song);
+        return flag;
+    }
+
+    @RequestMapping(value = "/allInvisible",method = RequestMethod.GET)
+    public Object allInvisibleSong(HttpServletRequest request){
+        return songMapper.allInvisible();
+    }
+
+    @RequestMapping(value = "/visible",method = RequestMethod.GET)
+    public Object visibleSong(HttpServletRequest request){
+        String id = request.getParameter("id").trim();          //主键
+        Song song = songService.selectByPrimaryKey(Integer.parseInt(id));
+        song.setVisible(1);
+        boolean flag = songService.update(song);
         return flag;
     }
 

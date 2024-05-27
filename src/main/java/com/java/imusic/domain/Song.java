@@ -34,6 +34,14 @@ public class Song implements Serializable {
     private Integer nums;
     /*风格*/
     private String style;
+    private Integer visible;
+
+    public Integer getVisible() {
+        return visible;
+    }
+    public void setVisible(Integer visible) {
+        this.visible = visible;
+    }
 
     public String getStyle() {
         return style;

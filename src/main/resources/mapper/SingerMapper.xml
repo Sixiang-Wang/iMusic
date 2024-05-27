@@ -118,6 +118,7 @@
         <include refid="Base_Column_List"/>
         from singer
         where id > 0
+        order by id asc
     </select>
 
     <select id="singerOfName" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -125,6 +126,7 @@
         <include refid="Base_Column_List"/>
         from singer
         where name like #{name}
+        order by id asc
     </select>
 
     <select id="oneSingerOfName" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -140,6 +142,7 @@
         <include refid="Base_Column_List"/>
         from singer
         where sex = #{sex}
+        order by id asc
     </select>
 
     <select id="lastSingerID" resultType="java.lang.Integer">

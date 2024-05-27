@@ -35,6 +35,8 @@ public interface SongMapper {
      */
     public List<Song> allSong();
 
+    public List<Song> allInvisible();
+
     /**
      * 根据歌名精确查询列表
      */
