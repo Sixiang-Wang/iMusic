@@ -33,10 +33,9 @@
           <span class = "item-intro">
             <span>
               {{ item.introduction }}
-              {{item.collection}}
             </span>
           </span>
-          <span @click="handleCollect(item.id)">
+          <span @click="handleCollect(item)">
             <svg :class="{active: item.collection}" class="icon" >
               <use xlink:href="#icon-xihuan-shi"></use>
             </svg>
@@ -78,7 +77,8 @@ export default {
         })
       }
     },
-    handleCollect(songId) {
+    handleCollect(item) {
+      let songId = item.id;
       if (this.loginIn) {
         let params = new URLSearchParams();
         params.append('userId', this.userId);
@@ -88,10 +88,12 @@ export default {
           .then(res =>
           {
             if (res.code === 1) {
+              item.collection = true;
               this.notify('收藏成功', 'success');
             }
             else if (res.code === 2) {
               deleteCollectSong(this.userId, songId);
+              item.collection = false;
               this.notify('取消成功', 'success');
             }
             else {

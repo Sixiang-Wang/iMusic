@@ -6,6 +6,7 @@
 import AlbumContent from "../../components/AlbumContent.vue";
 import {mapGetters} from "vuex";
 import {collectSongOfUserId} from "../../api";
+import {mixin} from "../../mixins";
 export default {
   components: {AlbumContent},
   data() {
@@ -13,6 +14,7 @@ export default {
       collectList : [],     // 收藏的歌曲列表（带歌曲详情）
     }
   },
+  mixins:[mixin],
   computed: {
     ...mapGetters([
       'userId'          // 当前登录用户id

@@ -1,5 +1,8 @@
 <template>
-  <content-list :contentList="collectList"></content-list>
+  <div class="body-content">
+    <content-list :contentList="collectList"></content-list>
+  </div>
+
 </template>
 
 <script>
@@ -7,6 +10,7 @@
 import ContentList from "../../components/ContentList.vue";
 import {mapGetters} from "vuex";
 import {collectSongListOfUserId} from "../../api";
+import {mixin} from "../../mixins";
 
 export default {
   components: {ContentList},
@@ -15,6 +19,7 @@ export default {
       collectList: [],
     }
   },
+  mixins: [mixin],
   computed:{
     ...mapGetters([
       'userId',
@@ -36,5 +41,5 @@ export default {
 </script>
 
 <style scoped lang = "scss">
-
+@import "../../assets/css/favorSongList.scss";
 </style>

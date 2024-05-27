@@ -1,0 +1,105 @@
+.my-song-list {
+  margin: 40px;
+
+  .create-btn {
+    background: #67c23a;
+    color: white;
+    width: 100px;
+    margin: 10px 35px;
+    cursor: pointer;
+  }
+
+  .create-btn:hover {
+    background: #008800;
+  }
+  .change-style {
+    background: palegoldenrod;
+    border-radius: 50px;
+    color: black;
+    cursor: pointer;
+  }
+  .change-style:hover {
+    background: peachpuff;
+  }
+  .menu {
+    width: 1200px;
+    margin: 30px;
+    color: darkgrey;
+    font-size: 24px;
+    .menu-songList {
+      width: 30%;
+    }
+    .menu-introduction {
+      margin-left: 430px;
+    }
+    .menu-style {
+      margin-left: 310px;
+    }
+  }
+  .item-content {
+    width: 100%;
+    margin: 10px 30px;
+    .item {
+      text-align: center;
+      font-size: 18px;
+      display: flex;
+      .img-container {
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+        background: #008800;
+      }
+      .img {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        cursor: pointer;
+      }
+    }
+    .item-title {
+      //background: #67c23a;
+      width: 100px;
+      height: 30px;
+      margin: 25px;
+      color: black;
+
+    }
+    .item-introduction {
+      margin-left: 30px;
+      margin-top: 25px;
+      width: 480px;
+      color: black;
+    }
+    .item-style {
+      //background: #67c23a;
+      width: 200px;
+      margin-left: 30px;
+      margin-top: 25px;
+    }
+    .delete-icon {
+      width: 50px;
+      //background: black;
+      margin-left: 100px;
+      margin-top: 25px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .delete-icon:hover {
+      transform: scale(1.1);
+    }
+    .edit-icon {
+      width: 50px;
+      margin-top: 25px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .edit-icon:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .pink {
+    background: rgba(255,240,245,0.3);
+  }
+}

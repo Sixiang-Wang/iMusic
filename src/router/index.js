@@ -6,6 +6,7 @@ import Singer from "@/pages/Singer";
 import SongList from "@/pages/SongList";
 import Search from "@/pages/Search"
 import Lyric from "@/pages/Lyric";
+import SongAlbum from "@/pages/SongAlbum.vue";
 import SingerAlbum from "@/pages/SingerAlbum.vue";
 import SongListAlbum from "@/pages/SongListAlbum.vue";
 import SignUp from "@/pages/SignUp";
@@ -132,6 +133,11 @@ export default new Router({
       path: '/setting',
       name: 'setting',
       component: Setting
+    },
+    {
+      path: '/song-album/:id',
+      name: 'song-album',
+      component: SongAlbum
     },
     {
       path: '/singer-album/:id',

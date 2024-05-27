@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <swiper />
+    <swiper/>
     <div class="section" v-for="(item,index) in songsList" :key="index">
-      <div class="section-title">{{item.name}}</div>
+      <div class="section-title">{{ item.name }}</div>
       <content-list :contentList="item.list"></content-list>
     </div>
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 import Swiper from '../components/Swiper.vue'
-import {getAllSinger, getAllSongList} from '../api/index'
+import {getAllSinger, getAllSongList, getTopSong} from '../api/index'
 import ContentList from '../components/ContentList'
 
 export default {
@@ -19,29 +19,38 @@ export default {
     ContentList,
     Swiper
   },
-  data () {
+  data() {
     return {
       songsList: [
-        {name: '歌 单', list: []},
-        {name: '歌 手', list: []}
+        {name: '热 歌 榜', list: []},
+        {name: '精 选 歌 单', list: []},
+        {name: '人 气 歌 手', list: []},
       ]
     }
   },
-  created () {
+  created() {
     this.getSongListOfTen()
     this.getSingerOfTen()
+    this.getSongOfTen()
   },
   methods: {
-    getSongListOfTen () { // 获取前十条歌单
-      getAllSongList().then((res) => {
+    getSongOfTen() { // 获取前十首歌曲
+      getTopSong().then((res) => {
         this.songsList[0].list = res.slice(0, 10)
       }).catch((err) => {
         console.log(err)
       })
     },
-    getSingerOfTen () { // 获取前十名歌手
-      getAllSinger().then((res) => {
+    getSongListOfTen() { // 获取前十条歌单
+      getAllSongList().then((res) => {
         this.songsList[1].list = res.slice(0, 10)
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    getSingerOfTen() { // 获取前十名歌手
+      getAllSinger().then((res) => {
+        this.songsList[2].list = res.slice(0, 10)
       }).catch((err) => {
         console.log(err)
       })
