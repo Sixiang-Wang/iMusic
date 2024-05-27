@@ -21,17 +21,17 @@ export default {
     ]),
   },
   created() {
-    this.getCollection(this.userId);
+    this.getRecent(this.userId);
   },
   methods: {
-    getCollection(userId) {
+    getRecent(userId) {
       getRecentSongByUserId(userId).then(res => {
-        console.log("res:",res.data);
         this.recentList = res.data;
       }).catch(error => {
         console.log('get recent songs fails\n' + error);
       })
-    }
+    },
+
   }
 }
 </script>

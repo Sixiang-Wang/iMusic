@@ -104,6 +104,8 @@ export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=
 export const addRecentSong = (RecentSong) => post(`recentSong/add`,RecentSong);
 // 获取当前用户最近播放列表
 export const getRecentSongByUserId = (id) => get(`recentSong/recentSongOfUserId/${id}`);
+// 获取指定用户最近播放列表，按播放量降序排列
+export const getRecentSongOrderByCount = (id) => get(`recentSong/recentSongOrderByCount/${id}`);
 // 推荐歌单
 export const recommendSongList = (id) => get(`recentSong/recommendSongList/${id}`);
 // 推荐歌手
