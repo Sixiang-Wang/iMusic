@@ -137,6 +137,17 @@
         where song_list_id = #{songListId}
     </select>
 
+    <update id="updateUp" parameterType="java.lang.Integer">
+        update comment
+        set up = (select count(*) from comment_up where comment_id = #{id})
+        where id = #{id}
+    </update>
+
+    <select id="sumUp" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select up
+        from comment
+        where id = #{id}
+    </select>
 </mapper>
 
 

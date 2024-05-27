@@ -1,7 +1,10 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.dao.CommentMapper;
+import com.java.imusic.dao.CommentUpMapper;
 import com.java.imusic.domain.CommentUp;
+import com.java.imusic.service.CommentService;
 import com.java.imusic.service.CommentUpService;
 import com.java.imusic.service.FollowService;
 import com.java.imusic.utils.Consts;
@@ -17,7 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 public class CommentUpController {
     @Autowired
     private CommentUpService commentUpService;
-
+    @Autowired
+    private CommentMapper commentMapper;
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addCommentUp(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
@@ -28,6 +32,7 @@ public class CommentUpController {
         commentUp.setUserId(userId);
         commentUp.setCommentId(commentId);
         boolean flag = commentUpService.insert(commentUp);
+        commentMapper.updateUp(commentId);
         if(flag){   //保存成功
             jsonObject.put(Consts.CODE,1);
             jsonObject.put(Consts.MSG,"点赞成功");
@@ -42,7 +47,9 @@ public class CommentUpController {
     public Object deleteCommentUp(HttpServletRequest request){
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Integer commentId = Integer.parseInt(request.getParameter("commentId"));
-        return commentUpService.delete(userId,commentId);
+        boolean r = commentUpService.delete(userId,commentId);
+        commentMapper.updateUp(commentId);
+        return r;
     }
 
     @RequestMapping(value = "/exist",method = RequestMethod.GET)
@@ -50,5 +57,12 @@ public class CommentUpController {
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Integer commentId = Integer.parseInt(request.getParameter("commentId"));
         return commentUpService.exist(userId,commentId);
+    }
+
+    @RequestMapping(value = "/sumUp",method = RequestMethod.GET)
+    public Object sumUp(HttpServletRequest request){
+        Integer commentId = Integer.parseInt(request.getParameter("commentId"));
+
+        return commentMapper.sumUp(commentId);
     }
 }

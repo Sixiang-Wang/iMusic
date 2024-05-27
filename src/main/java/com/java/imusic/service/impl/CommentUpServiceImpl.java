@@ -23,7 +23,6 @@ public class CommentUpServiceImpl implements CommentUpService {
 
     @Override
     public boolean exist(Integer userId, Integer commentId) {
-        System.out.println(commentUpMapper.exist(userId,commentId));
         return commentUpMapper.exist(userId,commentId) > 0;
     }
 }

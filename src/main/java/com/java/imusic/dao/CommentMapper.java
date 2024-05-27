@@ -47,6 +47,9 @@ public interface CommentMapper {
      * 查询某个歌单下的所有评论
      */
     public List<Comment> commentOfSongListId(Integer songListId);
+
+    public Integer updateUp(Integer id);
+    public Integer sumUp(Integer id);
 }
 
 
