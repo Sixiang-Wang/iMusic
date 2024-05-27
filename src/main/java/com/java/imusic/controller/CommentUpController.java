@@ -62,7 +62,6 @@ public class CommentUpController {
     @RequestMapping(value = "/sumUp",method = RequestMethod.GET)
     public Object sumUp(HttpServletRequest request){
         Integer commentId = Integer.parseInt(request.getParameter("commentId"));
-
         return commentMapper.sumUp(commentId);
     }
 }

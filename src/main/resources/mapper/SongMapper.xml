@@ -204,6 +204,16 @@
         and visible = 1
     </select>
 
+    <select id="popularSongOfUser" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where user_id = #{userId}
+        and visible = 1
+        order by nums desc
+        limit 1
+    </select>
 </mapper>
 
 

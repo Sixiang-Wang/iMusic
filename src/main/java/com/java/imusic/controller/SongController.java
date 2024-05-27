@@ -396,6 +396,12 @@ public class SongController {
         String style = request.getParameter("style");
         return songService.songOfStyle(style);
     }
+
+    @RequestMapping(value = "/popularSongOfUser",method = RequestMethod.GET)
+    public Object popularSongOfUser(HttpServletRequest request){
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        return songMapper.popularSongOfUser(userId);
+    }
 }
 
 

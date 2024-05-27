@@ -63,6 +63,8 @@ public interface SongMapper {
 	public List<Song> topSong();
 
     public List<Song> songOfStyle(String style);
+
+    public Song popularSongOfUser(Integer userId);
 }
 
 
