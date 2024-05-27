@@ -40,7 +40,7 @@
     </delete>
 
     <delete id="exist" parameterType="java.lang.Integer">
-        select sum(*) from comment_up
+        select count(*) from comment_up
         where user_id=#{userId}
         and comment_id = ${commentId}
     </delete>
