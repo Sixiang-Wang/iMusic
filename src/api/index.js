@@ -19,6 +19,8 @@ export const songOfSongId =(id) => get(`song/detail?songId=${id}`);
 export const likeSongOfName =(keywords) => get(`song/likeSongOfName?songName=${keywords}`);
 // 添加歌曲播放次数
 export const addNums = (songId) => get(`/song/addNums?songId=${songId}`);
+// 查询热门歌曲
+export const getTopSong =() =>get(`song/topSong`);
 // ============歌单相关==============
 // 查询歌曲
 export const getAllSongList =() => get(`songList/allSongList`);//获得所有歌单
