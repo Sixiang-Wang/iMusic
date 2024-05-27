@@ -109,13 +109,24 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
      */
     @Override
     public Result getRecentSongByUserId(Integer id) {
-        List<RecentSongVo> recentSongByUserId = null;
         try {
-            recentSongByUserId = recentSongMapper.getRecentSongByUserId(id);
+            List<RecentSongVo> recentSongByUserId = recentSongMapper.getRecentSongByUserId(id);
+            return Result.ok("查询成功", recentSongByUserId);
         } catch (Exception e) {
             return Result.error("查找最近听歌数据时发生错误: " + e.getMessage());
         }
-        return Result.ok("查询成功", recentSongByUserId);
+    }
+
+    /**
+     * 获取指定用户最近播放列表，按播放量降序排列
+     */
+    public Result getRecentSongByUserIdOrderByCountDesc(Integer id) {
+        try {
+            List<RecentSongVo> recentSongByUserId = recentSongMapper.getRecentSongByUserIdOrderByCountDesc(id);
+            return Result.ok("查询成功", recentSongByUserId);
+        } catch (Exception e) {
+            return Result.error("查找听歌数据时发生错误: " + e.getMessage());
+        }
     }
 
     /**

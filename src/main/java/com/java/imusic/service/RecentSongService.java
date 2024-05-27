@@ -3,6 +3,9 @@ package com.java.imusic.service;
 import com.java.imusic.common.Result;
 import com.java.imusic.domain.RecentSong;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.java.imusic.vo.RecentSongVo;
+
+import java.util.List;
 
 /**
  * description 针对表【recent_song】的数据库操作Service
@@ -18,6 +21,11 @@ public interface RecentSongService extends IService<RecentSong> {
      * 获取当前用户最近播放列表
      */
     Result getRecentSongByUserId(Integer id);
+
+    /**
+     * 获取指定用户最近播放列表，按播放量降序排列
+     */
+    Result getRecentSongByUserIdOrderByCountDesc(Integer id);
 
     /**
      * 推荐歌单

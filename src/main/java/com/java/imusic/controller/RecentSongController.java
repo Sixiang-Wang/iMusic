@@ -26,17 +26,23 @@ public class RecentSongController {
      * 获取当前用户最近播放列表
      */
     @GetMapping("/recentSongOfUserId/{id}")
-    public Result getRecentSongByUserId(@PathVariable
-                                            Integer id) {
+    public Result getRecentSongByUserId(@PathVariable Integer id) {
         return recentSongService.getRecentSongByUserId(id);
+    }
+
+    /**
+     * 获取指定用户最近播放列表，按播放量降序排列
+     */
+    @GetMapping("/recentSongOrderByCount/{id}")
+    public Result getRecentSongOrderByCount(@PathVariable Integer id) {
+        return recentSongService.getRecentSongByUserIdOrderByCountDesc(id);
     }
 
     /**
      * 推荐歌单
      */
     @GetMapping("/recommendSongList/{id}")
-    public Result recommendSongList(@PathVariable
-                                        Integer id) {
+    public Result recommendSongList(@PathVariable Integer id) {
         return recentSongService.recommendSongList(id);
     }
 
@@ -44,8 +50,7 @@ public class RecentSongController {
      * 推荐歌手
      */
     @GetMapping("/recommendSinger/{id}")
-    public Result recommendSinger(@PathVariable
-                                      Integer id) {
+    public Result recommendSinger(@PathVariable Integer id) {
         return recentSongService.recommendSinger(id);
     }
 }

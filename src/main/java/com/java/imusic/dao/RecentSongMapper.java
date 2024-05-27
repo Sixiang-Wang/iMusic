@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * description 针对表【recent_song】的数据库操作Mapper
  * Entity com.java.imusic.domain.RecentSong
-*/
+ */
 @Mapper
 public interface RecentSongMapper extends BaseMapper<RecentSong> {
 
@@ -45,6 +45,29 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "        order by r.update_time desc,\n" +
             "                 r.count desc")
     List<RecentSongVo> getRecentSongByUserId(Integer id);
+
+
+    /**
+     * 获取指定用户最近播放列表，按播放量降序排列
+     */
+    @Select("SELECT\n" +
+            "    s.id,\n" +
+            "    s.singer_id,\n" +
+            "    s.name,\n" +
+            "    s2.name,\n" +
+            "    s.introduction,\n" +
+            "    s.pic,\n" +
+            "    s.lyric,\n" +
+            "    s.url,\n" +
+            "    r.count\n" +
+            "FROM\n" +
+            "    recent_song r\n" +
+            "INNER JOIN song s ON r.song_id = s.id\n" +
+            "INNER JOIN singer s2 ON s.singer_id = s2.id\n" +
+            "WHERE\n" +
+            "    r.user_id = #{id}\n" +
+            "ORDER BY r.count DESC")
+    List<RecentSongVo> getRecentSongByUserIdOrderByCountDesc(Integer id);
 
     /**
      * 由最近播放歌曲查询其歌单信息
