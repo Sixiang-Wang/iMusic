@@ -22,9 +22,9 @@ export default {
   data() {
     return {
       songsList: [
-        {name: '热 门 歌 曲', list: []},
+        {name: '热 歌 榜', list: []},
         {name: '精 选 歌 单', list: []},
-        {name: '推 荐 歌 手', list: []},
+        {name: '人 气 歌 手', list: []},
       ]
     }
   },

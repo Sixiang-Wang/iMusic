@@ -29,11 +29,11 @@ export default {
       this.$store.commit('setTempList', item);
       console.log("res:", item);
       if (item.singerId) {
-        this.$router.push({path: `song-album/${item.id}`});
+        this.$router.push({path: `/song-album/${item.id}`});
       } else if (item.name) {
-        this.$router.push({path: `singer-album/${item.id}`});
+        this.$router.push({path: `/singer-album/${item.id}`});
       } else {
-        this.$router.push({path: `song-list-album/${item.id}`});
+        this.$router.push({path: `/song-list-album/${item.id}`});
       }
     },
     // 获取名字后半部分-- 歌名
