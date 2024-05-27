@@ -33,7 +33,6 @@ import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
 import {addFollow, deleteFollow, existFollow, getSingerById, songOfSingerId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
-import th from "element-ui/src/locale/lang/th";
 
 export default {
   name: 'singer-album',

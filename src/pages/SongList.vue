@@ -52,7 +52,6 @@ export default {
         introduction: '',
         style: ''
       },
-
     }
   },
   computed: {
