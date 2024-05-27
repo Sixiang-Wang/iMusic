@@ -105,7 +105,7 @@
 
     <select id="allComplaintSongByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
         from complaint c,song s
         where (c.song_id = s.id and type = 0)
         and c.user_id = #{userId}
@@ -113,7 +113,7 @@
 
     <select id="allComplaintSongListByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
         from complaint c,song_list s
         where (c.song_list_id = s.id and type = 1)
         and c.user_id = #{userId}
@@ -121,7 +121,7 @@
 
     <select id="allComplaintSongAgainstUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
         from complaint c,song s,singer s2
         where c.song_id = s.id and type = 0
         and s.singer_id = s2.id
@@ -130,7 +130,7 @@
 
     <select id="allComplaintSongListAgainstUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
         from complaint c,song_list s
         where c.song_list_id = s.id and type = 1
         and s.user_id = #{userId}
