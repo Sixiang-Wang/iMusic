@@ -37,7 +37,7 @@
     }
   }
   .item-content {
-    width: 1200px;
+    width: 100%;
     margin: 10px 30px;
     .item {
       text-align: center;
@@ -58,6 +58,7 @@
       }
     }
     .item-title {
+      //background: #67c23a;
       width: 100px;
       height: 30px;
       margin: 25px;
@@ -65,24 +66,35 @@
 
     }
     .item-introduction {
-      margin-left: 60px;
+      margin-left: 30px;
       margin-top: 25px;
-      width: 500px;
+      width: 480px;
       color: black;
     }
     .item-style {
+      //background: #67c23a;
       width: 200px;
-      //background: yellow;
       margin-left: 30px;
       margin-top: 25px;
     }
     .delete-icon {
-      margin-left: 200px;
+      width: 50px;
+      //background: black;
+      margin-left: 100px;
       margin-top: 25px;
       cursor: pointer;
       transition: transform 0.3s ease;
     }
     .delete-icon:hover {
+      transform: scale(1.1);
+    }
+    .edit-icon {
+      width: 50px;
+      margin-top: 25px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .edit-icon:hover {
       transform: scale(1.1);
     }
   }

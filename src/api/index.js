@@ -33,8 +33,10 @@ export const setSongList = (params) => post(`songList/add`, params);
 
 //根据歌单标题模糊查询歌单
 export const likeTitle = (keywords) => get(`songList/likeTitle?title=${keywords}`);
-
+//删除歌单
 export const deleteSongList = (id) => get(`songList/delete?id=${id}`)
+// 编辑歌单
+export const updateSongList = (params) => post(`songList/update`,params);
 
 // =============歌单的歌曲相关========
 // 根据歌曲id查询歌曲列表
