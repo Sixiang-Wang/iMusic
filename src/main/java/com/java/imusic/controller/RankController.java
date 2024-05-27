@@ -1,8 +1,11 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.dao.RankMapper;
 import com.java.imusic.domain.Rank;
+import com.java.imusic.domain.SongList;
 import com.java.imusic.service.RankService;
+import com.java.imusic.service.SongListService;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class RankController {
 
     @Autowired
     private RankService rankService;
+    @Autowired
+    private RankMapper rankMapper;
+    @Autowired
+    SongListService songListService;
 
     /**
      * 新增评价
@@ -85,6 +93,7 @@ public class RankController {
         String songListId = request.getParameter("songListId");
         return rankService.rankOfSongListId(Integer.parseInt(songListId));
     }
+
 }
 
 

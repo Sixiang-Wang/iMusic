@@ -207,27 +207,14 @@
     <select id="popularSongOfUser" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.Integer">
         select
-        <include refid="Blob_Column_List"/>
-        from song
-        where user_id = #{userId}
+            s.id,s.singer_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
+        from song s,singer s2
+        where s.singer_id = s2.id
+        and s2.user_id = #{userId}
         and visible = 1
         order by nums desc
         limit 1
     </select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

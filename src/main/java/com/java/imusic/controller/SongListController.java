@@ -1,6 +1,7 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.dao.RankMapper;
 import com.java.imusic.domain.SongList;
 import com.java.imusic.service.SongListService;
 import com.java.imusic.utils.Consts;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 歌单控制类
@@ -24,6 +26,8 @@ public class SongListController {
 
     @Autowired
     private SongListService songListService;
+    @Autowired
+    private RankMapper rankMapper;
 
     /**
      * 添加歌单
@@ -213,6 +217,20 @@ public class SongListController {
             return jsonObject;
         }
     }
+
+    @RequestMapping(value = "/bestSongListOfUser",method = RequestMethod.GET)
+    public Object bestSongListOfUser(HttpServletRequest request){
+        String userId = request.getParameter("userId");
+        SongList songList =  rankMapper.bestSongListOfUser(Integer.parseInt(userId));
+        if(songList == null){
+            List<SongList> songListList = songListService.selectByUserId(Integer.parseInt(userId));
+            if(songListList==null) return null;
+            System.out.println("哦，可怜的孩子，根本就没有人给他的歌曲评分！算了给你随便返回个他的歌单好了");
+            return songListList.toArray()[0];
+        }
+        return songList;
+    }
+
 }
 
 

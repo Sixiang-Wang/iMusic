@@ -1,6 +1,7 @@
 package com.java.imusic.dao;
 
 import com.java.imusic.domain.Rank;
+import com.java.imusic.domain.SongList;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,6 +26,8 @@ public interface RankMapper {
     public int selectRankNum(Integer songListId);
 
     public Rank getRank(Rank rank);
+
+    public SongList bestSongListOfUser(Integer userId);
 }
 
 
