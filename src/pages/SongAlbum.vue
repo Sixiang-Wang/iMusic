@@ -8,7 +8,7 @@
       <ul class = "info">
         <li>歌手: </li>
         <li>{{ replaceLName(song.name) }}</li>
-        <li>简介: </li>
+        <li>专辑: </li>
         <li>{{ song.introduction }}</li>
       </ul>
     </div>
