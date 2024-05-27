@@ -402,6 +402,12 @@ public class SongController {
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         return songMapper.popularSongOfUser(userId);
     }
+
+    @RequestMapping(value = "/popularCollectedSongOfUser",method = RequestMethod.GET)
+    public Object popularCollectedSongOfUser(HttpServletRequest request){
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        return songMapper.popularCollectedSongOfUser(userId);
+    }
 }
 
 

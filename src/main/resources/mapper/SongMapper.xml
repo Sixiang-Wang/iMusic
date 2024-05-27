@@ -215,6 +215,19 @@
         order by nums desc
         limit 1
     </select>
+
+    <select id="popularCollectedSongOfUser" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.Integer">
+        select s.id,s.singer_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
+        from song s,singer s2,`collect` c
+        where s.singer_id = s2.id
+          and c.song_id = s.id
+          and s2.user_id = #{userId}
+          and visible = 1
+        group by s.id
+        order by count(*) desc
+        limit 1
+    </select>
 </mapper>
 
 
