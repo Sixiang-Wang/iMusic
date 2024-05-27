@@ -2,7 +2,7 @@
 @import "global.scss";
 
 .content-list {
-  min-height: 600px;
+  min-height: 450px;
   padding: 0 20px;
   .section-content {
     @include layout(flex-start, stretch, row, wrap);
