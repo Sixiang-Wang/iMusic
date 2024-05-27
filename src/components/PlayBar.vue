@@ -27,7 +27,7 @@
       </div>
       <!--    歌曲图片-->
       <div class="item-img" @click="toLyric">
-        <img :src="picUrl" alt="歌曲图片"/>
+        <img v-if="picUrl!==null" :src="picUrl"/>
       </div>
       <!--    播放进度-->
       <div class="playing-speed">
@@ -61,9 +61,10 @@
           <div ref="info" class="info">
             <span>{{ info }}</span>
           </div>
-          <svg class="play">
-            <use :xlink:href="control"></use>
-          </svg>
+          <img :src="control">
+<!--          <svg class="play">-->
+<!--            <use :xlink:href="control"></use>-->
+<!--          </svg>-->
         </div>
 
 
@@ -154,15 +155,15 @@ export default {
 
 
     this.$store.commit("setPlayButtonUrl", "#icon-bofang");
-    this.$store.commit("setControl", "#icon-bofang-xunhuanbofang");
+    this.$store.commit("setControl", require("../assets/js/icon/icon-Loop.png"));
     this.$store.commit("setFlag", 0);
     this.$store.commit("setRecentSongList", []);
-    if (this.picUrl === "" || this.picUrl === null) {
-      this.$store.commit(
-        "setPicUrl",
-        "https://www.freemusic.ltd/avatar/1.jpeg"
-      );
-    }
+    // if (this.picUrl === "" || this.picUrl === null) {
+    //   this.$store.commit(
+    //     "setPicUrl",
+    //     "https://www.freemusic.ltd/avatar/1.jpeg"
+    //   );
+    // }
 
 
     document.querySelector('.item-volume').addEventListener('click', function (e) {
@@ -221,24 +222,24 @@ export default {
       if (this.url === "" || this.url === null) {
         this.$message.warning("暂无歌曲");
       } else {
-        if (this.control === "#icon-danquxunhuan" && this.flag === 2) {
-          this.$store.commit("setControl", "#icon-bofang-xunhuanbofang");
+        if (this.control === require("../assets/js/icon/icon-SingleLoop.png") && this.flag === 2) {
+          this.$store.commit("setControl", require("../assets/js/icon/icon-Loop.png"));
         }
-        if (this.control === "#icon-suijibofang" && this.flag === 1) {
-          this.$store.commit("setControl", "#icon-danquxunhuan");
+        else if (this.control === require("../assets/js/icon/icon-Random.png") && this.flag === 1) {
+          this.$store.commit("setControl", require("../assets/js/icon/icon-SingleLoop.png"));
         }
-        if (this.control === "#icon-bofang-xunhuanbofang" && this.flag === 0) {
-          this.$store.commit("setControl", "#icon-suijibofang");
+        else if (this.control === require("../assets/js/icon/icon-Loop.png") && this.flag === 0) {
+          this.$store.commit("setControl", require("../assets/js/icon/icon-Random.png"));
         }
-        if (this.control === "#icon-suijibofang") {
+        if (this.control === require("../assets/js/icon/icon-Random.png")) {
           this.$store.commit("setFlag", 1);
           this.info = "随机播放";
         }
-        if (this.control === "#icon-danquxunhuan") {
+        else if (this.control === require("../assets/js/icon/icon-SingleLoop.png")) {
           this.$store.commit("setFlag", 2);
           this.info = "单曲循环";
         }
-        if (this.control === "#icon-bofang-xunhuanbofang") {
+        else if (this.control === require("../assets/js/icon/icon-Loop.png")) {
           this.$store.commit("setFlag", 0);
           this.info = "循环播放";
         }
@@ -531,6 +532,9 @@ export default {
     },
     // 转向歌词页面
     toLyric() {
+      if(this.picUrl === null){
+        return;
+      }
       this.$router.push({path: '/lyric'})
     },
     // 下载音乐
