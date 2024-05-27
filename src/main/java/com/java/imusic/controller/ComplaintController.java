@@ -125,7 +125,6 @@ public class ComplaintController {
     @RequestMapping(value = "/allComplaintByUser",method = RequestMethod.GET)
     public Object allComplaintByUser(HttpServletRequest request){
         Integer userId = Integer.parseInt(request.getParameter("userId").trim());
-        System.out.println(userId);
         List<Complaint> complaintList = complaintService.allComplaintSongByUser(userId);
         List<Complaint> complaintList2 = complaintService.allComplaintSongListByUser(userId);
         complaintList.addAll(complaintList2);
