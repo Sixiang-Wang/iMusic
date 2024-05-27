@@ -1,16 +1,18 @@
 <template>
-  <album-content :song-list="collectList"></album-content>
+  <album-content :song-list="recentList">dd</album-content>
+
 </template>
 
 <script>
 import AlbumContent from "../../components/AlbumContent.vue";
 import {mapGetters} from "vuex";
-import {collectSongOfUserId} from "../../api";
+import { getRecentSongByUserId } from "../../api/index";
+
 export default {
   components: {AlbumContent},
   data() {
     return {
-      collectList : [],     // 收藏的歌曲列表（带歌曲详情）
+      recentList : [],     // 收藏的歌曲列表（带歌曲详情）
     }
   },
   computed: {
@@ -23,11 +25,11 @@ export default {
   },
   methods: {
     getCollection(userId) {
-      collectSongOfUserId(userId).then(res => {
-        console.log("res:",res);
-        this.collectList = res;
+      getRecentSongByUserId(userId).then(res => {
+        console.log("res:",res.data);
+        this.recentList = res.data;
       }).catch(error => {
-        console.log('get collection of songs fails\n' + error);
+        console.log('get recent songs fails\n' + error);
       })
     }
   }

@@ -1,5 +1,16 @@
-import {getCollectOfUserId, likeSongOfName} from "../api";
+import {addNums, getCollectOfUserId, likeSongOfName} from "../api";
 import {mapGetters} from "vuex";
+
+
+// import {
+//   addPlayCount,
+//   gerAllSongAndSingerNameBySingerId,
+//   getAllSongBySongListId,
+//   getSongByPlayCount,
+// } from "../api/Song";
+// import { getAllCollectByConsumerId } from "../api/Collect";
+import {addRecentSong } from "../api/index";
+
 
 export const mixin = {
   computed: {
@@ -77,7 +88,71 @@ export const mixin = {
             }
           })
       }
+
+      let RecentSong = {
+        userId: this.userId,
+        songId: id,
+        count: 1,
+      };
+      if (this.userId) {
+        this.addRecentSong(RecentSong);
+      }
+      addNums(id);
+
     },
+
+
+    addRecentSong(RecentSong) {
+      addRecentSong(RecentSong).then((res) => {
+        if (res.code === 200) {
+          console.log("msg:", res.msg);
+        }
+      });
+    },
+    // addPlayCount(id) {
+    //   let SongVo = {
+    //     id: id,
+    //   };
+    //   addPlayCount(SongVo).then((res) => {
+    //     if (res.data.code === 200) {
+    //       console.log(res.data.msg);
+    //     }
+    //   });
+    // },
+    // getSongByPlayCount() {
+    //   getSongByPlayCount().then((res) => {
+    //     if (res.data.code === 200) {
+    //       this.$store.commit("setListOfSongs", res.data.data);
+    //     }
+    //   });
+    // },
+    // getSongOfSingerId() {
+    //   gerAllSongAndSingerNameBySingerId(this.$route.query.id).then((res) => {
+    //     if (res.data.code === 200) {
+    //       this.$store.commit("setListOfSongs", res.data.data);
+    //     }
+    //   });
+    // },
+    // getUserCollectData() {
+    //   getAllCollectByConsumerId(this.userId).then((res) => {
+    //     if (res.data.code === 200) {
+    //       this.$store.commit("setCollectList", res.data.data);
+    //     } else {
+    //       this.$store.commit("setCollectList", []);
+    //     }
+    //   });
+    // },
+    // getSongListDetailById() {
+    //   getAllSongBySongListId(this.$route.query.id).then((res) => {
+    //     if (res.data.code === 200) {
+    //       this.$store.commit("setListOfSongs", res.data.data);
+    //     } else {
+    //       this.$store.commit("setListOfSongs", []);
+    //     }
+    //   });
+    // },
+
+
     // 解析歌词
     parseLyric(text) {
       let lines = text.split("\n");         // 将歌词按行分解成数组
