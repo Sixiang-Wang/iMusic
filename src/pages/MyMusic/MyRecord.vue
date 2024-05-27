@@ -29,6 +29,9 @@ export default {
       'userId'          // 当前登录用户id
     ]),
   },
+  created() {
+    this.goPage('songs','/my-music/my-record/songs');
+  },
   methods: {
     goPage(name,path){
       this.activeName = name;
