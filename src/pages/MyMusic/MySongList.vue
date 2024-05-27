@@ -177,13 +177,13 @@ export default {
       this.deleteId = id;
     },
     confirmDelete() {
-      this.notify(this.deleteId)
       deleteSongList(this.deleteId).then(res =>
       {
-        this.notify(res)
         if (res)
         {
           this.notify('删除成功');
+          this.deleteDialog = false;
+          this.deleteId = '';
           selectSongListByUserId(this.userId).then(res =>
           {
             this.songLists = res;
