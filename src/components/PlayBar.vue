@@ -103,12 +103,12 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {deleteCollectSong, download, getCollectOfUserId, setCollect} from "../api/index";
+import {deleteCollectSong, download, getCollectOfUserId, setCollect, addRecentSong, addNums} from "../api/index";
 import th from "element-ui/src/locale/lang/th";
 
-import {
-  getCollectBySongId,
-} from "../api/Collect";
+// import {
+//   getCollectBySongId,
+// } from "../api/Collect";
 
 export default {
   name: 'play-bar',
@@ -398,15 +398,16 @@ export default {
           this.$store.commit("setIsPlay", true);
           this.toplay(this.listOfSongs[this.listIndex].url);
         }
-        this.addPlayCount(this.id);
+        // this.addPlayCount(this.id);
         if (this.loginIn) {
           let RecentSong = {
             userId: this.userId,
             songId: this.id,
             count: 1,
           };
-          this.addRecentSong(RecentSong);
+          addRecentSong(RecentSong);
         }
+        addNums(this.id);
       } else {
         this.$store.commit("setIsPlay", false);
         this.$store.commit("setPlayButtonUrl", "#icon-bofang");
@@ -442,15 +443,16 @@ export default {
           this.$store.commit("setIsPlay", true);
           this.toplay(this.listOfSongs[this.listIndex].url);
         }
-        this.addPlayCount(this.id);
+        // this.addPlayCount(this.id);
         if (this.loginIn) {
           let RecentSong = {
             userId: this.userId,
             songId: this.id,
             count: 1,
           };
-          this.addRecentSong(RecentSong);
+          addRecentSong(RecentSong);
         }
+        addNums(this.id);
       } else {
         this.$store.commit("setIsPlay", false);
         this.$store.commit("setPlayButtonUrl", "#icon-bofang");
@@ -577,19 +579,19 @@ export default {
         songId: this.id,
         songListId: "",
       };
-      if (this.loginIn) {
-        if (this.id !== "" && this.id !== null) {
-          getCollectBySongId(CollectVo).then((res) => {
-            if (res.data.code === 200) {
-              this.liked = true;
-              this.$refs.like.children[0].style.color = "#DC143C";
-            } else {
-              this.liked = false;
-              this.$refs.like.children[0].style.color = "#ccc";
-            }
-          });
-        }
-      }
+      // if (this.loginIn) {
+      //   if (this.id !== "" && this.id !== null) {
+      //     getCollectBySongId(CollectVo).then((res) => {
+      //       if (res.data.code === 200) {
+      //         this.liked = true;
+      //         this.$refs.like.children[0].style.color = "#DC143C";
+      //       } else {
+      //         this.liked = false;
+      //         this.$refs.like.children[0].style.color = "#ccc";
+      //       }
+      //     });
+      //   }
+      // }
     },
 
 

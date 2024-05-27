@@ -17,6 +17,8 @@ export const songOfSingerId =(id) =>get(`song/singer/detail?singerId=${id}`);
 export const songOfSongId =(id) => get(`song/detail?songId=${id}`);
 // 根据歌曲名字模糊查询歌曲
 export const likeSongOfName =(keywords) => get(`song/likeSongOfName?songName=${keywords}`);
+// 添加歌曲播放次数
+export const addNums = (songId) => get(`/song/addNums?songId=${songId}`);
 // ============歌单相关==============
 // 查询歌曲
 export const getAllSongList =() => get(`songList/allSongList`);//获得所有歌单
@@ -96,3 +98,15 @@ export const deleteFollow = (userId, singerId) => get(`follow/deleteByUserIdAndS
 
 // 是否关注
 export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=${userId}&singerId=${singerId};`)
+
+// ===================播放记录==================
+// 添加歌曲最近播放记录
+export const addRecentSong = (RecentSong) => post(`recentSong/add`,RecentSong);
+// 获取当前用户最近播放列表
+export const getRecentSongByUserId = (id) => get(`recentSong/recentSongOfUserId/${id}`);
+// 推荐歌单
+export const recommendSongList = (id) => get(`recentSong/recommendSongList/${id}`);
+// 推荐歌手
+export const recommendSinger = (id) => get(`recentSong/recommendSinger/${id}`);
+//获取指定用户最近播放列表,按播放量降序排列
+export const getRecentSongOrderByCount = (id) => get(`recentSong/recentSongOrderByCount/${id}`)

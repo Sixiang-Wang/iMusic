@@ -17,8 +17,12 @@ import MySongs from "@/pages/MyMusic/MySongs.vue";
 import MyCare from "@/pages/MyMusic/MyCare.vue";
 import FavorSongs from "@/pages/MyMusic/FavorSongs.vue";
 import FavorSongList from "@/pages/MyMusic/FavorSongList.vue";
+import MyRecord from "@/pages/MyMusic/MyRecord.vue";
+import RecordSongs from "@/pages/MyMusic/RecordSongs.vue";
+import RecordSongList from "@/pages/MyMusic/RecordSongList.vue";
 import CreateReport from "@/pages/CreateReport.vue";
 import ListeningReport from "@/pages/ListeningReport.vue";
+
 Vue.use(Router)
 
 export default new Router({
@@ -75,6 +79,23 @@ export default new Router({
           name: 'my-care',
           component: MyCare
         },
+        {
+          path: 'my-record',
+          name: 'my-record',
+          component: MyRecord,
+          children: [
+            {
+              path: 'songs',
+              name: 'songs',
+              component: RecordSongs,
+            },
+            {
+              path: 'songList',
+              name: 'songList',
+              component: RecordSongList,
+            },
+          ]
+        },
       ]
     },
     {
@@ -122,6 +143,7 @@ export default new Router({
       name: 'song-list-album',
       component: SongListAlbum
     },
+
     // 位置比较随意，需要修改
     {
       path: '/createReport',

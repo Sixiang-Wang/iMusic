@@ -60,7 +60,8 @@ export default {
       songListId: '',
       average: 0,
       rank: 0,
-      selfRank: 0
+      selfRank: 0,
+      star:0
     }
   },
   computed: {
@@ -73,7 +74,10 @@ export default {
         "userId"
       ]
     ),
-    star: this.average / 2,
+
+  },
+  mounted() {
+    this.star=this.average / 2;
   },
   created() {
     this.songListId = this.$route.params.id;
