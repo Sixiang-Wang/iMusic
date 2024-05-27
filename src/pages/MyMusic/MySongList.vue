@@ -57,7 +57,7 @@
                {{ item.style }}
               </span>
               <span class = "delete-icon" @click = "deleteItem(item.id)">
-                <delete-icon ></delete-icon>
+                <delete-icon></delete-icon>
               </span>
             </div>
           </div>
@@ -70,7 +70,7 @@
             >
               <span>确定要删除吗？</span>
               <span slot = "footer" style = "text-align: center">
-        <el-button @click = "deleteDialog = false">取消</el-button>
+        <el-button @click = "deleteDialog = false;deleteId='' ">取消</el-button>
         <el-button type = "primary" @click = "confirmDelete()">确定</el-button>
       </span>
             </el-dialog>
@@ -173,13 +173,14 @@ export default {
       this.$router.push({path: `/song-list-album/${item.id}`});
     },
     deleteItem(id) {
-      this.notify(55)
       this.deleteDialog = true;
       this.deleteId = id;
     },
     confirmDelete() {
+      this.notify(this.deleteId)
       deleteSongList(this.deleteId).then(res =>
       {
+        this.notify(res)
         if (res)
         {
           this.notify('删除成功');
