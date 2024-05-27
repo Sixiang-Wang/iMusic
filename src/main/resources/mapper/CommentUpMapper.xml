@@ -39,11 +39,11 @@
         and comment_id = #{commentId}
     </delete>
 
-    <delete id="exist" parameterType="java.lang.Integer">
+    <select id="exist" resultType="java.lang.Integer">
         select count(*) from comment_up
         where user_id=#{userId}
         and comment_id = ${commentId}
-    </delete>
+    </select>
 
 </mapper>
 
