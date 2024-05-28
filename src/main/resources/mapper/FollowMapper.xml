@@ -109,7 +109,7 @@
     <select id="getCountByUserId" resultMap="BaseResultMap"
             parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+            count(*)
         from follow
         where user_id = #{userId}
     </select>
@@ -117,7 +117,7 @@
     <select id="getCountBySingerId" resultMap="BaseResultMap"
             parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+            count(*)
         from follow
         where singer_id = #{singerId}
     </select>
