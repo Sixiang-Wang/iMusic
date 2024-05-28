@@ -77,7 +77,7 @@
       <el-pagination
         background
         layout="total,prev,pager,next"
-        :current-page="currentPage"
+        :current-page.sync="currentPage"
         :page-size="pageSize"
         :total="tableData.length"
         @current-change="handleCurrentChange"
@@ -234,6 +234,20 @@ export default {
         this.currentPage = 1
       })
     },
+    getData2 (cur) {
+      if (!cur) cur = 1
+      this.tempData = []
+      this.tableData = []
+      allSong().then(res => {
+        this.tempData = res
+        this.tableData = res
+        let len = res.length
+        this.currentPage = cur
+        if (len / this.pageSize <= cur - 1) {
+          this.currentPage = 1
+        }
+      })
+    },
     /* 添加 */
     addSong () {
       let _this = this
@@ -286,7 +300,7 @@ export default {
       updateSong(params)
         .then(res => {
           if (res.code === 1) {
-            this.getData()
+            this.getData2(this.currentPage)
             this.notify('修改成功', 'success')
           } else {
             this.notify('修改失败', 'error')
@@ -306,7 +320,7 @@ export default {
       delSong(this.idx)
         .then(res => {
           if (res) {
-            this.getData()
+            this.getData2(this.currentPage)
             this.notify('删除成功', 'success')
           } else {
             this.notify('删除失败', 'error')
@@ -344,7 +358,7 @@ export default {
     handleSongSuccess (res) {
       let _this = this
       if (res.code === 1) {
-        _this.getData()
+        _this.getData(this.currentPage)
         _this.$notify({
           title: '上传成功',
           type: 'success'

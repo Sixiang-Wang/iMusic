@@ -38,6 +38,7 @@ export const invisibleSong = (id) => get(`song/invisible?id=${id}`)
 export const visibleSong = (id) => get(`song/visible?id=${id}`)
 
 // ============歌单相关================
+export const songListOfSongListId = (id) => get(`songList/selectByPrimaryKey?id=${id}`)
 // 查询歌单
 export const getAllSongList = () => get(`songList/allSongList`)
 // 添加歌单
@@ -46,6 +47,9 @@ export const setSongList = (params) => post(`songList/add`, params)
 export const updateSongList = (params) => post(`songList/update`, params)
 // 删除歌单
 export const delSongList = (id) => get(`songList/delete?id=${id}`)
+export const allInvisibleSongList = () => get(`songList/allInvisible`)
+export const invisibleSongList = (id) => get(`songList/invisible?id=${id}`)
+export const visibleSongList = (id) => get(`songList/visible?id=${id}`)
 
 // ============歌单的歌曲相关============
 // 根据歌单id查询歌曲列表
@@ -87,3 +91,7 @@ export const sendMail = (to) => get(`/mail/sendMail?to=${to}`)
 export const getFollowByUserId = (userId) => get(`/follow/getByUserId?userId=${userId}`)
 export const deleteFollow = (id) => get(`/follow/delete?id=${id}`)
 export const existFollow = (userId, singerId) => get(`/follow/existFollow?userId=${userId}&singerId=${singerId}`)
+
+// =====举报
+export const allComplaint = () => get(`/complaint/allComplaint`)
+export const deleteComplaint = (id) => get(`/complaint/delete?id=${id}`)

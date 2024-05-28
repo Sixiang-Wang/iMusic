@@ -27,6 +27,13 @@ export const mixin = {
       }
       return value
     },
+    getSongType (type) {
+      if (type === 0) {
+        return '歌曲'
+      } else if (type === 1) {
+        return '歌单'
+      }
+    },
     // 获取生日
     attachBirth (val) {
       if (val == null) {

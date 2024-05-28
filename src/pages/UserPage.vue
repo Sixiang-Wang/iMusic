@@ -58,7 +58,7 @@
       <el-pagination
         background
         layout="total,prev,pager,next"
-        :current-page="currentPage"
+        :current-page.sync="currentPage"
         :page-size="pageSize"
         :total="tableData.length"
         @current-change="handleCurrentChange"
@@ -271,14 +271,20 @@ export default {
     handleCurrentChange (val) {
       this.currentPage = val
     },
-    //查询所有用户
-    getData () {
+    getData (tmp) {
+      if (!tmp) {
+        tmp = 1
+      }
       this.tempData = []
       this.tableData = []
       getAllUser().then(res => {
         this.tempData = res
         this.tableData = res
-        this.currentPage = 1
+        let len = res.length
+        this.currentPage = tmp
+        if (len / this.pageSize <= tmp - 1) {
+          this.currentPage = 1
+        }
       })
     },
     //添加用户
@@ -368,7 +374,7 @@ export default {
           updateUser(params)
             .then(res => {
               if (res.code === 1) {
-                this.getData()
+                this.getData(this.currentPage)
                 this.notify('修改成功', 'success')
               } else {
                 this.notify(`修改失败:${res.msg}`, 'error')
@@ -390,7 +396,7 @@ export default {
       delUser(this.idx)
         .then(res => {
           if (res.code === 1) {
-            this.getData()
+            this.getData(this.currentPage)
             this.notify('删除成功', 'success')
           } else {
             this.notify(`删除失败:${res.msg}`, 'error')

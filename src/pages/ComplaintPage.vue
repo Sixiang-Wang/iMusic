@@ -1,59 +1,31 @@
 <template>
   <div class="table">
-    <div class="sub-title">
-      <div v-if="toggle != false">
-        <i class="el-icon-tickets"></i>歌曲信息-{{ singerName }}正在播放: {{ toggle }}
-      </div>
-      <div v-if="toggle == false">
-        <i class="el-icon-tickets"></i>歌曲信息-{{ singerName }}正在播放: 无
-      </div>
-    </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" size="mini" @click="delAll">批量删除</el-button>
-        <el-input v-model="select_word" size="mini" placeholder="请输入歌曲名" class="handle-input"></el-input>
+        <el-button type="primary" size="mini" @click="delAll">批量下架</el-button>
+        <el-input v-model="select_word" size="mini" placeholder="O.o尊嘟假嘟" class="handle-input"></el-input>
       </div>
     </div>
     <el-table size="mini" ref="multipleTable" border style="width:100%" height="680px" :data="data"
               @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40"></el-table-column>
-      <el-table-column label="歌曲图片" width="110" align="center">
+      <el-table-column prop="userName" label="举报人" width="110" align="center">
+      </el-table-column>
+      <el-table-column prop="type" label="类型" width="110" align="center">
         <template slot-scope="scope">
-          <div class="song-img">
-            <img :src="getUrl(scope.row.pic)" style="width:100%"/>
-          </div>
-          <div class="play" @click="setSongUrl(scope.row.url,scope.row.name)">
-            <div v-if="toggle == scope.row.name&&isPlay">
-              <svg class="icon">
-                <use xlink:href="#icon-zanting"></use>
-              </svg>
-            </div>
-            <div v-if="toggle != scope.row.name||!isPlay">
-              <svg class="icon">
-                <use xlink:href="#icon-bofanganniu"></use>
-              </svg>
-            </div>
-          </div>
+          <span v-if="scope.row.type === 0">歌曲</span>
+          <span v-else>歌单</span>
         </template>
       </el-table-column>
-      <el-table-column  prop="name" label="歌手-歌名" width="150" align="center"></el-table-column>
-      <el-table-column prop="introduction" label="专辑" width="120" align="center"></el-table-column>
-      <el-table-column prop="style" label="风格" width="90" align="center"></el-table-column>
-      <el-table-column label="歌词" min-width="130" align="left">
-        <template slot-scope="scope">
-          <ul style="height:100px;overflow:scroll;white-space: nowrap">
-            <li v-for="(item,index) in parseLyric(scope.row.lyric)" :key="index">
-              {{ item }}
-            </li>
-          </ul>
-        </template>
+      <el-table-column prop="name" label="举报对象" width="150" align="center">
       </el-table-column>
+      <el-table-column  prop="content" label="举报内容"  align="center"></el-table-column>
 
       <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+          <el-button size="mini" type="primary" @click="handleRow(scope.row)">下架</el-button>
           <br>
-          <el-button size="mini"  @click="visibleRow(scope.row.id)">恢复</el-button>
+          <el-button size="mini"  @click="deleteRow(scope.row.id)">忽略</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -82,7 +54,16 @@
 import {mixin} from '../mixins/index'
 import {mapGetters} from 'vuex'
 import '@/assets/js/iconfont.js'
-import {updateSong, delSong, allSong, oneSingerOfName, invisibleSong, visibleSong, allInvisible} from '../api/index'
+import {
+  updateSong,
+  delSong,
+  allSong,
+  oneSingerOfName,
+  invisibleSong,
+  visibleSong,
+  allInvisible,
+  allComplaint, deleteComplaint, getUserOfId, songOfSongId, songListOfSongListId
+} from '../api/index'
 
 export default {
   mixins: [mixin],
@@ -93,13 +74,8 @@ export default {
       centerDialogVisible: false, //添加弹窗是否显示
       editVisible: false,         //编辑弹窗是否显示
       delVisible: false,          //删除弹窗是否显示
-      registerForm: {      //添加框
-        name: '',
-        singerName: '',
-        introduction: '',
-        lyric: '',
-        style: ''
-      },
+      complaintId: '',
+      userId: '',
       form: {      //编辑框
         id: '',
         name: '',
@@ -114,14 +90,9 @@ export default {
       currentPage: 1,  //当前页
       idx: -1,          //当前选择项
       multipleSelection: [],   //哪些项已经打勾
-      toggle: false,           //播放器的图标状态
-      toggle_tmp: false        //防止不暂停直接切换出现bug
     }
   },
   computed: {
-    ...mapGetters([
-      'isPlay'
-    ]),
     /* 计算当前搜索结果表里的数据 */
     data () {
       return this.tableData.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
@@ -143,8 +114,6 @@ export default {
     }
   },
   created () {
-    this.singerId = this.$route.query.id
-    this.singerName = this.$route.query.name
     this.getData()
   },
   destroyed () {
@@ -162,7 +131,18 @@ export default {
       }
       this.tempData = []
       this.tableData = []
-      allInvisible().then(res => {
+      allComplaint().then(async res => {
+        for (let item of res) {
+          const user = await getUserOfId(item.userId)
+          item.userName = user.name
+          if (item.type === 0) {
+            const song = await songOfSongId(item.songId)
+            item.name = song.name
+          } else {
+            const songList = await songListOfSongListId(item.songListId)
+            item.name = songList.title
+          }
+        }
         this.tempData = res
         this.tableData = res
         let len = res.length
@@ -172,54 +152,33 @@ export default {
         }
       })
     },
-    //删除
-    deleteRow () {
-      delSong(this.idx)
+    handleRow (row) {
+      this.notify(row)
+      if (row.type === 0) {
+        invisibleSong(row.songId).then(tmp => {
+          if (tmp) {
+            this.notify('下架成功')
+          } else {
+            this.notify('下架失败')
+          }
+        })
+        deleteComplaint(row.id).then(res => {
+          if (res) {
+            this.getData()
+          }
+        })
+      }
+    },
+    deleteRow (id) {
+      deleteComplaint(id)
         .then(res => {
           if (res) {
             this.getData()
-            this.notify('删除成功', 'success')
+            this.notify('已忽略', 'success')
           } else {
-            this.notify('删除失败', 'error')
+            this.notify('此举报无法忽略', 'error')
           }
         })
-        .catch(err => {
-          console.log(err)
-        })
-      this.delVisible = false
-    },
-    visibleRow (id) {
-      visibleSong(id)
-        .then(res => {
-          if (res) {
-            this.getData()
-            this.notify('恢复成功', 'success')
-          } else {
-            this.notify('恢复失败', 'error')
-          }
-        })
-    },
-    //解析歌词
-    parseLyric (text) {
-      let lines = text.split('\n')
-      let pattern = /\[\d{2}:\d{2}.(\d{3}|\d{2})\]/g
-      let result = []
-      for (let item of lines) {
-        let value = item.replace(pattern, '')
-        result.push(value)
-      }
-      return result
-    },
-    //切换播放歌曲
-    setSongUrl (url, name) {
-      this.toggle_tmp = this.toggle
-      this.toggle = name
-      this.$store.commit('setUrl', this.$store.state.HOST + url)
-      if (this.isPlay && this.toggle_tmp === name) {
-        this.$store.commit('setIsPlay', false)
-      } else {
-        this.$store.commit('setIsPlay', true)
-      }
     }
   }
 }

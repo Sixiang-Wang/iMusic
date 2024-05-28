@@ -69,7 +69,7 @@
           <br>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
           <br>
-          <el-button size="mini"  @click="invisibleRow(scope.row.id)">下架</el-button>
+          <el-button size="mini" type="primary" @click="invisibleRow(scope.row.id)">下架</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -217,8 +217,6 @@ export default {
     }
   },
   created () {
-    this.singerId = this.$route.query.id
-    this.singerName = this.$route.query.name
     this.getData()
   },
   destroyed () {

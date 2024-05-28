@@ -58,7 +58,17 @@ export default {
         {
           icon: 'el-icon-document',
           index: 'Recovery',
-          title: '下架恢复'
+          title: '歌曲恢复'
+        },
+        {
+          icon: 'el-icon-document',
+          index: 'SongListRecovery',
+          title: '歌单恢复'
+        },
+        {
+          icon: 'el-icon-document',
+          index: 'Complaint',
+          title: '投诉举报'
         }
       ]
     }

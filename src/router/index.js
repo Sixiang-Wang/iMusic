@@ -57,8 +57,15 @@ export default new Router({
         {
           path: '/Recovery',
           component: resolve => require(['../pages/Recovery.vue'], resolve)
+        },
+        {
+          path: '/SongListRecovery',
+          component: resolve => require(['../pages/SongListRecovery.vue'], resolve)
+        },
+        {
+          path: '/Complaint',
+          component: resolve => require(['../pages/ComplaintPage.vue'], resolve)
         }
-
       ]
     }
 
