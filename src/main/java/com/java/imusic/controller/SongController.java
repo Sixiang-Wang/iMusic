@@ -397,12 +397,22 @@ public class SongController {
         return songService.songOfStyle(style);
     }
 
+    /**
+     * 某用户被点赞最多的歌
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/popularSongOfUser",method = RequestMethod.GET)
     public Object popularSongOfUser(HttpServletRequest request){
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         return songMapper.popularSongOfUser(userId);
     }
 
+    /**
+     * 某用户被收藏最多的歌
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/popularCollectedSongOfUser",method = RequestMethod.GET)
     public Object popularCollectedSongOfUser(HttpServletRequest request){
         Integer userId = Integer.parseInt(request.getParameter("userId"));

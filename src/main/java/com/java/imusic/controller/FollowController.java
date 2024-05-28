@@ -2,7 +2,9 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.Follow;
+import com.java.imusic.domain.User;
 import com.java.imusic.service.FollowService;
+import com.java.imusic.service.UserService;
 import com.java.imusic.service.impl.FollowServiceImpl;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 public class FollowController {
     @Autowired
     private FollowService followService;
-
+    @Autowired
+    private UserService userService;
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addFollow(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
@@ -118,15 +121,37 @@ public class FollowController {
         return followService.getBySingerId(singerId);
     }
 
+    /**
+     * 查用户关注数量
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/getCountByUserId", method = RequestMethod.GET)
     public Object getCountByUserId(HttpServletRequest request) {
         Integer userId = Integer.parseInt(request.getParameter("userId").trim());
         return followService.getCountByUserId(userId);
     }
 
+    /**
+     * 查歌手粉丝数量
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/getCountBySingerId", method = RequestMethod.GET)
     public Object getCountBySingerId(HttpServletRequest request) {
         Integer singerId = Integer.parseInt(request.getParameter("singerId").trim());
         return followService.getCountBySingerId(singerId);
+    }
+
+    /**
+     * 查用户粉丝数量
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getFansCountByUserId", method = RequestMethod.GET)
+    public Object getFansCountByUserId(HttpServletRequest request) {
+        Integer userId = Integer.parseInt(request.getParameter("userId").trim());
+        User user = userService.getUserWithID(userId);
+        return followService.getCountBySingerId(user.getSingerId());
     }
 }

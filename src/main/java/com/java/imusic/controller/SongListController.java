@@ -218,6 +218,11 @@ public class SongListController {
         }
     }
 
+    /**
+     * 某用户被评分最高的歌单
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/bestSongListOfUser",method = RequestMethod.GET)
     public Object bestSongListOfUser(HttpServletRequest request){
         String userId = request.getParameter("userId");
