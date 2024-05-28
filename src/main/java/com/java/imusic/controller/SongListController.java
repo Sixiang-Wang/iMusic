@@ -233,7 +233,7 @@ public class SongListController {
         SongList songList =  rankMapper.bestSongListOfUser(Integer.parseInt(userId));
         if(songList == null){
             List<SongList> songListList = songListService.selectByUserId(Integer.parseInt(userId));
-            if(songListList==null) return null;
+            if(songListList==null || songListList.isEmpty()) return null;
             System.out.println("哦，可怜的孩子，根本就没有人给他的歌曲评分！算了给你随便返回个他的歌单好了");
             return songListList.toArray()[0];
         }
