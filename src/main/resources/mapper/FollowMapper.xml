@@ -106,7 +106,7 @@
         where singer_id = #{singerId}
     </select>
 
-    <select id="getCountByUserId" resultMap="BaseResultMap"
+    <select id="getCountByUserId" resultMap="java.lang.Integer"
             parameterType="java.lang.Integer">
         select
             count(*)
@@ -114,7 +114,7 @@
         where user_id = #{userId}
     </select>
 
-    <select id="getCountBySingerId" resultMap="BaseResultMap"
+    <select id="getCountBySingerId" resultMap="java.lang.Integer"
             parameterType="java.lang.Integer">
         select
             count(*)
