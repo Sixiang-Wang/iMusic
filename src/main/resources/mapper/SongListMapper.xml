@@ -9,6 +9,7 @@
         <result column="pic" jdbcType="VARCHAR" property="pic"/>
         <result column="style" jdbcType="VARCHAR" property="style"/>
         <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="visible" jdbcType="INTEGER" property="visible"/>
     </resultMap>
 
     <resultMap id="ResultMapWithBLOBs" type="com.java.imusic.domain.SongList" extends="BaseResultMap">
@@ -16,11 +17,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,pic,style,user_id
+        id,title,pic,style,user_id,visible
     </sql>
 
     <sql id="Blob_Column_List">
-        id,title,pic,style,introduction,user_id
+        id,title,pic,style,introduction,user_id,visible
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.SongList">
@@ -44,6 +45,7 @@
             <if test="userId != null">
                 user_id,
             </if>
+            visible,
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -64,6 +66,7 @@
             <if test="userId != null">
                 #{userId},
             </if>
+            1,
         </trim>
     </insert>
 
@@ -84,6 +87,9 @@
             </if>
             <if test="userId != null">
                 user_id = #{userId},
+            </if>
+            <if test="visible != null">
+                visible = #{visible},
             </if>
         </set>
         where id = #{id}
@@ -112,6 +118,7 @@
         select
         <include refid="Blob_Column_List"/>
         from song_list
+        where visible = 1
     </select>
 
     <select id="songListOfTitle" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
@@ -119,6 +126,7 @@
         <include refid="Blob_Column_List"/>
         from song_list
         where title = #{title}
+        and visible = 1
     </select>
 
     <select id="likeTitle" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
@@ -126,6 +134,7 @@
         <include refid="Blob_Column_List"/>
         from song_list
         where title like #{title}
+        and visible = 1
     </select>
 
     <select id="likeStyle" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
@@ -133,8 +142,15 @@
         <include refid="Blob_Column_List"/>
         from song_list
         where style like #{style}
+        and visible = 1
     </select>
 
+    <select id="allInvisible" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Blob_Column_List"/>
+        from song_list
+        where visible = 0
+    </select>
 </mapper>
 
 

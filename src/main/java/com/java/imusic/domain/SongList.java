@@ -19,6 +19,16 @@ public class SongList implements Serializable {
 
     private Integer userId;
 
+    private Integer visible;
+
+    public Integer getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Integer visible) {
+        this.visible = visible;
+    }
+
     public Integer getUserId() {
         return userId;
     }

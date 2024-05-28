@@ -2,6 +2,8 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.dao.RankMapper;
+import com.java.imusic.dao.SongListMapper;
+import com.java.imusic.domain.Song;
 import com.java.imusic.domain.SongList;
 import com.java.imusic.service.SongListService;
 import com.java.imusic.utils.Consts;
@@ -28,6 +30,8 @@ public class SongListController {
     private SongListService songListService;
     @Autowired
     private RankMapper rankMapper;
+    @Autowired
+    private SongListMapper songListMapper;
 
     /**
      * 添加歌单
@@ -236,26 +240,28 @@ public class SongListController {
         return songList;
     }
 
+
+    @RequestMapping(value = "/invisible",method = RequestMethod.GET)
+    public Object invisibleSong(HttpServletRequest request){
+        String id = request.getParameter("id").trim();          //主键
+        SongList songList = songListService.selectByPrimaryKey(Integer.parseInt(id));
+        songList.setVisible(0);
+        boolean flag = songListService.update(songList);
+        return flag;
+    }
+
+    @RequestMapping(value = "/allInvisible",method = RequestMethod.GET)
+    public Object allInvisibleSong(HttpServletRequest request){
+        return songListMapper.allInvisible();
+    }
+
+    @RequestMapping(value = "/visible",method = RequestMethod.GET)
+    public Object visibleSong(HttpServletRequest request){
+        String id = request.getParameter("id").trim();          //主键
+        SongList songList = songListService.selectByPrimaryKey(Integer.parseInt(id));
+        songList.setVisible(1);
+        boolean flag = songListService.update(songList);
+        return flag;
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
