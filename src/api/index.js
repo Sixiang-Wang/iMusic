@@ -20,7 +20,7 @@ export const likeSongOfName = (keywords) => get(`song/likeSongOfName?songName=${
 // 添加歌曲播放次数
 export const addNums = (songId) => get(`/song/addNums?songId=${songId}`);
 // 查询热门歌曲
-export const getTopSong =() =>get(`song/topSong`);
+export const getTopSong = () =>get(`song/topSong`);
 // ============歌单相关==============
 // 查询歌曲
 export const getAllSongList = () => get(`songList/allSongList`);//获得所有歌单
@@ -112,11 +112,14 @@ export const collectSongListOfUserId = (userId) => get(`collect/collectSongListO
 // 添加关注
 export const addFollow = (params) => post(`follow/add`, params);
 
+// 查找用户的关注歌手
+export const getFollow = (userId) => get(`follow/getByUserId?userId=${userId}`);
+
 // 取消关注
 export const deleteFollow = (userId, singerId) => get(`follow/deleteByUserIdAndSingerId?userId=${userId}&singerId=${singerId}`);
 
 // 是否关注
-export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=${userId}&singerId=${singerId};`)
+export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=${userId}&singerId=${singerId}`);
 
 // ===================播放记录==================
 // 添加歌曲最近播放记录

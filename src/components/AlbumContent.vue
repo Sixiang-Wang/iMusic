@@ -35,6 +35,9 @@
               {{ item.introduction }}
             </span>
           </span>
+          <span @click="toggleMenu">
+            <add-icon></add-icon>
+          </span>
           <span @click="handleCollect(item)">
             <svg :class="{active: item.collection}" class="icon" >
               <use xlink:href="#icon-xihuan-shi"></use>
@@ -49,11 +52,19 @@
 
 <script>
 import {mixin} from '../mixins'
-import {deleteCollectSong, getOneSingerByName, setCollect, existCollectSong} from "../api";
+import {deleteCollectSong, getOneSingerByName, setCollect, existCollectSong, selectSongListByUserId} from "../api";
 import {mapGetters} from "vuex";
+import AddIcon from "../assets/icon/addIcon.vue";
 
 export default {
+  data() {
+    return {
+      showMenu: false,
+      menuData: [],
+    }
+  },
   name: 'album-content',
+  components: {AddIcon},
   mixins: [mixin],
   props: [
     'songList'
@@ -63,6 +74,14 @@ export default {
       'loginIn',
       'userId'
     ])
+  },
+  mounted() {
+    if (this.loginIn)
+    {
+      selectSongListByUserId(this.userId).then(res => {
+        
+      })
+    }
   },
   methods: {
     isCollected(item) {
@@ -113,7 +132,9 @@ export default {
       })
     }
   },
-  // watch
+  toggleMenu() {
+    this.showMenu = !this.showMenu;
+  },
 }
 </script>
 

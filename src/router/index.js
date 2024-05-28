@@ -15,7 +15,7 @@ import Setting from "@/pages/Setting";
 import MyFavor from "@/pages/MyMusic/MyFavor.vue";
 import MySongList from "@/pages/MyMusic/MySongList.vue";
 import MySongs from "@/pages/MyMusic/MySongs.vue";
-import MyCare from "@/pages/MyMusic/MyCare.vue";
+import MyFollow from "@/pages/MyMusic/MyFollow.vue";
 import FavorSongs from "@/pages/MyMusic/FavorSongs.vue";
 import FavorSongList from "@/pages/MyMusic/FavorSongList.vue";
 import MyRecord from "@/pages/MyMusic/MyRecord.vue";
@@ -76,9 +76,9 @@ export default new Router({
           component: MySongs
         },
         {
-          path: 'my-care',
-          name: 'my-care',
-          component: MyCare
+          path: 'my-follow',
+          name: 'my-follow',
+          component: MyFollow
         },
         {
           path: 'my-record',

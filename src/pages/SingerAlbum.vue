@@ -2,8 +2,8 @@
   <div class = "singer-album">
     <div class = "album-slide">
       <div class = "singer-img">
-        <img v-if="this.imageUrl" :src = 'this.imageUrl' alt = "">
-        <img alt="" v-else  src="../assets/img/singer.png" />
+        <img v-if = "this.imageUrl" :src = 'this.imageUrl' alt = "">
+        <img alt = "" v-else src = "../assets/img/singer.png"/>
       </div>
       <ul class = "info">
         <li>{{ singer.name }}</li>
@@ -14,7 +14,7 @@
     </div>
 
     <div class = "album-content">
-      <div :class="this.followClass" @click="handleFollow()">
+      <div :class = "this.followClass" @click = "handleFollow()">
         <span>{{ this.isFollow }}</span>
       </div>
 
@@ -45,7 +45,7 @@ export default {
       singer: {},
       isFollow: '关注',
       imageUrl: null,
-      pic:"",
+      pic: "",
     }
   },
   computed: {
@@ -66,7 +66,7 @@ export default {
     getSingerById(this.singerId).then(res =>
     {
       this.singer = res;
-      this.pic=this.singer.pic;
+      this.pic = this.singer.pic;
       this.initialize();
     })
     this.getSongList();
@@ -90,19 +90,21 @@ export default {
       }
       else if (this.isFollow === '关注')
       {
-        addFollow(this.userId,this.singerId);
+        let params = new URLSearchParams();
+        params.append('userId', this.userId);
+        params.append('singerId', this.singerId)
+        addFollow(params);
         this.isFollow = '已关注';
-        this.notify('关注成功','success');
+        this.notify('关注成功', 'success');
       }
       else if (this.isFollow === '已关注')
       {
         deleteFollow(this.userId, this.singerId);
         this.isFollow = '关注';
-        this.notify('取消关注成功','success');
+        this.notify('取消关注成功', 'success');
       }
-      else
-      {
-        this.notify('关注错误','error');
+      else {
+        this.notify('关注错误', 'error');
       }
     },
     getSongList() {
@@ -135,16 +137,18 @@ export default {
 
 
         try {
-          const response = await fetch(imageUrl, { method: 'HEAD' });
+          const response = await fetch(imageUrl, {method: 'HEAD'});
           if (response.ok) {
             this.imageUrl = imageUrl;
-          } else {
+          }
+          else {
             this.imageUrl = null; // 图片不存在，设置为null
           }
         } catch (_) {
           this.imageUrl = null; // 请求错误，设置为null
         }
-      } else {
+      }
+      else {
         this.imageUrl = null; // 未提供srcurl，设置为null
       }
     },

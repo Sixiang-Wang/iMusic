@@ -13,12 +13,15 @@
       <ul>
         <li>
           <div class = "album-title">
-            <p>{{songListAlbum.title }}</p>
+            <p>{{ songListAlbum.title }}</p>
           </div>
         </li>
         <li>
-          <div :class = "this.collectClass" @click = "handleCollect()">
-            <span>{{ this.isCollect }}</span>
+          <div class = "collect" @click = "handleCollect()">
+            <collect-icon :class = "{'have-collected':this.isCollect==='已收藏'}"
+                          style = "margin-left: 25px;">
+            </collect-icon>
+            <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
           </div>
         </li>
       </ul>
@@ -33,7 +36,7 @@
         <span>{{ average }}</span>
         <div>
           <h3>评价</h3>
-          <div @click="addRank()">
+          <div @click = "addRank()">
             <el-rate v-model = "rank" allow-half show-text></el-rate>
           </div>
         </div>
@@ -47,7 +50,7 @@
         </album-content>
       </div>
     </div>
-    <comment :ID="this.songListId" :type="1"></comment>
+    <comment :ID = "this.songListId" :type = "1"></comment>
   </div>
 </template>
 
@@ -64,9 +67,11 @@ import {
 } from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 import Comment from "../components/Comment.vue";
+import CollectIcon from "../assets/icon/collectIcon.vue";
+
 export default {
   name: 'song-list-album',
-  components: {AlbumContent, Comment},
+  components: {CollectIcon, AlbumContent, Comment},
   mixins: [mixin],
   data() {
     return {
@@ -95,14 +100,16 @@ export default {
   },
   mounted() {
     this.songListId = this.$route.params.id;
-    selectByPrimaryKey(this.songListId).then(res => {
+    selectByPrimaryKey(this.songListId).then(res =>
+    {
       this.songListAlbum = res;
     })
     this.getSongList();
     this.getRank(this.songListId);
     if (this.loginIn)
     {
-      existCollectSongList(this.userId, this.songListId).then(res => {
+      existCollectSongList(this.userId, this.songListId).then(res =>
+      {
         if (res)
         {
           this.isCollect = '已收藏';
@@ -156,8 +163,7 @@ export default {
             this.isCollect = '收藏';
             this.notify('取消成功收藏', 'success');
           }
-          else
-          {
+          else {
             this.notify(this.userId + this.songListId);
             this.notify('收藏错误', 'error');
           }
@@ -187,7 +193,7 @@ export default {
       getRankOfSongListIdAndUserId(params).then(res =>
       {
         this.selfRank = res.rank;
-        this.rank = this.selfRank/2;
+        this.rank = this.selfRank / 2;
       })
     },
     // 评价

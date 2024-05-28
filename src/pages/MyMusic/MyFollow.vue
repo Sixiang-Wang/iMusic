@@ -1,5 +1,5 @@
 <template>
-  <div class="singer">
+  <div style="margin: 20px 60px">
     <content-list :contentList="currentLists"></content-list>
     <div class="pagination">
       <el-pagination
@@ -16,11 +16,12 @@
 </template>
 
 <script>
-import {getAllSinger} from "../api";
-import ContentList from "../components/ContentList.vue";
 
+import ContentList from "../../components/ContentList.vue";
+import {getFollow, getSingerById} from "../../api";
+import {mapGetters} from "vuex";
+import {mixin} from "../../mixins";
 export default {
-  name: 'singer',
   components: {ContentList},
   data() {
     return {
@@ -30,14 +31,22 @@ export default {
       isFollow: '收藏',
     }
   },
+  mixins:[mixin],
   computed: {
+    ...mapGetters([
+      'userId',
+    ]),
     currentLists() {
       return this.singerList.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
     },
   },
   mounted() {
-    getAllSinger().then(res => {
-      this.singerList = res;
+    getFollow(this.userId).then(res => {
+      res.forEach(item => {
+        getSingerById(item.singerId).then(res2 => {
+          this.singerList.push(res2);
+        })
+      })
     });
   },
   methods: {
@@ -48,6 +57,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../assets/css/singer";
+
+<style scoped lang = "scss">
+.el-pagination {
+  text-align: center;
+}
 </style>
