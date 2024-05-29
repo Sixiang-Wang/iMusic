@@ -51,6 +51,7 @@ public interface SongMapper {
      * 根据歌手id查询
      */
     public List<Song> songOfSingerId(Integer singerId);
+    public List<Song> songOfUserId(Integer userId);
 
     /**
      * 增加歌曲播放次数

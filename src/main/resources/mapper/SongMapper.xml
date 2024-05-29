@@ -195,6 +195,16 @@
         and visible = 1
     </select>
 
+    <select id="songOfUserId" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.Integer">
+        select
+            s.id,s.singer_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible
+        from song s,singer s2
+        where s.singer_id = s2.id
+        and s2.user_id = #{userId}
+        and s.visible = 1
+    </select>
+
     <select id="songOfStyle" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.String">
         select

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 歌曲管理controller
@@ -405,6 +406,10 @@ public class SongController {
     @RequestMapping(value = "/popularSongOfUser",method = RequestMethod.GET)
     public Object popularSongOfUser(HttpServletRequest request){
         Integer userId = Integer.parseInt(request.getParameter("userId"));
+        List<Song> songs = songMapper.songOfUserId(userId);
+        if(songs==null||songs.isEmpty()){
+            return -1;
+        }
         return songMapper.popularSongOfUser(userId);
     }
 
@@ -416,6 +421,10 @@ public class SongController {
     @RequestMapping(value = "/popularCollectedSongOfUser",method = RequestMethod.GET)
     public Object popularCollectedSongOfUser(HttpServletRequest request){
         Integer userId = Integer.parseInt(request.getParameter("userId"));
+        List<Song> songs = songMapper.songOfUserId(userId);
+        if(songs==null||songs.isEmpty()){
+            return -1;
+        }
         return songMapper.popularCollectedSongOfUser(userId);
     }
 }
