@@ -41,7 +41,6 @@
           </div>
         </div>
         <span>{{ selfRank }}</span>
-
       </div>
 
       <div class = "songs-body">

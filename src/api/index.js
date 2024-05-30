@@ -43,6 +43,8 @@ export const updateSongList = (params) => post(`songList/update`,params);
 export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${songListId}`);
 // 给歌单中添加歌曲
 export const addListSong = (params) => post(`listSong/add`,params);
+// 删除歌单中的歌曲
+export const deleteListSong = (songId, songListId) => get(`listSong/delete?songId=${songId}&songListId=${songListId}`);
 // ============用户相关==============
 
 // 查询用户

@@ -35,10 +35,13 @@
               {{ item.introduction }}
             </span>
           </span>
-          <span @click = "showSelect($event,index,item.id)" ref="add" >
+          <span class = "icons" @click = "showSelect($event,index,item.id)" ref = "add">
             <add-icon></add-icon>
           </span>
-          <span @click = "handleCollect(item)">
+          <span class = "icons" v-if = "isMySongList" @click = "removeSong(item.id)">
+            <delete-icon></delete-icon>
+          </span>
+          <span class = "icons" @click = "handleCollect(item)">
             <svg :class = "{active: item.collection}" class = "icon">
               <use xlink:href = "#icon-xihuan-shi"></use>
             </svg>
@@ -46,16 +49,28 @@
         </div>
       </li>
     </ul>
-    <div class = "select-song-list" v-bind:style="selectPosition" ref="select" v-if = "isShowSelect">
+    <div class = "select-song-list" v-bind:style = "selectPosition" ref = "select" v-if = "isShowSelect">
       <div class = "select-item"
            v-for = "(item, index) in this.selectData" :key = "index"
-           @click="addToSongList(item.id)" >
+           @click = "addToSongList(item.id)">
         <span class = "img-container">
           <img class = "img" :src = "attachImageUrl(item.pic)" alt = "">
         </span>
-        <div class="select-title">{{item.title}}</div>
+        <div class = "select-title">{{ item.title }}</div>
       </div>
     </div>
+    <el-dialog
+      :visible.sync = "this.deleteDialog"
+      center
+      top = "20%"
+      width = "400px"
+    >
+      <span style = "margin-left: 30%;font-size: 20px">确定删除吗?</span>
+      <span slot = "footer">
+      <el-button @click = "cancelDelete()" size = "small">取消</el-button>
+      <el-button @click = "confirmDelete()" size = "small" type = "primary">确定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -67,16 +82,30 @@ import {
   setCollect,
   existCollectSong,
   selectSongListByUserId,
-  addListSong, selectByPrimaryKey
+  addListSong, selectByPrimaryKey, deleteListSong
 } from "../api";
 import {mapGetters} from "vuex";
 import AddIcon from "../assets/icon/addIcon.vue";
+import DeleteIcon from "../assets/icon/deleteIcon.vue";
+import song from "../store/song";
 
 export default {
+  name: 'album-content',
+  components: {DeleteIcon, AddIcon},
+  mixins: [mixin],
+  props: ['songList'],
+  computed: {
+    ...mapGetters([
+      'loginIn',
+      'userId',
+    ]),
+  },
   data() {
     return {
+      deleteDialog: false,
       isMySongList: false,
       isShowSelect: false,
+      deleteSongId: '',
       addIndex: '',
       selectSongId: '',
       selectData: [],
@@ -87,18 +116,6 @@ export default {
       }
     }
   },
-  name: 'album-content',
-  components: {AddIcon},
-  mixins: [mixin],
-  props: [
-    'songList'
-  ],
-  computed: {
-    ...mapGetters([
-      'loginIn',
-      'userId'
-    ])
-  },
   mounted() {
     if (this.loginIn)
     {
@@ -106,11 +123,12 @@ export default {
       {
         res.forEach(item =>
         {
-          this.selectData.push({id: item.id,pic: item.pic, title: item.title})
+          this.selectData.push({id: item.id, pic: item.pic, title: item.title})
         })
       })
-      selectByPrimaryKey(this.$route.params.id).then(res => {
-        if (res.userId === this.userId)
+      selectByPrimaryKey(this.$route.params.id).then(res =>
+      {
+        if (res.userId === this.userId && this.$route.path.includes('song-list-album'))
         {
           this.isMySongList = true;
         }
@@ -167,24 +185,24 @@ export default {
     },
     addToSongList(songListId) {
 
-        let params = new URLSearchParams();
-        params.append('songId',this.selectSongId);
-        params.append('songListId', songListId);
-        addListSong(params).then(res => {
-          if (res.code)
-          {
-            this.hideSelectBox();
-            this.notify('添加成功','success');
-          }
-        })
+      let params = new URLSearchParams();
+      params.append('songId', this.selectSongId);
+      params.append('songListId', songListId);
+      addListSong(params).then(res =>
+      {
+        if (res.code)
+        {
+          this.hideSelectBox();
+          this.notify('添加成功', 'success');
+        }
+      })
     },
-    showSelect(event,index,songId) {
+    showSelect(event, index, songId) {
       if (!this.loginIn)
       {
-        this.notify('请先登录','warning');
+        this.notify('请先登录', 'warning');
       }
-      else
-      {
+      else {
         this.isShowSelect = true;
         this.addIndex = index;
         this.selectSongId = songId;
@@ -204,6 +222,27 @@ export default {
       this.addIndex = '';
       this.selectSongId = '';
       window.removeEventListener('click', this.handleOutsideClick);
+    },
+    removeSong(songId) {
+      this.deleteSongId = songId;
+      this.deleteDialog = true;
+    },
+    cancelDelete() {
+      this.deleteDialog = false;
+      this.deleteSongId = '';
+    },
+    confirmDelete() {
+      deleteListSong(this.deleteSongId, this.$route.params.id).then(res =>
+      {
+        if (res)
+        {
+          let list = this.songList.filter(song => song.id !== this.deleteSongId);
+          this.$store.commit('setListOfSongs',list);
+          this.deleteDialog = false;
+          this.deleteSongId = '';
+          this.notify('删除成功', 'success');
+        }
+      })
     }
   },
 }
