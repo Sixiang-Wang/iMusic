@@ -2,8 +2,12 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.dao.SongMapper;
+import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.Song;
+import com.java.imusic.domain.User;
+import com.java.imusic.service.SingerService;
 import com.java.imusic.service.SongService;
+import com.java.imusic.service.UserService;
 import com.java.imusic.service.impl.SongServiceImpl;
 import com.java.imusic.utils.Consts;
 import lombok.Getter;
@@ -32,7 +36,8 @@ public class SongController {
     private SongMapper songMapper;
     @Getter
     private static SongController songController;
-
+    @Autowired
+    private SingerService singerService;
     /**
      * 添加歌曲
      */
@@ -426,6 +431,24 @@ public class SongController {
             return -1;
         }
         return songMapper.popularCollectedSongOfUser(userId);
+    }
+
+    /**
+     * 判断歌曲是否是该用户的
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/isSongOfUser",method = RequestMethod.GET)
+    public Object isSongOfUser(HttpServletRequest request){
+        Integer songId = Integer.parseInt(request.getParameter("songId"));
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        Song song = songService.selectByPrimaryKey(songId);
+        Singer singer = singerService.selectByPrimaryKey(song.getSingerId());
+        if(singer.getUserID().equals(userId)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 
