@@ -41,7 +41,8 @@ export const updateSongList = (params) => post(`songList/update`,params);
 // =============歌单的歌曲相关========
 // 根据歌曲id查询歌曲列表
 export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${songListId}`);
-
+// 给歌单中添加歌曲
+export const addListSong = (params) => post(`listSong/add`,params);
 // ============用户相关==============
 
 // 查询用户

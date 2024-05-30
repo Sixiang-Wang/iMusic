@@ -94,9 +94,6 @@ export default {
         "userId",
       ]
     ),
-    collectClass() {
-      return this.loginIn && this.isCollect === '收藏' ? 'collect' : 'haveCollected'
-    },
   },
   mounted() {
     this.songListId = this.$route.params.id;
