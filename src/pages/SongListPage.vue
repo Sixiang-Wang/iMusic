@@ -24,7 +24,7 @@
       <el-table-column prop="title" label="标题" width="120" align="center"></el-table-column>
       <el-table-column label="简介">
         <template slot-scope="scope">
-          <p style="height:100px;overflow:scroll">{{ scope.row.introduction }}</p>
+          <p style="max-height: 100px; overflow-y: auto;">{{ scope.row.introduction }}</p>
         </template>
       </el-table-column>
       <el-table-column prop="style" label="风格" width="120" align="center"></el-table-column>
@@ -39,10 +39,13 @@
           <el-button size="mini" @click="getComment(data[scope.$index].id)">评论</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150" align="center">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <br>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+          <br>
+          <el-button size="mini" type="primary" @click="invisibleRow(scope.row.id)">下架</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -105,7 +108,15 @@
 </template>
 
 <script>
-import {getAllSongList, setSongList, updateSongList, delSongList, getUserOfId, allSong} from '../api/index'
+import {
+  getAllSongList,
+  setSongList,
+  updateSongList,
+  delSongList,
+  getUserOfId,
+  allSong,
+  invisibleSong, invisibleSongList
+} from '../api/index'
 import {mixin} from '../mixins/index'
 
 export default {
@@ -183,7 +194,6 @@ export default {
             })
           )
         })
-
         Promise.all(promises).then(() => {
           this.tempData = res
           this.tableData = res
@@ -194,6 +204,17 @@ export default {
           }
         })
       })
+    },
+    invisibleRow (id) {
+      invisibleSongList(id)
+        .then(res => {
+          if (res) {
+            this.getData(this.currentPage)
+            this.notify('下架成功', 'success')
+          } else {
+            this.notify('下架失败', 'error')
+          }
+        })
     },
     //添加歌单
     addSongList () {

@@ -35,7 +35,7 @@
       <el-table-column prop="location" label="地区" width="100" align="center"></el-table-column>
       <el-table-column label="简介">
         <template slot-scope="scope">
-          <p style="height:100px;overflow:scroll">{{ scope.row.introduction }}</p>
+          <p style="height:100px;overflow-y: auto">{{ scope.row.introduction }}</p>
         </template>
       </el-table-column>
       <el-table-column label="歌曲管理" width="110" align="center">

@@ -177,7 +177,7 @@ export default {
       delSong(this.idx)
         .then(res => {
           if (res) {
-            this.getData()
+            this.getData(this.currentPage)
             this.notify('删除成功', 'success')
           } else {
             this.notify('删除失败', 'error')
@@ -192,7 +192,7 @@ export default {
       visibleSong(id)
         .then(res => {
           if (res) {
-            this.getData()
+            this.getData(this.currentPage)
             this.notify('恢复成功', 'success')
           } else {
             this.notify('恢复失败', 'error')

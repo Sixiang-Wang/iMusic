@@ -45,7 +45,7 @@
       <el-table-column prop="style" label="风格" width="90" align="center"></el-table-column>
       <el-table-column label="歌词" min-width="120" align="center">
         <template slot-scope="scope">
-          <ul style="height:100px;overflow:scroll;">
+          <ul style="max-height:100px;overflow:scroll;white-space: nowrap">
             <li v-for="(item,index) in parseLyric(scope.row.lyric)" :key="index">
               {{ item }}
             </li>

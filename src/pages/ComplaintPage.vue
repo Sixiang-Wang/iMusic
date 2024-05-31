@@ -3,7 +3,7 @@
     <div class="container">
       <div class="handle-box">
         <el-button type="primary" size="mini" @click="delAll">批量下架</el-button>
-        <el-input v-model="select_word" size="mini" placeholder="O.o尊嘟假嘟" class="handle-input"></el-input>
+        <el-input v-model="select_word" size="mini" placeholder="搜索举报对象" class="handle-input"></el-input>
       </div>
     </div>
     <el-table size="mini" ref="multipleTable" border style="width:100%" height="680px" :data="data"
@@ -13,13 +13,27 @@
       </el-table-column>
       <el-table-column prop="type" label="类型" width="110" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.type === 0">歌曲</span>
-          <span v-else>歌单</span>
+          <span v-if="scope.row.type === 0"><font size="4">♫</font>歌曲</span>
+          <span v-else><font size="4">📀</font>歌单</span>
         </template>
       </el-table-column>
       <el-table-column prop="name" label="举报对象" width="150" align="center">
       </el-table-column>
-      <el-table-column  prop="content" label="举报内容"  align="center"></el-table-column>
+      <el-table-column prop="content" label="举报内容" align="center">
+        <template slot-scope="scope">
+          <div style="max-height: 100px; overflow-y: auto;">
+            {{scope.row.content}}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column  prop="appeal" label="申诉内容"  align="center">
+        <template slot-scope="scope">
+          <div style="max-height: 100px; overflow-y: auto;">
+            <span v-if="scope.row.appeal">{{scope.row.appeal}}</span>
+            <span v-else><span style="color: red;">❌</span>暂无申诉</span>
+          </div>
+        </template>
+      </el-table-column>
 
       <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
@@ -164,7 +178,7 @@ export default {
         })
         deleteComplaint(row.id).then(res => {
           if (res) {
-            this.getData()
+            this.getData(this.currentPage)
           }
         })
       }
@@ -173,7 +187,7 @@ export default {
       deleteComplaint(id)
         .then(res => {
           if (res) {
-            this.getData()
+            this.getData(this.currentPage)
             this.notify('已忽略', 'success')
           } else {
             this.notify('此举报无法忽略', 'error')
