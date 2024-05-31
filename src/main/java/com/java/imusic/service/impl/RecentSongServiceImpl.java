@@ -136,17 +136,29 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     public Result recommendSongList(Integer id) {
         HashSet<SongList> songListHashSet = new HashSet<>();
         List<SongList> songListByRecentSong = recentSongMapper.getSongListByRecentSong(id);
-        List<Collect> tmpList = collectMapper.collectOfUserId((int) id);
+        List<Collect> tmpList = collectMapper.collectOfUserId(id);
         List<SongList> allCollectSongListByConsumerId = new ArrayList<>();
         tmpList.forEach(item -> {
-            allCollectSongListByConsumerId.add(songListService.selectByPrimaryKey(item.getSongListId()));
+            if (item.getSongListId() != null)
+                allCollectSongListByConsumerId.add(songListService.selectByPrimaryKey(item.getSongListId()));
         });
 
         if (!allCollectSongListByConsumerId.isEmpty()) {
             songListHashSet.addAll(allCollectSongListByConsumerId);
         }
         if (!songListByRecentSong.isEmpty()) {
-            songListHashSet.addAll(songListByRecentSong);
+            for (SongList songList : songListByRecentSong) {
+                int flag = 0;
+                for (SongList songList1 : songListHashSet) {
+                    if (songList1.getId().equals(songList.getId())) {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (0 == flag) {
+                    songListHashSet.add(songList);
+                }
+            }
         }
         if (songListHashSet.size() < 10) {
             List<SongList> allSongList = songListMapper.allSongList();
@@ -155,7 +167,16 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
                     if (songListHashSet.size() == 10) {
                         break;
                     }
-                    songListHashSet.add(songList);
+                    int flag = 0;
+                    for (SongList songList1 : songListHashSet) {
+                        if (songList1.getId().equals(songList.getId())) {
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if (0 == flag) {
+                        songListHashSet.add(songList);
+                    }
                 }
             }
         }
@@ -175,11 +196,24 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         List<Collect> tmpList = collectMapper.collectOfUserId(id);
         List<Singer> singerByCollectSong = new ArrayList<>();
         tmpList.forEach(item -> {
-            singerByCollectSong.add(singerMapper.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getSingerId()));
+            if (item.getSongId() != null) {
+                singerByCollectSong.add(singerMapper.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getSingerId()));
+            }
         });
 
         if (!singerByCollectSong.isEmpty()) {
-            singerHashSet.addAll(singerByCollectSong);
+            for (Singer singer : singerByCollectSong) {
+                int flag = 0;
+                for (Singer singer1 : singerHashSet) {
+                    if (singer1.getId().equals(singer.getId())) {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (0 == flag) {
+                    singerHashSet.add(singer);
+                }
+            }
         }
         if (singerHashSet.size() < 10) {
             List<Singer> singerList = singerMapper.allSinger();
@@ -188,7 +222,17 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
                     if (singerHashSet.size() == 10) {
                         break;
                     }
-                    singerHashSet.add(singer);
+
+                    int flag = 0;
+                    for (Singer singer1 : singerHashSet) {
+                        if (singer1.getId().equals(singer.getId())) {
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if (0 == flag) {
+                        singerHashSet.add(singer);
+                    }
                 }
             }
         }
