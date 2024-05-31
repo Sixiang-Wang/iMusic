@@ -1,5 +1,5 @@
 <template>
-  <content-list :contentList="collectList"></content-list>
+  <content-list style="margin: 20px 60px" :contentList="collectList"></content-list>
 </template>
 
 <script>

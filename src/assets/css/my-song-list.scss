@@ -1,28 +1,34 @@
 .my-song-list {
   margin: 40px;
 
-  .create-btn {
-    background: #67c23a;
-    color: white;
-    width: 100px;
+  .icons-above {
     margin: 10px 35px;
-    cursor: pointer;
+    display: flex;
+    .create-btn {
+      background: #DCDCDC;
+      color: black;
+      width: 120px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .create-btn:hover {
+      background: #C0C0C0;
+    }
+    .change-style {
+      fill: lightpink;
+      cursor: pointer;
+      margin-left: 75%;
+      transition: transform 0.3s ease;
+    }
+    .change-style:hover {
+      fill: pink;
+      transform: scale(1.1);
+    }
   }
 
-  .create-btn:hover {
-    background: #008800;
-  }
-  .change-style {
-    background: palegoldenrod;
-    border-radius: 50px;
-    color: black;
-    cursor: pointer;
-  }
-  .change-style:hover {
-    background: peachpuff;
-  }
   .menu {
-    width: 1200px;
+    width: 100%;
     margin: 30px;
     color: darkgrey;
     font-size: 24px;
@@ -30,10 +36,10 @@
       width: 30%;
     }
     .menu-introduction {
-      margin-left: 430px;
+      margin-left: 420px;
     }
     .menu-style {
-      margin-left: 310px;
+      margin-left: 315px;
     }
   }
   .item-content {

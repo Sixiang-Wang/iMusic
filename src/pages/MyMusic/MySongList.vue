@@ -1,7 +1,12 @@
 <template>
   <div class = "my-song-list">
-    <el-button class = "create-btn" @click = "createSongList()">创建歌单</el-button>
-    <el-button class = "change-style" @click = "changeStyle()">view</el-button>
+    <div class="icons-above">
+      <el-button class = "create-btn" @click = "createSongList()">创建歌单</el-button>
+      <div class="change-style" @click = "changeStyle()">
+        <change-style-icon></change-style-icon>
+      </div>
+    </div>
+
     <div v-if = "this.listStyle === 1">
       <content-list :contentList = "currentLists"></content-list>
       <div class = "pagination">
@@ -50,7 +55,7 @@
         </li>
       </ul>
     </div>
-    // 删除歌单
+
     <el-dialog
       title = "确认删除"
       :visible.sync = "deleteDialog"
@@ -62,7 +67,7 @@
             <el-button type = "primary" @click = "confirmDelete()">确定</el-button>
           </span>
     </el-dialog>
-    // 添加歌单
+
     <el-dialog title = "添加歌单" :visible.sync = "centerDialogVisible" width = "400px" center>
       <el-form :model = "addForm" ref = "registerForm" label-width = "80px">
         <el-form-item label = "标题" size = "mini">
@@ -80,17 +85,17 @@
                 <el-button size = "mini" @click = "addSongList">确定</el-button>
       </span>
     </el-dialog>
-    //修改歌单
+
     <el-dialog title="修改歌单" :visible.sync="editDialog" width="400px" center>
-      <el-form :model="form" ref="form" label-width="80px">
+      <el-form :model="editForm" ref="form" label-width="80px">
         <el-form-item prop="title" label="标题" size="mini">
-          <el-input v-model="form.title" placeholder="标题"></el-input>
+          <el-input v-model="editForm.title" placeholder="标题"></el-input>
         </el-form-item>
         <el-form-item prop="introduction" label="简介" size="mini">
-          <el-input v-model="form.introduction" placeholder="简介" type="textarea"></el-input>
+          <el-input v-model="editForm.introduction" placeholder="简介" type="textarea"></el-input>
         </el-form-item>
         <el-form-item prop="style" label="风格" size="mini">
-          <el-input v-model="form.style" placeholder="风格"></el-input>
+          <el-input v-model="editForm.style" placeholder="风格"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -108,9 +113,10 @@ import ContentList from "../../components/ContentList.vue";
 import {deleteSongList, selectSongListByUserId, setSongList, updateSongList} from "../../api";
 import DeleteIcon from "../../assets/icon/deleteIcon.vue";
 import EditIcon from "../../assets/icon/editIcon.vue";
+import ChangeStyleIcon from "../../assets/icon/changeStyleIcon.vue";
 
 export default {
-  components: {EditIcon, DeleteIcon, ContentList},
+  components: {ChangeStyleIcon, EditIcon, DeleteIcon, ContentList},
   data() {
     return {
       songLists: [],
@@ -126,7 +132,7 @@ export default {
         introduction: '',
         style: '',
       },
-      form: {      //编辑框
+      editForm: {      //编辑框
         id: '',
         title: '',
         introduction: '',
@@ -220,17 +226,17 @@ export default {
     },
     editItem(item) {
       this.editDialog = true;
-      this.form.id = item.id;
-      this.form.title = item.title;
-      this.form.introduction = item.introduction;
-      this.form.style = item.style;
+      this.editForm.id = item.id;
+      this.editForm.title = item.title;
+      this.editForm.introduction = item.introduction;
+      this.editForm.style = item.style;
     },
     editSave() {
       let params = new URLSearchParams()
-      params.append('id', this.form.id)
-      params.append('title', this.form.title)
-      params.append('introduction', this.form.introduction)
-      params.append('style', this.form.style)
+      params.append('id', this.editForm.id)
+      params.append('title', this.editForm.title)
+      params.append('introduction', this.editForm.introduction)
+      params.append('style', this.editForm.style)
 
       updateSongList(params)
         .then(res => {

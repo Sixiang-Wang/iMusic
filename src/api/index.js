@@ -20,7 +20,7 @@ export const likeSongOfName = (keywords) => get(`song/likeSongOfName?songName=${
 // 添加歌曲播放次数
 export const addNums = (songId) => get(`/song/addNums?songId=${songId}`);
 // 查询热门歌曲
-export const getTopSong =() =>get(`song/topSong`);
+  export const getTopSong = () =>get(`song/topSong`);
 
 // ===================== 创作周报 =======================
 
@@ -33,8 +33,7 @@ export const getPopularCollectedSongOfUser = (userId)=> get(`song/popularCollect
 export const getBestSongListOfUser = (userId) => get(`songList/bestSongListOfUser?userId=${userId}`);
 
 // 用户粉丝数量
-export const getFansCountByUserId = (userId) => get(`follow/getFansCountByUserId?userId=${userId}`);
-
+export const getFansCountByUserId = (userId) => get(`follow/getFansCountByUserId?userId=${userId}`);git 
 // ============歌单相关==============
 // 查询歌曲
 export const getAllSongList = () => get(`songList/allSongList`);//获得所有歌单
@@ -55,7 +54,10 @@ export const updateSongList = (params) => post(`songList/update`,params);
 // =============歌单的歌曲相关========
 // 根据歌曲id查询歌曲列表
 export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${songListId}`);
-
+// 给歌单中添加歌曲
+export const addListSong = (params) => post(`listSong/add`,params);
+// 删除歌单中的歌曲
+export const deleteListSong = (songId, songListId) => get(`listSong/delete?songId=${songId}&songListId=${songListId}`);
 // ============用户相关==============
 
 // 查询用户
@@ -126,11 +128,14 @@ export const collectSongListOfUserId = (userId) => get(`collect/collectSongListO
 // 添加关注
 export const addFollow = (params) => post(`follow/add`, params);
 
+// 查找用户的关注歌手
+export const getFollow = (userId) => get(`follow/getByUserId?userId=${userId}`);
+
 // 取消关注
 export const deleteFollow = (userId, singerId) => get(`follow/deleteByUserIdAndSingerId?userId=${userId}&singerId=${singerId}`);
 
 // 是否关注
-export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=${userId}&singerId=${singerId};`)
+export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=${userId}&singerId=${singerId}`);
 
 // ===================播放记录==================
 // 添加歌曲最近播放记录
