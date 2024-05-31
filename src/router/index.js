@@ -97,6 +97,17 @@ export default new Router({
             },
           ]
         },
+        // 位置比较随意，需要修改
+        {
+          path: 'createReport',
+          name: 'createReport',
+          component: CreateReport
+        },
+        {
+          path: 'listeningReport',
+          name: 'listeningReport',
+          component: ListeningReport
+        }
       ]
     },
     {
@@ -150,17 +161,7 @@ export default new Router({
       component: SongListAlbum
     },
 
-    // 位置比较随意，需要修改
-    {
-      path: '/createReport',
-      name: 'createReport',
-      component: CreateReport
-    },
-    {
-      path: '/listeningReport',
-      name: 'listeningReport',
-      component: ListeningReport
-    }
+
   ],
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }

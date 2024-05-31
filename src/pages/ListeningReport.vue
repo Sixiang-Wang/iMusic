@@ -15,7 +15,8 @@
     <!-- 播放统计 -->
     <div class="play-statistics">
       <h2>播放统计</h2>
-      <canvas id="weeklyListeningChart"></canvas>
+      <canvas id="weeklyListeningChart" v-if="noData===false"></canvas>
+      <p v-else>暂无听歌数据</p>
     </div>
 
     <!-- 艺术家统计 -->
@@ -29,18 +30,19 @@
     <!-- 本周热门歌曲列表 -->
     <div class="top-songs">
       <h2>本周热门歌曲</h2>
-      <canvas id="popularSongs"></canvas>
+      <canvas id="popularSongs" v-if="noData===false"></canvas>
+      <p v-else>暂无听歌数据</p>
     </div>
 
     <!-- 新发现的艺术家 -->
-    <div class="new-artists">
-      <h2>新发现的歌手</h2>
-      <ul>
-        <li v-for="(artist, index) in newArtists" :key="index">
-          {{ artist.name }}
-        </li>
-      </ul>
-    </div>
+<!--    <div class="new-artists">-->
+<!--      <h2>新发现的歌手</h2>-->
+<!--      <ul>-->
+<!--        <li v-for="(artist, index) in newArtists" :key="index">-->
+<!--          {{ artist.name }}-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
 
     <!-- 用户反馈 -->
     <div class="user-feedback">
@@ -81,24 +83,24 @@
       </div>
     </div>
 
-    <!-- 个性化推荐 -->
-    <div class="personalized-recommendations">
-      <h2>个性化推荐</h2>
-      <!-- 这里可以添加个性化推荐的歌曲列表 -->
-    </div>
+<!--    &lt;!&ndash; 个性化推荐 &ndash;&gt;-->
+<!--    <div class="personalized-recommendations">-->
+<!--      <h2>个性化推荐</h2>-->
+<!--      &lt;!&ndash; 这里可以添加个性化推荐的歌曲列表 &ndash;&gt;-->
+<!--    </div>-->
 
-    <!-- 本周总结与下周预告 -->
-    <div class="weekly-summary">
-      <h2>本周总结与下周预告</h2>
-      <p>这里是对本周听歌活动的总结，以及下周可能感兴趣的音乐活动或新发行的音乐预告。</p>
-    </div>
+<!--    &lt;!&ndash; 本周总结与下周预告 &ndash;&gt;-->
+<!--    <div class="weekly-summary">-->
+<!--      <h2>本周总结与下周预告</h2>-->
+<!--      <p>这里是对本周听歌活动的总结，以及下周可能感兴趣的音乐活动或新发行的音乐预告。</p>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
 import Chart from 'chart.js';
 import {mapGetters} from "vuex";
-import {getRecentSongOrderByCount} from "../api";
+import {getRecentSongOrderByCount, recommendSinger} from "../api";
 import {mixin} from "../mixins";
 export default {
   name: 'ListeningReport',
@@ -111,6 +113,7 @@ export default {
       selectedRating: 0, // 默认选中的星星
       hoverIndex: null,    // 鼠标悬停时的星星索引
       selectedOption: '', // 用于v-model的数据属性
+      noData : false,
       options: [
         { value: 'like', text: '非常满意' },
         { value: 'neutral', text: '一般' },
@@ -166,6 +169,10 @@ export default {
     getOrderByCount(userId){
       getRecentSongOrderByCount(userId)
         .then(res => {
+          if(res === null){
+            this.noData = true;
+            return;
+          }
           this.recentList = res.data;
           this.favoriteSingerName = this.replaceLName(this.recentList[0].name);
           this.topSong.ImageUrl = this.attachImageUrl(this.recentList[0].pic);

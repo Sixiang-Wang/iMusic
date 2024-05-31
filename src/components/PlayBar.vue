@@ -155,7 +155,7 @@ export default {
 
 
     this.$store.commit("setPlayButtonUrl", "#icon-bofang");
-    this.$store.commit("setControl", require("../assets/js/icon/icon-Loop.png"));
+    this.$store.commit("setControl", require("../assets/js/icon/icon-Loop.svg"));
     this.$store.commit("setFlag", 0);
     this.$store.commit("setRecentSongList", []);
     // if (this.picUrl === "" || this.picUrl === null) {
@@ -222,24 +222,24 @@ export default {
       if (this.url === "" || this.url === null) {
         this.$message.warning("暂无歌曲");
       } else {
-        if (this.control === require("../assets/js/icon/icon-SingleLoop.png") && this.flag === 2) {
-          this.$store.commit("setControl", require("../assets/js/icon/icon-Loop.png"));
+        if (this.control === require("../assets/js/icon/icon-SingleLoop.svg") && this.flag === 2) {
+          this.$store.commit("setControl", require("../assets/js/icon/icon-Loop.svg"));
         }
-        else if (this.control === require("../assets/js/icon/icon-Random.png") && this.flag === 1) {
-          this.$store.commit("setControl", require("../assets/js/icon/icon-SingleLoop.png"));
+        else if (this.control === require("../assets/js/icon/icon-Random.svg") && this.flag === 1) {
+          this.$store.commit("setControl", require("../assets/js/icon/icon-SingleLoop.svg"));
         }
-        else if (this.control === require("../assets/js/icon/icon-Loop.png") && this.flag === 0) {
-          this.$store.commit("setControl", require("../assets/js/icon/icon-Random.png"));
+        else if (this.control === require("../assets/js/icon/icon-Loop.svg") && this.flag === 0) {
+          this.$store.commit("setControl", require("../assets/js/icon/icon-Random.svg"));
         }
-        if (this.control === require("../assets/js/icon/icon-Random.png")) {
+        if (this.control === require("../assets/js/icon/icon-Random.svg")) {
           this.$store.commit("setFlag", 1);
           this.info = "随机播放";
         }
-        else if (this.control === require("../assets/js/icon/icon-SingleLoop.png")) {
+        else if (this.control === require("../assets/js/icon/icon-SingleLoop.svg")) {
           this.$store.commit("setFlag", 2);
           this.info = "单曲循环";
         }
-        else if (this.control === require("../assets/js/icon/icon-Loop.png")) {
+        else if (this.control === require("../assets/js/icon/icon-Loop.svg")) {
           this.$store.commit("setFlag", 0);
           this.info = "循环播放";
         }

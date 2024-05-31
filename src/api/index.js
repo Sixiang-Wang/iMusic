@@ -33,7 +33,7 @@ export const getPopularCollectedSongOfUser = (userId)=> get(`song/popularCollect
 export const getBestSongListOfUser = (userId) => get(`songList/bestSongListOfUser?userId=${userId}`);
 
 // 用户粉丝数量
-export const getFansCountByUserId = (userId) => get(`follow/getFansCountByUserId?userId=${userId}`);git 
+export const getFansCountByUserId = (userId) => get(`follow/getFansCountByUserId?userId=${userId}`);
 // ============歌单相关==============
 // 查询歌曲
 export const getAllSongList = () => get(`songList/allSongList`);//获得所有歌单
