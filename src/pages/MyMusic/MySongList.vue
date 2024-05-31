@@ -87,15 +87,15 @@
     </el-dialog>
 
     <el-dialog title="修改歌单" :visible.sync="editDialog" width="400px" center>
-      <el-form :model="form" ref="form" label-width="80px">
+      <el-form :model="editForm" ref="form" label-width="80px">
         <el-form-item prop="title" label="标题" size="mini">
-          <el-input v-model="form.title" placeholder="标题"></el-input>
+          <el-input v-model="editForm.title" placeholder="标题"></el-input>
         </el-form-item>
         <el-form-item prop="introduction" label="简介" size="mini">
-          <el-input v-model="form.introduction" placeholder="简介" type="textarea"></el-input>
+          <el-input v-model="editForm.introduction" placeholder="简介" type="textarea"></el-input>
         </el-form-item>
         <el-form-item prop="style" label="风格" size="mini">
-          <el-input v-model="form.style" placeholder="风格"></el-input>
+          <el-input v-model="editForm.style" placeholder="风格"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer">
@@ -132,7 +132,7 @@ export default {
         introduction: '',
         style: '',
       },
-      form: {      //编辑框
+      editForm: {      //编辑框
         id: '',
         title: '',
         introduction: '',
@@ -226,17 +226,17 @@ export default {
     },
     editItem(item) {
       this.editDialog = true;
-      this.form.id = item.id;
-      this.form.title = item.title;
-      this.form.introduction = item.introduction;
-      this.form.style = item.style;
+      this.editForm.id = item.id;
+      this.editForm.title = item.title;
+      this.editForm.introduction = item.introduction;
+      this.editForm.style = item.style;
     },
     editSave() {
       let params = new URLSearchParams()
-      params.append('id', this.form.id)
-      params.append('title', this.form.title)
-      params.append('introduction', this.form.introduction)
-      params.append('style', this.form.style)
+      params.append('id', this.editForm.id)
+      params.append('title', this.editForm.title)
+      params.append('introduction', this.editForm.introduction)
+      params.append('style', this.editForm.style)
 
       updateSongList(params)
         .then(res => {
