@@ -140,6 +140,27 @@ public class ComplaintController {
         return complaintList;
     }
 
+    @RequestMapping(value = "/appealComplaint",method = RequestMethod.POST)
+    public Object appealComplaint(HttpServletRequest request){
+        JSONObject jsonObject = new JSONObject();
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        String appeal = request.getParameter("appeal");
+        if(appeal==null||appeal.isEmpty()){
+            appeal = "";
+        }
+        Complaint complaint = new Complaint();
+        complaint.setId(id);
+        complaint.setAppeal(appeal);
+        boolean flag = complaintService.update(complaint);
+        if(flag){   //保存成功
+            jsonObject.put(Consts.CODE,1);
+            jsonObject.put(Consts.MSG,"申诉提交成功，请等待工作人员处理");
+            return jsonObject;
+        }
+        jsonObject.put(Consts.CODE,0);
+        jsonObject.put(Consts.MSG,"申诉提交失败");
+        return jsonObject;
+    }
 }
 
 

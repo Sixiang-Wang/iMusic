@@ -11,10 +11,11 @@
         <result column="song_list_id" jdbcType="INTEGER" property="songListId"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="appeal" jdbcType="VARCHAR" property="appeal"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,type,song_id,song_list_id,content,create_time
+        id,user_id,type,song_id,song_list_id,content,create_time,appeal
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.Complaint">
@@ -39,6 +40,9 @@
                 content,
             </if>
             create_time,
+            <if test="appeal != null">
+                appeal,
+            </if>
         </trim>
         <trim prefix=" values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -60,6 +64,9 @@
                 #{content},
             </if>
             now(),
+            <if test="appeal != null">
+                #{appeal},
+            </if>
         </trim>
     </insert>
 
@@ -80,6 +87,9 @@
             </if>
             <if test="content != null">
                 content = #{content},
+            </if>
+            <if test="appeal != null">
+                appeal = #{appeal},
             </if>
         </set>
         where id = #{id}

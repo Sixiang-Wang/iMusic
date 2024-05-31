@@ -10,6 +10,15 @@ public class Complaint {
     private Byte type;
     private String content;
     private Date createTime;
+    private String appeal;
+
+    public String getAppeal() {
+        return appeal;
+    }
+
+    public void setAppeal(String appeal) {
+        this.appeal = appeal;
+    }
 
     public Date getCreateTime() {
         return createTime;
