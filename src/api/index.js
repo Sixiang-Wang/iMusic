@@ -21,6 +21,20 @@ export const likeSongOfName = (keywords) => get(`song/likeSongOfName?songName=${
 export const addNums = (songId) => get(`/song/addNums?songId=${songId}`);
 // 查询热门歌曲
 export const getTopSong =() =>get(`song/topSong`);
+
+// ===================== 创作周报 =======================
+
+// 用户播放量最多的歌
+export const getPopularSongOfUser = (userId) => get(`song/popularSongOfUser?userId=${userId}`);
+
+// 用户被收藏最多的歌
+export const getPopularCollectedSongOfUser = (userId)=> get(`song/popularCollectedSongOfUser?userId=${userId}`);
+// 用户创作的评分最高的歌单
+export const getBestSongListOfUser = (userId) => get(`songList/bestSongListOfUser?userId=${userId}`);
+
+// 用户粉丝数量
+export const getFansCountByUserId = (userId) => get(`follow/getFansCountByUserId?userId=${userId}`);
+
 // ============歌单相关==============
 // 查询歌曲
 export const getAllSongList = () => get(`songList/allSongList`);//获得所有歌单
@@ -129,3 +143,5 @@ export const getRecentSongOrderByCount = (id) => get(`recentSong/recentSongOrder
 export const recommendSongList = (id) => get(`recentSong/recommendSongList/${id}`);
 // 推荐歌手
 export const recommendSinger = (id) => get(`recentSong/recommendSinger/${id}`);
+
+
