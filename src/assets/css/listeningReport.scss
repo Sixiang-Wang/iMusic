@@ -1,3 +1,6 @@
+@import "var.scss";
+@import "global.scss";
+
 * {
   margin: 0;
   padding: 0;
@@ -298,4 +301,47 @@ input[type="radio"] {
 
 .submit-button:hover {
   background-color: #4cae4c;
+}
+
+.new-artists {
+  display: grid;
+  grid-gap: 10px; /* 网格项之间的间隔 */
+  padding: 0;
+  list-style: none;
+}
+
+.new-artists ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 100px; /* 用来抵消li元素底部margin，形成紧凑的网格 */
+}
+
+
+.new-artists li {
+  flex: 0 0 calc(33.33% - 20px);
+  max-width: calc(33.33% - 20px);
+  /* 上下左右间距 */
+  margin: 10px 10px 50px;
+  position: relative;
+  height: 0;
+  padding-bottom: 33.33%; /* 高度与宽度比例相同，形成正方形 */
+  overflow: hidden;
+}
+
+.new-artists li img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%); /* 水平居中 */
+  width: 90%; /* 图片宽度占满li容器 */
+  height: auto; /* 保持图片比例 */
+  margin-bottom: 5px; /* 图片和名字之间的间距 */
+}
+
+.new-artists .artist-name {
+  font-size: 16px; /* 名字字体大小 */
+  color: #333; /* 名字颜色 */
+  text-align: center; /* 文本居中 */
 }

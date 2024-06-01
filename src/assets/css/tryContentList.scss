@@ -1,0 +1,75 @@
+@import "var.scss";
+@import "global.scss";
+
+.content-list {
+  min-height: 450px;
+  padding: 0 20px;
+  .section-content {
+    @include layout(flex-start, stretch, row, wrap);
+  }
+}
+
+.content-item {
+  width: calc(33.333% - 40px); /* 每个item的宽度是容器宽度的三分之一减去左右间距 */
+  margin: 20px 20px 0 0; /* 上边距20px，右边距20px，下边距0，左边距0（因为右边的item会覆盖左边距） */
+  overflow: hidden;
+  border-radius: 4px;
+  @include box-shadow(0 0 5px 1px rgba(0, 0, 0, 0.1));
+  position: relative;
+  &:hover {
+    @include box-shadow(0 0 5px 2px rgba(0, 0, 0, 0.3));
+  }
+  &:hover .item-img {
+    transform: scale(1.1);
+  }
+}
+.kuo {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* 保持宽高比，这里假设宽高比为1:1，根据实际需求调整 */
+  overflow: hidden;
+}
+
+.item-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片覆盖整个容器，同时保持长宽比 */
+  transition: all 0.4s ease;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(52, 47, 41, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.mask .icon {
+  fill: #f0f0f0; /* 设置图标颜色 */
+}
+
+.kuo:hover .mask {
+  opacity: 1;
+}
+
+.item-name {
+  margin-top: 10px; /* 与图片底部保持一定间隔 */
+  text-align: center; /* 文字居中显示 */
+  overflow-x: hidden; /* 默认隐藏水平滚动条 */
+  max-width: 100%; /* 最大宽度为100% */
+  white-space: nowrap // 文本不换行
+  /* 其他样式... */
+}
+.item-name:hover {
+  overflow-x: auto; /* 鼠标悬停时显示水平滚动条 */
+}

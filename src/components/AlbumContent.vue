@@ -46,6 +46,10 @@
               <use xlink:href = "#icon-xihuan-shi"></use>
             </svg>
           </span>
+          <span class="icons" @click = "complain(item.id)">
+      <!-- 目前是把矢量图当作图片插入的，不能修改颜色，后续进行调整 -->
+            <img src='../assets/js/icon/icon-complain.svg' class="icon">
+          </span>
         </div>
       </li>
     </ul>
@@ -82,7 +86,7 @@ import {
   setCollect,
   existCollectSong,
   selectSongListByUserId,
-  addListSong, selectByPrimaryKey, deleteListSong
+  addListSong, selectByPrimaryKey, deleteListSong, addComplaint
 } from "../api";
 import {mapGetters} from "vuex";
 import AddIcon from "../assets/icon/addIcon.vue";
@@ -105,6 +109,7 @@ export default {
       deleteDialog: false,
       isMySongList: false,
       isShowSelect: false,
+      isSidebarVisible: false,
       deleteSongId: '',
       addIndex: '',
       selectSongId: '',
@@ -243,6 +248,23 @@ export default {
           this.notify('删除成功', 'success');
         }
       })
+    },
+    complain(songId){
+      // 目前想着先做成歌曲投诉
+      let params = new URLSearchParams();
+      params.append("userId",this.userId);
+      params.append("type",'0');
+      params.append("songId",songId);
+      params.append("songListId",null);
+      params.append("content","目前还没想好写什么");
+      addComplaint(params)
+        .then(res =>{
+          this.notify('投诉成功','success');
+          // console.log(res);
+        })
+        .catch(error =>{
+          console.log(error);
+        })
     }
   },
 }

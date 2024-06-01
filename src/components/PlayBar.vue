@@ -61,10 +61,7 @@
           <div ref="info" class="info">
             <span>{{ info }}</span>
           </div>
-          <img :src="control">
-<!--          <svg class="play">-->
-<!--            <use :xlink:href="control"></use>-->
-<!--          </svg>-->
+          <img :src="control" class="icon">
         </div>
 
 

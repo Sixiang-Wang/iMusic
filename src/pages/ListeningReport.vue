@@ -34,16 +34,31 @@
       <p v-else>暂无听歌数据</p>
     </div>
 
-    <!-- 新发现的艺术家 -->
-<!--    <div class="new-artists">-->
-<!--      <h2>新发现的歌手</h2>-->
-<!--      <ul>-->
-<!--        <li v-for="(artist, index) in newArtists" :key="index">-->
-<!--          {{ artist.name }}-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </div>-->
-
+<!--     新发现的歌手 -->
+    <div class="content-list">
+      <h2>新发现的歌手</h2>
+      <ul class="section-content">
+        <li class="content-item" v-for="(value,index) in newSingers" :key="index">
+          <div class="kuo">
+            <img class="item-img" :src="attachImageUrl(value.pic)">
+          </div>
+          <p class="item-name">{{ value.name }}</p>
+        </li>
+      </ul>
+    </div>
+    <!-- 个性化推荐 -->
+    <div class="content-list">
+      <h2>新发现的歌曲</h2>
+      <!-- 这里可以添加个性化推荐的歌曲列表 -->
+      <ul class="section-content">
+        <li class="content-item" v-for="(value,index) in newSongLists" :key="index">
+          <div class="kuo">
+            <img class="item-img" :src="attachImageUrl(value.pic)">
+          </div>
+          <p class="item-name">{{ value.title }}</p>
+        </li>
+      </ul>
+    </div>
     <!-- 用户反馈 -->
     <div class="user-feedback">
       <h2>用户反馈</h2>
@@ -82,25 +97,13 @@
         </form>
       </div>
     </div>
-
-<!--    &lt;!&ndash; 个性化推荐 &ndash;&gt;-->
-<!--    <div class="personalized-recommendations">-->
-<!--      <h2>个性化推荐</h2>-->
-<!--      &lt;!&ndash; 这里可以添加个性化推荐的歌曲列表 &ndash;&gt;-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; 本周总结与下周预告 &ndash;&gt;-->
-<!--    <div class="weekly-summary">-->
-<!--      <h2>本周总结与下周预告</h2>-->
-<!--      <p>这里是对本周听歌活动的总结，以及下周可能感兴趣的音乐活动或新发行的音乐预告。</p>-->
-<!--    </div>-->
   </div>
 </template>
 
 <script>
 import Chart from 'chart.js';
 import {mapGetters} from "vuex";
-import {getRecentSongOrderByCount, recommendSinger} from "../api";
+import {getRecentSongOrderByCount, recommendSinger, recommendSongList} from "../api";
 import {mixin} from "../mixins";
 export default {
   name: 'ListeningReport',
@@ -152,7 +155,8 @@ export default {
       },
       favoriteSingerName: '',
       popularSongs: [],
-      newArtists: [],
+      newSingers: [],
+      newSongLists: [],
     };
   },
   computed: {
@@ -162,6 +166,8 @@ export default {
   },
   mounted() {
     this.getOrderByCount(this.userId);
+    this.getNewSingers(this.userId);
+    this.getNewSongLists(this.userId);
     this.createChart();// 听歌时长
     this.createPieChart(); // 播放量前五的歌曲
   },
@@ -189,6 +195,26 @@ export default {
         })
         .catch(error => {
           console.log('getRecentSongOrderByCount failed' + error);
+        })
+    },
+    getNewSingers(userId){
+      recommendSinger(userId)
+        .then(res => {
+          // console.log(res);
+          this.newSingers = res.data.slice(0,6);
+        })
+        .catch(error =>{
+          console.log(error);
+        })
+    },
+    getNewSongLists(userId){
+      recommendSongList(userId)
+        .then(res =>{
+          // console.log(res);
+          this.newSongLists = res.data.slice(0,6);
+        })
+        .catch(error => {
+          console.log(error);
         })
     },
     createChart() {
@@ -300,6 +326,7 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-@import "../assets/css/listeningReport.css";
+<style lang="scss" scoped>
+@import "../assets/css/listeningReport.scss";
+@import "../assets/css/tryContentList.scss";
 </style>

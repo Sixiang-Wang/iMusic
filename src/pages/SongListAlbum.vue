@@ -24,6 +24,7 @@
             <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
           </div>
         </li>
+
       </ul>
 
       <div class = "album-score">

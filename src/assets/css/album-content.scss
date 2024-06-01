@@ -93,3 +93,20 @@
   vertical-align: -0.4em;
   right: 5px;
 }
+
+.sidebar {
+  width: 200px;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #fff;
+  /* 初始状态是隐藏的 */
+  display: none;
+}
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.3s ease;
+}
+.slide-enter, .slide-leave-to /* .slide-leave-active in <2.1.8 */ {
+  transform: translateX(-100%);
+}

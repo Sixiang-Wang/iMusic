@@ -149,4 +149,9 @@ export const recommendSongList = (id) => get(`recentSong/recommendSongList/${id}
 // 推荐歌手
 export const recommendSinger = (id) => get(`recentSong/recommendSinger/${id}`);
 
+// ================== 投诉 ===============
+
+// 投诉歌单、歌曲
+export const addComplaint = (params) => post(`complaint/add`,params);
+
 
