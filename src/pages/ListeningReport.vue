@@ -62,13 +62,12 @@
     <!-- 用户反馈 -->
     <div class="user-feedback">
       <h2>用户反馈</h2>
-      <div>
-        <form class="survey-form" @submit.prevent="submitSurvey">
-          <h3>用户满意度调查</h3>
-          <p>请为您本周的听歌体验打分（1-5分）：</p>
-          <fieldset class="rating">
-            <legend>选择您的评分：</legend>
-            <label
+      <form class="survey-form" @submit.prevent="submitFeedback">
+        <h3>用户满意度调查</h3>
+        <p>请为您本周的听歌体验打分（1-5分）：</p>
+        <fieldset class="rating">
+          <legend>选择您的评分：</legend>
+          <label
               v-for="index in 5"
               :key="index"
               :for="'star' + index"
@@ -77,30 +76,28 @@
               @mouseover="hoverIndex = index"
               @mouseleave="hoverIndex = 0"
             >
-              <input type="radio" :id="'star' + index" :value="index" v-model="selectedRating" />
+            <input type="radio" :id="'star' + index" :value="index" v-model="selectedRating" />
               ★
-            </label>
-          </fieldset>
-          <button  class="submit-button" @click="submitFeedback">提交</button>
-        </form>
-      </div>
-      <div >
-        <form class="form-container" @submit.prevent="submitFeedback">
-          <h3>歌曲推荐反馈</h3>
-          <p>您对本周推荐的歌曲满意吗？</p>
+          </label>
+        </fieldset>
+
+        <h3>歌曲推荐反馈</h3>
+        <p>您对本周推荐的歌曲满意吗？</p>
+        <div class="options-container">
           <label class="radio-label" v-for="option in options" :key="option.value">
             <input type="radio" :value="option.value" v-model="selectedOption" />
             <span></span>
             {{ option.text }}
           </label>
-          <button class="submit-button" @click="submitFeedback">提交</button>
-        </form>
-      </div>
+        </div>
+
+        <button class="submit-button" type="button" @click="submitFeedback">提交</button>
+      </form>
     </div>
   </div>
 </template>
 
-<script>
+    <script>
 import Chart from 'chart.js';
 import {mapGetters} from "vuex";
 import {getRecentSongOrderByCount, recommendSinger, recommendSongList} from "../api";

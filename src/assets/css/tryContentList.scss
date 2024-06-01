@@ -3,14 +3,15 @@
 
 .content-list {
   min-height: 450px;
-  padding: 0 20px;
+  padding: 0 20%;
+  margin-bottom:  100px;
   .section-content {
     @include layout(flex-start, stretch, row, wrap);
   }
 }
 
 .content-item {
-  width: calc(33.333% - 40px); /* 每个item的宽度是容器宽度的三分之一减去左右间距 */
+  width: calc(33% - 40px); /* 每个item的宽度是容器宽度的三分之一减去左右间距 */
   margin: 20px 20px 0 0; /* 上边距20px，右边距20px，下边距0，左边距0（因为右边的item会覆盖左边距） */
   overflow: hidden;
   border-radius: 4px;
@@ -72,4 +73,21 @@
 }
 .item-name:hover {
   overflow-x: auto; /* 鼠标悬停时显示水平滚动条 */
+}
+
+.options-container {
+  display: flex; /* 使用Flexbox布局 */
+  flex-wrap: wrap; /* 如果需要，允许换行（通常在这里不需要） */
+  justify-content: space-between; /* 控制子元素之间的水平间距 */
+  align-items: center; /* 控制子元素在交叉轴（这里是垂直方向）上的对齐方式 */
+}
+
+.radio-label {
+  margin-right: 10px; /* 控制每个选项之间的间距 */
+  /* 其他样式 */
+}
+
+/* 最后一个选项可以去除右边的间距，如果需要的话 */
+.radio-label:last-child {
+  margin-right: 0;
 }

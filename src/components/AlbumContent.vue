@@ -46,10 +46,90 @@
               <use xlink:href = "#icon-xihuan-shi"></use>
             </svg>
           </span>
-          <span class="icons" @click = "complain(item.id)">
-      <!-- 目前是把矢量图当作图片插入的，不能修改颜色，后续进行调整 -->
+          <span class="icons" @click="showComplaintModal">
+          <!-- 目前是把矢量图当作图片插入的，不能修改颜色，后续进行调整 -->
             <img src='../assets/js/icon/icon-complain.svg' class="icon">
           </span>
+          <div class="complaint-modal" v-if="showModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+              <h3>请选择举报原因</h3>
+              <div class="reason-group">
+                <h4>违反法律法规</h4>
+                <div class="reason-list">
+                  <input type="checkbox" id="legalViolation1" value="违法违禁" v-model="selectedReasons">
+                  <label for="legalViolation1">违法违禁</label>
+                  <input type="checkbox" id="legalViolation2" value="赌博诈骗" v-model="selectedReasons">
+                  <label for="legalViolation2">赌博诈骗</label>
+                  <input type="checkbox" id="legalViolation3" value="盗搬我的稿件" v-model="selectedReasons">
+                  <label for="legalViolation3">盗搬我的稿件</label>
+                  <input type="checkbox" id="legalViolation4" value="侵权申诉" v-model="selectedReasons">
+                  <label for="legalViolation4">侵权申诉</label>
+                </div>
+              </div>
+              <div class="reason-group">
+                <h4>谣言及不实信息</h4>
+                <div class="reason-list">
+                  <input type="checkbox" id="rumor1" value="涉政谣言" v-model="selectedReasons">
+                  <label for="rumor1">涉政谣言</label>
+                  <input type="checkbox" id="rumor2" value="涉社会事件谣言" v-model="selectedReasons">
+                  <label for="rumor2">涉社会事件谣言</label>
+                  <input type="checkbox" id="rumor3" value="虚假不实信息" v-model="selectedReasons">
+                  <label for="rumor3">虚假不实信息</label>
+                </div>
+              </div>
+              <div class="reason-group">
+                <h4>投稿不规范</h4>
+                <div class="reason-list">
+                  <input type="checkbox" id="irregularPost1" value="违规推广" v-model="selectedReasons">
+                  <label for="irregularPost1">违规推广</label>
+                  <input type="checkbox" id="irregularPost2" value="转载" v-model="selectedReasons">
+                  <label for="irregularPost2">转载</label>
+                  <input type="checkbox" id="irregularPost3" value="自制错误" v-model="selectedReasons">
+                  <label for="irregularPost3">自制错误</label>
+                  <input type="checkbox" id="irregularPost4" value="其他不规范行为" v-model="selectedReasons">
+                  <label for="irregularPost4">其他不规范行为</label>
+                </div>
+              </div>
+              <div class="reason-group">
+                <h4>不友善行为</h4>
+                <div class="reason-list">
+                  <input type="checkbox" id="unfriendly1" value="人身攻击" v-model="selectedReasons">
+                  <label for="unfriendly1">人身攻击</label>
+                  <input type="checkbox" id="unfriendly2" value="引战" v-model="selectedReasons">
+                  <label for="unfriendly2">引战</label>
+                </div>
+              </div>
+              <div class="reason-group">
+                <h4>违反公序良俗</h4>
+                <div class="reason-list">
+                  <input type="checkbox" id="publicOrder1" value="色情低俗" v-model="selectedReasons">
+                  <label for="publicOrder1">色情低俗</label>
+                  <input type="checkbox" id="publicOrder2" value="危险行为" v-model="selectedReasons">
+                  <label for="publicOrder2">危险行为</label>
+                  <input type="checkbox" id="publicOrder3" value="观感不适" v-model="selectedReasons">
+                  <label for="publicOrder3">观感不适</label>
+                  <input type="checkbox" id="publicOrder4" value="血腥暴力" v-model="selectedReasons">
+                  <label for="publicOrder4">血腥暴力</label>
+                  <input type="checkbox" id="publicOrder5" value="青少年不良信息" v-model="selectedReasons">
+                  <label for="publicOrder5">青少年不良信息</label>
+                </div>
+              </div>
+              <div class="reason-group">
+                <h4>其他</h4>
+                <div class="reason-list">
+                  <input type="checkbox" id="other" value="其他" v-model="selectedReasons">
+                  <label for="other">其他</label>
+                  <textarea v-if="selectedReasons.includes('其他')" v-model="otherDescription" placeholder="请描述其他具体原因"></textarea>
+                </div>
+              </div>
+              <textarea class="description-textarea" v-model="description" placeholder="详细描述"></textarea>
+              <div class="modal-footer">
+                <button class = "btn btn-blue" @click="submitComplaint">提交</button>
+                <button class = "btn btn-gray" @click="showModal = false">取消</button>
+              </div>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
@@ -118,7 +198,11 @@ export default {
         position: 'fixed',
         top: 0,
         left: 0,
-      }
+      },
+      showModal: false,
+      selectedReasons: [],
+      description: '',
+      otherDescription: '',
     }
   },
   mounted() {
@@ -249,26 +333,131 @@ export default {
         }
       })
     },
-    complain(songId){
-      // 目前想着先做成歌曲投诉
+    showComplaintModal() {
+      this.showModal = true; // 显示弹窗
+      this.selectedReasons = []; // 重置选择的举报原因
+      this.description = ''; // 重置描述
+    },
+    submitComplaint() {
+      if (this.selectedReasons.length === 0) {
+        alert('请至少选择一个举报原因');
+        return;
+      }
+      // 准备要发送的数据
       let params = new URLSearchParams();
-      params.append("userId",this.userId);
-      params.append("type",'0');
-      params.append("songId",songId);
-      params.append("songListId",null);
-      params.append("content","目前还没想好写什么");
+      params.append("userId", this.userId);
+      params.append("songId", item.id); // 假设item是从某个作用域传入的
+      params.append("content", this.description);
+      // 将选择的举报原因以逗号分隔的字符串形式发送
+      params.append("reasons", this.selectedReasons.join(','));
+
+      // 发送请求
       addComplaint(params)
-        .then(res =>{
-          this.notify('投诉成功','success');
-          // console.log(res);
+        .then(res => {
+          this.notify('投诉成功', 'success');
+          this.showModal = false; // 隐藏弹窗
         })
-        .catch(error =>{
+        .catch(error => {
           console.log(error);
-        })
-    }
+          this.notify('投诉失败', 'error'); // 可以增加一个通知函数用于显示错误通知
+          this.showModal = false; // 隐藏弹窗
+        });
+    },
+    notify(message, type) {
+      // 这里可以是一个自定义的通知函数，用于显示通知信息
+      // 例如使用alert、toast组件等
+      alert(message);
+    },
   },
 }
 </script>
+
+<style scoped>
+/* 弹窗样式 */
+.complaint-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 确保弹窗在其他内容之上 */
+}
+
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px; /* 增大内边距 */
+  border-radius: 8px; /* 增大边框圆角 */
+  width: 80%; /* 弹窗宽度为视口的80% */
+  max-width: 80vh; /* 限制最大宽度，防止在小屏幕上过大 */
+  max-height: 60vh; /* 设置最大高度为视口高度的80% */
+  position: relative; /* 相对于弹窗定位 */
+  z-index: 1001; /* 确保内容在overlay之上 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+  overflow: auto; /* 如果内容过多，允许滚动 */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* 假设弹窗有一个固定的高度或者填充了父元素的高度 */
+}
+
+.modal-body {
+  /* 确保body部分不会占满整个.modal-content的高度，以便footer可以定位到底部 */
+  flex: 1; /* 占据剩余空间 */
+}
+
+.reason-group {
+  margin-bottom: 20px; /* 每个原因组之间的间距 */
+}
+
+.reason-list input[type="checkbox"] {
+  margin-right: 10px; /* 复选框和标签之间的间距 */
+}
+
+.description-textarea {
+  height: 200px; /* 设置为你想要的高度 */
+  max-width: 100%;
+  /* 其他样式，如边框、边距等 */
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center; /* 或者使用space-between来在按钮之间添加空间 */
+  align-items: center; /* 垂直居中（可选） */
+  padding: 10px; /* 可选，为底部添加一些内边距 */
+  background-color: #f5f5f5; /* 可选，为footer添加背景色 */
+  //margin-top: auto;
+}
+
+.btn {
+  padding: 10px 20px; /* 增大按钮的点击区域 */
+  margin-left: 10px; /* 按钮之间的间距 */
+  font-size: 16px; /* 可选，调整按钮上的文字大小 */
+  border: none; /* 去除默认边框 */
+  border-radius: 4px; /* 可选，为按钮添加圆角 */
+  cursor: pointer; /* 鼠标悬停时显示为手形图标 */
+}
+
+.btn-blue {
+  background-color: #66ccff; /* 设置蓝色背景 */
+  color: white; /* 设置文字颜色为白色 */
+}
+
+.btn-gray {
+  background-color: gray; /* 设置灰色背景 */
+  color: white; /* 设置文字颜色为白色 */
+}
+</style>
 
 <style lang = "scss" scoped>
 @import "../assets/css/album-content.scss";
