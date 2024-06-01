@@ -358,7 +358,7 @@ export default {
     handleSongSuccess (res) {
       let _this = this
       if (res.code === 1) {
-        _this.getData(this.currentPage)
+        _this.getData2(this.currentPage)
         _this.$notify({
           title: '上传成功',
           type: 'success'

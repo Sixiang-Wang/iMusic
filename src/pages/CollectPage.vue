@@ -95,7 +95,7 @@ export default {
       deleteCollection(this.$route.query.id, this.idx.id)
         .then(res => {
           if (res) {
-            this.getData()
+            this.getData(this.currentPage)
             this.notify('删除成功', 'success')
           } else {
             this.notify('删除失败', 'error')

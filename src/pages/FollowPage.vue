@@ -92,7 +92,7 @@ export default {
           } else {
             this.notify('取消失败', 'error')
           }
-          this.getData()
+          this.getData(this.currentPage)
         })
         .catch(err => {
           console.log(err)

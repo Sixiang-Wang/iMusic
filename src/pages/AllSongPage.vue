@@ -308,7 +308,7 @@ export default {
       updateSong(params)
         .then(res => {
           if (res.code === 1) {
-            this.getData2()
+            this.getData2(this.currentPage)
             this.notify('修改成功', 'success')
           } else {
             this.notify('修改失败', 'error')
@@ -328,7 +328,7 @@ export default {
       delSong(this.idx)
         .then(res => {
           if (res) {
-            this.getData2()
+            this.getData2(this.currentPage)
             this.notify('删除成功', 'success')
           } else {
             this.notify('删除失败', 'error')
