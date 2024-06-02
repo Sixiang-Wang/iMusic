@@ -1,6 +1,6 @@
 const configure = {
   state: {
-    HOST: 'http://127.0.0.1:8888',//后台访问地址根目录
+    HOST: 'http://39.105.221.80:1145',//后台访问地址根目录
     activeName:  '' ,  //当前选中的菜单名
     showAside : false ,      // 是否显示播放中的歌曲列表
     loginIn : false,      // 用户是否已登录
