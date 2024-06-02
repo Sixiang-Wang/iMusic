@@ -1,6 +1,7 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.config.PathConfig;
 import com.java.imusic.dao.SongMapper;
 import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.Song;
@@ -62,7 +63,7 @@ public class SongController {
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis()+mpFile.getOriginalFilename();
         //文件路径
-        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"song";
+        String filePath = PathConfig.path +System.getProperty("file.separator")+"song";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
         if(!file1.exists()){
@@ -202,7 +203,7 @@ public class SongController {
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis() + avatorFile.getOriginalFilename();
         //文件路径
-        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"img"
+        String filePath = PathConfig.path+System.getProperty("file.separator")+"img"
                 +System.getProperty("file.separator")+"songPic";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
@@ -260,7 +261,7 @@ public class SongController {
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis()+avatorFile.getOriginalFilename();
         //文件路径
-        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"song";
+        String filePath = PathConfig.path+System.getProperty("file.separator")+"song";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
         if(!file1.exists()){
@@ -312,7 +313,7 @@ public class SongController {
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis()+avatorFile.getOriginalFilename();
         //文件路径
-        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"mv";
+        String filePath = PathConfig.path+System.getProperty("file.separator")+"mv";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
         if(!file1.exists()){

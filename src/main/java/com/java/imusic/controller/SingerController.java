@@ -1,6 +1,7 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.config.PathConfig;
 import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.Song;
 import com.java.imusic.domain.User;
@@ -289,7 +290,7 @@ public class SingerController {
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis()+avatorFile.getOriginalFilename();
         //文件路径
-        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"img"
+        String filePath = PathConfig.path +System.getProperty("file.separator")+"img"
                 +System.getProperty("file.separator")+"Pic";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);

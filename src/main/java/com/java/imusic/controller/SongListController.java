@@ -1,12 +1,14 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.config.PathConfig;
 import com.java.imusic.dao.RankMapper;
 import com.java.imusic.dao.SongListMapper;
 import com.java.imusic.domain.Song;
 import com.java.imusic.domain.SongList;
 import com.java.imusic.service.SongListService;
 import com.java.imusic.utils.Consts;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -183,7 +185,7 @@ public class SongListController {
         //文件名=当前时间到毫秒+原来的文件名
         String fileName = System.currentTimeMillis()+avatorFile.getOriginalFilename();
         //文件路径
-        String filePath = System.getProperty("user.dir")+System.getProperty("file.separator")+"img"
+        String filePath = PathConfig.path +System.getProperty("file.separator")+"img"
                 +System.getProperty("file.separator")+"songListPic";
         //如果文件路径不存在，新增该路径
         File file1 = new File(filePath);
