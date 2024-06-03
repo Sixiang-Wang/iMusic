@@ -43,19 +43,19 @@
       <el-form :model = "addForm" ref = "addForm" label-width = "80px" action = "" id = "tf">
         <div>
           <label>歌名</label>
-          <el-input type = "text" name = "songName"></el-input>
+          <el-input type = "text" v-model="addForm.songName" name = "songName"></el-input>
         </div>
         <div>
           <label>专辑</label>
-          <el-input type = "text" name = "introduction"></el-input>
+          <el-input type = "text" v-model="addForm.introduction" name = "introduction"></el-input>
         </div>
         <div>
           <label>风格</label>
-          <el-input type = "text" name = "style"></el-input>
+          <el-input type = "text" v-model="addForm.style" name = "style"></el-input>
         </div>
         <div>
           <label>歌词</label>
-          <el-input type = "textarea" placeholder="请务必严格按照lrc歌词规范，否则将无法识别" rows="8" name = "lyric"></el-input>
+          <el-input type = "textarea" v-model="addForm.lyric" placeholder="请务必严格按照lrc歌词规范，否则将无法识别" rows="8" name = "lyric"></el-input>
         </div>
         <div>
           <label>歌曲上传</label>
@@ -103,7 +103,7 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {delSong, songOfSingerId, updateSong} from "../../api";
+import {delSong, getUserOfId, songOfSingerId, updateSong} from "../../api";
 import {mixin} from "../../mixins";
 export default {
   data() {
@@ -113,6 +113,7 @@ export default {
       delVisible: false,          //删除弹窗是否显示
       songs: [],
       songId: '',
+      singerId: '',
       addForm: {      // 添加歌曲的框
         songName: '',
         introduction: '',
@@ -137,7 +138,10 @@ export default {
     ])
   },
   mounted() {
-    songOfSingerId(this.userId).then(res => {
+    getUserOfId(this.userId).then(res => {
+      this.singerId = res.singerId;
+    })
+    songOfSingerId(this.singerId).then(res => {
       this.songs = res
     });
   },
@@ -215,7 +219,7 @@ export default {
         {
           this.songId = '';
           this.delVisible = false;
-          songOfSingerId(this.userId).then(res => {
+          songOfSingerId(this.singerId).then(res => {
             this.songs = res
           });
           this.notify('删除成功','success')
@@ -238,7 +242,7 @@ export default {
       updateSong(params)
         .then(res => {
           if (res.code === 1) {
-            songOfSingerId(this.userId).then(res => {
+            songOfSingerId(this.singerId).then(res => {
               this.songs = res;
             });
             this.notify('修改成功', 'success')
@@ -253,22 +257,23 @@ export default {
     },
     addSong() {
       let form = new FormData(document.getElementById('tf'));
-      form.append('singerId', this.userId);
+      form.append('singerId', this.singerId);
       form.set('name', this.username + '-' + form.get('songName'));
       if (!form.get('lyric')) {
         form.set('lyric', '[00:00:00]暂无歌词');
       }
-      let req = new XMLHttpRequest();
+      var req = new XMLHttpRequest();
       req.onreadystatechange = function ()
       {
         /**
          req.readyState == 4 获取到返回的完整数据
          req.status == 200 和后台正常交互完成
          **/
+        this.notify(55)
         if (req.readyState === 4 && req.status === 200) {
           let res = JSON.parse(req.response)
           if (res.code) {
-            songOfSingerId(this.userId).then(res => {
+            songOfSingerId(this.singerId).then(res => {
               this.songs = res
             });
             this.addForm = {};
