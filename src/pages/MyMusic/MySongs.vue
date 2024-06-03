@@ -180,13 +180,14 @@ export default {
       return true
     },
     handleSongSuccess (res) {
+      let self = this;
       if (res.code === 1) {
-        songOfSingerId(this.userId).then(res => {
-          this.songs = res
+        songOfSingerId(self.userId).then(res => {
+          self.songs = res
         });
-        this.notify('上传成功', 'success')
+        self.notify('上传成功', 'success')
       } else {
-        this.notify('上传失败', 'error')
+        self.notify('上传失败', 'error')
       }
     },
     handleAvatarSuccess (res) {
@@ -256,6 +257,7 @@ export default {
       this.editVisible = false
     },
     addSong() {
+      let self = this;
       let form = new FormData(document.getElementById('tf'));
       form.append('singerId', this.singerId);
       form.set('name', this.username + '-' + form.get('songName'));
@@ -263,30 +265,31 @@ export default {
         form.set('lyric', '[00:00:00]暂无歌词');
       }
       var req = new XMLHttpRequest();
+      req.open('post', `${self.$store.state.HOST}/song/add`, false);
       req.onreadystatechange = function ()
       {
         /**
          req.readyState == 4 获取到返回的完整数据
          req.status == 200 和后台正常交互完成
          **/
-        this.notify(55)
         if (req.readyState === 4 && req.status === 200) {
           let res = JSON.parse(req.response)
           if (res.code) {
-            songOfSingerId(this.singerId).then(res => {
-              this.songs = res
+            songOfSingerId(self.singerId).then(res => {
+              this.notify('++++++');
+              self.songs = res
             });
-            this.addForm = {};
-            this.notify(res.msg, 'success')
+            self.addForm = {};
+            self.notify(res.msg, 'success')
           }
           else {
-            this.notify('保存失败', 'error')
+            self.notify('保存失败', 'error')
           }
         }
       };
-      req.open('post', `${this.$store.state.HOST}/song/add`, false);
+
       req.send(form);
-      this.addDialog = false;
+      self.addDialog = false;
     },
   }
 }
