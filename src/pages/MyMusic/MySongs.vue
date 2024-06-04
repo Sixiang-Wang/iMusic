@@ -140,20 +140,20 @@ export default {
   mounted() {
     getUserOfId(this.userId).then(res => {
       this.singerId = res.singerId;
+      songOfSingerId(this.singerId).then(res => {
+        this.songs = res
+      });
     })
-    songOfSingerId(this.singerId).then(res => {
-      this.songs = res
-    });
   },
   methods: {
     upload() {
       this.addDialog = true
     },
     uploadSongUrl (id) {
-      return `${this.$store.state.HOST}/song/updateSongUrl?id=${id}`
+      return `${this.$store.state.configure.HOST}/song/updateSongUrl?id=${id}`
     },
     uploadUrl (id) {
-      return `${this.$store.state.HOST}/song/updateSongPic?id=${id}`
+      return `${this.$store.state.configure.HOST}/song/updateSongPic?id=${id}`
     },
     beforeSongUpload (file) {
       let testMsg = file.name.substring(file.name.lastIndexOf('.') + 1)
@@ -172,9 +172,9 @@ export default {
         this.$message.error('上传头像图片只能是jpg或png格式')
         return false
       }
-      const isLt2M = (file.size / 1024 / 1024) < 2
+      const isLt2M = (file.size / 1024 / 1024) < 10
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过2MB')
+        this.$message.error('上传头像图片大小不能超过10MB')
         return false
       }
       return true
@@ -182,7 +182,7 @@ export default {
     handleSongSuccess (res) {
       let self = this;
       if (res.code === 1) {
-        songOfSingerId(self.userId).then(res => {
+        songOfSingerId(self.singerId).then(res => {
           self.songs = res
         });
         self.notify('上传成功', 'success')
@@ -192,7 +192,7 @@ export default {
     },
     handleAvatarSuccess (res) {
       if (res.code === 1) {
-        songOfSingerId(this.userId).then(res => {
+        songOfSingerId(this.singerId).then(res => {
           this.songs = res
         });
         this.notify('上传成功', 'success')
@@ -265,7 +265,7 @@ export default {
         form.set('lyric', '[00:00:00]暂无歌词');
       }
       var req = new XMLHttpRequest();
-      req.open('post', `${self.$store.state.HOST}/song/add`, false);
+      req.open('post', `${self.$store.state.configure.HOST}/song/add`, false);
       req.onreadystatechange = function ()
       {
         /**
@@ -276,7 +276,7 @@ export default {
           let res = JSON.parse(req.response)
           if (res.code) {
             songOfSingerId(self.singerId).then(res => {
-              this.notify('++++++');
+              self.notify('++++++');
               self.songs = res
             });
             self.addForm = {};
