@@ -51,7 +51,7 @@
                 <edit-icon></edit-icon>
               </span>
               <el-upload class="picture-icon" :action="uploadUrl(item.id)" :before-upload="beforeAvatarUpload"
-                         :on-success="handleAvatarSuccess">
+                         :on-success="handleAvatarSuccess" :show-file-list="false">
                   <picture-icon></picture-icon>
               </el-upload>
             </div>
