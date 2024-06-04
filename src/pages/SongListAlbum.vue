@@ -50,7 +50,7 @@
         </album-content>
       </div>
     </div>
-    <comment :ID = "this.songListId" :type = "1"></comment>
+    <comment :type = "1"></comment>
   </div>
 </template>
 

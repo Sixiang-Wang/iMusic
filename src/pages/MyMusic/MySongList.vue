@@ -50,6 +50,10 @@
               <span class = "edit-icon" @click = "editItem(item)">
                 <edit-icon></edit-icon>
               </span>
+              <el-upload class="picture-icon" :action="uploadUrl(item.id)" :before-upload="beforeAvatarUpload"
+                         :on-success="handleAvatarSuccess">
+                  <picture-icon></picture-icon>
+              </el-upload>
             </div>
           </div>
         </li>
@@ -114,9 +118,10 @@ import {deleteSongList, selectSongListByUserId, setSongList, updateSongList} fro
 import DeleteIcon from "../../assets/icon/deleteIcon.vue";
 import EditIcon from "../../assets/icon/editIcon.vue";
 import ChangeStyleIcon from "../../assets/icon/changeStyleIcon.vue";
+import PictureIcon from "../../assets/icon/pictureIcon.vue";
 
 export default {
-  components: {ChangeStyleIcon, EditIcon, DeleteIcon, ContentList},
+  components: {PictureIcon, ChangeStyleIcon, EditIcon, DeleteIcon, ContentList},
   data() {
     return {
       songLists: [],
@@ -254,8 +259,33 @@ export default {
           console.log(err)
         })
       this.editDialog = false
-    }
-
+    },
+    uploadUrl (id) {
+      return `${this.$store.state.configure.HOST}/songList/updateSongListPic?id=${id}`
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = (file.type === 'image/jpg') || (file.type === 'image/jpeg') || (file.type === 'image/png')
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是jpg或png格式')
+        return false
+      }
+      const isLt2M = (file.size / 1024 / 1024) < 10
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过10MB')
+        return false
+      }
+      return true
+    },
+    handleAvatarSuccess (res) {
+      let self = this
+      if (res.code === 1) {
+        selectSongListByUserId(self.userId).then(res =>
+        {
+          this.songLists = res;
+        })
+        self.notify('更新成功','success');
+      }
+    },
   }
 }
 </script>

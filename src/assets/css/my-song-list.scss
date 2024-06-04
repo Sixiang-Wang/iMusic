@@ -103,6 +103,15 @@
     .edit-icon:hover {
       transform: scale(1.1);
     }
+    .picture-icon {
+      width: 50px;
+      margin-top: 25px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .picture-icon:hover {
+      transform: scale(1.1);
+    }
   }
 
   .pink {
