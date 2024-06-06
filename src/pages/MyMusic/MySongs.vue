@@ -16,7 +16,7 @@
       <el-table-column label="资源更新" align="center" width="150">
         <template slot-scope="scope">
           <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeAvatarUpload"
-                     :on-success="handleAvatarSuccess" :show-file-list="false">
+                     :on-success="handleAvatarSuccess">
             <el-button size="mini">更新图片</el-button>
           </el-upload>
           <br/>
