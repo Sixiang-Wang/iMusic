@@ -36,6 +36,20 @@ public interface CollectService {
     public List<Collect> collectOfUserId(Integer userId);
 
     /**
+     * 歌曲收藏量
+     * @param songId
+     * @return
+     */
+    public Integer songCollectNum(Integer songId);
+
+    /**
+     * 歌单收藏量
+     * @param songListId
+     * @return
+     */
+    public Integer songListCollectNum(Integer songListId);
+
+    /**
      * 查询某个用户是否已经收藏了某个歌曲
      */
     public boolean existSongId(@Param("userId") Integer userId, @Param("songId") Integer songId);

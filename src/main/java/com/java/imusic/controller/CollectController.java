@@ -168,6 +168,32 @@ public class CollectController {
         return null;
     }
 
+    @RequestMapping(value = "/songCollectNum", method = RequestMethod.GET)
+    public Object songCollectNum(HttpServletRequest request) {
+        String sId = request.getParameter("songId");
+        int songId = -1;
+        if (!sId.isEmpty()) {
+            songId = Integer.parseInt(sId);
+        }
+        if(songId==-1){
+            return -1;
+        }
+        return collectService.songCollectNum(songId);
+    }
+
+    @RequestMapping(value = "/songListCollectNum", method = RequestMethod.GET)
+    public Object songListCollectNum(HttpServletRequest request) {
+        String sId = request.getParameter("songListId");
+        int songListId = -1;
+        if (!sId.isEmpty()) {
+            songListId = Integer.parseInt(sId);
+        }
+        if(songListId==-1){
+            return -1;
+        }
+        return collectService.songListCollectNum(songListId);
+    }
+
     @RequestMapping(value = "/existCollectSong", method = RequestMethod.GET)
     public Object existCollectSong(HttpServletRequest request) {
         Integer userId = Integer.parseInt(request.getParameter("userId"));

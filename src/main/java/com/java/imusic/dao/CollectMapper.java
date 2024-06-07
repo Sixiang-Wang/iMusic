@@ -38,6 +38,9 @@ public interface CollectMapper {
      */
     public List<Collect> collectOfUserId(Integer userId);
 
+    public Integer songCollectNum(@Param("songId")Integer songId);
+
+    public Integer songListCollectNum(@Param("songListId")Integer songListId);
     /**
      * 查询某个用户是否已经收藏了某个歌曲
      */

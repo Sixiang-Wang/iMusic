@@ -503,7 +503,6 @@ public class UserController {
                 }
             }
         }
-        System.out.println(username+" "+password);
         boolean flag = userService.verifyPassword(username,password);
         if(!flag){
             jsonObject.put(Consts.CODE,0);

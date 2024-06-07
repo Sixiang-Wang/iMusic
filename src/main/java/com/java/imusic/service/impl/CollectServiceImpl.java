@@ -73,6 +73,26 @@ public class CollectServiceImpl implements CollectService {
     }
 
     /**
+     * 歌曲收藏量
+     * @param songId
+     * @return
+     */
+    @Override
+    public Integer songCollectNum(Integer songId){
+        return collectMapper.songCollectNum(songId);
+    }
+
+    /**
+     * 歌单收藏量
+     * @param songListId
+     * @return
+     */
+    @Override
+    public Integer songListCollectNum(Integer songListId){
+        return collectMapper.songListCollectNum(songListId);
+    }
+
+    /**
      * 查询某个用户是否已经收藏了某个歌曲
      *
      * @param userId

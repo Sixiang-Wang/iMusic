@@ -85,6 +85,18 @@
         where user_id = #{userId}
     </select>
 
+    <select id="songListCollectNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(*)
+        from collect
+        where song_list_id = #{songListId}
+    </select>
+
+    <select id="songCollectNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(*)
+        from collect
+        where song_id = #{songId}
+    </select>
+
     <select id="existSongId" resultType="java.lang.Integer">
         select count(*)
         from collect
