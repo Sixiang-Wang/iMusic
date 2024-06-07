@@ -75,6 +75,8 @@ export const validate = email => get(`mail/sendMail?to=${email}`);
 
 // 登录
 export const LoginIn = params => post(`user/login`, params);
+export const preLogin = () => post(`user/preLogin`)
+export const logout = () => post(`user/logout`)
 // 查询该用户的详细信息
 export const getUserOfId = (id) => get(`user/selectByPrimaryKey?id=${id}`);
 
