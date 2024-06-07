@@ -5,15 +5,26 @@
         <img v-if = "this.imageUrl" :src = 'this.imageUrl' alt = "">
         <img alt = "" v-else src = "../assets/img/singer.png"/>
       </div>
-      <ul class = "info">
-        <li>{{ singer.name }}</li>
-        <li>{{ getSex(singer.sex) }}</li>
-        <li v-if = "singer.birth != null">生日: {{ getBirth(singer.birth) }}</li>
-        <li>简介: {{ singer.introduction }}</li>
-      </ul>
+      <div class="info">
+        <h2>简介: </h2>
+        <br>
+        <p>{{ singer.introduction }}</p>
+      </div>
     </div>
 
     <div class = "album-content">
+      <div class = "info">
+        <div>
+          <h2>{{ singer.name }}</h2>
+        </div>
+        <div style="margin-top: 15px">
+          <p>{{ getSex(singer.sex) }}</p>
+        </div>
+        <div style="margin-top: 15px" v-if = "singer.birth != null">
+          <p>生日: {{ getBirth(singer.birth) }}</p>
+        </div>
+      </div>
+
       <div :class = "this.followClass" @click = "handleFollow()">
         <span>{{ this.isFollow }}</span>
       </div>

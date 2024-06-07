@@ -61,11 +61,11 @@
   /*歌单题目*/
   .album-title {
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 540;
   }
   /*歌单收藏*/
   .collect {
-    margin-left: 20px;
+    margin-top: 20px;
     width: 130px;
     height: 30px;
     background-color: #f5f5f5; /* 使用灰色调的背景颜色 */
@@ -91,7 +91,7 @@
   .album-score {
     display: flex;
     align-items: center;
-    margin: 50px;
+    margin: -70px 0 70px 350px;
     > div {
       margin-left: 100px;
     }

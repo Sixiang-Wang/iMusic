@@ -248,16 +248,15 @@ export default {
           {
             if (res.code === 1) {
               item.collection = true;
-              this.$notify({title:'收藏成功', type:'success'});
+              this.notify('收藏成功', 'success');
             }
             else if (res.code === 2) {
               deleteCollectSong(this.userId, songId);
               item.collection = false;
-              this.$notify({title: '取消成功', type: 'success'});
-              // this.notify('取消成功', 'success');
+              this.notify('取消成功', 'success');
             }
             else {
-              this.$notify({title: '收藏失败', type: 'error'});
+              this.notify('收藏失败', 'error');
             }
           })
       }
@@ -339,7 +338,7 @@ export default {
     },
     submitComplaint(Id) {
       if (this.selectedReasons.length === 0) {
-        alert('请至少选择一个举报原因');
+        this.notify('请至少选择一个举报原因');
         return;
       }
       // 准备要发送的数据
