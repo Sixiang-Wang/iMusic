@@ -46,7 +46,7 @@
       <el-col :span="12">
         <h3 class="mgb20">用户性别比例</h3>
         <div style="background-color:white">
-          <ve-pie :data="userSex" :theme="options"></ve-pie>
+          <ve-pie :data="userSex"></ve-pie>
         </div>
       </el-col>
       <el-col :span="12">
@@ -86,8 +86,8 @@ export default {
       userSex: {           //按性别分类的用户数
         columns: ['性别', '总数'],
         rows: [
-          {'性别': '男', '总数': 0},
           {'性别': '女', '总数': 0},
+          {'性别': '男', '总数': 0},
           {'性别': '组合', '总数': 0},
           {'性别': '不明', '总数': 0}
         ]
@@ -150,10 +150,10 @@ export default {
       getAllUser().then(res => {
         this.user = res
         this.userCount = res.length
-        this.userSex.rows[0]['总数'] = this.setSex(1, this.user)
-        this.userSex.rows[1]['总数'] = this.setSex(0, this.user)
-        this.singerSex.rows[2]['总数'] = this.setSex(2, res)
-        this.singerSex.rows[3]['总数'] = this.setSex(3, res)
+        this.userSex.rows[0]['总数'] = this.setSex(0, this.user)
+        this.userSex.rows[1]['总数'] = this.setSex(1, this.user)
+        this.userSex.rows[2]['总数'] = this.setSex(2, res)
+        this.userSex.rows[3]['总数'] = this.setSex(3, res)
       })
     },
     setSex (sex, val) {              //根据性别获取用户数
