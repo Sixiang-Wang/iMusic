@@ -120,6 +120,7 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     /**
      * 获取指定用户最近播放列表，按播放量降序排列
      */
+    @Override
     public Result getRecentSongByUserIdOrderByCountDesc(Integer id) {
         try {
             List<RecentSongVo> recentSongByUserId = recentSongMapper.getRecentSongByUserIdOrderByCountDesc(id);
@@ -139,8 +140,9 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         List<Collect> tmpList = collectMapper.collectOfUserId(id);
         List<SongList> allCollectSongListByConsumerId = new ArrayList<>();
         tmpList.forEach(item -> {
-            if (item.getSongListId() != null)
+            if (item.getSongListId() != null) {
                 allCollectSongListByConsumerId.add(songListService.selectByPrimaryKey(item.getSongListId()));
+            }
         });
 
         if (!allCollectSongListByConsumerId.isEmpty()) {
