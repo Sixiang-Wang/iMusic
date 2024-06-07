@@ -74,6 +74,7 @@ public class ComplaintController {
                 textB.append("遭到举报      \n").append(content);
                 Message message = new Message();
                 message.setTo(to);
+                message.setFrom(-1);
                 message.setText(textB.toString());
                 message.setIsRead(0);
                 messageService.insert(message);

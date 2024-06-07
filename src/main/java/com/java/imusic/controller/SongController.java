@@ -92,7 +92,7 @@ public class SongController {
                 followList.forEach(follow->{
                     Message message = new Message();
                     message.setTo(follow.getUserId());
-                    message.setFrom(follow.getSingerId());
+                    message.setFrom(-1);
                     message.setText("您关注的歌手 "+singerName+" 发布了新歌《"+name+"》!");
                     message.setIsRead(0);
                     messageService.insert(message);
