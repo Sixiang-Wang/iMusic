@@ -14,9 +14,9 @@ public interface MessageMapper {
     public int update(Message message);
     public int delete(Integer id);
     public Message selectByPrimaryKey(Integer id);
-    public List<Message> allMessage(Integer userId);
-    public List<Message> allMessageUnread(Integer userId);
-    public List<Message> allMessageRead(Integer userId);
-    public Integer messageUnreadNum(Integer userId);
+    public List<Message> allMessage(Integer to);
+    public List<Message> allMessageUnread(Integer to);
+    public List<Message> allMessageRead(Integer to);
+    public Integer messageUnreadNum(Integer to);
     public int read(Integer id);
 }

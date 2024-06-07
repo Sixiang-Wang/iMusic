@@ -5,14 +5,15 @@
 <mapper namespace="com.java.imusic.dao.MessageMapper">
     <resultMap id="BaseResultMap" type="com.java.imusic.domain.Message" >
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="to" jdbcType="INTEGER" property="to"/>
+        <result column="from" jdbcType="INTEGER" property="from"/>
         <result column="text" jdbcType="LONGVARCHAR" property="text"/>
         <result column="is_read" jdbcType="INTEGER" property="isRead"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,text,is_read,create_time
+        id,`to`,`from`,text,is_read,create_time
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.Message">
@@ -21,8 +22,11 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="userId != null">
-                user_id,
+            <if test="to != null">
+                `to`,
+            </if>
+            <if test="from != null">
+                `from`,
             </if>
             <if test="text != null">
                 text,
@@ -34,8 +38,11 @@
             <if test="id != null">
                 #{id},
             </if>
-            <if test="userId != null">
-                #{userId},
+            <if test="to != null">
+                #{to},
+            </if>
+            <if test="from != null">
+                #{from},
             </if>
             <if test="text != null">
                 #{text},
@@ -48,8 +55,11 @@
     <update id="update" parameterType="com.java.imusic.domain.Message">
         update message
         <set>
-            <if test="userId != null">
-                user_id = #{userId},
+            <if test="to != null">
+                `to` = #{to},
+            </if>
+            <if test="from != null">
+                `from` = #{from},
             </if>
             <if test="content != null">
                 text = #{text},
@@ -77,7 +87,7 @@
         select
         <include refid="Base_Column_List"/>
         from message
-        where user_id = #{userId}
+        where `to` = #{to}
     </select>
 
     <select id="allMessageUnread" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -85,7 +95,7 @@
         <include refid="Base_Column_List"/>
         from message
         where is_read = 0
-        and user_id = #{userId}
+        and `to` = #{to}
     </select>
 
     <select id="allMessageRead" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -93,14 +103,14 @@
         <include refid="Base_Column_List"/>
         from message
         where is_read = 1
-        and user_id = #{userId}
+        and `to` = #{to}
     </select>
 
     <select id="messageUnreadNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
         select count(*)
         from message
         where is_read = 0
-        and user_id = #{userId}
+        and `to` = #{to}
     </select>
 
     <update id="read" parameterType="java.lang.Integer">

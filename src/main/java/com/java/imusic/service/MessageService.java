@@ -10,9 +10,9 @@ public interface MessageService {
     public boolean update(Message message);
     public boolean delete(Integer id);
     public Message selectByPrimaryKey(Integer id);
-    public List<Message> allMessage(Integer userId);
-    public List<Message> allMessageUnread(Integer userId);
-    public List<Message> allMessageRead(Integer userId);
-    public Integer messageUnreadNum(Integer userId);
+    public List<Message> allMessage(Integer to);
+    public List<Message> allMessageUnread(Integer to);
+    public List<Message> allMessageRead(Integer to);
+    public Integer messageUnreadNum(Integer to);
     public boolean read(Integer id);
 }

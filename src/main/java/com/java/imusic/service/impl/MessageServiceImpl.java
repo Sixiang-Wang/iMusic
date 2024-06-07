@@ -30,20 +30,20 @@ public class MessageServiceImpl implements MessageService {
         return messageMapper.selectByPrimaryKey(id);
     }
     @Override
-    public List<Message> allMessage(Integer userId){
-        return messageMapper.allMessage(userId);
+    public List<Message> allMessage(Integer to){
+        return messageMapper.allMessage(to);
     }
     @Override
-    public List<Message> allMessageUnread(Integer userId){
-        return messageMapper.allMessageUnread(userId);
+    public List<Message> allMessageUnread(Integer to){
+        return messageMapper.allMessageUnread(to);
     }
     @Override
-    public List<Message> allMessageRead(Integer userId){
-        return messageMapper.allMessageRead(userId);
+    public List<Message> allMessageRead(Integer to){
+        return messageMapper.allMessageRead(to);
     }
     @Override
-    public Integer messageUnreadNum(Integer userId) {
-        return messageMapper.messageUnreadNum(userId);
+    public Integer messageUnreadNum(Integer to) {
+        return messageMapper.messageUnreadNum(to);
     }
     @Override
     public boolean read(Integer id){

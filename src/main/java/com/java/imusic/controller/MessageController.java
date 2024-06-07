@@ -26,11 +26,19 @@ public class MessageController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addMessage(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-        Integer userId = Integer.parseInt(request.getParameter("userId"));           //用户id
+        Integer to = Integer.parseInt(request.getParameter("to"));
         String text = request.getParameter("text");
 
+        //可有可无
+        String fromTmp = request.getParameter("from");
+        int from = -1;
+        if(fromTmp!=null && !fromTmp.isEmpty()){
+            from = Integer.parseInt(fromTmp);
+        }
+
         Message message = new Message();
-        message.setUserId(userId);
+        message.setTo(to);
+        message.setFrom(from);
         message.setText(text);
         message.setIsRead(0);
 
@@ -94,8 +102,8 @@ public class MessageController {
      */
     @RequestMapping(value = "/allMessage",method = RequestMethod.GET)
     public Object allMessage(HttpServletRequest request){
-        Integer userId = Integer.parseInt(request.getParameter("userId"));
-        return messageService.allMessage(userId);
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageService.allMessage(to);
     }
 
     /**
@@ -105,8 +113,8 @@ public class MessageController {
      */
     @RequestMapping(value = "/allMessageUnread",method = RequestMethod.GET)
     public Object allMessageUnread(HttpServletRequest request){
-        Integer userId = Integer.parseInt(request.getParameter("userId"));
-        return messageService.allMessageUnread(userId);
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageService.allMessageUnread(to);
     }
 
     /**
@@ -116,8 +124,8 @@ public class MessageController {
      */
     @RequestMapping(value = "/allMessageRead",method = RequestMethod.GET)
     public Object allMessageRead(HttpServletRequest request){
-        Integer userId = Integer.parseInt(request.getParameter("userId"));
-        return messageService.allMessageRead(userId);
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageService.allMessageRead(to);
     }
 
     /**
@@ -127,7 +135,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/messageUnreadNum",method = RequestMethod.GET)
     public Object messageUnreadNum(HttpServletRequest request){
-        Integer userId = Integer.parseInt(request.getParameter("userId"));
-        return messageService.messageUnreadNum(userId);
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageService.messageUnreadNum(to);
     }
 }

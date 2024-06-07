@@ -4,10 +4,27 @@ import java.util.Date;
 
 public class Message {
     private Integer id;
-    private Integer userId;
+    private Integer to;
+    private Integer from;
     private String text;
     private Integer isRead;
     private Date createTime;
+
+    public Integer getTo() {
+        return to;
+    }
+
+    public void setTo(Integer to) {
+        this.to = to;
+    }
+
+    public Integer getFrom() {
+        return from;
+    }
+
+    public void setFrom(Integer from) {
+        this.from = from;
+    }
 
     public Integer getId() {
         return id;
@@ -15,14 +32,6 @@ public class Message {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public String getText() {
