@@ -27,12 +27,15 @@
       </div>
       <div v-else>
         <p>{{highestRatedPlaylist.title}}</p>
-        <div class="image-container">
-          <img :src="highestRatedPlaylist.picUrl" class="rounded">
+        <div class="section-content">
+          <div class="content-item">
+            <div class="kuo">
+              <img class="item-img" :src="highestRatedPlaylist.picUrl">
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
     <div class="user-followers">
       <h2>用户粉丝数量</h2>
       <p>{{ userFollowersCount }}</p>
@@ -139,6 +142,7 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-@import "../assets/css/createReport.css";
+<style lang="scss" scoped>
+@import "../assets/css/createReport.scss";
+@import "../assets/css/tryContentList.scss";
 </style>

@@ -54,84 +54,21 @@
             <div class="modal-overlay"></div>
             <div class="modal-content">
               <h3>请选择举报原因</h3>
-              <div class="reason-group" v-for="(group, index) in reasonGroups" :key="index">  
-                <h4>{{ group.title }}</h4>  
-                <div class="reason-list">  
-                  <div v-for="(reason, reasonIndex) in group.reasons" :key="reasonIndex">  
-                    <input  
-                      type="checkbox"  
-                      :id="`reason${index}${reasonIndex}`"  
-                      :value="reason.value"  
-                      v-model="selectedReasons"  
-                      @change="checkMaxReasons"  
-                    >  
-                    <label :for="`reason${index}${reasonIndex}`">{{ reason.label }}</label>  
-                  </div>  
-                </div>  
-              </div> 
-              <!-- <div class="reason-group">
-                <h4>违反法律法规</h4>
+              <div class="reason-group" v-for="(group, index) in reasonGroups" :key="index">
+                <h4>{{ group.title }}</h4>
                 <div class="reason-list">
-                  <input type="checkbox" id="legalViolation1" value="违法违禁" v-model="selectedReasons">
-                  <label for="legalViolation1">违法违禁</label>
-                  <input type="checkbox" id="legalViolation2" value="赌博诈骗" v-model="selectedReasons">
-                  <label for="legalViolation2">赌博诈骗</label>
-                  <input type="checkbox" id="legalViolation3" value="盗搬我的稿件" v-model="selectedReasons">
-                  <label for="legalViolation3">盗搬我的稿件</label>
-                  <input type="checkbox" id="legalViolation4" value="侵权申诉" v-model="selectedReasons">
-                  <label for="legalViolation4">侵权申诉</label>
+                  <div v-for="(reason, reasonIndex) in group.reasons" :key="reasonIndex">
+                    <input
+                      type="checkbox"
+                      :id="`reason${index}${reasonIndex}`"
+                      :value="reason.value"
+                      v-model="selectedReasons"
+                      @change="checkMaxReasons"
+                    >
+                    <label :for="`reason${index}${reasonIndex}`">{{ reason.label }}</label>
+                  </div>
                 </div>
               </div>
-              <div class="reason-group">
-                <h4>谣言及不实信息</h4>
-                <div class="reason-list">
-                  <input type="checkbox" id="rumor1" value="涉政谣言" v-model="selectedReasons">
-                  <label for="rumor1">涉政谣言</label>
-                  <input type="checkbox" id="rumor2" value="涉社会事件谣言" v-model="selectedReasons">
-                  <label for="rumor2">涉社会事件谣言</label>
-                  <input type="checkbox" id="rumor3" value="虚假不实信息" v-model="selectedReasons">
-                  <label for="rumor3">虚假不实信息</label>
-                </div>
-              </div>
-              <div class="reason-group">
-                <h4>投稿不规范</h4>
-                <div class="reason-list">
-                  <input type="checkbox" id="irregularPost1" value="违规推广" v-model="selectedReasons">
-                  <label for="irregularPost1">违规推广</label>
-                  <input type="checkbox" id="irregularPost2" value="转载" v-model="selectedReasons">
-                  <label for="irregularPost2">转载</label>
-                  <input type="checkbox" id="irregularPost3" value="自制错误" v-model="selectedReasons">
-                  <label for="irregularPost3">自制错误</label>
-                  <input type="checkbox" id="irregularPost4" value="其他不规范行为" v-model="selectedReasons">
-                  <label for="irregularPost4">其他不规范行为</label>
-                </div>
-              </div>
-              <div class="reason-group">
-                <h4>不友善行为</h4>
-                <div class="reason-list">
-                  <input type="checkbox" id="unfriendly1" value="人身攻击" v-model="selectedReasons">
-                  <label for="unfriendly1">人身攻击</label>
-                  <input type="checkbox" id="unfriendly2" value="引战" v-model="selectedReasons">
-                  <label for="unfriendly2">引战</label>
-                </div>
-              </div>
-              <div class="reason-group">
-                <h4>违反公序良俗</h4>
-                <div class="reason-list">
-                  <input type="checkbox" id="publicOrder1" value="色情低俗" v-model="selectedReasons">
-                  <label for="publicOrder1">色情低俗</label>
-                  <input type="checkbox" id="publicOrder2" value="危险行为" v-model="selectedReasons">
-                  <label for="publicOrder2">危险行为</label>
-                  <input type="checkbox" id="publicOrder3" value="观感不适" v-model="selectedReasons">
-                  <label for="publicOrder3">观感不适</label>
-                  <input type="checkbox" id="publicOrder4" value="血腥暴力" v-model="selectedReasons">
-                  <label for="publicOrder4">血腥暴力</label>
-                  <input type="checkbox" id="publicOrder5" value="青少年不良信息" v-model="selectedReasons">
-                  <label for="publicOrder4">青少年不良信息</label>
-                  <input type="checkbox" id="publicOrder6" value="其他" v-model="selectedReasons">
-                  <label for="publicOrder5">其他</label>
-                </div>
-              </div> -->
               <div class="reason-group">
                 <h4>详细描述您遇到的问题</h4>
                 <textarea class="description-textarea" v-model="description" placeholder="详细描述"></textarea>
@@ -214,57 +151,57 @@ export default {
       showModal: false,
       selectedReasons: [],
       description: '',
-      reasonGroups: [  
-        {  
-        title: '违反法律法规',  
-        reasons: [  
-            { value: '违法违禁', label: '违法违禁' },  
-            { value: '赌博诈骗', label: '赌博诈骗' },  
-            { value: '盗搬我的稿件', label: '盗搬我的稿件' },  
-            { value: '侵权申诉', label: '侵权申诉' },  
-            // ... 可以继续添加更多  
-          ],  
-        },  
-        {  
-          title: '谣言及不实信息',  
-          reasons: [  
-            { value: '涉政谣言', label: '涉政谣言' },  
-            { value: '涉社会事件谣言', label: '涉社会事件谣言' },  
-            { value: '虚假不实信息', label: '虚假不实信息' },  
-            // ... 可以继续添加更多  
-          ],  
-        },  
-        {  
-          title: '不规范行为',  
-          reasons: [  
-            { value: '违规推广', label: '违规推广' },  
-            { value: '转载', label: '转载' },  
-            { value: '自制错误', label: '自制错误' },  
-            { value: '其他不规范行为', label: '其他不规范行为' },  
-            // ... 可以继续添加更多  
-          ],  
-        }, 
-        {  
-          title: '不友好行为',  
-          reasons: [  
-            { value: '人身攻击', label: '人身攻击' },  
-            { value: '引战', label: '引战' },  
-            // ... 可以继续添加更多不友好行为  
-          ],  
-        },  
-        {  
-          title: '公共秩序与道德',  
-          reasons: [  
-            { value: '色情低俗', label: '色情低俗' },  
-            { value: '危险行为', label: '危险行为' },  
-            { value: '观感不适', label: '观感不适' },  
-            { value: '血腥暴力', label: '血腥暴力' },  
-            { value: '青少年不良信息', label: '青少年不良信息' },  
-            { value: '其他', label: '其他' },  
-            // ... 可以继续添加更多公共秩序与道德问题  
-          ],  
-        },  
-      ], 
+      reasonGroups: [
+        {
+        title: '违反法律法规',
+        reasons: [
+            { value: '违法违禁', label: '违法违禁' },
+            { value: '赌博诈骗', label: '赌博诈骗' },
+            { value: '盗搬我的稿件', label: '盗搬我的稿件' },
+            { value: '侵权申诉', label: '侵权申诉' },
+            // ... 可以继续添加更多
+          ],
+        },
+        {
+          title: '谣言及不实信息',
+          reasons: [
+            { value: '涉政谣言', label: '涉政谣言' },
+            { value: '涉社会事件谣言', label: '涉社会事件谣言' },
+            { value: '虚假不实信息', label: '虚假不实信息' },
+            // ... 可以继续添加更多
+          ],
+        },
+        {
+          title: '不规范行为',
+          reasons: [
+            { value: '违规推广', label: '违规推广' },
+            { value: '转载', label: '转载' },
+            { value: '自制错误', label: '自制错误' },
+            { value: '其他不规范行为', label: '其他不规范行为' },
+            // ... 可以继续添加更多
+          ],
+        },
+        {
+          title: '不友好行为',
+          reasons: [
+            { value: '人身攻击', label: '人身攻击' },
+            { value: '引战', label: '引战' },
+            // ... 可以继续添加更多不友好行为
+          ],
+        },
+        {
+          title: '公共秩序与道德',
+          reasons: [
+            { value: '色情低俗', label: '色情低俗' },
+            { value: '危险行为', label: '危险行为' },
+            { value: '观感不适', label: '观感不适' },
+            { value: '血腥暴力', label: '血腥暴力' },
+            { value: '青少年不良信息', label: '青少年不良信息' },
+            { value: '其他', label: '其他' },
+            // ... 可以继续添加更多公共秩序与道德问题
+          ],
+        },
+      ],
     }
   },
   mounted() {
@@ -401,45 +338,45 @@ export default {
     },
     submitComplaint(Id) {
       if (this.selectedReasons.length === 0) {
-        alert('请至少选择一个举报原因');
+        this.notify('请至少选择一个举报原因');
         return;
       }
       // 准备要发送的数据
       let params = new URLSearchParams();
-      params.append("userId", this.userId);
-      params.append("songId", Id); // 假设item是从某个作用域传入的
-      params.append("content", this.description);
+      params.append("userId",this.userId);
+      params.append("type",'0');
+      params.append("songId",Id);
+      params.append("songListId",null);
+      // params.append("content", this.description);
       // 将选择的举报原因以逗号分隔的字符串形式发送
-      params.append("reasons", this.selectedReasons.join(',')+';'+this.description);
-      console.log('提交举报:' + this.selectedReasons.join(',')+'\n提交举报内容:'+this.description);
+      params.append("content", '举报原因:' + this.selectedReasons.join(',')+'     详细描述:'+this.description);
+      // console.log('提交举报:' + this.selectedReasons.join(',')+'\n提交举报内容:'+this.description);
       // 发送请求
-      // addComplaint(params)
-      //   .then(res => {
-      //     this.notify('投诉成功', 'success');
-      //     this.showModal = false; // 隐藏弹窗
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     this.notify('投诉失败', 'error'); // 可以增加一个通知函数用于显示错误通知
-      //     this.showModal = false; // 隐藏弹窗
-      //   });
+      addComplaint(params)
+        .then(res => {
+          this.$notify({title:'投诉成功', type:'success'});
+          setTimeout(() => {
+            this.showModal = false;
+          }, 1000); // 1000毫秒即1秒
+        })
+        .catch(error => {
+          console.log(error);
+          this.$notify({title:'投诉失败', type:'error'}); // 可以增加一个通知函数用于显示错误通知
+          setTimeout(() => {
+            this.showModal = false;
+          }, 1000); // 1000毫秒即1秒
+        });
     },
-    notify(message, type) {
-      // 这里可以是一个自定义的通知函数，用于显示通知信息
-      // 例如使用alert、toast组件等
-      alert(message);
+    checkMaxReasons() {
+      if (this.selectedReasons.length > 3) {
+        // 你可以在这里给出一些反馈，比如弹出警告或禁用更多的checkbox
+        this.notify('最多只能选择三种原因！','warning');
+        // 如果你想要禁用更多的选择，你可以添加一个计算属性或方法来动态绑定disabled属性到checkbox上
+        // 但这通常不是最佳的用户体验，因为用户可能不知道为什么不能选择更多
+        // 另一个选择是移除数组中超出三种的最后一个元素
+        this.selectedReasons.splice(3);
+      }
     },
-
-    checkMaxReasons() {  
-      if (this.selectedReasons.length > 3) {  
-        // 你可以在这里给出一些反馈，比如弹出警告或禁用更多的checkbox  
-        alert('最多只能选择三种原因！');  
-        // 如果你想要禁用更多的选择，你可以添加一个计算属性或方法来动态绑定disabled属性到checkbox上  
-        // 但这通常不是最佳的用户体验，因为用户可能不知道为什么不能选择更多  
-        // 另一个选择是移除数组中超出三种的最后一个元素  
-        this.selectedReasons.splice(3);  
-      }  
-    },  
   },
 }
 </script>
@@ -497,23 +434,23 @@ export default {
 }
 
 .description-textarea {
-  height: 200px;  
-  width: 800px;  
-  max-width: 100%;  
-  padding: 10px; /* 添加内边距 */  
-  border: 1px solid #ccc; /* 添加边框 */  
-  border-radius: 5px; /* 添加圆角 */  
-  font-size: 16px; /* 设置字体大小 */  
-  font-family: inherit; /* 继承父元素的字体 */  
-  resize: none; /* 禁止用户调整大小 */  
+  height: 200px;
+  width: 800px;
+  max-width: 100%;
+  padding: 10px; /* 添加内边距 */
+  border: 1px solid #ccc; /* 添加边框 */
+  border-radius: 5px; /* 添加圆角 */
+  font-size: 16px; /* 设置字体大小 */
+  font-family: inherit; /* 继承父元素的字体 */
+  resize: none; /* 禁止用户调整大小 */
   transition: border-color 0.3s ease; /* 添加边框颜色过渡效果 */
 }
 
-.description-textarea:focus {  
-  border-color: #007bff; /* 当文本框获取焦点时改变边框颜色 */  
-  outline: none; /* 去除默认的外框 */  
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* 添加阴影效果 */  
-}  
+.description-textarea:focus {
+  border-color: #007bff; /* 当文本框获取焦点时改变边框颜色 */
+  outline: none; /* 去除默认的外框 */
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* 添加阴影效果 */
+}
 
 .modal-footer {
   display: flex;

@@ -75,19 +75,5 @@
   overflow-x: auto; /* 鼠标悬停时显示水平滚动条 */
 }
 
-.options-container {
-  display: flex; /* 使用Flexbox布局 */
-  flex-wrap: wrap; /* 如果需要，允许换行（通常在这里不需要） */
-  justify-content: space-between; /* 控制子元素之间的水平间距 */
-  align-items: center; /* 控制子元素在交叉轴（这里是垂直方向）上的对齐方式 */
-}
 
-.radio-label {
-  margin-right: 10px; /* 控制每个选项之间的间距 */
-  /* 其他样式 */
-}
 
-/* 最后一个选项可以去除右边的间距，如果需要的话 */
-.radio-label:last-child {
-  margin-right: 0;
-}

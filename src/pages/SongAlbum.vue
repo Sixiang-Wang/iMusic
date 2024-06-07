@@ -1,14 +1,14 @@
 <template>
-  <div class = "singer-album">
+  <div class = "song-album">
     <div class = "album-slide">
       <div class = "singer-img">
-        <img v-if="this.imageUrl" :src = 'this.imageUrl' alt = "">
-        <img alt="" v-else  src="../assets/img/tubiao.jpg" />
+        <img v-if = "this.imageUrl" :src = 'this.imageUrl' alt = "">
+        <img alt = "" v-else src = "../assets/img/tubiao.jpg"/>
       </div>
       <ul class = "info">
-        <li>歌手: </li>
+        <li>歌手:</li>
         <li>{{ replaceLName(song.name) }}</li>
-        <li>专辑: </li>
+        <li>专辑:</li>
         <li>{{ song.introduction }}</li>
       </ul>
     </div>
@@ -24,6 +24,7 @@
         </album-content>
       </div>
     </div>
+    <comment :type = "0"></comment>
   </div>
 
 </template>
@@ -33,17 +34,18 @@ import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
 import {songOfSongId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
+import Comment from "../components/Comment.vue";
 
 export default {
   name: 'singer-album',
-  components: {AlbumContent},
+  components: {AlbumContent,Comment},
   mixins: [mixin],
   data() {
     return {
       songId: '',
       song: '',
       imageUrl: null,
-      pic:"",
+      pic: "",
     }
   },
   computed: {
@@ -59,7 +61,7 @@ export default {
     songOfSongId(this.songId).then(res =>
     {
       this.song = res;
-      this.pic=this.song.pic;
+      this.pic = this.song.pic;
       this.initialize();
     })
   },
@@ -68,16 +70,18 @@ export default {
       if (srcurl) {
         const imageUrl = this.$store.state.configure.HOST + srcurl;
         try {
-          const response = await fetch(imageUrl, { method: 'HEAD' });
+          const response = await fetch(imageUrl, {method: 'HEAD'});
           if (response.ok) {
             this.imageUrl = imageUrl;
-          } else {
+          }
+          else {
             this.imageUrl = null; // 图片不存在，设置为null
           }
         } catch (_) {
           this.imageUrl = null; // 请求错误，设置为null
         }
-      } else {
+      }
+      else {
         this.imageUrl = null; // 未提供srcurl，设置为null
       }
     },

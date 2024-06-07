@@ -5,27 +5,28 @@
         <img :src = 'attachImageUrl(songListAlbum.pic)' alt = "">
       </div>
       <div class = "album-info">
-        <h2>简 介:</h2>
-        <span>{{ songListAlbum.introduction }}</span>
+        <h2 style = "font-size: 20px">简 介:</h2>
+        <span style = "font-size: 16px">{{ songListAlbum.introduction }}</span>
       </div>
     </div>
-    <div class = "album-content">
-      <ul>
-        <li>
-          <div class = "album-title">
-            <p>{{ songListAlbum.title }}</p>
-          </div>
-        </li>
-        <li>
-          <div class = "collect" @click = "handleCollect()">
-            <collect-icon :class = "{'have-collected':this.isCollect==='已收藏'}"
-                          style = "margin-left: 25px;">
-            </collect-icon>
-            <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
-          </div>
-        </li>
 
-      </ul>
+    <div class = "album-content">
+      <div class = "album-title">
+        <p>{{ songListAlbum.title }}</p>
+      </div>
+      <div style="margin-top: 15px">
+        <p>风格: {{ songListAlbum.style}}</p>
+      </div>
+      <div style="margin-top: 15px">
+        <p>收藏量: </p>
+      </div>
+      <div class = "collect" @click = "handleCollect()">
+        <collect-icon :class = "{'have-collected':this.isCollect==='已收藏'}"
+                      style = "margin-left: 25px;">
+        </collect-icon>
+        <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
+      </div>
+
 
       <div class = "album-score">
         <div>
@@ -50,7 +51,7 @@
         </album-content>
       </div>
     </div>
-    <comment :ID = "this.songListId" :type = "1"></comment>
+    <comment :type = "1"></comment>
   </div>
 </template>
 

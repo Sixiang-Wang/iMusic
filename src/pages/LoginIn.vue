@@ -31,7 +31,7 @@
 <script>
 import loginLogo from '../components/LoginLogo.vue';
 import {mixin} from '../mixins';
-import {LoginIn} from '../api/index';
+import {LoginIn, preLogin} from '../api/index';
 
 export default {
   name: 'sign-up',

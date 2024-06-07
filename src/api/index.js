@@ -14,7 +14,11 @@ export const getOneSingerByName = (name) => get(`singer/oneSingerOfName?name=${n
 // 根据歌手id查询歌曲
 export const songOfSingerId = (id) => get(`song/singer/detail?singerId=${id}`);
 // 根据歌曲id查询歌曲对象
-export const songOfSongId = (id) => get(`song/detail?songId=${id}`);
+export const songOfSongId = (id) => get(`song/detail?songId=${id}`)
+// 编辑歌曲
+export const updateSong = (params) => post(`song/update`, params);
+// 删除歌曲
+export const delSong = (id) => get(`song/delete?id=${id}`)
 // 根据歌曲名字模糊查询歌曲
 export const likeSongOfName = (keywords) => get(`song/likeSongOfName?songName=${keywords}`);
 // 添加歌曲播放次数
@@ -71,6 +75,8 @@ export const validate = email => get(`mail/sendMail?to=${email}`);
 
 // 登录
 export const LoginIn = params => post(`user/login`, params);
+export const preLogin = () => post(`user/preLogin`)
+export const logout = () => post(`user/logout`)
 // 查询该用户的详细信息
 export const getUserOfId = (id) => get(`user/selectByPrimaryKey?id=${id}`);
 

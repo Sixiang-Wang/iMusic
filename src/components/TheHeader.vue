@@ -38,6 +38,7 @@
 <script>
 import {mapGetters} from 'vuex';
 import {navMsg , loginMsg, menuList} from '../assets/data/header';
+import {logout} from "../api";
 
 export default {
   name: 'the-header',
@@ -105,6 +106,7 @@ export default {
       if(path === 0){
         this.$store.commit('setLoginIn' , false);
         this.$store.commit('setIsActive' , false);
+        logout()
         if(this.$route.path !== '/'){
           setTimeout(() => {
             this.$router.push({ path: '/' });

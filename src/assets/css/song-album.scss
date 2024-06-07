@@ -3,12 +3,12 @@
 .singer-album {
   margin-top: $header-height;
   padding-top: 150px;
-  background-color: #DDE6EA;
+  background-color: $theme-background-color;
 
   &::before {
     /*背景*/
     content: "";
-    background-color: rgb(52,60,120);
+    background-color: $theme-color;
     position: absolute;
     top: 0;
     width: 100%;
