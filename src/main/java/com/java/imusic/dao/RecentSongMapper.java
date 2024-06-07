@@ -26,7 +26,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
     /**
      * 获取当前用户最近播放列表
      */
-    @Select("select\n" +
+    @Select("select DISTINCT\n" +
             "            s.id,\n" +
             "            s.singer_id,\n" +
             "            s.name,\n" +
@@ -50,7 +50,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
     /**
      * 获取指定用户最近播放列表，按播放量降序排列
      */
-    @Select("SELECT\n" +
+    @Select("SELECT DISTINCT\n" +
             "    s.id,\n" +
             "    s.singer_id,\n" +
             "    s.name,\n" +
@@ -72,23 +72,23 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
     /**
      * 由最近播放歌曲查询其歌单信息
      */
-    @Select("select\n" +
+    @Select("SELECT DISTINCT\n" +
             "            sl.id,\n" +
             "            sl.title,\n" +
             "            sl.pic,\n" +
             "            sl.introduction,\n" +
             "            sl.style\n" +
-            "        from recent_song r\n" +
-            "            inner join song s on r.song_id = s.id\n" +
-            "            inner join list_song ls on s.id = ls.song_id\n" +
-            "            inner join song_list sl on ls.song_list_id = sl.id\n" +
-            "        where r.user_id = #{userId}")
+            "        FROM recent_song r\n" +
+            "            INNER JOIN song s ON r.song_id = s.id\n" +
+            "            INNER JOIN list_song ls ON s.id = ls.song_id\n" +
+            "            INNER JOIN song_list sl ON ls.song_list_id = sl.id\n" +
+            "        WHERE r.user_id = #{userId}")
     List<SongList> getSongListByRecentSong(Integer userId);
 
     /**
      * 由最近播放歌曲查询其歌手信息
      */
-    @Select("select\n" +
+    @Select("select DISTINCT\n" +
             "            s2.id,\n" +
             "            s2.name,\n" +
             "            s2.sex,\n" +
