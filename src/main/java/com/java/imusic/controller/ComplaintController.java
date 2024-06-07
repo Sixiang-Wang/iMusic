@@ -1,8 +1,8 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java.imusic.domain.Complaint;
-import com.java.imusic.service.ComplaintService;
+import com.java.imusic.domain.*;
+import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +22,18 @@ public class ComplaintController {
     @Autowired
     private ComplaintService complaintService;
 
+    @Autowired
+    private SongService songService;
+
+    @Autowired
+    private SongListService songListService;
+
+    @Autowired
+    private SingerService singerService;
+
+    @Autowired
+    private MessageService messageService;
+
     /**
      * 添加评论
      */
@@ -33,18 +45,39 @@ public class ComplaintController {
         String songId = request.getParameter("songId");           //歌曲id
         String songListId = request.getParameter("songListId");   //歌单id
         String content = request.getParameter("content").trim();
-
+        int to = -1;
+        StringBuilder textB = new StringBuilder("您的");
         Complaint complaint = new Complaint();
         complaint.setUserId(Integer.parseInt(userId));
         complaint.setType(new Byte(type));
         if(new Byte(type) ==0){
+            Song song = songService.selectByPrimaryKey(Integer.parseInt(songId));
+            Integer tmp = singerService.selectByPrimaryKey(song.getSingerId()).getUserID();
+            if(tmp!=null&&tmp>0){
+                to = tmp;
+                textB.append("歌曲《").append(song.getName()).append("》");
+            }
             complaint.setSongId(Integer.parseInt(songId));
         }else{
+            SongList songList = songListService.selectByPrimaryKey(Integer.parseInt(songListId));
+            Integer tmp = songList.getUserId();
+            if(tmp!=null&&tmp>0){
+                to = tmp;
+                textB.append("歌单《").append(songList.getTitle()).append("》");
+            }
             complaint.setSongListId(Integer.parseInt(songListId));
         }
         complaint.setContent(content);
         boolean flag = complaintService.insert(complaint);
         if(flag){   //保存成功
+            if(to!=-1){
+                textB.append("遭到举报      \n").append(content);
+                Message message = new Message();
+                message.setTo(to);
+                message.setText(textB.toString());
+                message.setIsRead(0);
+                messageService.insert(message);
+            }
             jsonObject.put(Consts.CODE,1);
             jsonObject.put(Consts.MSG,"成功");
             return jsonObject;
