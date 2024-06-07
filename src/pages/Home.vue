@@ -13,6 +13,7 @@ import Swiper from '../components/Swiper.vue'
 import {getAllSinger, getAllSongList, getTopSong, preLogin} from '../api/index'
 import ContentList from '../components/ContentList'
 import {mixin} from '../mixins'
+import {mapGetters} from "vuex";
 
 export default {
   name: 'home',
@@ -29,6 +30,11 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters([
+      'loginIn',
+    ])
+  },
   created() {
     this.preLogin()
     this.getSongListOfTen()
@@ -37,17 +43,19 @@ export default {
   },
   methods: {
     preLogin() {
-      preLogin().then((res => {
-        if(res.code===1){
-          this.$store.commit('setLoginIn' , true);
-          this.$store.commit('setUserId' , res.userId);
-          this.$store.commit('setUsername', res.username);
-          this.$store.commit('setAvatar', res.avatar);
-          this.$notify({
-            title: '自动登陆成功'
-          })
-        }
-      }))
+      if(!this.loginIn){
+        preLogin().then((res => {
+          if(res.code===1){
+            this.$store.commit('setLoginIn' , true);
+            this.$store.commit('setUserId' , res.userId);
+            this.$store.commit('setUsername', res.username);
+            this.$store.commit('setAvatar', res.avatar);
+            this.$notify({
+              title: '自动登陆成功'
+            })
+          }
+        }))
+      }
     },
     getSongOfTen() { // 获取前十首歌曲
       getTopSong().then((res) => {
