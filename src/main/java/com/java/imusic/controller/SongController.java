@@ -3,12 +3,8 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
 import com.java.imusic.dao.SongMapper;
-import com.java.imusic.domain.Singer;
-import com.java.imusic.domain.Song;
-import com.java.imusic.domain.User;
-import com.java.imusic.service.SingerService;
-import com.java.imusic.service.SongService;
-import com.java.imusic.service.UserService;
+import com.java.imusic.domain.*;
+import com.java.imusic.service.*;
 import com.java.imusic.service.impl.SongServiceImpl;
 import com.java.imusic.utils.Consts;
 import lombok.Getter;
@@ -35,10 +31,14 @@ public class SongController {
     private SongService songService;
     @Autowired
     private SongMapper songMapper;
+    @Autowired
+    private FollowService followService;
     @Getter
     private static SongController songController;
     @Autowired
     private SingerService singerService;
+    @Autowired
+    private MessageService messageService;
     /**
      * 添加歌曲
      */
@@ -53,7 +53,7 @@ public class SongController {
         String pic = "/img/songPic/default.jpg";                     //默认图片
         String lyric = request.getParameter("lyric").trim();     //歌词
         String style = request.getParameter("style").trim();     //风格
-
+        String singerName = singerService.selectByPrimaryKey(Integer.parseInt(singerId)).getName();
         //上传歌曲文件
         if(mpFile.isEmpty()){
             jsonObject.put(Consts.CODE,0);
@@ -88,6 +88,15 @@ public class SongController {
 
             boolean flag = songService.insert(song);
             if(flag){
+                List<Follow> followList = followService.getBySingerId(Integer.parseInt(singerId));
+                followList.forEach(follow->{
+                    Message message = new Message();
+                    message.setTo(follow.getUserId());
+                    message.setFrom(follow.getSingerId());
+                    message.setText("您关注的歌手 "+singerName+" 发布了新歌《"+name+"》!");
+                    message.setIsRead(0);
+                    messageService.insert(message);
+                });
                 jsonObject.put(Consts.CODE,1);
                 jsonObject.put(Consts.MSG,"保存成功");
                 jsonObject.put("avator",storeUrlPath);
