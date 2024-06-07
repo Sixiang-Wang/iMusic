@@ -49,7 +49,7 @@
 import loginLogo from '../components/LoginLogo.vue';
 import {rules,cities} from "../assets/data/form.js";
 import {mixin} from '../mixins';
-import {SignUp, validate} from '../api/index'
+import {preLogin, SignUp, validate} from '../api/index'
 export default {
   name : 'sign-up',
   mixins : [mixin],

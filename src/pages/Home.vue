@@ -10,8 +10,9 @@
 
 <script>
 import Swiper from '../components/Swiper.vue'
-import {getAllSinger, getAllSongList, getTopSong} from '../api/index'
+import {getAllSinger, getAllSongList, getTopSong, preLogin} from '../api/index'
 import ContentList from '../components/ContentList'
+import {mixin} from '../mixins'
 
 export default {
   name: 'home',
@@ -29,11 +30,25 @@ export default {
     }
   },
   created() {
+    this.preLogin()
     this.getSongListOfTen()
     this.getSingerOfTen()
     this.getSongOfTen()
   },
   methods: {
+    preLogin() {
+      preLogin().then((res => {
+        if(res.code===1){
+          this.$store.commit('setLoginIn' , true);
+          this.$store.commit('setUserId' , res.userId);
+          this.$store.commit('setUsername', res.username);
+          this.$store.commit('setAvatar', res.avatar);
+          this.$notify({
+            title: '自动登陆成功'
+          })
+        }
+      }))
+    },
     getSongOfTen() { // 获取前十首歌曲
       getTopSong().then((res) => {
         this.songsList[0].list = res.slice(0, 10)
