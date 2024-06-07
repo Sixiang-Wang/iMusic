@@ -61,6 +61,7 @@ public class AdminController {
         JSONObject jsonObject = new JSONObject();
         String name = "";
         String password = "";
+        String cookiesTmp = request.getHeader("cookie");
         Cookie[] cookies = request.getCookies();
         if(cookies!=null){
             for(Cookie item:cookies){
