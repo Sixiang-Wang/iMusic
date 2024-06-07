@@ -57,7 +57,6 @@ export default {
       location: '',       //  故乡
       introduction: '',   //  个性签名
       collection: [],     // 收藏的歌曲列表
-      // collectList : [],     // 收藏的歌曲列表（带歌曲详情）
 
       imageUrl: null,
 

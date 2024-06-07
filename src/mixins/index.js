@@ -74,7 +74,8 @@ export const mixin = {
       this.$store.commit('setTitle', this.replaceFName(name));
       this.$store.commit('setArtist', this.replaceLName(name));
       this.$store.commit('setLyric', this.parseLyric(lyric));
-
+      this.$store.commit('setCurTime',0);
+      this.$store.commit('setChangeTime',0);
       this.$store.commit('setIsActive', false);
       if (this.loginIn) {
         getCollectOfUserId(this.userId)

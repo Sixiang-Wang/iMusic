@@ -23,6 +23,9 @@
         <div style="margin-top: 15px" v-if = "singer.birth != null">
           <p>生日: {{ getBirth(singer.birth) }}</p>
         </div>
+        <div style="margin-top: 15px">
+          <p>粉丝: {{ fans }}</p>
+        </div>
       </div>
 
       <div :class = "this.followClass" @click = "handleFollow()">
@@ -42,7 +45,7 @@
 <script>
 import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
-import {addFollow, deleteFollow, existFollow, getSingerById, songOfSingerId} from "../api";
+import {addFollow, deleteFollow, existFollow, getFansCountBySingerId, getSingerById, songOfSingerId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 
 export default {
@@ -57,6 +60,7 @@ export default {
       isFollow: '关注',
       imageUrl: null,
       pic: "",
+      fans: '',
     }
   },
   computed: {
@@ -79,6 +83,9 @@ export default {
       this.singer = res;
       this.pic = this.singer.pic;
       this.initialize();
+    })
+    getFansCountBySingerId(this.singerId).then(res => {
+      this.fans = res;
     })
     this.getSongList();
     existFollow(this.userId, this.singerId).then(res =>
@@ -106,12 +113,14 @@ export default {
         params.append('singerId', this.singerId)
         addFollow(params);
         this.isFollow = '已关注';
+        this.fans++;
         this.notify('关注成功', 'success');
       }
       else if (this.isFollow === '已关注')
       {
         deleteFollow(this.userId, this.singerId);
         this.isFollow = '关注';
+        this.fans--;
         this.notify('取消关注成功', 'success');
       }
       else {

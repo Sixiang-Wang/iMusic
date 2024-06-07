@@ -1,6 +1,6 @@
 @import "var.scss";
 
-.singer-album {
+.song-album {
   margin-top: $header-height;
   padding-top: 150px;
   background-color: $theme-background-color;
@@ -19,8 +19,6 @@
 /*左*/
 .album-slide {
   float: left;
-  width: 400px;
-  margin-bottom: $play-bar-height;
 
   .singer-img {
     position: relative;
@@ -33,6 +31,7 @@
     overflow: hidden;
     border: 5px solid $color-white;
     background-color: $color-white;
+
     img {
       width: 100%;
       height: 100%;
@@ -46,6 +45,7 @@
     font-weight: 500;
     margin-top: -80px;
     padding: 30px 40px 30px 60px;
+
     li {
       width: 100%;
       height: 40px;
@@ -56,36 +56,9 @@
 
 /*右*/
 .album-content {
-  margin-left: 300px;
-  padding: 30px 100px;
-  .follow {
-    width: 100px;
-    height: 30px;
-    background: linear-gradient(to right, #ffb74d, #ff9800);
-    text-align: center;
-    border: 2px solid #ff9800;
-    padding-top: 5px;
-    font-size: 18px;
-    color: #333;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
-    transition: transform 0.3s ease;
-  }
-  .haveFollowed {
-    width: 100px;
-    height: 30px;
-    text-align: center;
-    background-color: #f5f5f5; /* 使用灰色调的背景颜色 */
-    border: 2px solid #757575;
-    padding-top: 5px;
-    font-size: 18px;
-    color: #333;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
-    transition: transform 0.3s ease;
-    cursor: pointer;
-  }
-  .follow:hover {
-    transform: scale(1.05); /* 悬停时放大效果 */
-  }
+  margin-left: 340px;
+  padding: 20px 100px;
+
   .songs-body {
     margin-top: 50px;
     background-color: $color-white;
@@ -94,9 +67,58 @@
     min-width: 700px;
     cursor: pointer;
   }
+
   .album-title {
-    font-size: 30px;
-    font-weight: 600;
+    font-size: 34px;
+    font-weight: 500;
+  }
+
+  li {
+    margin-right: 24px;
+    margin-top: 15px;
+    font-size: 16px;
   }
 }
+
+.play-icon {
+  display: flex;
+  font-size: 18px;
+  color: whitesmoke;
+  margin-top: 25px;
+  width: 120px;
+  height: 40px;
+  border-radius: 3px;
+  background: #3CB371;
+  fill: ghostwhite;
+  cursor: pointer;
+}
+
+.play-icon:hover {
+  background: #2E8B57;
+}
+
+.like-icon {
+  display: flex;
+  font-size: 17px;
+  color: black;
+  margin-top: 27px;
+  margin-left: 30px;
+  width: 115px;
+  height: 37px;
+  border-radius: 3px;
+  border: 1px solid gray;
+  fill: gray;
+  cursor: pointer;
+}
+
+
+.lyric {
+  margin: 100px 100px;
+
+  .lyric-context {
+    margin-top: 15px;
+    font-size: 16px;
+  }
+}
+
 

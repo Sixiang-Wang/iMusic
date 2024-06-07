@@ -5,26 +5,44 @@
         <img v-if = "this.imageUrl" :src = 'this.imageUrl' alt = "">
         <img alt = "" v-else src = "../assets/img/tubiao.jpg"/>
       </div>
-      <ul class = "info">
-        <li>歌手:</li>
-        <li>{{ replaceLName(song.name) }}</li>
-        <li>专辑:</li>
-        <li>{{ song.introduction }}</li>
-      </ul>
     </div>
 
     <div class = "album-content">
       <div class = "album-title">
-        <p>{{ replaceFName(song.name) }}</p>
+        <span>{{ replaceFName(song.name) }}</span>
+      </div>
+      <div class = "info">
+        <ul>
+          <li>歌手: {{ replaceLName(song.name) }}</li>
+          <li>专辑: {{ song.introduction }}</li>
+        </ul>
+        <br>
+        <ul>
+          <li>风格: {{ song.style }}</li>
+          <li>热度: {{ favor }}</li>
+        </ul>
+        <p style = "margin-top: 20px;font-size: 16px">发行时间: {{ this.createTime }}</p>
+      </div>
+      <div style="display: flex">
+        <div class = "play-icon" @click = "play">
+          <play-icon style = "margin: 3px 12px"></play-icon>
+          <span style = "margin-top: 8px;">播放</span>
+        </div>
+        <div class = "like-icon" @click = "">
+          <like-icon style = "margin: 3px 12px"></like-icon>
+          <span style = "margin-top: 6px;">收藏</span>
+        </div>
       </div>
 
-      <div class = "songs-body">
-        <album-content :songList = "[song]">
-          <template slot = "title">播 放</template>
-        </album-content>
+    </div>
+    <div class = "lyric">
+      <h2>歌词:</h2>
+      <div class = "lyric-context" v-for = "(item,index) in this.lyric" :key = "index">
+        <p>{{ item[1] }}</p>
       </div>
     </div>
     <comment :type = "0"></comment>
+
   </div>
 
 </template>
@@ -32,13 +50,15 @@
 <script>
 import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
-import {songOfSongId} from "../api";
+import {collectNumOfSong, songOfSongId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 import Comment from "../components/Comment.vue";
+import PlayIcon from "../assets/icon/playIcon.vue";
+import LikeIcon from "../assets/icon/likeIcon.vue";
 
 export default {
   name: 'singer-album',
-  components: {AlbumContent,Comment},
+  components: {LikeIcon, PlayIcon, AlbumContent, Comment},
   mixins: [mixin],
   data() {
     return {
@@ -46,6 +66,8 @@ export default {
       song: '',
       imageUrl: null,
       pic: "",
+      favor: '',
+      lyric: [],
     }
   },
   computed: {
@@ -53,8 +75,12 @@ export default {
       [
         'loginIn',
         'userId',
+        'curTime'
       ]
     ),
+    createTime() {
+      return this.song.createTime.slice(0, 10);
+    }
   },
   created() {
     this.songId = this.$route.params.id;
@@ -64,6 +90,11 @@ export default {
       this.pic = this.song.pic;
       this.initialize();
     })
+    collectNumOfSong(this.songId).then(res =>
+    {
+      this.favor = res
+    })
+
   },
   methods: {
     async attachImageUrl(srcurl) {
@@ -87,6 +118,7 @@ export default {
     },
     async initialize() {
       await this.attachImageUrl(this.pic);
+      this.lyric = this.parseLyric(this.song.lyric);
     },
     // 获取名字前半部分 -- 歌手名
     replaceLName(str) {
@@ -98,6 +130,12 @@ export default {
       let arr = str.split('-')
       return arr[1]
     },
+
+    play() {
+      let song = this.song;
+      this.toplay(song.id, song.url, song.pic, 0, song.name, song.lyric);
+      this.$store.commit('setListOfSongs', [song]);
+    }
   }
 
 }

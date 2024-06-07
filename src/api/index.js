@@ -129,7 +129,10 @@ export const getCollectOfUserId = (userId) => get(`collect/collectOfUserId?userI
 export const collectSongOfUserId = (userId) => get(`collect/collectSongOfUserId?userId=${userId}`);
 //获取用户的收藏歌单，返回一个list
 export const collectSongListOfUserId = (userId) => get(`collect/collectSongListOfUserId?userId=${userId}`);
-
+// 歌单的收藏量
+export const collectNumOfSongList = (songListId) => get(`collect/songListCollectNum?songListId=${songListId}`);
+// 歌曲的收藏量
+export const collectNumOfSong = (songId) => get(`collect/songCollectNum?songId=${songId}`);
 // ===================关注==================
 // 添加关注
 export const addFollow = (params) => post(`follow/add`, params);
@@ -142,6 +145,10 @@ export const deleteFollow = (userId, singerId) => get(`follow/deleteByUserIdAndS
 
 // 是否关注
 export const existFollow = (userId, singerId) => get(`follow/existFollow?userId=${userId}&singerId=${singerId}`);
+
+// 获取歌手的粉丝量
+export const getFansCountBySingerId = (singerId) => get(`follow/getCountBySingerId?singerId=${singerId}`);
+
 
 // ===================播放记录==================
 // 添加歌曲最近播放记录
