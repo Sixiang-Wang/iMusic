@@ -88,8 +88,8 @@ export default {
         rows: [
           {'性别': '男', '总数': 0},
           {'性别': '女', '总数': 0},
-          {'性别': '不明', '总数': 0},
-          {'性别': '武装直升机', '总数': 0}
+          {'性别': '组合', '总数': 0},
+          {'性别': '不明', '总数': 0}
         ]
       },
       options: {
@@ -152,6 +152,8 @@ export default {
         this.userCount = res.length
         this.userSex.rows[0]['总数'] = this.setSex(1, this.user)
         this.userSex.rows[1]['总数'] = this.setSex(0, this.user)
+        this.singerSex.rows[2]['总数'] = this.setSex(2, res)
+        this.singerSex.rows[3]['总数'] = this.setSex(3, res)
       })
     },
     setSex (sex, val) {              //根据性别获取用户数
@@ -187,7 +189,6 @@ export default {
     getSongList () {                    //歌单数量
       getAllSongList().then(res => {
         this.songListCount = res.length
-
       })
     },
     getByStyle (style) {              //根据歌单风格获取数量

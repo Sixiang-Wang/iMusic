@@ -100,7 +100,7 @@ export default {
       tableData: [],
       tempData: [],
       select_word: '',
-      pageSize: 5,    //分页每页大小
+      pageSize: 7,    //分页每页大小
       currentPage: 1,  //当前页
       idx: -1,          //当前选择项
       multipleSelection: [],   //哪些项已经打勾

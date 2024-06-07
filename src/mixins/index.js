@@ -59,7 +59,11 @@ export const mixin = {
     handleAvatorSuccess (res) {
       let _this = this
       if (res.code === 1) {
-        _this.getData()
+        if (this.currentPage) {
+          _this.getData(this.currentPage)
+        } else {
+          _this.getData()
+        }
         _this.$notify({
           title: '上传成功',
           type: 'success'

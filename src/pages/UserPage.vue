@@ -35,7 +35,13 @@
           {{ attachBirth(scope.row.birth) }}
         </template>
       </el-table-column>
-      <el-table-column prop="introduction" label="签名" align="center"></el-table-column>
+      <el-table-column prop="introduction" label="签名" align="center">
+        <template slot-scope="scope">
+          <ul style="max-height:100px;overflow-y: auto">
+            {{scope.row.introduction}}
+          </ul>
+        </template>
+      </el-table-column>
       <el-table-column prop="location" label="地区" width="100" align="center"></el-table-column>
       <el-table-column label="收藏" width="80" align="center">
         <template slot-scope="scope">
@@ -78,8 +84,12 @@
           <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
         </el-form-item>
         <el-form-item label="性别" size="mini">
-          <input type="radio" name="sex" value="0" v-model="registerForm.sex">&nbsp;女&nbsp;&nbsp;
-          <input type="radio" name="sex" value="1" v-model="registerForm.sex">&nbsp;男
+          <el-radio-group v-model="registerForm.sex">
+            <el-radio :label="0">女</el-radio>
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="2">组合</el-radio>
+            <el-radio :label="3">不明</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item prop="phoneNum" label="手机号" size="mini">
           <el-input
@@ -121,8 +131,12 @@
           <el-input v-model="form.name" placeholder="昵称"></el-input>
         </el-form-item>
         <el-form-item label="性别" size="mini">
-          <input type="radio" name="sex" value="0" v-model="form.sex">&nbsp;女&nbsp;&nbsp;
-          <input type="radio" name="sex" value="1" v-model="form.sex">&nbsp;男
+          <el-radio-group v-model="form.sex">
+            <el-radio :label="0">女</el-radio>
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="2">组合</el-radio>
+            <el-radio :label="3">不明</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item prop="phoneNum" label="手机号" size="mini">
           <el-input v-model="form.phoneNum" placeholder="手机号"></el-input>
@@ -186,7 +200,7 @@ export default {
       registerForm: {      //添加框
         username: '',
         password: '',
-        sex: '1',
+        sex: '3',
         phoneNum: '',
         email: '',
         birth: '',
