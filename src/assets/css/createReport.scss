@@ -1,3 +1,6 @@
+@import "var.scss";
+@import "global.scss";
+
 * {
   margin: 0;
   padding: 0;
@@ -122,25 +125,4 @@ li:last-child {
   .song-info p {
     font-size: 0.9em; /* 在小屏幕上减小字体大小 */
   }
-}
-/* 为img元素设置基本样式 */
-img {
-  max-width: 50%; /* 最大宽度为100% */
-  height: auto; /* 高度根据内容自适应 */
-  overflow: hidden; /* 如果图片超出容器，隐藏溢出部分 */
-}
-
-/* 为包含img的div设置样式 */
-.image-container {
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-  max-width: 100%; /* 确保div不会超过其父容器的宽度 */
-  height: auto; /* 根据内容自动调整高度 */
-  overflow: hidden; /* 如果需要，可以裁剪溢出的内容 */
-}
-
-/* 如果需要，可以为图片添加一些样式，比如圆角 */
-img.rounded {
-  border-radius: 8px; /* 举例：添加圆角 */
 }

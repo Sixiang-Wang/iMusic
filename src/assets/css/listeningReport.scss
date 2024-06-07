@@ -257,34 +257,46 @@ input[type="radio"] {
   color: #333;
 }
 
-/* 单选按钮通用样式 */
 .radio-label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 1em;
+  display: block; /* 使每个label元素显示为块级元素，从而纵向排列 */
+  margin-bottom: 10px; /* 为每个选项添加一些垂直间距 */
+  text-align: left; /* 左对齐文本 */
 }
 
-/* 单选按钮输入隐藏 */
 .radio-label input[type="radio"] {
-  display: none;
+  margin-right: 8px; /* 在单选按钮和文本之间添加一些间距 */
 }
 
-/* 单选按钮自定义样式 */
+.options-container {
+  display: flex; /* 使用Flexbox布局 */
+  flex-wrap: wrap; /* 如果需要，允许换行（通常在这里不需要） */
+  justify-content: space-between; /* 控制子元素之间的水平间距 */
+  flex-direction: column; /* 设置子元素纵向排列 */
+}
+/* 可以添加更多的样式来美化单选按钮，如下面的自定义样式 */
 .radio-label span {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #5cb85c;
-  border-radius: 50%;
-  margin-right: 10px;
+  width: 16px; /* 单选按钮的宽度 */
+  height: 16px; /* 单选按钮的高度 */
+  border: 2px solid #5cb85c; /* 边框颜色 */
+  border-radius: 50%; /* 圆形边框 */
   position: relative;
-  top: 4px;
+  top: 4px; /* 垂直居中调整 */
 }
 
-/* 选中时的自定义样式 */
 .radio-label input[type="radio"]:checked + span {
-  background-color: #5cb85c;
+  background-color: #5cb85c; /* 选中时的背景颜色 */
 }
+.svg-icon-right {
+  position: absolute; /* 或 fixed，根据需要 */
+  right : 42%;
+  z-index: 0;      /* 一个较大的z-index值，确保图片在最上层 */
+  width: 100px; /* SVG图片的宽度，根据需要调整 */
+  height: 100px; /* SVG图片的高度，根据需要调整 */
+  margin-left: 16px; /* 右侧SVG与文本之间的间距 */
+}
+
+
 
 /* 提交按钮样式 */
 .submit-button {

@@ -85,10 +85,11 @@
         <p>您对本周推荐的歌曲满意吗？</p>
         <div class="options-container">
           <label class="radio-label" v-for="option in options" :key="option.value">
-            <input type="radio" :value="option.value" v-model="selectedOption" />
+            <input type="radio" :value="option.value" v-model="selectedOption" @change="changeUserFeeling(option.value)"/>
             <span></span>
             {{ option.text }}
           </label>
+          <img  :src="userFeeling" class="svg-icon-right">
         </div>
 
         <button class="submit-button" type="button" @click="submitFeedback">提交</button>
@@ -115,9 +116,11 @@ export default {
       selectedOption: '', // 用于v-model的数据属性
       noData : false,
       options: [
-        { value: 'like', text: '非常满意' },
+        { value: 'fairly_like', text: '非常满意' },
+        { value: 'like',text:'满意'},
         { value: 'neutral', text: '一般' },
         { value: 'dislike', text: '不满意' },
+        { value: 'fairly_dislike', text: '非常不满意' },
       ],
       topSong : {
         ImageUrl: '',
@@ -154,6 +157,7 @@ export default {
       popularSongs: [],
       newSingers: [],
       newSongLists: [],
+      userFeeling : require("../assets/js/icon/icon-like.svg")
     };
   },
   computed: {
@@ -315,6 +319,25 @@ export default {
           });
         });
       });
+    },
+    changeUserFeeling(value){
+      // this.userFeeling = value;
+      if(value==='fairly_like'){
+        this.userFeeling=require("../assets/js/icon/icon-fairly-like.svg");
+      }
+      else if(value==='like'){
+        this.userFeeling=require("../assets/js/icon/icon-like.svg");
+      }
+      else if(value==='neutral'){
+        this.userFeeling=require("../assets/js/icon/icon-neutral.svg");
+      }
+      else if(value==='dislike'){
+        this.userFeeling=require('../assets/js/icon/icon-dislike.svg');
+      }
+      else{
+        this.userFeeling=require('../assets/js/icon/icon-fairly-dislike.svg');
+      }
+      // console.log(value)
     },
     submitFeedback() {
       this.$notify({title:'感谢您的反馈',type:'success'});
