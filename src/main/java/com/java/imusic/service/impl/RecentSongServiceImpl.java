@@ -195,19 +195,34 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         }
         List<Collect> tmpList = collectMapper.collectOfUserId(id);
         List<Singer> singerByCollectSong = new ArrayList<>();
-        try {
-            tmpList.forEach(item -> {
-                if (item.getSongId() != null) {
-                    singerByCollectSong.add(singerMapper.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getSingerId()));
-                }
-            });
-        } catch (Exception e) {
-            return Result.error("查找歌手数据时发生错误1: " + e.getMessage());
-        }
+        tmpList.forEach(item -> {
+            if (item.getSongId() != null) {
+                singerByCollectSong.add(singerMapper.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getSingerId()));
+            }
+        });
 
-        try {
-            if (!singerByCollectSong.isEmpty()) {
-                for (Singer singer : singerByCollectSong) {
+        if (!singerByCollectSong.isEmpty()) {
+            for (Singer singer : singerByCollectSong) {
+                int flag = 0;
+                for (Singer singer1 : singerHashSet) {
+                    if (singer1.getId().equals(singer.getId())) {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (0 == flag) {
+                    singerHashSet.add(singer);
+                }
+            }
+        }
+        if (singerHashSet.size() < 10) {
+            List<Singer> singerList = singerMapper.allSinger();
+            if (!singerList.isEmpty()) {
+                for (Singer singer : singerList) {
+                    if (singerHashSet.size() == 10) {
+                        break;
+                    }
+
                     int flag = 0;
                     for (Singer singer1 : singerHashSet) {
                         if (singer1.getId().equals(singer.getId())) {
@@ -220,34 +235,6 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
                     }
                 }
             }
-        } catch (Exception e) {
-            return Result.error("查找歌手数据时发生错误2: " + e.getMessage());
-        }
-
-        try {
-            if (singerHashSet.size() < 10) {
-                List<Singer> singerList = singerMapper.allSinger();
-                if (!singerList.isEmpty()) {
-                    for (Singer singer : singerList) {
-                        if (singerHashSet.size() == 10) {
-                            break;
-                        }
-
-                        int flag = 0;
-                        for (Singer singer1 : singerHashSet) {
-                            if (singer1.getId().equals(singer.getId())) {
-                                flag = 1;
-                                break;
-                            }
-                        }
-                        if (0 == flag) {
-                            singerHashSet.add(singer);
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return Result.error("查找歌手数据时发生错误: " + e.getMessage());
         }
         return Result.ok("查询成功", singerHashSet);
     }
