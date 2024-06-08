@@ -30,6 +30,14 @@
   }
 }
 
+.delete-icon {
+  margin-top: 50px;
+  cursor: pointer;
+  transition: transform 0.3ms;
+}
+.delete-icon:hover {
+  transform: scale(1.1);
+}
 /*热门评论*/
 .popular {
   width: 100%;

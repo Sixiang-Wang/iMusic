@@ -115,7 +115,7 @@ import {
   setCollect,
   existCollectSong,
   selectSongListByUserId,
-  addListSong, selectByPrimaryKey, deleteListSong, addComplaint
+  addListSong, getSongListById, deleteListSong, addComplaint
 } from "../api";
 import {mapGetters} from "vuex";
 import AddIcon from "../assets/icon/addIcon.vue";
@@ -214,13 +214,16 @@ export default {
           this.selectData.push({id: item.id, pic: item.pic, title: item.title})
         })
       })
-      selectByPrimaryKey(this.$route.params.id).then(res =>
+      if (this.$route.params.id)
       {
-        if (res.userId === this.userId && this.$route.path.includes('song-list-album'))
+        getSongListById(this.$route.params.id).then(res =>
         {
-          this.isMySongList = true;
-        }
-      })
+          if (res.userId === this.userId && this.$route.path.includes('song-list-album'))
+          {
+            this.isMySongList = true;
+          }
+        })
+      }
     }
   },
   methods: {

@@ -43,7 +43,7 @@ export const getFansCountByUserId = (userId) => get(`follow/getFansCountByUserId
 // 查询歌曲
 export const getAllSongList = () => get(`songList/allSongList`);//获得所有歌单
 // 根据id获取歌单
-export const selectByPrimaryKey = (id) => get(`songList/selectByPrimaryKey?id=${id}`);
+export const getSongListById = (id) => get(`songList/selectByPrimaryKey?id=${id}`);
 
 export const selectSongListByUserId = (userId) => get(`songList/selectByUserId?userId=${userId}`);
 //添加歌单
@@ -110,6 +110,8 @@ export const getCommentOfSongList = (songListId) => get(`comment/commentOfSongLi
 export const existCommentUp = (userId, commentId) => get(`commentUp/exist?userId=${userId}&commentId=${commentId}`);
 // 点赞提交
 export const addCommentUp = (params) => post(`commentUp/add`, params);
+
+export const deleteComment = (id) => get(`comment/delete?id=${id}`);
 // 取消点赞
 export const deleteCommentUp = (userId, commentId) => get(`commentUp/delete?userId=${userId}&commentId=${commentId}`);
 

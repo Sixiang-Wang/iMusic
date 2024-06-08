@@ -25,23 +25,36 @@
               <li>{{ usernames[item.id] }}</li>
               <li class = "time">{{ item.createTime }}</li>
               <li class = "content">{{ item.content }}</li>
-              <li class="up" ref="up" @click="handleUp(item.id, item.up, index)">
-                {{existUp(item.id, index)}}
+              <li class = "up" ref = "up" @click = "handleUp(item.id, item.up, index)">
+                {{ existUp(item.id, index) }}
                 <up-icon></up-icon>
               </li>
             </ul>
           </div>
-          <delete-icon style="margin-top: 50px"></delete-icon>
+          <div class = "delete-icon" @click = "delComment(item.id)" v-if = "ownComment(item.userId)">
+            <delete-icon></delete-icon>
+          </div>
         </li>
       </ul>
     </div>
+    <el-dialog
+      title = "确认删除"
+      :visible.sync = "deleteDialog"
+      width = "30%"
+    >
+      <span>确定要删除吗？</span>
+      <span slot = "footer" style = "text-align: center">
+        <el-button @click = "deleteDialog = false;deleteId='' ">取消</el-button>
+        <el-button type = "primary" @click = "confirmDelete()">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import {mixin} from "../mixins";
 import {
-  addCommentUp,
+  addCommentUp, deleteComment,
   deleteCommentUp,
   existCommentUp,
   getCommentOfSong,
@@ -53,13 +66,16 @@ import {mapGetters} from "vuex";
 import testIcon from '../assets/icon/deleteIcon.vue'
 import DeleteIcon from "../assets/icon/deleteIcon.vue";
 import UpIcon from "../assets/icon/upIcon.vue";
+
 export default {
   name: 'comment',
   mixins: [mixin],
   props: ['type'],
-  components:{UpIcon, DeleteIcon, testIcon},
+  components: {UpIcon, DeleteIcon, testIcon},
   data() {
     return {
+      deleteDialog: false,
+      deleteId: '',
       inputValue: '',
       commentList: [],
       avatars: [],
@@ -124,6 +140,24 @@ export default {
         })
       }
     },
+    delComment(commentId) {
+      this.deleteDialog = true;
+      this.deleteId = commentId;
+    },
+    confirmDelete() {
+      deleteComment(this.deleteId).then(res =>
+      {
+        if (res) {
+          this.getCommentList();
+          this.notify('删除成功')
+        }
+        else {
+          this.notify('删除失败')
+        }
+        this.deleteDialog = false;
+        this.deleteId = '';
+      })
+    },
     getMsg() {
       this.commentList.forEach(item =>
       {
@@ -135,20 +169,23 @@ export default {
         });
       });
     },
-    existUp(commentId,index) {
-      existCommentUp(this.userId, commentId).then(res => {
+    existUp(commentId, index) {
+      existCommentUp(this.userId, commentId).then(res =>
+      {
         if (res) {
           this.$refs.up[index].children[0].classList.add('active');
         }
       })
+    },
+    ownComment(userId) {
+      return this.userId === userId;
     },
     handleUp(commentId, up, index) {
       if (!this.loginIn)
       {
         this.notify('请先登录');
       }
-      else
-      {
+      else {
         existCommentUp(this.userId, commentId).then(res =>
         {
           if (res)

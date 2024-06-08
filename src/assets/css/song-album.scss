@@ -97,7 +97,7 @@
   background: #2E8B57;
 }
 
-.like-icon {
+.collect {
   display: flex;
   font-size: 17px;
   color: black;
@@ -109,6 +109,9 @@
   border: 1px solid gray;
   fill: gray;
   cursor: pointer;
+}
+.have-collected {
+  fill: orange;
 }
 
 
