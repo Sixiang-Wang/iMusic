@@ -210,7 +210,7 @@
         select
         <include refid="Blob_Column_List"/>
         from song
-        where style = #{style}
+        where style like #{style}
         and visible = 1
     </select>
 

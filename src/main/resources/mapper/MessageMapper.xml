@@ -88,6 +88,7 @@
         <include refid="Base_Column_List"/>
         from message
         where `to` = #{to}
+        order by create_time desc
     </select>
 
     <select id="allMessageUnread" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -96,6 +97,7 @@
         from message
         where is_read = 0
         and `to` = #{to}
+        order by create_time desc
     </select>
 
     <select id="allMessageRead" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -104,6 +106,7 @@
         from message
         where is_read = 1
         and `to` = #{to}
+        order by create_time desc
     </select>
 
     <select id="messageUnreadNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
