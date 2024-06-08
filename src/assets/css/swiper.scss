@@ -2,7 +2,30 @@
   width: 95%;
   margin: auto;
   margin-top: 20px;
+
   img {
     width: 100%;
+  }
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  //object-fit: cover; // 确保图片填充且不失真
+  border-radius: 10px; // 添加圆角
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // 添加阴影
+}
+
+.custom-carousel .el-carousel__item {
+  transition: all 0.5s ease-in-out; // 平滑过渡效果
+}
+
+.custom-carousel .el-carousel__indicator {
+  background-color: #fff; // 自定义指示器颜色
+  border-radius: 50%; // 圆形指示器
+  opacity: 0.5;
+
+  &.is-active {
+    opacity: 1;
   }
 }

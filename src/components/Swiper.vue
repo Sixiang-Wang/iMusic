@@ -1,8 +1,19 @@
 <template>
   <div class="swiper">
-    <el-carousel :interval="4000" type="card" height="280px">
+    <el-carousel
+      :interval="4000"
+      type="card"
+      height="280px"
+      :autoplay="true"
+      :indicator-position="'outside'"
+      :loop="true"
+      class="custom-carousel"
+    >
         <el-carousel-item v-for="(item,index) in swiperList" :key="index">
-          <img :src="item.picImg"  alt=""/>
+          <img :src="item.picImg"
+               alt="item.altText || '轮播图'"
+               class="carousel-image"
+          />
         </el-carousel-item>
     </el-carousel>
   </div>
