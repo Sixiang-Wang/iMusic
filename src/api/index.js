@@ -160,4 +160,26 @@ export const recommendSinger = (id) => get(`recentSong/recommendSinger/${id}`);
 // 投诉歌单、歌曲
 export const addComplaint = (params) => post(`complaint/add`,params);
 
+// ================ 消息提醒 ==============
+
+// 添加信息
+export const addMessage = (params) => post(`message/add`,params);
+
+// 使消息变为已读
+
+export const readMessage = (id) => post(`message/read?id=${id}`);
+
+// 删除消息
+
+export const deleteMessage = (id) => get(`message/delete?id=${id}`);
+
+// 查找所有信息
+
+export const getAllMessage = (to) => get(`message/allMessage?to=${to}`);
+
+// 查找所有未读信息
+export const getAllMessageUnread = (to) => get(`message/allMessageUnread?to=${to}`);
+
+// 得到所有未读消息的数量
+export const getMessageUnreadNum = (to) => get(`message/messageUnreadNum?to=${to}`);
 

@@ -32,9 +32,7 @@
                 </svg>
               </li>
             </ul>
-
           </div>
-
         </li>
       </ul>
     </div>

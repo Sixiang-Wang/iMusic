@@ -31,6 +31,15 @@
       <ul class="menu">
         <li v-for="(item,index) in menuList" :key="index" @click="goMenuList(item.path)">{{item.name}}</li>
       </ul>
+      <div class="container" @click="goMessage">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="message-icon" viewBox="0 0 16 16" >
+          <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+        </svg>
+        <span class="message-text">消息</span>
+      </div>
+      <div v-if="messageUnreadNum !== 0" class="red-dot">
+        {{ messageUnreadNum }}
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +47,7 @@
 <script>
 import {mapGetters} from 'vuex';
 import {navMsg , loginMsg, menuList} from '../assets/data/header';
-import {logout} from "../api";
+import {getMessageUnreadNum, logout} from "../api";
 
 export default {
   name: 'the-header',
@@ -47,19 +56,21 @@ export default {
       navMsg: [], // 左侧导航栏
       keywords: '', // 搜索关键字
       loginMsg : [],   // 右侧导航栏
-      menuList : []     // 用户下拉菜单栏
+      menuList : [],     // 用户下拉菜单栏
+      messageUnreadNum : 0,//未读消息条数
     }
   },
   created () {
-    this.navMsg = navMsg
-    this.loginMsg = loginMsg
-    this.menuList = menuList
+    this.navMsg = navMsg;
+    this.loginMsg = loginMsg;
+    this.menuList = menuList;
   },
   computed: {
     ...mapGetters([
       'activeName',
       'loginIn',
-      'avatar'
+      'avatar',
+      'userId'
     ])
   },
   mounted() {
@@ -74,6 +85,11 @@ export default {
     document.addEventListener('click' , function (){
       document.querySelector('.menu').classList.remove('show');
     },false);
+  },
+  watch: {
+    userId(){
+      this.getUserMessageUnreadNum(this.userId);
+    }
   },
   methods: {
     goHome () {
@@ -110,14 +126,35 @@ export default {
         if(this.$route.path !== '/'){
           setTimeout(() => {
             this.$router.push({ path: '/' });
-          }, 1000);
+            this.$router.go(0);
+          }, 500);
         } // 延迟1秒执行路由跳转
         this.$notify({title : '退出成功' , type : 'success'});
-        // this.$router.go(0);
+
       }
       else{
         this.$router.push({path : path});
       }
+    },
+    goMessage(){
+      this.messageUnreadNum = 0;
+      this.$router.push({path : '/message'})
+    },
+    getUserMessageUnreadNum(userId){
+      // console.log(userId);
+      if(userId===null){
+        return;
+      }
+      getMessageUnreadNum(userId)
+        .then(res => {
+          this.messageUnreadNum = res;
+          if(res>99){
+            this.messageUnreadNum = 99;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
   }
 }

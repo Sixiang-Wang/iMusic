@@ -1,0 +1,97 @@
+/* 基础样式 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* 容器样式 */
+.container {
+  max-width: 800px;
+  margin: 15vh auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.message-container {
+  display: flex;          /* 启用Flexbox布局 */
+  justify-content: space-between; /* 将子元素分散对齐，但在这里我们使用align-items来居中对齐 */
+  align-items: center;    /* 垂直居中对齐 */
+}
+
+/* 如果需要让两个span之间有一些空间，可以使用以下样式 */
+.message-container > span:first-child {
+  margin-right: auto; /* 第一个span右边距自动，会推到最左边 */
+  color: #333;
+  font-size: 2.5em;
+  border-bottom: 2px solid #eee;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.message-container > span:last-child {
+  cursor: pointer;     /* 当鼠标悬停时显示指针手势 */
+  font-size: 1.5em; /* 根据需要调整字体大小 */
+  color: #888; /* 较淡的颜色 */
+}
+
+
+/* 消息列表容器样式 */
+.message-item {
+  display: flex;
+  align-items: flex-start; /* 垂直居中对齐 */
+  justify-content: space-between; /* 两端对齐 */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  position: relative; /* 为时间位置定位 */
+}
+
+/* 消息内容样式 */
+.message-content {
+  flex-grow: 1; /* 允许内容占据剩余空间 */
+  margin-top : 50px;
+  margin-right: 50px; /* 与时间的距离 */
+}
+
+/* 消息时间样式 */
+.message-time {
+  position: absolute; /* 绝对定位 */
+  top: 15px; /* 从顶部定位 */
+  left: 100px; /* 从右侧定位 */
+  font-size: 0.8em; /* 根据需要调整字体大小 */
+  color: #888; /* 较淡的颜色 */
+}
+.message-read {
+  cursor: pointer;     /* 当鼠标悬停时显示指针手势 */
+  position: absolute; /* 绝对定位 */
+  top: 10px; /* 从顶部定位 */
+  right: 10px; /* 从右侧定位 */
+  font-size: 1.0em; /* 根据需要调整字体大小 */
+  color: #888; /* 较淡的颜色 */
+}
+/* 消息来源样式 */
+.message-src {
+  position: absolute; /* 绝对定位 */
+  top: 10px; /* 从顶部定位 */
+  left: 10px; /* 从右侧定位 */
+  font-size: 1.5em; /* 根据需要调整字体大小 */
+  font-weight: bold;
+  color: #000000; /* 较淡的颜色 */
+}
+/* 鼠标悬停效果 */
+.message-item:hover {
+  background-color: #e9e9e9;
+}

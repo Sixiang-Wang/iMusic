@@ -143,3 +143,50 @@
   color: $theme-color !important;
   border-bottom: 5px solid $theme-color !important;
 }
+
+.container {
+  display: flex; /* 使用Flexbox布局 */
+  flex-direction: column; /* 设置flex容器为垂直方向排列 */
+  align-items: center; /* 垂直居中对齐 */
+  justify-content: center; /* 水平居中对齐 */
+}
+.message-icon {
+  width:30px;
+  height:30px;
+  color: #646464;
+  margin-top : 2.5em;
+}
+/* 文本样式 */
+.message-text {
+  margin-top: -1.5em; /* 负的行高可以使文本更靠近图标 */
+  color: #646464; /* 文字颜色 */
+  font-size: 16px; /* 文字大小 */
+  white-space: nowrap;
+}
+
+.red-dot {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  width: 20px; /* 红点的宽度，根据需要调整 */
+  height: 20px; /* 红点的高度，根据需要调整 */
+  background-color: red;
+  border-radius: 50%; /* 使红点变为圆形 */
+  color: white; /* 文字颜色 */
+  font-size: 6px; /* 文字大小，根据红点大小调整 */
+  font-weight: bold; /* 文字加粗 */
+  position: relative; /* 为数字定位 */
+  transform-origin: center;
+  transform: translate(-12px) scale(1); /* 向左和向下偏移，具体数值根据需要调整 */
+}
+
+/* 如果需要数字在红点内部，可以使用伪元素 */
+.red-dot::after {
+  content: attr(data-count); /* 使用自定义属性data-count来设置数字 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 6px; /* 伪元素文字大小 */
+}
