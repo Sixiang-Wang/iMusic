@@ -3,10 +3,11 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.dao.CommentMapper;
 import com.java.imusic.dao.CommentUpMapper;
+import com.java.imusic.domain.Comment;
 import com.java.imusic.domain.CommentUp;
-import com.java.imusic.service.CommentService;
-import com.java.imusic.service.CommentUpService;
-import com.java.imusic.service.FollowService;
+import com.java.imusic.domain.Message;
+import com.java.imusic.domain.User;
+import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,6 @@ public class CommentUpController {
         JSONObject jsonObject = new JSONObject();
         Integer userId = Integer.parseInt(request.getParameter("userId"));           //用户id
         Integer commentId = Integer.parseInt(request.getParameter("commentId"));
-
         CommentUp commentUp = new CommentUp();
         commentUp.setUserId(userId);
         commentUp.setCommentId(commentId);

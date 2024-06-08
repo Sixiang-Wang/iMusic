@@ -9,6 +9,15 @@ public class Message {
     private String text;
     private Integer isRead;
     private Date createTime;
+    private Integer type;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Integer getTo() {
         return to;

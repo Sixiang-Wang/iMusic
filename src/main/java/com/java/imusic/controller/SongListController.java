@@ -2,10 +2,13 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
+import com.java.imusic.dao.MessageMapper;
 import com.java.imusic.dao.RankMapper;
 import com.java.imusic.dao.SongListMapper;
+import com.java.imusic.domain.Message;
 import com.java.imusic.domain.Song;
 import com.java.imusic.domain.SongList;
+import com.java.imusic.service.MessageService;
 import com.java.imusic.service.SongListService;
 import com.java.imusic.utils.Consts;
 import org.apache.ibatis.annotations.Param;
@@ -34,6 +37,8 @@ public class SongListController {
     private RankMapper rankMapper;
     @Autowired
     private SongListMapper songListMapper;
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 添加歌单
@@ -247,25 +252,43 @@ public class SongListController {
 
 
     @RequestMapping(value = "/invisible",method = RequestMethod.GET)
-    public Object invisibleSong(HttpServletRequest request){
+    public Object invisibleSongList(HttpServletRequest request){
         String id = request.getParameter("id").trim();          //主键
         SongList songList = songListService.selectByPrimaryKey(Integer.parseInt(id));
         songList.setVisible(0);
         boolean flag = songListService.update(songList);
+        if(flag){
+            Message message = new Message();
+            message.setTo(songList.getUserId());
+            message.setFrom(-1);
+            message.setText("您的歌单《"+songList.getTitle()+"》已被下架");
+            message.setIsRead(0);
+            message.setType(0);
+            messageService.insert(message);
+        }
         return flag;
     }
 
     @RequestMapping(value = "/allInvisible",method = RequestMethod.GET)
-    public Object allInvisibleSong(HttpServletRequest request){
+    public Object allInvisibleSongList(HttpServletRequest request){
         return songListMapper.allInvisible();
     }
 
     @RequestMapping(value = "/visible",method = RequestMethod.GET)
-    public Object visibleSong(HttpServletRequest request){
+    public Object visibleSongList(HttpServletRequest request){
         String id = request.getParameter("id").trim();          //主键
         SongList songList = songListService.selectByPrimaryKey(Integer.parseInt(id));
         songList.setVisible(1);
         boolean flag = songListService.update(songList);
+        if(flag){
+            Message message = new Message();
+            message.setTo(songList.getUserId());
+            message.setFrom(-1);
+            message.setText("您的歌单《"+songList.getTitle()+"》已被恢复");
+            message.setIsRead(0);
+            message.setType(0);
+            messageService.insert(message);
+        }
         return flag;
     }
 

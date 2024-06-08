@@ -77,6 +77,7 @@ public class ComplaintController {
                 message.setFrom(-1);
                 message.setText(textB.toString());
                 message.setIsRead(0);
+                message.setType(1);
                 messageService.insert(message);
             }
             jsonObject.put(Consts.CODE,1);
@@ -130,12 +131,78 @@ public class ComplaintController {
     }
 
     /**
-     * 删除评论
+     * 删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public Object deleteComplaint(HttpServletRequest request){
         String id = request.getParameter("id").trim();          //主键
+        Complaint complaint = complaintService.selectByPrimaryKey(Integer.parseInt(id));
         boolean flag = complaintService.delete(Integer.parseInt(id));
+        if (flag){
+            int to = -1;
+            StringBuilder textB = new StringBuilder("举报已被处理: ");
+            Byte type = complaint.getType();
+            if(type ==0){
+                Song song = songService.selectByPrimaryKey(complaint.getSongId());
+                Integer tmp = singerService.selectByPrimaryKey(song.getSingerId()).getUserID();
+                if(tmp!=null&&tmp>0){
+                    to = tmp;
+                    textB.append("您歌曲《").append(song.getName()).append("》受到举报下架。请您遵守iMusic社区规定，上传合规歌曲");
+                }
+            }else{
+                SongList songList = songListService.selectByPrimaryKey(complaint.getSongListId());
+                Integer tmp = songList.getUserId();
+                if(tmp!=null&&tmp>0){
+                    to = tmp;
+                    textB.append("您歌单《").append(songList.getTitle()).append("》受到举报下架。请您遵守iMusic社区规定，上传合规歌曲");
+                }
+            }
+            Message message = new Message();
+            message.setTo(to);
+            message.setFrom(-1);
+            message.setText(textB.toString());
+            message.setIsRead(0);
+            message.setType(0);
+            messageService.insert(message);
+        }
+        return flag;
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/ignore",method = RequestMethod.GET)
+    public Object ignoreComplaint(HttpServletRequest request){
+        String id = request.getParameter("id").trim();          //主键
+        Complaint complaint = complaintService.selectByPrimaryKey(Integer.parseInt(id));
+        boolean flag = complaintService.delete(Integer.parseInt(id));
+        if (flag){
+            int to = -1;
+            StringBuilder textB = new StringBuilder("举报已被处理: ");
+            Byte type = complaint.getType();
+            if(type ==0){
+                Song song = songService.selectByPrimaryKey(complaint.getSongId());
+                Integer tmp = singerService.selectByPrimaryKey(song.getSingerId()).getUserID();
+                if(tmp!=null&&tmp>0){
+                    to = tmp;
+                    textB.append("您歌曲《").append(song.getName()).append("》相关举报已处理完毕:\n 管理员认为您的歌曲符合社区规定。");
+                }
+            }else{
+                SongList songList = songListService.selectByPrimaryKey(complaint.getSongListId());
+                Integer tmp = songList.getUserId();
+                if(tmp!=null&&tmp>0){
+                    to = tmp;
+                    textB.append("您歌单《").append(songList.getTitle()).append("》相关举报已处理完毕:\n 管理员认为您的歌曲符合社区规定。");
+                }
+            }
+            Message message = new Message();
+            message.setTo(to);
+            message.setFrom(-1);
+            message.setText(textB.toString());
+            message.setIsRead(0);
+            message.setType(0);
+            messageService.insert(message);
+        }
         return flag;
     }
 

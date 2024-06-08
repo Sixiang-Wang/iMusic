@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @RequestMapping("/message")
 public class MessageController {
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private MessageMapper messageMapper;
 
     /**
      * 添加信息
@@ -28,6 +32,11 @@ public class MessageController {
         JSONObject jsonObject = new JSONObject();
         Integer to = Integer.parseInt(request.getParameter("to"));
         String text = request.getParameter("text");
+        String typeS = request.getParameter("type");
+        int type = 0; //普通消息
+        if (typeS!=null&&!typeS.isEmpty()){
+            type = Integer.parseInt(typeS);
+        }
 
         //可有可无
         String fromTmp = request.getParameter("from");
@@ -41,6 +50,7 @@ public class MessageController {
         message.setFrom(from);
         message.setText(text);
         message.setIsRead(0);
+        message.setType(type);
 
         boolean flag = messageService.insert(message);
 
@@ -62,9 +72,16 @@ public class MessageController {
         JSONObject jsonObject = new JSONObject();
         Integer id = Integer.parseInt(request.getParameter("id"));
         String text = request.getParameter("text");
+        String typeS = request.getParameter("type");
+        int type = 0; //普通消息
+        if (typeS!=null&&!typeS.isEmpty()){
+            type = Integer.parseInt(typeS);
+        }
+
         Message message = new Message();
         message.setId(id);
         message.setText(text);
+        message.setType(type);
         boolean flag = messageService.update(message);
         if(flag){   //保存成功
             jsonObject.put(Consts.CODE,1);
@@ -94,9 +111,21 @@ public class MessageController {
         return messageService.delete(id);
     }
 
+    @RequestMapping(value = "/deleteAllReadMessage",method = RequestMethod.GET)
+    public Object deleteAllReadMessage(HttpServletRequest request){
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        List<Message> messageList = messageService.allMessageRead(userId);
+        AtomicReference<Boolean> flag = new AtomicReference<>(true);
+        messageList.forEach(message -> {
+            if(!messageService.delete(message.getId()))
+                flag.set(false);
+        });
+        return flag;
+    }
+
 
     /**
-     * 所有信息
+     * 所有系统信息
      * @param request
      * @return
      */
@@ -107,7 +136,7 @@ public class MessageController {
     }
 
     /**
-     * 所有未读信息
+     * 所有未读系统信息
      * @param request
      * @return
      */
@@ -118,7 +147,7 @@ public class MessageController {
     }
 
     /**
-     * 所有已读信息
+     * 所有已读系统信息
      * @param request
      * @return
      */
@@ -129,7 +158,7 @@ public class MessageController {
     }
 
     /**
-     * 未读消息数量
+     * 未读系统消息数量
      * @param request
      * @return
      */
@@ -137,5 +166,49 @@ public class MessageController {
     public Object messageUnreadNum(HttpServletRequest request){
         Integer to = Integer.parseInt(request.getParameter("to"));
         return messageService.messageUnreadNum(to);
+    }
+
+    /**
+     * 所有点赞信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/allUpMessage",method = RequestMethod.GET)
+    public Object allUpMessage(HttpServletRequest request){
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageMapper.allUpMessage(to);
+    }
+
+    /**
+     * 所有未读点赞信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/allUpMessageUnread",method = RequestMethod.GET)
+    public Object allUpMessageUnread(HttpServletRequest request){
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageMapper.allUpMessageUnread(to);
+    }
+
+    /**
+     * 所有已读点赞信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/allUpMessageRead",method = RequestMethod.GET)
+    public Object allUpMessageRead(HttpServletRequest request){
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageMapper.allUpMessageRead(to);
+    }
+
+    /**
+     * 未读点赞消息数量
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/upMessageUnreadNum",method = RequestMethod.GET)
+    public Object upMessageUnreadNum(HttpServletRequest request){
+        Integer to = Integer.parseInt(request.getParameter("to"));
+        return messageMapper.upMessageUnreadNum(to);
     }
 }

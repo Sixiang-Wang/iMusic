@@ -18,5 +18,9 @@ public interface MessageMapper {
     public List<Message> allMessageUnread(Integer to);
     public List<Message> allMessageRead(Integer to);
     public Integer messageUnreadNum(Integer to);
+    public List<Message> allUpMessage(Integer to);
+    public List<Message> allUpMessageUnread(Integer to);
+    public List<Message> allUpMessageRead(Integer to);
+    public Integer upMessageUnreadNum(Integer to);
     public int read(Integer id);
 }

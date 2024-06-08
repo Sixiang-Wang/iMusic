@@ -10,10 +10,11 @@
         <result column="text" jdbcType="LONGVARCHAR" property="text"/>
         <result column="is_read" jdbcType="INTEGER" property="isRead"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,`to`,`from`,text,is_read,create_time
+        id,`to`,`from`,text,is_read,create_time,`type`
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.Message">
@@ -31,6 +32,9 @@
             <if test="text != null">
                 text,
             </if>
+            <if test="type != null">
+                `type`,
+            </if>
             is_read,
             create_time,
         </trim>
@@ -46,6 +50,9 @@
             </if>
             <if test="text != null">
                 #{text},
+            </if>
+            <if test="type != null">
+                #{type},
             </if>
             0,
             now(),
@@ -66,6 +73,9 @@
             </if>
             <if test="isRead != null">
                 is_read = #{isRead},
+            </if>
+            <if test="type != null">
+                `type` = #{type},
             </if>
         </set>
         where id = #{id}
@@ -88,6 +98,7 @@
         <include refid="Base_Column_List"/>
         from message
         where `to` = #{to}
+        and (`type` = 0 or `type` = 1)
         order by create_time desc
     </select>
 
@@ -97,6 +108,7 @@
         from message
         where is_read = 0
         and `to` = #{to}
+        and (`type` = 0 or `type` = 1)
         order by create_time desc
     </select>
 
@@ -106,6 +118,7 @@
         from message
         where is_read = 1
         and `to` = #{to}
+        and (`type` = 0 or `type` = 1)
         order by create_time desc
     </select>
 
@@ -114,8 +127,45 @@
         from message
         where is_read = 0
         and `to` = #{to}
+          and (`type` = 0 or `type` = 1)
     </select>
 
+    <select id="upMessageUnreadNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(*)
+        from message
+        where is_read = 0
+        and `to` = #{to}
+        and `type` = 2
+    </select>
+
+    <select id="allUpMessage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from message
+        where `to` = #{to}
+        and `type` = 2
+        order by create_time desc
+    </select>
+
+    <select id="allUpMessageUnread" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from message
+        where is_read = 0
+        and `to` = #{to}
+        and `type` = 2
+        order by create_time desc
+    </select>
+
+    <select id="allUpMessageRead" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from message
+        where is_read = 1
+        and `to` = #{to}
+        and `type` = 2
+        order by create_time desc
+    </select>
     <update id="read" parameterType="java.lang.Integer">
         update message
         set is_read = 1

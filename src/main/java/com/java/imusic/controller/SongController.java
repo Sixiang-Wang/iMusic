@@ -95,6 +95,7 @@ public class SongController {
                     message.setFrom(-1);
                     message.setText("您关注的歌手 "+singerName+" 发布了新歌《"+name+"》!");
                     message.setIsRead(0);
+                    message.setType(0);
                     messageService.insert(message);
                 });
                 jsonObject.put(Consts.CODE,1);
@@ -180,6 +181,15 @@ public class SongController {
         Song song = songService.selectByPrimaryKey(Integer.parseInt(id));
         song.setVisible(0);
         boolean flag = songService.update(song);
+        if(flag){
+            Message message = new Message();
+            message.setTo(singerService.selectByPrimaryKey(song.getSingerId()).getUserID());
+            message.setFrom(-1);
+            message.setText("您的歌曲《"+song.getName()+"》已被下架");
+            message.setIsRead(0);
+            message.setType(0);
+            messageService.insert(message);
+        }
         return flag;
     }
 
@@ -194,6 +204,15 @@ public class SongController {
         Song song = songService.selectByPrimaryKey(Integer.parseInt(id));
         song.setVisible(1);
         boolean flag = songService.update(song);
+        if(flag){
+            Message message = new Message();
+            message.setTo(singerService.selectByPrimaryKey(song.getSingerId()).getUserID());
+            message.setFrom(-1);
+            message.setText("您的歌曲《"+song.getName()+"》已恢复");
+            message.setIsRead(0);
+            message.setType(0);
+            messageService.insert(message);
+        }
         return flag;
     }
 
