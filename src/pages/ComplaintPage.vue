@@ -76,7 +76,14 @@ import {
   invisibleSong,
   visibleSong,
   allInvisible,
-  allComplaint, deleteComplaint, getUserOfId, songOfSongId, songListOfSongListId
+  allComplaint,
+  deleteComplaint,
+  getUserOfId,
+  songOfSongId,
+  songListOfSongListId,
+  addMessage,
+  ignoreComplaint,
+  invisibleSongList
 } from '../api/index'
 
 export default {
@@ -181,10 +188,23 @@ export default {
             this.getData(this.currentPage)
           }
         })
+      } else {
+        invisibleSongList(row.songListId).then(tmp => {
+          if (tmp) {
+            this.notify('下架成功')
+          } else {
+            this.notify('下架失败')
+          }
+        })
+        deleteComplaint(row.id).then(res => {
+          if (res) {
+            this.getData(this.currentPage)
+          }
+        })
       }
     },
     deleteRow (id) {
-      deleteComplaint(id)
+      ignoreComplaint(id)
         .then(res => {
           if (res) {
             this.getData(this.currentPage)

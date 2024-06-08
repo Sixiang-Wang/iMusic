@@ -95,3 +95,6 @@ export const existFollow = (userId, singerId) => get(`/follow/existFollow?userId
 // =====举报
 export const allComplaint = () => get(`/complaint/allComplaint`)
 export const deleteComplaint = (id) => get(`/complaint/delete?id=${id}`)
+export const ignoreComplaint = (id) => get(`/complaint/ignore?id=${id}`)
+// ===信息
+export const addMessage = (params) => post(`/message/add`, params)
