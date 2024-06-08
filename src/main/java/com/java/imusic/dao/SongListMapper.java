@@ -51,6 +51,8 @@ public interface SongListMapper {
      */
     public List<SongList> likeStyle(String style);
 
+    public List<SongList> likeOtherStyle();
+
     /**
      * 根据userId查询整个对象
      */

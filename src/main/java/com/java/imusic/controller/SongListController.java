@@ -166,6 +166,9 @@ public class SongListController {
     @RequestMapping(value = "/likeStyle",method = RequestMethod.GET)
     public Object likeStyle(HttpServletRequest request){
         String style = request.getParameter("style").trim();          //歌单风格
+        if ("其他".equals(style)|| "其它".equals(style)){
+            return songListMapper.likeOtherStyle();
+        }
         return songListService.likeStyle("%"+style+"%");
     }
 
