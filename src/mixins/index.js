@@ -9,7 +9,7 @@ import {mapGetters} from "vuex";
 //   getSongByPlayCount,
 // } from "../api/Song";
 // import { getAllCollectByConsumerId } from "../api/Collect";
-import {addRecentSong } from "../api/index";
+import { addRecentSong } from "../api/index";
 
 
 export const mixin = {
@@ -66,7 +66,7 @@ export const mixin = {
       return arr[1];
     },
     // 播放
-    toplay: function (id, url, pic, index, name, lyric) {
+    toplay: function (id, url, pic, index, name, lyric, playList) {
       this.$store.commit('setId', id);
       this.$store.commit('setUrl', this.$store.state.configure.HOST + url);
       this.$store.commit('setPicUrl', this.$store.state.configure.HOST + pic);
@@ -74,6 +74,7 @@ export const mixin = {
       this.$store.commit('setTitle', this.replaceFName(name));
       this.$store.commit('setArtist', this.replaceLName(name));
       this.$store.commit('setLyric', this.parseLyric(lyric));
+      this.$store.commit('setPlayList',playList);
       this.$store.commit('setCurTime',0);
       this.$store.commit('setChangeTime',0);
       this.$store.commit('setIsActive', false);

@@ -3,6 +3,7 @@ import {likeSongOfName} from "../api";
 const song = {
   state: {
     listOfSongs: [],  //当前歌曲列表
+    playList: [],     // 播放列表
     isPlay: false,     // 是否播放中
     url: '',           // 歌曲地址
     id: '',             // 歌曲id
@@ -30,13 +31,19 @@ const song = {
       );
       return state.introduction;
     },
-
     listOfSongs: state =>{
       let listOfSongs = state.listOfSongs
       if(!listOfSongs.length){
         listOfSongs = JSON.parse(window.sessionStorage.getItem('listOfSongs')||null)
       }
       return listOfSongs;
+    },
+    playList: state =>{
+      let playList = state.playList
+      if(!playList.length){
+        playList = JSON.parse(window.sessionStorage.getItem('playList')||null)
+      }
+      return playList;
     },
     isPlay: state => {
       let isPlay = state.isPlay;
@@ -145,7 +152,6 @@ const song = {
     }
   },
   mutations: {
-
     setIntroduction: (state, introduction) => {
       state.introduction = introduction;
       window.sessionStorage.setItem(
@@ -153,10 +159,13 @@ const song = {
         JSON.stringify(introduction)
       );
     },
-
     setListOfSongs: (state, listOfSongs) => {
       state.listOfSongs = listOfSongs;
       window.sessionStorage.setItem('listOfSongs',JSON.stringify(listOfSongs));
+    },
+    setPlayList: (state, playList) => {
+      state.playList = playList;
+      window.sessionStorage.setItem('playList',JSON.stringify(playList));
     },
     setIsPlay: (state, isPlay)=> {
       state.isPlay = isPlay;

@@ -154,8 +154,8 @@ export default {
 
     play() {
       let song = this.song;
-      this.toplay(song.id, song.url, song.pic, 0, song.name, song.lyric);
-      this.$store.commit('setListOfSongs', [song]);
+      this.toplay(song.id, song.url, song.pic, 0, song.name, song.lyric,[song]);
+      this.$store.commit('setPlayList', [song]);
     },
     handleCollect() {
       if (!this.loginIn)

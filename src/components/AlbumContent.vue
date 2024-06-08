@@ -16,12 +16,12 @@
         {{ isCollected(item) }}
         <div class = "song-item">
           <span class = "item-index">
-            <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric)">
+            <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric,songList)">
               {{ index + 1 }}
             </span>
           </span>
           <span class = "item-title">
-              <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric)">
+              <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric,songList)">
                 {{ replaceFName(item.name) }}
               </span>
           </span>
