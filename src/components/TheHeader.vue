@@ -2,7 +2,7 @@
   <div class="header">
     <!-- 折叠图片 -->
     <div class="collapse-btn" @click="collapseChange">
-      <i class="el-icon-menu"></i>
+      <i-music></i-music>
     </div>
     <div class="logo">iMusic后台管理</div>
     <div class="header-right">
@@ -31,8 +31,10 @@
 import {mixin} from '../mixins/index'
 import bus from '../assets/js/bus'
 import {logout} from '../api'
+import IMusic from '../assets/icons/iMusic.vue'
 
 export default {
+  components: {IMusic},
   data () {
     return {
       collapse: false,
@@ -108,7 +110,7 @@ export default {
 
 .collapse-btn {
   float: left;
-  padding: 0 21px;
+  padding: 0 5px;
   cursor: pointer;
   line-height: 70px;
 }

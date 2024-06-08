@@ -19,13 +19,16 @@
       </template>
 
     </el-menu>
+
   </div>
 </template>
 
 <script>
 import bus from '../assets/js/bus'
+import IMusic from '../assets/icons/iMusic.vue'
 
 export default {
+  components: {IMusic},
   data () {
     return {
       collapse: false,
