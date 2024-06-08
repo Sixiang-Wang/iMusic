@@ -51,7 +51,7 @@
             <img src = '../assets/js/icon/icon-complain.svg' class = "icon">
           </span>
           <div class = "complaint-modal" v-if = "showModal">
-            <div class = "modal-overlay"></div>
+            <div class = "modal-overlay" @click="showModal = false"></div>
             <div class = "modal-content">
               <h3>请选择举报原因</h3>
               <div class = "reason-group" v-for = "(group, index) in reasonGroups" :key = "index">

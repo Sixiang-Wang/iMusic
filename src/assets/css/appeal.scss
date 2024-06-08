@@ -21,14 +21,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.message-container {
-  display: flex;          /* 启用Flexbox布局 */
-  justify-content: space-between; /* 将子元素分散对齐，但在这里我们使用align-items来居中对齐 */
-  align-items: center;    /* 垂直居中对齐 */
-}
-
-/* 如果需要让两个span之间有一些空间，可以使用以下样式 */
-.message-container > span:first-child {
+.appeal-container {
   margin-right: auto; /* 第一个span右边距自动，会推到最左边 */
   color: #333;
   font-size: 2.5em;
@@ -38,16 +31,8 @@ body {
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
-
-.message-container > span:last-child {
-  cursor: pointer;     /* 当鼠标悬停时显示指针手势 */
-  font-size: 1.5em; /* 根据需要调整字体大小 */
-  color: #888; /* 较淡的颜色 */
-}
-
-
 /* 消息列表容器样式 */
-.message-item {
+.appeal-item {
   display: flex;
   align-items: flex-start; /* 垂直居中对齐 */
   justify-content: space-between; /* 两端对齐 */
@@ -60,25 +45,22 @@ body {
 }
 
 /* 消息内容样式 */
-.message-content-1 {
+.appeal-content {
   flex-grow: 1; /* 允许内容占据剩余空间 */
   margin-top : 50px;
-  //margin-bottom: 30px;
-}
-.message-content-2 {
-  flex-grow: 1; /* 允许内容占据剩余空间 */
-  margin-top : 50px;
+  margin-right: 50px; /* 与时间的距离 */
   margin-bottom: 30px;
 }
+
 /* 消息时间样式 */
-.message-time {
+.appeal-time {
   position: absolute; /* 绝对定位 */
   top: 15px; /* 从顶部定位 */
   left: 100px; /* 从右侧定位 */
   font-size: 0.8em; /* 根据需要调整字体大小 */
   color: #888; /* 较淡的颜色 */
 }
-.message-link {
+.appeal-entry {
   cursor: pointer;     /* 当鼠标悬停时显示指针手势 */
   position: absolute; /* 绝对定位 */
   bottom: 10px; /* 从顶部定位 */
@@ -86,24 +68,8 @@ body {
   font-size: 1.0em; /* 根据需要调整字体大小 */
   color: #2aa3ef; /* 较淡的颜色 */
 }
-.message-read {
-  cursor: pointer;     /* 当鼠标悬停时显示指针手势 */
-  position: absolute; /* 绝对定位 */
-  top: 10px; /* 从顶部定位 */
-  right: 50px; /* 从右侧定位 */
-  font-size: 1.0em; /* 根据需要调整字体大小 */
-  color: #888; /* 较淡的颜色 */
-}
-.message-delete {
-  cursor: pointer;     /* 当鼠标悬停时显示指针手势 */
-  position: absolute; /* 绝对定位 */
-  top: 10px; /* 从顶部定位 */
-  right: 10px; /* 从右侧定位 */
-  font-size: 1.0em; /* 根据需要调整字体大小 */
-  color: #ff1500; /* 较淡的颜色 */
-}
 /* 消息来源样式 */
-.message-src {
+.appeal-src {
   position: absolute; /* 绝对定位 */
   top: 10px; /* 从顶部定位 */
   left: 10px; /* 从右侧定位 */
@@ -112,11 +78,9 @@ body {
   color: #000000; /* 较淡的颜色 */
 }
 /* 鼠标悬停效果 */
-.message-item:hover {
+.appeal-item:hover {
   background-color: #e9e9e9;
 }
-
-
 
 .complaint-modal {
   position: fixed;
@@ -131,18 +95,19 @@ body {
 }
 
 .modal-overlay {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
 }
+
 .modal-content {
   background: #fff;
   padding: 30px; /* 增大内边距 */
   border-radius: 8px; /* 增大边框圆角 */
-  width: 40%; /* 弹窗宽度为视口的80% */
+  width: 80%; /* 弹窗宽度为视口的80% */
   max-width: 80vh; /* 限制最大宽度，防止在小屏幕上过大 */
   max-height: 60vh; /* 设置最大高度为视口高度的80% */
   position: relative; /* 相对于弹窗定位 */
@@ -151,7 +116,7 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 40%; /* 假设弹窗有一个固定的高度或者填充了父元素的高度 */
+  height: 100%; /* 假设弹窗有一个固定的高度或者填充了父元素的高度 */
 }
 
 .modal-body {
@@ -161,6 +126,19 @@ body {
 
 .reason-group {
   margin-bottom: 20px; /* 每个原因组之间的间距 */
+}
+
+.description-textarea {
+  height: 200px;
+  width: 800px;
+  max-width: 100%;
+  padding: 10px; /* 添加内边距 */
+  border: 1px solid #ccc; /* 添加边框 */
+  border-radius: 5px; /* 添加圆角 */
+  font-size: 16px; /* 设置字体大小 */
+  font-family: inherit; /* 继承父元素的字体 */
+  resize: none; /* 禁止用户调整大小 */
+  transition: border-color 0.3s ease; /* 添加边框颜色过渡效果 */
 }
 
 .description-textarea:focus {

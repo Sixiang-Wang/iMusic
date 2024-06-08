@@ -23,7 +23,8 @@ import RecordSongs from "@/pages/MyMusic/RecordSongs.vue";
 import RecordSongList from "@/pages/MyMusic/RecordSongList.vue";
 import CreateReport from "@/pages/CreateReport.vue";
 import ListeningReport from "@/pages/ListeningReport.vue";
-import Message from "@/pages/Message.vue"
+import Message from "@/pages/Message.vue";
+import Appeal from "@/pages/Appeal.vue";
 
 Vue.use(Router)
 
@@ -165,6 +166,11 @@ export default new Router({
       path:'/message',
       name: 'message',
       component: Message
+    },
+    {
+      path:'/appeal',
+      name: 'appeal',
+      component: Appeal
     }
 
   ],

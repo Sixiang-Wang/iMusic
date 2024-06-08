@@ -165,10 +165,16 @@ export const recommendSongList = (id) => get(`recentSong/recommendSongList/${id}
 // 推荐歌手
 export const recommendSinger = (id) => get(`recentSong/recommendSinger/${id}`);
 
-// ================== 投诉 ===============
+// ================== 投诉与申诉 ===============
 
 // 投诉歌单、歌曲
 export const addComplaint = (params) => post(`complaint/add`,params);
+
+// 用户所有被投诉的（歌曲
+export const allComplaintAgainstUser = (userId) => get(`/complaint/allComplaintAgainstUser?userId=${userId}`);
+
+// 申诉
+export const appealComplaint = (params) => post(`/complaint/appealComplaint`,params);
 
 // ================ 消息提醒 ==============
 
