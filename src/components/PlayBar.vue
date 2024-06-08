@@ -368,8 +368,8 @@ export default {
     },
     // 上一首
     prev() {
-      // 当前处于不可能状态或者只有一首音乐
-      if (this.listIndex !== -1 && this.listOfSongs.length > 1) {
+      // 当前处于不可能状态或者只有0首音乐
+      if (this.listIndex !== -1 && this.listOfSongs.length > 0) {
         if (this.flag !== 0) {
           if (this.flag === 1) {
             this.getRandomIndex();
@@ -405,7 +405,7 @@ export default {
           addRecentSong(RecentSong);
         }
         addNums(this.id);
-      } else {
+      }else {
         this.$store.commit("setIsPlay", false);
         this.$store.commit("setPlayButtonUrl", "#icon-bofang");
         this.$message.warning("歌曲列表只有一首歌曲或没有歌曲");
@@ -413,8 +413,8 @@ export default {
     },
     // 下一首
     next() {
-      // 当前处于不可能状态或者只有一首音乐
-      if (this.listIndex !== -1 && this.listOfSongs.length > 1) {
+      // 当前处于不可能状态或者只有0首音乐
+      if (this.listIndex !== -1 && this.listOfSongs.length > 0) {
         if (this.flag !== 0) {
           if (this.flag === 1) {
             this.getRandomIndex();
