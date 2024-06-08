@@ -1,40 +1,69 @@
 <template>
-  <content-list style="margin: 20px 60px" :contentList="collectList"></content-list>
+  <div style="margin: 20px 60px">
+    <content-list :contentList="currentLists"></content-list>
+    <div class="pagination">
+      <el-pagination
+        style="text-align: center"
+        layout="prev, pager, next, total "
+        background
+        :current-page.sync="currentPage"
+        :total="singerList.length"
+        :page-size="pageSize"
+        @current-change="handlePageChange"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
 
 import ContentList from "../../components/ContentList.vue";
+import {getRecentSongByUserId, getSingerById} from "../../api";
 import {mapGetters} from "vuex";
-import {collectSongListOfUserId} from "../../api";
+import {mixin} from "../../mixins";
 
 export default {
   components: {ContentList},
-  data(){
-    return{
-      collectList: [],
+  data() {
+    return {
+      singerList: [],
+      currentPage: 1,
+      pageSize: 15,
+      listOfRecordedArtists: [],
     }
   },
-  computed:{
+  mixins: [mixin],
+  computed: {
     ...mapGetters([
       'userId',
-    ])
+    ]),
+    currentLists() {
+      return this.singerList.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
+    },
   },
   mounted() {
-    this.getCollection(this.userId);
+    getRecentSongByUserId(this.userId).then(res => {
+      res.data.forEach(item => {
+        if (!this.listOfRecordedArtists.includes(item.singerId)) {
+          getSingerById(item.singerId).then(res2 => {
+            this.singerList.push(res2);
+          })
+          this.listOfRecordedArtists.push(item.singerId);
+        }
+      })
+    });
   },
   methods: {
-    getCollection(userId) {
-      collectSongListOfUserId(userId).then(res => {
-        this.collectList = res;
-      }).catch(error => {
-        console.log('get collection of songList fails\n' + error);
-      })
-    }
+    handlePageChange(newPage) {
+      this.currentPage = newPage;
+    },
   }
 }
 </script>
 
-<style scoped lang = "scss">
 
+<style scoped lang="scss">
+.el-pagination {
+  text-align: center;
+}
 </style>

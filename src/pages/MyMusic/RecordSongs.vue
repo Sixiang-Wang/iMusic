@@ -1,5 +1,5 @@
 <template>
-  <album-content :song-list="recentList">dd</album-content>
+  <album-content :song-list="recentList"></album-content>
 
 </template>
 

@@ -21,7 +21,7 @@ import {mapGetters} from "vuex";
 export default {
   data() {
     return {
-      activeName: 'songs',
+      activeName: 'init',
     }
   },
   computed: {
@@ -29,8 +29,12 @@ export default {
       'userId'          // 当前登录用户id
     ]),
   },
+  created() {
+    this.goPage('songs','/my-music/my-favor/songs');
+  },
   methods: {
     goPage(name,path){
+      if(this.activeName === name) return;
       this.activeName = name;
       this.$router.push({path: path})
     },
