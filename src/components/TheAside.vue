@@ -4,8 +4,8 @@
       <h2 class="title">播放列表</h2>
 
       <div class="menus">
-        <ul v-if="listOfSongs.length">
-          <li v-for="(item,index) in listOfSongs" :key="index" :class="{'is-play': id === item.id}"
+        <ul v-if="playList.length">
+          <li v-for="(item,index) in playList" :key="index" :class="{'is-play': id === item.id}"
               @click="toplay(item.id, item.url, item.pic, item.index, item.name, item.lyric)">
             <img
               :src="getUrl(item.pic)"
@@ -35,7 +35,7 @@ export default {
   computed: {
     ...mapGetters([
       'showAside', // 是否显示播放中的歌曲列表
-      'listOfSongs', // 当前歌曲列表
+      'playList', // 当前歌曲列表
       'id',          // 播放中的音乐id
       'loginIn',   // 用户是否已登录
       'userId',    // 当前登录用户的id
@@ -49,8 +49,8 @@ export default {
       _this.$store.commit('setShowAside', false)
     }, true)
 
-    if (!this.listOfSongs) {
-      this.$store.commit("setListOfSongs", [])
+    if (!this.playList) {
+      this.$store.commit("setPlayList", [])
     }
 
   },

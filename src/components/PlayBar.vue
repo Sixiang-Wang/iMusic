@@ -138,7 +138,7 @@ export default {
       'curTime', // 当前音乐的播放位置
       'showAside', // 是否显示播放中的歌曲列表
       'listIndex', // 当前歌曲在歌单中的位置
-      'listOfSongs', // 当前歌单列表
+      'playList', // 当前歌单列表
       'autoNext', // 自动播放下一首
       'loginIn',   // 用户是否已登录
       'userId',    // 当前登录用户的id
@@ -368,8 +368,8 @@ export default {
     },
     // 上一首
     prev() {
-      // 当前处于不可能状态或者只有一首音乐
-      if (this.listIndex !== -1 && this.listOfSongs.length > 1) {
+      // 当前处于不可能状态或者只有0首音乐
+      if (this.listIndex !== -1 && this.playList.length > 0) {
         if (this.flag !== 0) {
           if (this.flag === 1) {
             this.getRandomIndex();
@@ -384,16 +384,16 @@ export default {
           if (this.listIndex > 0) {
             this.$store.commit("setListIndex", this.listIndex - 1);
           } else {
-            this.$store.commit("setListIndex", this.listOfSongs.length - 1);
+            this.$store.commit("setListIndex", this.playList.length - 1);
           }
         }
         this.$store.commit("setCurTime", 0);
         this.$store.commit("setChangeTime", 0);
         if (this.isPlay) {
-          this.toplay(this.listOfSongs[this.listIndex].url);
+          this.toplay(this.playList[this.listIndex].url);
         } else {
           this.$store.commit("setIsPlay", true);
-          this.toplay(this.listOfSongs[this.listIndex].url);
+          this.toplay(this.playList[this.listIndex].url);
         }
         // this.addPlayCount(this.id);
         if (this.loginIn) {
@@ -405,7 +405,7 @@ export default {
           addRecentSong(RecentSong);
         }
         addNums(this.id);
-      } else {
+      }else {
         this.$store.commit("setIsPlay", false);
         this.$store.commit("setPlayButtonUrl", "#icon-bofang");
         this.$message.warning("歌曲列表只有一首歌曲或没有歌曲");
@@ -413,8 +413,8 @@ export default {
     },
     // 下一首
     next() {
-      // 当前处于不可能状态或者只有一首音乐
-      if (this.listIndex !== -1 && this.listOfSongs.length > 1) {
+      // 当前处于不可能状态或者只有0首音乐
+      if (this.listIndex !== -1 && this.playList.length > 0) {
         if (this.flag !== 0) {
           if (this.flag === 1) {
             this.getRandomIndex();
@@ -426,7 +426,7 @@ export default {
             this.$store.commit("setChangeTime", 0);
           }
         } else {
-          if (this.listIndex < this.listOfSongs.length - 1) {
+          if (this.listIndex < this.playList.length - 1) {
             this.$store.commit("setListIndex", this.listIndex + 1);
           } else {
             this.$store.commit("setListIndex", 0);
@@ -435,10 +435,10 @@ export default {
         this.$store.commit("setCurTime", 0);
         this.$store.commit("setChangeTime", 0);
         if (this.isPlay) {
-          this.toplay(this.listOfSongs[this.listIndex].url);
+          this.toplay(this.playList[this.listIndex].url);
         } else {
           this.$store.commit("setIsPlay", true);
-          this.toplay(this.listOfSongs[this.listIndex].url);
+          this.toplay(this.playList[this.listIndex].url);
         }
         // this.addPlayCount(this.id);
         if (this.loginIn) {
@@ -457,22 +457,22 @@ export default {
       }
     },
     getRandomIndex() {
-      this.randomIndex = parseInt(Math.random() * this.listOfSongs.length, 10);
+      this.randomIndex = parseInt(Math.random() * this.playList.length, 10);
     },
     // 播放音乐
     toplay: function (url) {
       if (url && url !== this.url) {
-        this.$store.commit('setId', this.listOfSongs[this.listIndex].id);
+        this.$store.commit('setId', this.playList[this.listIndex].id);
         this.$store.commit('setUrl', this.$store.state.configure.HOST + url);
-        this.$store.commit('setPicUrl', this.$store.state.configure.HOST + this.listOfSongs[this.listIndex].pic);
-        this.$store.commit('setTitle', this.replaceFName(this.listOfSongs[this.listIndex].name));
-        this.$store.commit('setArtist', this.replaceLName(this.listOfSongs[this.listIndex].name));
-        this.$store.commit('setLyric', this.parseLyric(this.listOfSongs[this.listIndex].lyric));
+        this.$store.commit('setPicUrl', this.$store.state.configure.HOST + this.playList[this.listIndex].pic);
+        this.$store.commit('setTitle', this.replaceFName(this.playList[this.listIndex].name));
+        this.$store.commit('setArtist', this.replaceLName(this.playList[this.listIndex].name));
+        this.$store.commit('setLyric', this.parseLyric(this.playList[this.listIndex].lyric));
 
 
         this.$store.commit(
           "setIntroduction",
-          this.listOfSongs[this.listIndex].introduction
+          this.playList[this.listIndex].introduction
         );
 
 

@@ -64,7 +64,7 @@ import {
   commitRank,
   getRankOfSongListId,
   getRankOfSongListIdAndUserId,
-  setCollect, deleteCollectSongList, selectByPrimaryKey, existCollectSongList, collectNumOfSongList
+  setCollect, deleteCollectSongList, getSongListById, existCollectSongList, collectNumOfSongList
 } from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 import Comment from "../components/Comment.vue";
@@ -99,7 +99,7 @@ export default {
   },
   mounted() {
     this.songListId = this.$route.params.id;
-    selectByPrimaryKey(this.songListId).then(res =>
+    getSongListById(this.songListId).then(res =>
     {
       this.songListAlbum = res;
     })

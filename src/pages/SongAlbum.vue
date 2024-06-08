@@ -28,9 +28,11 @@
           <play-icon style = "margin: 3px 12px"></play-icon>
           <span style = "margin-top: 8px;">播放</span>
         </div>
-        <div class = "like-icon" @click = "">
-          <like-icon style = "margin: 3px 12px"></like-icon>
-          <span style = "margin-top: 6px;">收藏</span>
+
+        <div class = "collect" @click = "handleCollect()">
+          <like-icon style="margin: 6px 10px" :class = "{'have-collected':this.isCollect==='已收藏'}">
+          </like-icon>
+          <span style = "margin-top: 7px;margin-left: 2px">{{ this.isCollect }}</span>
         </div>
       </div>
 
@@ -50,15 +52,23 @@
 <script>
 import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
-import {collectNumOfSong, songOfSongId} from "../api";
+import {
+  collectNumOfSong,
+  deleteCollectSong,
+  deleteCollectSongList,
+  existCollectSong,
+  setCollect,
+  songOfSongId
+} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 import Comment from "../components/Comment.vue";
 import PlayIcon from "../assets/icon/playIcon.vue";
 import LikeIcon from "../assets/icon/likeIcon.vue";
+import CollectIcon from "../assets/icon/collectIcon.vue";
 
 export default {
   name: 'singer-album',
-  components: {LikeIcon, PlayIcon, AlbumContent, Comment},
+  components: {CollectIcon, LikeIcon, PlayIcon, AlbumContent, Comment},
   mixins: [mixin],
   data() {
     return {
@@ -68,6 +78,7 @@ export default {
       pic: "",
       favor: '',
       lyric: [],
+      isCollect: '收藏',
     }
   },
   computed: {
@@ -94,6 +105,16 @@ export default {
     {
       this.favor = res
     })
+    if (this.loginIn)
+    {
+      existCollectSong(this.userId, this.songId).then(res =>
+      {
+        if (res)
+        {
+          this.isCollect = '已收藏';
+        }
+      })
+    }
 
   },
   methods: {
@@ -133,11 +154,41 @@ export default {
 
     play() {
       let song = this.song;
-      this.toplay(song.id, song.url, song.pic, 0, song.name, song.lyric);
-      this.$store.commit('setListOfSongs', [song]);
+      this.toplay(song.id, song.url, song.pic, 0, song.name, song.lyric,[song]);
+      this.$store.commit('setPlayList', [song]);
+    },
+    handleCollect() {
+      if (!this.loginIn)
+      {
+        this.notify('请先登录');
+      }
+      else {
+        let params = new URLSearchParams();
+        params.append('userId', this.userId);
+        params.append('type', 0);
+        params.append('songId', this.songId);
+        setCollect(params).then(res =>
+        {
+          if (res.code === 1)
+          {
+            this.isCollect = '已收藏';
+            this.favor++;
+            this.notify('收藏成功', 'success');
+          }
+          else if (res.code === 2)
+          {
+            deleteCollectSong(this.userId, this.songId);
+            this.isCollect = '收藏';
+            this.favor--;
+            this.notify('取消成功收藏', 'success');
+          }
+          else {
+            this.notify('收藏错误', 'error');
+          }
+        });
+      }
     }
   }
-
 }
 </script>
 

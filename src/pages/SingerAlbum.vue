@@ -51,7 +51,6 @@ import AlbumContent from "../components/AlbumContent.vue";
 export default {
   name: 'singer-album',
   components: {AlbumContent},
-  // components: {AlbumContent},
   mixins: [mixin],
   data() {
     return {
