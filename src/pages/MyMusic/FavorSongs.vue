@@ -26,7 +26,7 @@ export default {
   methods: {
     getCollection(userId) {
       collectSongOfUserId(userId).then(res => {
-        console.log("res:",res);
+        // console.log("res:",res);
         this.collectList = res;
       }).catch(error => {
         console.log('get collection of songs fails\n' + error);

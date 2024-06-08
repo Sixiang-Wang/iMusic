@@ -5,27 +5,28 @@
         <img :src = 'attachImageUrl(songListAlbum.pic)' alt = "">
       </div>
       <div class = "album-info">
-        <h2>简 介:</h2>
-        <span>{{ songListAlbum.introduction }}</span>
+        <h2 style = "font-size: 20px">简 介:</h2>
+        <span style = "font-size: 16px">{{ songListAlbum.introduction }}</span>
       </div>
     </div>
-    <div class = "album-content">
-      <ul>
-        <li>
-          <div class = "album-title">
-            <p>{{ songListAlbum.title }}</p>
-          </div>
-        </li>
-        <li>
-          <div class = "collect" @click = "handleCollect()">
-            <collect-icon :class = "{'have-collected':this.isCollect==='已收藏'}"
-                          style = "margin-left: 25px;">
-            </collect-icon>
-            <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
-          </div>
-        </li>
 
-      </ul>
+    <div class = "album-content">
+      <div class = "album-title">
+        <p>{{ songListAlbum.title }}</p>
+      </div>
+      <div style="margin-top: 15px">
+        <p>风格: {{ songListAlbum.style}}</p>
+      </div>
+      <div style="margin-top: 15px">
+        <p>收藏量: {{collectNum}}</p>
+      </div>
+      <div class = "collect" @click = "handleCollect()">
+        <collect-icon :class = "{'have-collected':this.isCollect==='已收藏'}"
+                      style = "margin-left: 25px;">
+        </collect-icon>
+        <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
+      </div>
+
 
       <div class = "album-score">
         <div>
@@ -63,7 +64,7 @@ import {
   commitRank,
   getRankOfSongListId,
   getRankOfSongListIdAndUserId,
-  setCollect, deleteCollectSongList, selectByPrimaryKey, existCollectSongList
+  setCollect, deleteCollectSongList, selectByPrimaryKey, existCollectSongList, collectNumOfSongList
 } from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 import Comment from "../components/Comment.vue";
@@ -83,6 +84,7 @@ export default {
       selfRank: 0,
       isCollect: '收藏',
       star: 0,
+      collectNum: '',
     }
   },
   computed: {
@@ -100,6 +102,9 @@ export default {
     selectByPrimaryKey(this.songListId).then(res =>
     {
       this.songListAlbum = res;
+    })
+    collectNumOfSongList(this.songListId).then(res => {
+      this.collectNum = res;
     })
     this.getSongList();
     this.getRank(this.songListId);
@@ -152,12 +157,14 @@ export default {
           if (res.code === 1)
           {
             this.isCollect = '已收藏';
+            this.collectNum++;
             this.notify('收藏成功', 'success');
           }
           else if (res.code === 2)
           {
             deleteCollectSongList(this.userId, this.songListId);
             this.isCollect = '收藏';
+            this.collectNum--;
             this.notify('取消成功收藏', 'success');
           }
           else {

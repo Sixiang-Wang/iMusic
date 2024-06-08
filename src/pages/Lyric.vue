@@ -6,10 +6,10 @@
       </div>
       <div class="show">
         <h3>
-          {{ "歌手:  " }}<span>{{ artist }}</span>
+          {{ "歌名:  " }}<span>{{ title }}</span>
         </h3>
         <h3 style="margin-top: 20px">
-          {{ "所属专辑:  " }}<span>暂无专辑</span>
+          {{ "歌手:  " }}<span>{{ artist }}</span>
         </h3>
       </div>
     </div>
@@ -41,8 +41,6 @@
 <script>
 import {mixin} from '../mixins'
 import {mapGetters} from 'vuex'
-// import Comment from "../components/Comment";
-// import SongComment from "../components/SongComment";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names

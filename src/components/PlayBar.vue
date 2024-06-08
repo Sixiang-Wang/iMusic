@@ -40,7 +40,7 @@
           </div>
           <div ref="progress" class="progress" @mousemove="mousemove">
             <!--            进度条-->
-            <div ref="bg" class="bg" @click="updatemove">
+            <div ref="bg" class="bg" @click="updateMove">
               <div ref="curProgress" class="cur-progress" :style="{width: curLength + '%'}"></div>
             </div>
             <!--            拖动点-->
@@ -339,7 +339,7 @@ export default {
       this.$store.commit('setChangeTime', newCurTime)
     },
     // 点击播放条切换播放进度
-    updatemove(e) {
+    updateMove(e) {
       this.$refs.bg.style.cursor = "pointer";
       if (this.url !== "" && this.url !== null) {
         if (!this.tag) {
