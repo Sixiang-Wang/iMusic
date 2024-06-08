@@ -1,9 +1,14 @@
 @import "var.scss";
 @import "global.scss";
 
+.style-select {
+  margin-left: 150px;
+  margin-top: $header-height + 40px;
+  width: 1170px;
+}
+
 .song-list {
   margin: 30px 150px;
-  margin-top: $header-height + 20px;
   padding-bottom: 50px;
   min-width: 800px;
   background-color: $color-white;

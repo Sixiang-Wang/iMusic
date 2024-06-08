@@ -1,0 +1,19 @@
+.styles {
+  height: 60px;
+  background: lightgrey;
+  .style-item {
+    font-size: 16px;
+    width: 40px;
+    height: 30px;
+    margin: 20px;
+    color: black;
+    cursor: pointer;
+  }
+  .selected {
+    color: #67c23a;
+  }
+  .style-item:hover {
+    color: #67c23a;
+  }
+}
+

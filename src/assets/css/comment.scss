@@ -64,16 +64,12 @@
         width: 20px;
         margin-top: 10px;
         cursor: pointer;
+        fill: darkgrey;
       }
       .active {
-        color: firebrick;
+        fill: firebrick;
       }
     }
-
-
   }
 }
 
-.icon {
-  @include icon(1em);
-}

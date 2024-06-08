@@ -1,6 +1,7 @@
 import {get, post} from "./http"
 import songList from "../pages/SongList.vue";
 import Axios from "axios";
+import style from "../components/Style.vue";
 
 
 // ============歌手相关=============
@@ -54,6 +55,8 @@ export const likeTitle = (keywords) => get(`songList/likeTitle?title=${keywords}
 export const deleteSongList = (id) => get(`songList/delete?id=${id}`)
 // 编辑歌单
 export const updateSongList = (params) => post(`songList/update`,params);
+
+export const songListLikeStyle = (style) => get(`songList/likeStyle?style=${style}`);
 
 // =============歌单的歌曲相关========
 // 根据歌曲id查询歌曲列表

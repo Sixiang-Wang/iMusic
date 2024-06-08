@@ -26,15 +26,13 @@
               <li class = "time">{{ item.createTime }}</li>
               <li class = "content">{{ item.content }}</li>
               <li class="up" ref="up" @click="handleUp(item.id, item.up, index)">
-                <svg class="icon">
-                  <use xlink:href="#icon-zan"></use>
-
-                </svg>
+                {{existUp(item.id, index)}}
+                <up-icon></up-icon>
               </li>
             </ul>
 
           </div>
-
+          <delete-icon style="margin-top: 50px"></delete-icon>
         </li>
       </ul>
     </div>
@@ -54,11 +52,13 @@ import {
 } from "../api";
 import {mapGetters} from "vuex";
 import testIcon from '../assets/icon/deleteIcon.vue'
+import DeleteIcon from "../assets/icon/deleteIcon.vue";
+import UpIcon from "../assets/icon/upIcon.vue";
 export default {
   name: 'comment',
   mixins: [mixin],
   props: ['type'],
-  components:{testIcon},
+  components:{UpIcon, DeleteIcon, testIcon},
   data() {
     return {
       inputValue: '',
@@ -135,6 +135,13 @@ export default {
           this.$forceUpdate();
         });
       });
+    },
+    existUp(commentId,index) {
+      existCommentUp(this.userId, commentId).then(res => {
+        if (res) {
+          this.$refs.up[index].children[0].classList.add('active');
+        }
+      })
     },
     handleUp(commentId, up, index) {
       if (!this.loginIn)
