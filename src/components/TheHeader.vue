@@ -1,18 +1,19 @@
 <template>
   <div class="the-header">
     <div class="header-logo" @click="goHome()">
-      <svg class="icon">
-        <use xlink:href="#icon-erji"></use>
+      <svg class="icon" :style="{'margin-left':marginleftPx + 'px'}" style="margin-top: -5px;scale: 1.1">
+        <i-music></i-music>
       </svg>
-      <span>iMusic</span>
+      <span style="margin-left: 10px">iMusic</span>
     </div>
+
     <ul class="navbar">
       <li :class="{active: item.name === activeName}" v-for="item in navMsg" :key="item.path" @click="goPage(item.path, item.name)">
         {{item.name}}
       </li>
       <li>
         <div class="header-search">
-          <input type="text" placeholder="搜索音乐" @keyup.enter="goSearch()" v-model="keywords">
+          <input type="text"  placeholder="搜索音乐" @keyup.enter="goSearch()" v-model="keywords">
             <div class="search-btn" @click="goSearch()">
               <svg class="icon">
                 <use xlink:href="#icon-sousuo"></use>
@@ -39,15 +40,18 @@
 import {mapGetters} from 'vuex';
 import {navMsg , loginMsg, menuList} from '../assets/data/header';
 import {logout} from "../api";
+import IMusic from "../assets/icon/iMusic.vue";
 
 export default {
   name: 'the-header',
+  components: {IMusic},
   data () {
     return {
       navMsg: [], // 左侧导航栏
       keywords: '', // 搜索关键字
       loginMsg : [],   // 右侧导航栏
-      menuList : []     // 用户下拉菜单栏
+      menuList : [],     // 用户下拉菜单栏
+      marginleftPx:0
     }
   },
   created () {
@@ -60,9 +64,14 @@ export default {
       'activeName',
       'loginIn',
       'avatar'
-    ])
+    ]),
+
   },
   mounted() {
+    this.marginleftPx = window.innerWidth / 3 - 400;
+    window.onresize = () => {
+      this.marginleftPx = window.innerWidth / 3 - 400;
+    };
     document.querySelector('#user').addEventListener('click', function (e){
       document.querySelector('.menu').classList.add("show");
       e.stopPropagation();    // 关键在于阻止冒泡
