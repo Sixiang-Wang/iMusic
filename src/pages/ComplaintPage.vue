@@ -174,7 +174,6 @@ export default {
       })
     },
     handleRow (row) {
-      this.notify(row)
       if (row.type === 0) {
         invisibleSong(row.songId).then(tmp => {
           if (tmp) {
