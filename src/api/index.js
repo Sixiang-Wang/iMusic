@@ -116,7 +116,8 @@ export const addCommentUp = (params) => post(`commentUp/add`, params);
 export const deleteComment = (id) => get(`comment/delete?id=${id}`);
 // 取消点赞
 export const deleteCommentUp = (userId, commentId) => get(`commentUp/delete?userId=${userId}&commentId=${commentId}`);
-
+// 评论的点赞数量
+export const getUpCount = (commentId) => get(`commentUp/sumUp?commentId=${commentId}`);
 
 // =============== 收藏 ==================
 // 判断歌曲是否已收藏
