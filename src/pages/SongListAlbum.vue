@@ -20,16 +20,19 @@
       <div style="margin-top: 15px">
         <p>收藏量: {{collectNum}}</p>
       </div>
-      <div class = "collect" @click = "handleCollect()">
-        <collect-icon :class = "{'have-collected':this.isCollect==='已收藏'}"
-                      style = "margin-left: 25px;">
-        </collect-icon>
-        <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
+      <div style="display: flex">
+        <div class = "collect" @click = "handleCollect()">
+          <collect-icon :class = "{'have-collected':this.isCollect==='已收藏'}"
+                        style = "margin-left: 25px;">
+          </collect-icon>
+          <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
+        </div>
+        <div class="collect" style="margin-left: 10px" @click="showComplaintModal">
+          <complain-icon style="color: #646464;width:25px;height: 25px;margin-left: 25px"/>
+          <span style = "margin-top: 3px;margin-left: 5px">投诉</span>
+        </div>
       </div>
-      <div class="collect" @click="showComplaintModal">
-        <complain-icon style="color: #646464;width:25px;height: 25px;margin-left: 25px"/>
-        <span style = "margin-top: 3px;margin-left: 5px">投诉</span>
-      </div>
+
       <div class = "complaint-modal" v-if = "showModal">
         <div class = "modal-overlay" @click="showModal = false"></div>
         <div class = "modal-content">
@@ -77,7 +80,7 @@
       </div>
 
       <div class = "songs-body">
-        <album-content :songList = "listOfSongs">
+        <album-content :songList = "songList">
           <template slot = "title">歌 单</template>
         </album-content>
       </div>
@@ -176,7 +179,6 @@ export default {
   computed: {
     ...mapGetters(
       [
-        "listOfSongs",  //当前歌单歌曲列表
         "loginIn",
         "username",
         "userId",
@@ -215,12 +217,9 @@ export default {
         {
           songOfSongId(item.songId).then(res2 =>
           {
-            // console.log("res2: ")
-            // console.log(res2);
             this.songList.push(res2);
           })
         }
-        this.$store.commit('setListOfSongs', this.songList);
       }).catch(error =>
       {
         console.log(error);

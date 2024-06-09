@@ -12,8 +12,8 @@
         <span class="message-time">{{ item.createTime }}</span>
         <span class="message-src" v-if="item.from===-1">系统消息</span>
         <div class="message-read" @click="readThisMessage(item)">
-          <span v-if="item.isRead === 1" style="color: #00aced">已读</span>
-          <span v-else>设为已读</span>
+          <span v-if="item.isRead === 1">已读</span>
+          <span v-else style="color: #00aced">设为已读</span>
         </div>
         <span class="message-delete" @click="confirmDelete(item.text,item.id)">删除</span>
         <!-- 确认删除的对话框 -->

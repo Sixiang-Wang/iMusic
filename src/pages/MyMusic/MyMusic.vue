@@ -64,7 +64,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'listOfSongs',    // 当前的播放列表
       'userId'          // 当前登录用户id
     ])
   },

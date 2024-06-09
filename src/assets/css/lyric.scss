@@ -49,6 +49,17 @@
       color: #2aa3ef;
     }
 
+    .download {
+      font-weight: normal;
+      margin-left: 80px;
+      font-size: 20px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .download:hover {
+      color: seagreen;
+    }
+
   }
 
   .content {
@@ -121,6 +132,7 @@
     }
 
   }
+
 }
 
 

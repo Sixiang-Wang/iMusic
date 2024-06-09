@@ -2,7 +2,7 @@
   margin: 40px;
 
   .icons-above {
-    margin: 10px 35px;
+    margin: 10px 70px;
     display: flex;
     .create-btn {
       background: #DCDCDC;
@@ -18,7 +18,7 @@
     .change-style {
       fill: lightpink;
       cursor: pointer;
-      margin-left: 75%;
+      margin-left: 5%;
       transition: transform 0.3s ease;
     }
     .change-style:hover {
@@ -29,14 +29,14 @@
 
   .menu {
     width: 100%;
-    margin: 30px;
+    margin: 30px 70px;
     color: darkgrey;
     font-size: 24px;
     .menu-songList {
       width: 30%;
     }
     .menu-introduction {
-      margin-left: 420px;
+      margin-left: 410px;
     }
     .menu-style {
       margin-left: 315px;
@@ -44,14 +44,14 @@
   }
   .item-content {
     width: 100%;
-    margin: 10px 30px;
+    margin: 10px 70px;
     .item {
       text-align: center;
-      font-size: 18px;
+      font-size: 16px;
       display: flex;
       .img-container {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         overflow: hidden;
         background: #008800;
       }

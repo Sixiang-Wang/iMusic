@@ -25,6 +25,7 @@ import CreateReport from "@/pages/CreateReport.vue";
 import ListeningReport from "@/pages/ListeningReport.vue";
 import Message from "@/pages/Message.vue";
 import Appeal from "@/pages/Appeal.vue";
+import Song from "@/pages/Song.vue";
 
 Vue.use(Router)
 
@@ -111,6 +112,11 @@ export default new Router({
           component: ListeningReport
         }
       ]
+    },
+    {
+      path: '/song',
+      name: 'song',
+      component: Song,
     },
     {
       path: '/singer',

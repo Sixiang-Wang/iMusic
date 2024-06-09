@@ -50,10 +50,12 @@ import {mapGetters} from 'vuex';
 import {navMsg , loginMsg, menuList} from '../assets/data/header';
 import {getMessageUnreadNum, logout} from "../api";
 import IMusic from "../assets/icon/iMusic.vue";
+import {mixin} from "../mixins";
 
 export default {
   name: 'the-header',
   components: {IMusic},
+  mixins:[mixin],
   data () {
     return {
       navMsg: [], // 左侧导航栏
@@ -114,7 +116,14 @@ export default {
       }
     },
     goSearch () {
-      this.$router.push({path: '/search', query: {keywords: this.keywords}})
+      if (this.keywords==='')
+      {
+        this.notify('请输入内容')
+      }
+      else
+      {
+        this.$router.push({path: '/search', query: {keywords: this.keywords}})
+      }
     },
     // 获取图片地址
     attachImageUrl (srcurl){
