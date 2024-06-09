@@ -16,12 +16,12 @@
       <el-table-column label="资源更新" align="center" width="150">
         <template slot-scope="scope">
           <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeAvatarUpload"
-                     :on-success="handleAvatarSuccess">
+                     :on-success="handleAvatarSuccess" :show-file-list="false">
             <el-button size="mini">更新图片</el-button>
           </el-upload>
           <br/>
           <el-upload :action="uploadSongUrl(scope.row.id)" :before-upload="beforeSongUpload"
-                     :on-success="handleSongSuccess">
+                     :on-success="handleSongSuccess" :show-file-list="false">
             <el-button size="mini">更新歌曲</el-button>
           </el-upload>
         </template>
@@ -113,6 +113,7 @@ export default {
       delVisible: false,          //删除弹窗是否显示
       songs: [],
       songId: '',
+      name: '', //用户昵称
       singerId: '',
       addForm: {      // 添加歌曲的框
         songName: '',
@@ -134,14 +135,15 @@ export default {
     ...mapGetters([
       'loginIn',
       'userId',
-      'username'
+      'username',
     ])
   },
   mounted() {
     getUserOfId(this.userId).then(res => {
       this.singerId = res.singerId;
+      this.name = res.name;
       songOfSingerId(this.singerId).then(res => {
-        this.songs = res
+        this.songs = res;
       });
     })
   },
@@ -260,7 +262,7 @@ export default {
       let self = this;
       let form = new FormData(document.getElementById('tf'));
       form.append('singerId', this.singerId);
-      form.set('name', this.username + '-' + form.get('songName'));
+      form.set('name', this.name+ '-' + form.get('songName'));
       if (!form.get('lyric')) {
         form.set('lyric', '[00:00:00]暂无歌词');
       }
@@ -276,7 +278,6 @@ export default {
           let res = JSON.parse(req.response)
           if (res.code) {
             songOfSingerId(self.singerId).then(res => {
-              self.notify('++++++');
               self.songs = res
             });
             self.addForm = {};
