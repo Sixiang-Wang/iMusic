@@ -28,7 +28,9 @@
               <li class = "up" ref = "up" @click = "handleUp(item.id, item.up, index)">
                 {{ existUp(item.id, index) }}
                 <up-icon></up-icon>
+                <span>{{up[item.id]}}</span>
               </li>
+
             </ul>
           </div>
           <div class = "delete-icon" @click = "delComment(item.id)" v-if = "ownComment(item.userId)">
@@ -58,7 +60,7 @@ import {
   deleteCommentUp,
   existCommentUp,
   getCommentOfSong,
-  getCommentOfSongList,
+  getCommentOfSongList, getUpCount,
   getUserOfId,
   setComment, setLike
 } from "../api";
@@ -102,6 +104,10 @@ export default {
       if (!this.loginIn)
       {
         this.notify('请先登录', 'r');
+      }
+      else if (!this.inputValue)
+      {
+        this.notify('请输入内容');
       }
       else {
         let params = new URLSearchParams();
@@ -161,6 +167,7 @@ export default {
     getMsg() {
       this.commentList.forEach(item =>
       {
+        this.up[item.id] = item.up;
         getUserOfId(item.userId).then(res =>
         {
           this.avatars[item.id] = res.profilePicture;

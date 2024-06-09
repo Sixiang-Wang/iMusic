@@ -8,15 +8,14 @@
         <h3>
           {{ "歌名:  " }}<span>{{ title }}</span>
         </h3>
-        <h3 style="margin-top: 20px">
+        <h3 style="margin-top: 20px;margin-bottom: 20px">
           {{ "歌手:  " }}<span>{{ artist }}</span>
         </h3>
-        <h3 @click="downloadLyrics">
-          <br>
+        <span @click="downloadLyrics" class="download">
           导出歌词
-          <br>
-        </h3>
+        </span>
       </div>
+
     </div>
     <div class="content">
       <div class="lyric-title">
@@ -69,7 +68,7 @@ export default {
       "curTime",
       "lyric",
       "listIndex",
-      "listOfSongs",
+      "playList",
       "title",
       "artist",
       "picUrl",
@@ -82,7 +81,7 @@ export default {
   watch: {
     url() {
       this.$store.commit("setCurTime", 0);
-      this.lyr = this.parseLyric(this.listOfSongs[this.listIndex].lyric);
+      this.lyr = this.parseLyric(this.playList[this.listIndex].lyric);
     },
     curTime(val) {
       if (val === 0 || !this.manualScrolling) {
@@ -144,7 +143,7 @@ export default {
               let content = res.lyric;
               let eleLink = document.createElement("a");
               // 可考虑添加下载音乐格式的选项
-              eleLink.download = `${this.artist}-${this.title}.lyr`;
+              eleLink.download = `${this.artist}-${this.title}.lrc`;
               eleLink.style.dislpay = 'none';
               // 把字符内容转换成blob地址
               let blob = new Blob([content]);

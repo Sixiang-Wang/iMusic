@@ -329,8 +329,8 @@ export default {
       {
         if (res)
         {
-          let list = this.songList.filter(song => song.id !== this.deleteSongId);
-          this.$store.commit('setListOfSongs', list);
+          this.songList = this.songList.filter(song => song.id !== this.deleteSongId);
+          // this.$store.commit('setListOfSongs', list);
           this.deleteDialog = false;
           this.deleteSongId = '';
           this.notify('删除成功', 'success');

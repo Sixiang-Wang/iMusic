@@ -21,7 +21,6 @@ export default {
       'id',
       'url',
       'isPlay', // 是否播放中
-      'listOfSongs',
       'duration', // 音乐时长
       'curTime', // 当前音乐的播放位置
       'changeTime', // 指定播放时刻

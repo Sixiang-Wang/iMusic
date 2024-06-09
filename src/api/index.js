@@ -25,7 +25,9 @@ export const likeSongOfName = (keywords) => get(`song/likeSongOfName?songName=${
 // 添加歌曲播放次数
 export const addNums = (songId) => get(`/song/addNums?songId=${songId}`);
 // 查询热门歌曲
-  export const getTopSong = () =>get(`song/topSong`);
+export const getTopSong = () => get(`song/topSong`);
+// 根据风格查询歌曲
+export const songLikeStyle = (style) => get(`song/songOfStyle?style=${style}`);
 
 // ===================== 创作周报 =======================
 
@@ -33,7 +35,7 @@ export const addNums = (songId) => get(`/song/addNums?songId=${songId}`);
 export const getPopularSongOfUser = (userId) => get(`song/popularSongOfUser?userId=${userId}`);
 
 // 用户被收藏最多的歌
-export const getPopularCollectedSongOfUser = (userId)=> get(`song/popularCollectedSongOfUser?userId=${userId}`);
+export const getPopularCollectedSongOfUser = (userId) => get(`song/popularCollectedSongOfUser?userId=${userId}`);
 // 用户创作的评分最高的歌单
 export const getBestSongListOfUser = (userId) => get(`songList/bestSongListOfUser?userId=${userId}`);
 
@@ -54,7 +56,7 @@ export const likeTitle = (keywords) => get(`songList/likeTitle?title=${keywords}
 //删除歌单
 export const deleteSongList = (id) => get(`songList/delete?id=${id}`)
 // 编辑歌单
-export const updateSongList = (params) => post(`songList/update`,params);
+export const updateSongList = (params) => post(`songList/update`, params);
 
 export const songListLikeStyle = (style) => get(`songList/likeStyle?style=${style}`);
 
@@ -62,7 +64,7 @@ export const songListLikeStyle = (style) => get(`songList/likeStyle?style=${styl
 // 根据歌曲id查询歌曲列表
 export const listSongDetail = (songListId) => get(`listSong/detail?songListId=${songListId}`);
 // 给歌单中添加歌曲
-export const addListSong = (params) => post(`listSong/add`,params);
+export const addListSong = (params) => post(`listSong/add`, params);
 // 删除歌单中的歌曲
 export const deleteListSong = (songId, songListId) => get(`listSong/delete?songId=${songId}&songListId=${songListId}`);
 // ============用户相关==============
@@ -114,7 +116,8 @@ export const addCommentUp = (params) => post(`commentUp/add`, params);
 export const deleteComment = (id) => get(`comment/delete?id=${id}`);
 // 取消点赞
 export const deleteCommentUp = (userId, commentId) => get(`commentUp/delete?userId=${userId}&commentId=${commentId}`);
-
+// 评论的点赞数量
+export const getUpCount = (commentId) => get(`commentUp/sumUp?commentId=${commentId}`);
 
 // =============== 收藏 ==================
 // 判断歌曲是否已收藏
@@ -170,18 +173,18 @@ export const recommendSinger = (id) => get(`recentSong/recommendSinger/${id}`);
 // ================== 投诉与申诉 ===============
 
 // 投诉歌单、歌曲
-export const addComplaint = (params) => post(`complaint/add`,params);
+export const addComplaint = (params) => post(`complaint/add`, params);
 
 // 用户所有被投诉的（歌曲
 export const allComplaintAgainstUser = (userId) => get(`/complaint/allComplaintAgainstUser?userId=${userId}`);
 
 // 申诉
-export const appealComplaint = (params) => post(`/complaint/appealComplaint`,params);
+export const appealComplaint = (params) => post(`/complaint/appealComplaint`, params);
 
 // ================ 消息提醒 ==============
 
 // 添加信息
-export const addMessage = (params) => post(`message/add`,params);
+export const addMessage = (params) => post(`message/add`, params);
 
 // 使消息变为已读
 

@@ -33,7 +33,7 @@
       </div>
 
       <div class = "songs-body">
-        <album-content :songList = "listOfSongs">
+        <album-content :songList = "songList">
           <template slot = "title">歌 单</template>
         </album-content>
       </div>
@@ -60,6 +60,7 @@ export default {
       imageUrl: null,
       pic: "",
       fans: '',
+      songList: [],
     }
   },
   computed: {
@@ -67,8 +68,6 @@ export default {
       [
         'loginIn',
         'userId',
-        'listOfSongs',
-        'tempList', //当前歌手
       ]
     ),
     followClass() {
@@ -129,7 +128,7 @@ export default {
     getSongList() {
       songOfSingerId(this.singerId).then(res =>
       {
-        this.$store.commit('setListOfSongs', res);
+        this.songList = res;
       }).catch(error =>
       {
         console.log(error);
