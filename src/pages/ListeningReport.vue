@@ -48,8 +48,8 @@
     </div>
     <!-- 个性化推荐 -->
     <div class="content-list">
-      <h2>新发现的歌曲</h2>
-      <!-- 这里可以添加个性化推荐的歌曲列表 -->
+      <h2>新发现的歌单</h2>
+      <!-- 这里可以添加个性化推荐的歌单列表 -->
       <ul class="section-content">
         <li class="content-item" v-for="(value,index) in newSongLists" :key="index">
           <div class="kuo">
