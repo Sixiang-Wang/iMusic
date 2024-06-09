@@ -7,7 +7,7 @@
           <img :src="attachImageUrl(scope.row.pic)" alt="歌曲图片" style="width: 80px; height: 80px;">
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="歌手-歌名" width="300px">
+      <el-table-column prop="name" label="歌手-歌名"  min-width="300px">
       </el-table-column>
       <el-table-column prop="style" label="歌曲风格" width="300px">
       </el-table-column>
