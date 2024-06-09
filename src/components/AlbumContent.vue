@@ -121,10 +121,10 @@ import {mapGetters} from "vuex";
 import AddIcon from "../assets/icon/addIcon.vue";
 import DeleteIcon from "../assets/icon/deleteIcon.vue";
 import song from "../store/song";
-
+import {reasonGroup} from "../assets/data/reasonGroup";
 export default {
   name: 'album-content',
-  components: {DeleteIcon, AddIcon},
+  components: {DeleteIcon, AddIcon, reasonGroup},
   mixins: [mixin],
   props: ['songList'],
   computed: {
@@ -151,57 +151,7 @@ export default {
       showModal: false,
       selectedReasons: [],
       description: '',
-      reasonGroups: [
-        {
-          title: '违反法律法规',
-          reasons: [
-            {value: '违法违禁', label: '违法违禁'},
-            {value: '赌博诈骗', label: '赌博诈骗'},
-            {value: '盗搬我的稿件', label: '盗搬我的稿件'},
-            {value: '侵权申诉', label: '侵权申诉'},
-            // ... 可以继续添加更多
-          ],
-        },
-        {
-          title: '谣言及不实信息',
-          reasons: [
-            {value: '涉政谣言', label: '涉政谣言'},
-            {value: '涉社会事件谣言', label: '涉社会事件谣言'},
-            {value: '虚假不实信息', label: '虚假不实信息'},
-            // ... 可以继续添加更多
-          ],
-        },
-        {
-          title: '不规范行为',
-          reasons: [
-            {value: '违规推广', label: '违规推广'},
-            {value: '转载', label: '转载'},
-            {value: '自制错误', label: '自制错误'},
-            {value: '其他不规范行为', label: '其他不规范行为'},
-            // ... 可以继续添加更多
-          ],
-        },
-        {
-          title: '不友好行为',
-          reasons: [
-            {value: '人身攻击', label: '人身攻击'},
-            {value: '引战', label: '引战'},
-            // ... 可以继续添加更多不友好行为
-          ],
-        },
-        {
-          title: '公共秩序与道德',
-          reasons: [
-            {value: '色情低俗', label: '色情低俗'},
-            {value: '危险行为', label: '危险行为'},
-            {value: '观感不适', label: '观感不适'},
-            {value: '血腥暴力', label: '血腥暴力'},
-            {value: '青少年不良信息', label: '青少年不良信息'},
-            {value: '其他', label: '其他'},
-            // ... 可以继续添加更多公共秩序与道德问题
-          ],
-        },
-      ],
+      reasonGroups: reasonGroup,
     }
   },
   mounted() {
@@ -395,106 +345,7 @@ export default {
 }
 </script>
 
-<style scoped>
-/* 弹窗样式 */
-.complaint-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* 确保弹窗在其他内容之上 */
-}
-
-.modal-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.modal-content {
-  background: #fff;
-  padding: 30px; /* 增大内边距 */
-  border-radius: 8px; /* 增大边框圆角 */
-  width: 80%; /* 弹窗宽度为视口的80% */
-  max-width: 80vh; /* 限制最大宽度，防止在小屏幕上过大 */
-  max-height: 60vh; /* 设置最大高度为视口高度的80% */
-  position: relative; /* 相对于弹窗定位 */
-  z-index: 1001; /* 确保内容在overlay之上 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-  overflow: auto; /* 如果内容过多，允许滚动 */
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* 假设弹窗有一个固定的高度或者填充了父元素的高度 */
-}
-
-.modal-body {
-  /* 确保body部分不会占满整个.modal-content的高度，以便footer可以定位到底部 */
-  flex: 1; /* 占据剩余空间 */
-}
-
-.reason-group {
-  margin-bottom: 20px; /* 每个原因组之间的间距 */
-}
-
-.reason-list input[type="checkbox"] {
-  margin-right: 10px; /* 复选框和标签之间的间距 */
-}
-
-.description-textarea {
-  height: 200px;
-  width: 800px;
-  max-width: 100%;
-  padding: 10px; /* 添加内边距 */
-  border: 1px solid #ccc; /* 添加边框 */
-  border-radius: 5px; /* 添加圆角 */
-  font-size: 16px; /* 设置字体大小 */
-  font-family: inherit; /* 继承父元素的字体 */
-  resize: none; /* 禁止用户调整大小 */
-  transition: border-color 0.3s ease; /* 添加边框颜色过渡效果 */
-}
-
-.description-textarea:focus {
-  border-color: #007bff; /* 当文本框获取焦点时改变边框颜色 */
-  outline: none; /* 去除默认的外框 */
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25); /* 添加阴影效果 */
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: center; /* 或者使用space-between来在按钮之间添加空间 */
-  align-items: center; /* 垂直居中（可选） */
-  padding: 10px; /* 可选，为底部添加一些内边距 */
-  background-color: #f5f5f5; /* 可选，为footer添加背景色 */
-  margin-top: auto;
-}
-
-.btn {
-  padding: 10px 20px; /* 增大按钮的点击区域 */
-  margin-left: 10px; /* 按钮之间的间距 */
-  font-size: 16px; /* 可选，调整按钮上的文字大小 */
-  border: none; /* 去除默认边框 */
-  border-radius: 4px; /* 可选，为按钮添加圆角 */
-  cursor: pointer; /* 鼠标悬停时显示为手形图标 */
-}
-
-.btn-blue {
-  background-color: #66ccff; /* 设置蓝色背景 */
-  color: white; /* 设置文字颜色为白色 */
-}
-
-.btn-gray {
-  background-color: gray; /* 设置灰色背景 */
-  color: white; /* 设置文字颜色为白色 */
-}
-</style>
-
 <style lang = "scss" scoped>
 @import "../assets/css/album-content.scss";
+@import "../assets/css/complain.scss";
 </style>

@@ -25,7 +25,7 @@
               <li>{{ usernames[item.id] }}</li>
               <li class = "time">{{ item.createTime }}</li>
               <li class = "content">{{ item.content }}</li>
-              <li class = "up" ref = "up" @click = "handleUp(item.id, item.up, index)">
+              <li class = "up" ref = "isUp" @click = "handleUp(item.id, index)">
                 {{ existUp(item.id, index) }}
                 <up-icon></up-icon>
                 <span>{{up[item.id]}}</span>
@@ -180,14 +180,17 @@ export default {
       existCommentUp(this.userId, commentId).then(res =>
       {
         if (res) {
-          this.$refs.up[index].children[0].classList.add('active');
+          this.$refs.isUp[index].children[0].classList.add('active');
+        }
+        else {
+          this.$refs.isUp[index].children[0].classList.remove('active');
         }
       })
     },
     ownComment(userId) {
       return this.userId === userId;
     },
-    handleUp(commentId, up, index) {
+    handleUp(commentId, index) {
       if (!this.loginIn)
       {
         this.notify('请先登录');
@@ -198,8 +201,8 @@ export default {
           if (res)
           {
             deleteCommentUp(this.userId, commentId);
-            this.up[commentId]--;
-            this.$refs.up[index].children[0].classList.remove('active');
+            this.$set(this.up,commentId,this.up[commentId]-1);
+            this.existUp(commentId,index);
             this.notify('取消点赞成功');
           }
           else {
@@ -207,8 +210,8 @@ export default {
             params.append('userId', this.userId);
             params.append('commentId', commentId);
             addCommentUp(params);
-            this.up[commentId]++;
-            this.$refs.up[index].children[0].classList.add('active');
+            this.$set(this.up,commentId,this.up[commentId]+1);
+            this.existUp(commentId,index);
             this.notify('点赞成功');
           }
         });
