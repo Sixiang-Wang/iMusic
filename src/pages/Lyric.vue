@@ -11,6 +11,11 @@
         <h3 style="margin-top: 20px">
           {{ "歌手:  " }}<span>{{ artist }}</span>
         </h3>
+        <h3 @click="downloadLyrics">
+          <br>
+          导出歌词
+          <br>
+        </h3>
       </div>
     </div>
     <div class="content">
@@ -41,6 +46,7 @@
 <script>
 import {mixin} from '../mixins'
 import {mapGetters} from 'vuex'
+import {download, songOfSongId} from "../api";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -70,7 +76,7 @@ export default {
     ]),
   },
   created() {
-    this.lyr = this.lyric;
+    this.getLyric();
     this.$store.commit("setCurTime", 0);
   },
   watch: {
@@ -129,6 +135,47 @@ export default {
       this.$store.commit('setChangeTime', timeInSeconds);
       this.scrollToCurrentLine(timeInSeconds);
     },
+    downloadLyrics(){
+      // console.log("download");
+      if (this.url !== "" && this.url !== null) {
+        if (this.loginIn) {
+          songOfSongId(this.id)
+            .then((res) => {
+              // console.log(res);
+              let content = res.lyric;
+              let eleLink = document.createElement("a");
+              // 可考虑添加下载音乐格式的选项
+              eleLink.download = `${this.artist}-${this.title}.lyr`;
+              eleLink.style.dislpay = 'none';
+              // 把字符内容转换成blob地址
+              let blob = new Blob([content]);
+              eleLink.href = URL.createObjectURL(blob);
+              // 把链接地址加到document里
+              document.body.appendChild(eleLink);
+              // 触发点击
+              eleLink.click();
+              // 然后移除这个新加的控件
+              document.body.removeChild(eleLink);
+            })
+            .catch(error =>{
+              this.$message.error("下载失败");
+            })
+        } else {
+          this.$message.warning("未登录不能下载");
+        }
+      } else {
+        this.$message.warning("暂无歌曲");
+      }
+    },
+    getLyric(){
+      songOfSongId(this.id)
+        .then(res=>{
+          this.lyr = this.parseLyric(res.lyric);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
   },
   // 在mounted生命周期钩子中添加监听滚动事件
   mounted() {
