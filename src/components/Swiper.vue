@@ -5,7 +5,7 @@
       type="card"
       height="280px"
       :autoplay="true"
-      :indicator-position="'outside'"
+      :indicator-position="'none'"
       :loop="true"
       class="custom-carousel"
     >
@@ -16,6 +16,9 @@
           />
         </el-carousel-item>
     </el-carousel>
+    <div class="custom-indicators">
+      <span class="indicator-dot" v-for="(item, index) in swiperList" :key="index" :class="{'active': index === activeIndex}" @click="switchIndicator(index)"></span>
+    </div>
   </div>
 </template>
 

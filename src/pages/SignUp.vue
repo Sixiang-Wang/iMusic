@@ -7,7 +7,7 @@
       </div>
       <el-form :model="registerForm" ref="registerForm" label-width="80px" class="demo-ruleForm" :rules="rules">
         <el-form-item prop="username" label="用户名">
-          <el-input v-model="registerForm.username" placeholder="用户名"></el-input>
+          <el-input v-model="registerForm.username" placeholder="用户名（只支持英文大小写与数字，长度3~16）"></el-input>
         </el-form-item>
         <el-form-item prop="name" label="昵称">
           <el-input v-model="registerForm.name" placeholder="昵称"></el-input>
@@ -27,13 +27,13 @@
           <el-input
             type="password"
             v-model="registerForm.password"
-            placeholder="密码"
+            placeholder="密码（只支持英文大小写与数字，长度8~16）"
             :show-password="true"
           ></el-input>
           <i @click="togglePasswordVisibility"></i>
         </el-form-item>
-        <el-form-item prop="duplicatePassword" label="重复密码">
-          <el-input type="password" v-model="duplicatePassword" placeholder="重复密码"></el-input>
+        <el-form-item prop="duplicatePassword" label="确认密码">
+          <el-input type="password" v-model="duplicatePassword" placeholder="确认密码"></el-input>
         </el-form-item>
         <div class="login-btn">
           <el-button @click="goback(-1)">取消</el-button>
@@ -87,11 +87,19 @@ export default {
   },
   methods: {
     SignUp(){
+      if(!this.isValidUsername(this.registerForm.username)){
+        this.notify('用户名不符合要求','error');
+        return;
+      }
+      if(!this.isValidSecret(this.registerForm.password)){
+        this.notify('密码不符合要求','error');
+        return;
+      }
       if(this.registerForm.password !== this.duplicatePassword){
         this.notify('两次输入密码不一致','error');
         return;
       }
-      if(this.verifyCode !== this.code){
+      if(!this.isValidVerificationCode(this.verifyCode) || this.verifyCode !== this.code){
         this.notify('验证码不正确','error');
         return;
       }
@@ -181,6 +189,25 @@ export default {
     },
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
+    },
+    // 对用户名进行检验
+    isValidUsername(username) {
+      var regex = /^[a-zA-Z0-9]{3,16}$/; // 正则表达式
+      return regex.test(username);
+    },
+    // 对密码进行检验
+    isValidSecret(secret) {
+      var regex = /^[a-zA-Z0-9]{8,16}$/; // 正则表达式
+      return regex.test(secret);
+    },
+    // 对验证码进行检验
+    isValidVerificationCode(code) {
+      // 正则表达式解释：
+      // ^ 表示字符串的开始
+      // [0-9] 表示匹配数字
+      // $ 表示字符串的结束
+      var regex = /^[0-9]{6}$/;
+      return regex.test(code);
     }
   }
 }

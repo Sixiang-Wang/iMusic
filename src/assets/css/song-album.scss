@@ -114,6 +114,20 @@
   fill: orange;
 }
 
+.complain {
+  display: flex;
+  font-size: 17px;
+  color: #ffffff;
+  margin-top: 27px;
+  margin-left: 30px;
+  width: 115px;
+  height: 37px;
+  border-radius: 3px;
+  border: 1px solid gray;
+  background-color: rgba(255, 0, 0, 0.8);
+  cursor: pointer;
+}
+
 
 .lyric {
   margin: 100px 100px;

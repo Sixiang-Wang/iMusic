@@ -121,7 +121,6 @@ export default {
               document.querySelectorAll(".has-lyric li")[i].style.fontSize = "20px";
               document.querySelectorAll(".has-lyric li")[i].style.fontWeight = "bold";
               document.querySelectorAll(".has-lyric li")[i].style.opacity = "1";
-
               if (top > halfViewHeight + lyricHeight) {
                 this.$refs.lyr.scrollTop = top - halfViewHeight;
               }

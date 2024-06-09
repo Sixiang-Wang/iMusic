@@ -338,6 +338,10 @@ export default {
       })
     },
     showComplaintModal() {
+      if(!this.loginIn){
+        this.notify('请先登录','warning');
+        return;
+      }
       this.showModal = true; // 显示弹窗
       this.selectedReasons = []; // 重置选择的举报原因
       this.description = ''; // 重置描述

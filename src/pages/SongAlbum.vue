@@ -34,6 +34,11 @@
           </like-icon>
           <span style = "margin-top: 7px;margin-left: 2px">{{ this.isCollect }}</span>
         </div>
+
+        <div class="complain">
+          <complain-icon style="color: #ffffff;width:25px;height: 25px;margin: 6px 20px;"></complain-icon>
+          <span style = "margin-top: 7px;margin-left: -7px">投诉</span>
+        </div>
       </div>
 
     </div>
@@ -65,10 +70,11 @@ import Comment from "../components/Comment.vue";
 import PlayIcon from "../assets/icon/playIcon.vue";
 import LikeIcon from "../assets/icon/likeIcon.vue";
 import CollectIcon from "../assets/icon/collectIcon.vue";
+import ComplainIcon from "../assets/icon/complaint.vue";
 
 export default {
   name: 'singer-album',
-  components: {CollectIcon, LikeIcon, PlayIcon, AlbumContent, Comment},
+  components: {ComplainIcon, CollectIcon, LikeIcon, PlayIcon, AlbumContent, Comment},
   mixins: [mixin],
   data() {
     return {
