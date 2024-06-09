@@ -166,11 +166,13 @@ public class SongController {
         File songFile = new File("./"+songUrl);
         File picFile = new File("./"+picUrl);
         boolean flag = songService.delete(Integer.parseInt(id));
-        if(!songFile.delete())
+        if(!songFile.delete()) {
             System.out.println("歌曲源删除失败:SongController-deleteSong");
+        }
         if(!picUrl.equals("/img/songPic/default.jpg")){
-            if(!picFile.delete())
+            if(!picFile.delete()) {
                 System.out.println("歌曲图片删除失败:SongController-deleteSong");
+            }
         }
         return flag;
     }
@@ -260,8 +262,9 @@ public class SongController {
 
             if(!oldPic.equals("/img/songPic/default.jpg")){
                 File oldPicFile = new File("./" + oldPic);
-                if(!oldPicFile.delete())
+                if(!oldPicFile.delete()) {
                     System.out.println("旧歌曲图片删除失败:SongController-updateSongPic");
+                }
             }
             return jsonObject;
         } catch (IOException e) {
@@ -315,8 +318,9 @@ public class SongController {
 
             File oldFile = new File("./"+oldUrl);
 
-            if(!oldFile.delete())
+            if(!oldFile.delete()) {
                 System.out.println("旧歌曲删除失败:SongController-updateSongUrl");
+            }
 
             return jsonObject;
         } catch (IOException e) {
@@ -429,7 +433,10 @@ public class SongController {
     @RequestMapping(value = "/songOfStyle",method = RequestMethod.GET)
     public Object songOfStyle(HttpServletRequest request){
         String style = request.getParameter("style");
-        return songService.songOfStyle(style);
+        if ("其他".equals(style)|| "其它".equals(style)){
+            return songMapper.songOfOtherStyle();
+        }
+        return songService.songOfStyle("%"+style+"%");
     }
 
     /**

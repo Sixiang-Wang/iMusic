@@ -64,6 +64,12 @@
         where id = #{id}
     </delete>
 
+    <delete id="deleteBySongListId" parameterType="java.util.HashMap">
+        delete
+        from list_song
+        where song_list_id = #{songListId}
+    </delete>
+
     <delete id="deleteBySongIdAndSongListId" parameterType="java.util.HashMap">
         delete
         from list_song

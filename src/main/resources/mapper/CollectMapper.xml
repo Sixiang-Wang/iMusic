@@ -61,6 +61,16 @@
         where id=#{id}
     </delete>
 
+    <delete id="deleteBySongId">
+        delete from collect
+        where song_id=#{songId}
+    </delete>
+
+    <delete id="deleteBySongListId">
+        delete from collect
+        where song_list_id=#{songListId}
+    </delete>
+
     <delete id="deleteByUserIdSongId" parameterType="java.lang.Integer">
         delete from collect
         where user_id = #{userId} and song_id = #{songId}

@@ -2,12 +2,13 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
-import com.java.imusic.dao.MessageMapper;
-import com.java.imusic.dao.RankMapper;
-import com.java.imusic.dao.SongListMapper;
+import com.java.imusic.dao.*;
+import com.java.imusic.domain.Collect;
 import com.java.imusic.domain.Message;
 import com.java.imusic.domain.Song;
 import com.java.imusic.domain.SongList;
+import com.java.imusic.service.CollectService;
+import com.java.imusic.service.ListSongService;
 import com.java.imusic.service.MessageService;
 import com.java.imusic.service.SongListService;
 import com.java.imusic.utils.Consts;
@@ -39,6 +40,10 @@ public class SongListController {
     private SongListMapper songListMapper;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private CollectMapper collectMapper;
+    @Autowired
+    private ListSongMapper listSongMapper;
 
     /**
      * 添加歌单
@@ -113,9 +118,13 @@ public class SongListController {
         String oldPic = songList.getPic();
         File oldPicFile = new File("./"+oldPic);
         if(!oldPic.equals("/img/songListPic/default.jpg")){
-            if(!oldPicFile.delete())
+            if(!oldPicFile.delete()) {
                 System.out.println("删除歌单图片失败-deleteSongList");
+            }
         }
+        collectMapper.deleteBySongListId(songList.getId());
+        listSongMapper.deleteBySongListId(songList.getId());
+
         boolean flag = songListService.delete(id);
         return flag;
     }
@@ -220,8 +229,9 @@ public class SongListController {
 
             File oldPicFile = new File("./"+oldPic);
             if(!oldPic.equals("/img/songListPic/default.jpg")){
-                if(!oldPicFile.delete())
+                if(!oldPicFile.delete()) {
                     System.out.println("删除歌单旧图片失败-deleteSongList");
+                }
             }
             return jsonObject;
         } catch (IOException e) {
@@ -243,7 +253,9 @@ public class SongListController {
         SongList songList =  rankMapper.bestSongListOfUser(Integer.parseInt(userId));
         if(songList == null){
             List<SongList> songListList = songListService.selectByUserId(Integer.parseInt(userId));
-            if(songListList==null || songListList.isEmpty()) return null;
+            if(songListList==null || songListList.isEmpty()) {
+                return null;
+            }
             System.out.println("哦，可怜的孩子，根本就没有人给他的歌曲评分！算了给你随便返回个他的歌单好了");
             return songListList.toArray()[0];
         }

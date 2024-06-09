@@ -31,6 +31,7 @@ public interface ListSongMapper {
      */
     public int deleteBySongIdAndSongListId(@Param("songId") Integer songId, @Param("songListId") Integer songListId);
 
+    public int deleteBySongListId(@Param("songListId") Integer songListId);
     /**
      * 根据主键查询整个对象
      */

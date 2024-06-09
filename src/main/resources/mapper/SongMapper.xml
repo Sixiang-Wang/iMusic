@@ -214,6 +214,22 @@
         and visible = 1
     </select>
 
+    <select id="songOfOtherStyle" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.String">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where `style` not like '%摇滚%'
+        and `style` not like '%流行%'
+        and `style` not like '%说唱%'
+        and `style` not like '%金属%'
+        and `style` not like '%民谣%'
+        and `style` not like '%电子%'
+        and `style` not like '%古典%'
+        and `style` not like '%ACG%'
+        and visible = 1
+    </select>
+
     <select id="popularSongOfUser" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.Integer">
         select

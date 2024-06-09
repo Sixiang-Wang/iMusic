@@ -11,6 +11,7 @@ import com.java.imusic.service.SongService;
 import com.java.imusic.service.UserService;
 import com.java.imusic.utils.CipherBean;
 import com.java.imusic.utils.Consts;
+import com.java.imusic.utils.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,8 +53,8 @@ public class UserController {
         String username = request.getParameter("username").trim();     //账号
         String passwordFont = request.getParameter("password").trim();     //密码
         //加密
-        //String password = SaSecureUtil.aesEncrypt(cipher.getKey(), passwordFont); //存储加密后的密码
-        String password = request.getParameter("password").trim();
+        String password = SecurityUtil.encrypt(passwordFont);
+
         String sex = request.getParameter("sex").trim();               //性别
         String phoneNum = request.getParameter("phoneNum").trim();     //手机号
         String email = request.getParameter("email").trim();           //电子邮箱
@@ -63,7 +64,7 @@ public class UserController {
         String profilePicture = "/img/Pic/default_avatar.jpg";          //头像地址
         String name = request.getParameter("name").trim();
 
-        if (username == null || username.equals("")) {
+        if (username == null || username.isEmpty()) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "用户名不能为空");
             return jsonObject;
@@ -82,7 +83,7 @@ public class UserController {
             jsonObject.put(Consts.MSG, "昵称已被占用");
             return jsonObject;
         }
-        if (password == null || password.equals("")) {
+        if (passwordFont == null || passwordFont.isEmpty()) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "密码不能为空");
             return jsonObject;
@@ -92,7 +93,7 @@ public class UserController {
         String tmpDate = request.getParameter("birth").trim();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date birthDate = new Date();
-        if(!tmpDate.equals("undefined")) {
+        if(!"undefined".equals(tmpDate)) {
             try {
                 birthDate = dateFormat.parse(birth);
             } catch (ParseException e) {
@@ -171,7 +172,8 @@ public class UserController {
         String id = request.getParameter("id").trim();          //主键
         String username = request.getParameter("username").trim();     //账号
         String usernameOrigin = request.getParameter("usernameOrigin").trim(); //原来账号
-        String password = request.getParameter("password").trim();     //密码
+        String passwordFont = request.getParameter("password").trim();     //密码
+        String password = SecurityUtil.encrypt(passwordFont);
         String sex = request.getParameter("sex").trim();               //性别
         String phoneNum = request.getParameter("phoneNum").trim();     //手机号
         String email = request.getParameter("email").trim();           //电子邮箱
@@ -181,12 +183,12 @@ public class UserController {
         String name = request.getParameter("name").trim();             //昵称
         String nameOrigin = request.getParameter("nameOrigin").trim(); //原来昵称
 
-        if (username == null || username.equals("")) {
+        if (username == null || username.isEmpty()) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "用户名不能为空");
             return jsonObject;
         }
-        if (password == null || password.equals("")) {
+        if (passwordFont == null || passwordFont.isEmpty()) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "密码不能为空");
             return jsonObject;
@@ -281,8 +283,9 @@ public class UserController {
         String singerPicUrl = singer.getPic();
         if(!singerPicUrl.equals("/img/Pic/default_avatar.jpg")){
             File singerPic = new File("./"+singerPicUrl);
-            if(!singerPic.delete())
+            if(!singerPic.delete()) {
                 System.out.println(singerPicUrl+":\n"+"歌手头像不存在或删除失败:SingerController-deleteSinger");
+            }
 
         }
 
@@ -298,11 +301,13 @@ public class UserController {
             songService.update(song);
 
             //想删除歌曲用我
-            if(!songFile.delete())
-                System.out.println(songUrl+":\n"+"歌曲源不存在或删除失败:SingerController-deleteSinger"); ;
+            if(!songFile.delete()) {
+                System.out.println(songUrl+":\n"+"歌曲源不存在或删除失败:SingerController-deleteSinger");
+            }
             if(!picUrl.equals("/img/songPic/default.jpg")){
-                if(!picFile.delete())
+                if(!picFile.delete()) {
                     System.out.println(picUrl+":\n"+"歌曲图片不存在或删除失败:SingerController-deleteSinger");
+                }
             }
             if(!songService.delete(song.getId())){
                 jsonObject.put(Consts.CODE,0);
@@ -391,8 +396,9 @@ public class UserController {
 
             if(oldPic!=null&&!oldPic.equals("/img/Pic/default_avatar.jpg")){
                 File singerPic = new File("./" + oldPic);
-                if (!singerPic.delete())
+                if (!singerPic.delete()) {
                     System.out.println(oldPic + ":\n" + "歌手头像不存在或删除失败:SingerController-deleteSinger");
+                }
             }
             return jsonObject;
         } catch (IOException e) {
@@ -411,10 +417,11 @@ public class UserController {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");     //账号
         String password = request.getParameter("password");
+        String cypher = SecurityUtil.encrypt(password);
 
         //加密前端传入的 密码
         //根据用户名和密码获取数据库里面所有的信息
-        boolean flag = userService.verifyPassword(username,password);
+        boolean flag = userService.verifyPassword(username,cypher);
         //如果查到了用户
         if (!flag) {
             jsonObject.put(Consts.CODE, 0);
@@ -429,13 +436,13 @@ public class UserController {
         jsonObject.put("username",username);
         jsonObject.put("avatar",user.getProfilePicture());
         Cookie cookie_username = new Cookie("cookie_username",username);
-        Cookie cookie_password = new Cookie("cookie_password",password);
+        Cookie cookie_cypher = new Cookie("cookie_cypher",cypher);
         cookie_username.setMaxAge(60 * 60);//1h
-        cookie_password.setMaxAge(60 * 60);//1h
+        cookie_cypher.setMaxAge(60 * 60);//1h
         cookie_username.setPath(request.getContextPath());
-        cookie_password.setPath(request.getContextPath());
+        cookie_cypher.setPath(request.getContextPath());
         response.addCookie(cookie_username);
-        response.addCookie(cookie_password);
+        response.addCookie(cookie_cypher);
         return jsonObject;
     }
 
@@ -477,13 +484,13 @@ public class UserController {
     public void logout(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
         System.out.println("===退出登录===");
         session.removeAttribute(Consts.NAME);
-        Cookie cookie_password = new Cookie("cookie_password","");
+        Cookie cookie_cypher = new Cookie("cookie_cypher","");
         Cookie cookie_username = new Cookie("cookie_username","");
-        cookie_password.setMaxAge(0);
+        cookie_cypher.setMaxAge(0);
         cookie_username.setMaxAge(0);
-        cookie_password.setPath(request.getContextPath());
+        cookie_cypher.setPath(request.getContextPath());
         cookie_username.setPath(request.getContextPath());
-        response.addCookie(cookie_password);
+        response.addCookie(cookie_cypher);
         response.addCookie(cookie_username);
     }
 
@@ -491,19 +498,19 @@ public class UserController {
     public Object preLogin(HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
         String username = "";
-        String password = "";
+        String cypher = "";
         Cookie[] cookies = request.getCookies();
         if(cookies!=null){
             for(Cookie item:cookies){
-                if(item.getName().equals("cookie_username")){
+                if("cookie_username".equals(item.getName())){
                     username = item.getValue();
                 }
-                else if(item.getName().equals("cookie_password")){
-                    password = item.getValue();
+                else if("cookie_cypher".equals(item.getName())){
+                    cypher = item.getValue();
                 }
             }
         }
-        boolean flag = userService.verifyPassword(username,password);
+        boolean flag = userService.verifyPassword(username,cypher);
         if(!flag){
             jsonObject.put(Consts.CODE,0);
             jsonObject.put(Consts.MSG,"用户名或密码错误");
