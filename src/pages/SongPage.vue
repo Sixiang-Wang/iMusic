@@ -256,7 +256,8 @@ export default {
         if (req.readyState === 4 && req.status === 200) {
           let res = JSON.parse(req.response)
           if (res.code) {
-            _this.getData(this.currentPage)
+            _this.notify(_this.currentPage)
+            _this.getData(_this.currentPage)
             _this.registerForm = {}
             _this.notify(res.msg, 'success')
           } else {
