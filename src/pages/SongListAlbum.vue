@@ -26,8 +26,39 @@
         </collect-icon>
         <span style = "margin-top: 3px;margin-left: 5px">{{ this.isCollect }}</span>
       </div>
-
-
+      <div class="collect" @click="showComplaintModal">
+        <complain-icon style="color: #646464;width:25px;height: 25px;margin-left: 25px"/>
+        <span style = "margin-top: 3px;margin-left: 5px">投诉</span>
+      </div>
+      <div class = "complaint-modal" v-if = "showModal">
+        <div class = "modal-overlay" @click="showModal = false"></div>
+        <div class = "modal-content">
+          <h3>请选择举报原因</h3>
+          <div class = "reason-group" v-for = "(group, index) in reasonGroups" :key = "index">
+            <h4>{{ group.title }}</h4>
+            <div class = "reason-list">
+              <div v-for = "(reason, reasonIndex) in group.reasons" :key = "reasonIndex">
+                <input
+                  type = "checkbox"
+                  :id = "`reason${index}${reasonIndex}`"
+                  :value = "reason.value"
+                  v-model = "selectedReasons"
+                  @change = "checkMaxReasons"
+                >
+                <label :for = "`reason${index}${reasonIndex}`">{{ reason.label }}</label>
+              </div>
+            </div>
+          </div>
+          <div class = "reason-group">
+            <h4>详细描述您遇到的问题</h4>
+            <textarea class = "description-textarea" v-model = "description" placeholder = "详细描述"></textarea>
+          </div>
+          <div class = "modal-footer">
+            <button class = "btn btn-blue" @click = "submitComplaint">提交</button>
+            <button class = "btn btn-gray" @click = "showModal = false">取消</button>
+          </div>
+        </div>
+      </div>
       <div class = "album-score">
         <div>
           <h3>评分</h3>
@@ -64,15 +95,16 @@ import {
   commitRank,
   getRankOfSongListId,
   getRankOfSongListIdAndUserId,
-  setCollect, deleteCollectSongList, getSongListById, existCollectSongList, collectNumOfSongList
+  setCollect, deleteCollectSongList, getSongListById, existCollectSongList, collectNumOfSongList, addComplaint
 } from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 import Comment from "../components/Comment.vue";
 import CollectIcon from "../assets/icon/collectIcon.vue";
+import ComplainIcon from "../assets/icon/complaint.vue";
 
 export default {
   name: 'song-list-album',
-  components: {CollectIcon, AlbumContent, Comment},
+  components: {ComplainIcon, CollectIcon, AlbumContent, Comment},
   mixins: [mixin],
   data() {
     return {
@@ -85,6 +117,60 @@ export default {
       isCollect: '收藏',
       star: 0,
       collectNum: '',
+      showModal: false,
+      selectedReasons: [],
+      description: '',
+      reasonGroups: [
+        {
+          title: '违反法律法规',
+          reasons: [
+            {value: '违法违禁', label: '违法违禁'},
+            {value: '赌博诈骗', label: '赌博诈骗'},
+            {value: '盗搬我的稿件', label: '盗搬我的稿件'},
+            {value: '侵权申诉', label: '侵权申诉'},
+            // ... 可以继续添加更多
+          ],
+        },
+        {
+          title: '谣言及不实信息',
+          reasons: [
+            {value: '涉政谣言', label: '涉政谣言'},
+            {value: '涉社会事件谣言', label: '涉社会事件谣言'},
+            {value: '虚假不实信息', label: '虚假不实信息'},
+            // ... 可以继续添加更多
+          ],
+        },
+        {
+          title: '不规范行为',
+          reasons: [
+            {value: '违规推广', label: '违规推广'},
+            {value: '转载', label: '转载'},
+            {value: '自制错误', label: '自制错误'},
+            {value: '其他不规范行为', label: '其他不规范行为'},
+            // ... 可以继续添加更多
+          ],
+        },
+        {
+          title: '不友好行为',
+          reasons: [
+            {value: '人身攻击', label: '人身攻击'},
+            {value: '引战', label: '引战'},
+            // ... 可以继续添加更多不友好行为
+          ],
+        },
+        {
+          title: '公共秩序与道德',
+          reasons: [
+            {value: '色情低俗', label: '色情低俗'},
+            {value: '危险行为', label: '危险行为'},
+            {value: '观感不适', label: '观感不适'},
+            {value: '血腥暴力', label: '血腥暴力'},
+            {value: '青少年不良信息', label: '青少年不良信息'},
+            {value: '其他', label: '其他'},
+            // ... 可以继续添加更多公共秩序与道德问题
+          ],
+        },
+      ],
     }
   },
   computed: {
@@ -226,7 +312,57 @@ export default {
           console.log('error in commit rank\n' + error);
         })
       }
-    }
+    },
+    showComplaintModal() {
+      this.showModal = true; // 显示弹窗
+      this.selectedReasons = []; // 重置选择的举报原因
+      this.description = ''; // 重置描述
+    },
+    submitComplaint() {
+      if (this.selectedReasons.length === 0) {
+        this.notify('请至少选择一个举报原因');
+        return;
+      }
+      // 准备要发送的数据
+      let params = new URLSearchParams();
+      params.append("userId", this.userId);
+      params.append("type", '1');
+      params.append("songId", null);
+      params.append("songListId", this.songListId);
+      // params.append("content", this.description);
+      // 将选择的举报原因以逗号分隔的字符串形式发送
+      params.append("content", '举报原因:' + this.selectedReasons.join(',') + '     详细描述:' + this.description);
+      // console.log('提交举报:' + this.selectedReasons.join(',')+'\n提交举报内容:'+this.description);
+      // 发送请求
+      addComplaint(params)
+        .then(res =>
+        {
+          this.$notify({title: '投诉成功', type: 'success'});
+          setTimeout(() =>
+          {
+            this.showModal = false;
+          }, 1000); // 1000毫秒即1秒
+        })
+        .catch(error =>
+        {
+          console.log(error);
+          this.$notify({title: '投诉失败', type: 'error'}); // 可以增加一个通知函数用于显示错误通知
+          setTimeout(() =>
+          {
+            this.showModal = false;
+          }, 1000); // 1000毫秒即1秒
+        });
+    },
+    checkMaxReasons() {
+      if (this.selectedReasons.length > 3) {
+        // 你可以在这里给出一些反馈，比如弹出警告或禁用更多的checkbox
+        this.notify('最多只能选择三种原因！', 'warning');
+        // 如果你想要禁用更多的选择，你可以添加一个计算属性或方法来动态绑定disabled属性到checkbox上
+        // 但这通常不是最佳的用户体验，因为用户可能不知道为什么不能选择更多
+        // 另一个选择是移除数组中超出三种的最后一个元素
+        this.selectedReasons.splice(3);
+      }
+    },
   },
 }
 </script>
