@@ -78,6 +78,9 @@ export default {
   },
   computed: {
     onRoutes () {
+      if (this.$route.path.includes('/Singer') || this.$route.path.includes('/Song')) {
+        return 'Singer'
+      }
       return this.$route.path.replace('/', '')
     }
   },
