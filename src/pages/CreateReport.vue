@@ -9,7 +9,7 @@
         <img :src="mostPopularSong.picUrl" alt="歌曲封面">
         <p>播放量: {{ mostPopularSong.playCount }}</p>
       </div>
-      <div>
+      <div v-else>
         <p>暂时还没有歌曲哦~</p>
       </div>
     </div>
@@ -102,7 +102,7 @@ export default {
             this.mostFavoriteSongTitle = '暂时还没有被创作的歌曲哦~'
           }
           else{
-            this.mostFavoriteSongTitle = this.replaceFName(res);
+            this.mostFavoriteSongTitle = this.replaceFName(res.name);
           }
         })
         .catch(error => {
@@ -112,8 +112,8 @@ export default {
     getHighestRatedPlaylist(userId){
       getBestSongListOfUser(userId)
         .then(res =>{
-          // console.log(res);
-          if(res === 0){
+          console.log(typeof res);
+          if(res === ''){
             this.highestRatedPlaylist.title = '';
           }
           else{
@@ -122,7 +122,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log("获取用户被收藏最多的歌曲失败");
+          console.log("获取用户被收藏最多的歌单失败");
         })
     },
     getUserFollowersCount(userId) {

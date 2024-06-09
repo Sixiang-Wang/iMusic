@@ -157,7 +157,7 @@ export default {
         .then(res => {
           this.messageUnreadNum = res;
           if(res>99){
-            this.messageUnreadNum = 99;
+            this.messageUnreadNum = '99+';
           }
         })
         .catch(error => {

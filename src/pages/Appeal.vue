@@ -7,6 +7,7 @@
       <ul v-for="(value, index) in complaintList" :key="index" class="appeal-item">
         <li class="appeal-content">
           您发布的 <b>{{songInfo[index]}}</b> 已被举报<br>
+          <br>
           {{value.content}}
         </li>
         <span class="appeal-entry" @click="openInterface">点击进行申诉 >></span>

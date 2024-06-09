@@ -173,7 +173,7 @@
   background-color: red;
   border-radius: 50%; /* 使红点变为圆形 */
   color: white; /* 文字颜色 */
-  font-size: 6px; /* 文字大小，根据红点大小调整 */
+  font-size: 9px; /* 文字大小，根据红点大小调整 */
   font-weight: bold; /* 文字加粗 */
   position: relative; /* 为数字定位 */
   transform-origin: center;
@@ -188,5 +188,5 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 6px; /* 伪元素文字大小 */
+  font-size: 9px; /* 伪元素文字大小 */
 }
