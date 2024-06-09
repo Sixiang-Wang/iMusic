@@ -228,16 +228,7 @@ export default {
       this.currentPage = val
     },
     /* 查询 */
-    getData () {
-      this.tempData = []
-      this.tableData = []
-      allSong().then(res => {
-        this.tempData = res
-        this.tableData = res
-        this.currentPage = 1
-      })
-    },
-    getData2 (cur) {
+    getData (cur) {
       if (!cur) cur = 1
       this.tempData = []
       this.tableData = []
@@ -272,7 +263,7 @@ export default {
             if (req.readyState === 4 && req.status === 200) {
               let res = JSON.parse(req.response)
               if (res.code) {
-                _this.getData2()
+                _this.getData(this.currentPage)
                 _this.registerForm = {}
                 _this.notify(res.msg, 'success')
               } else {
@@ -308,7 +299,7 @@ export default {
       updateSong(params)
         .then(res => {
           if (res.code === 1) {
-            this.getData2(this.currentPage)
+            this.getData(this.currentPage)
             this.notify('修改成功', 'success')
           } else {
             this.notify('修改失败', 'error')
@@ -328,7 +319,7 @@ export default {
       delSong(this.idx)
         .then(res => {
           if (res) {
-            this.getData2(this.currentPage)
+            this.getData(this.currentPage)
             this.notify('删除成功', 'success')
           } else {
             this.notify('删除失败', 'error')
@@ -343,7 +334,7 @@ export default {
       invisibleSong(id)
         .then(res => {
           if (res) {
-            this.getData2(this.currentPage)
+            this.getData(this.currentPage)
             this.notify('下架成功', 'success')
           } else {
             this.notify('下架失败', 'error')
@@ -377,7 +368,7 @@ export default {
     handleSongSuccess (res) {
       let _this = this
       if (res.code === 1) {
-        _this.getData2()
+        _this.getData(this.currentPage)
         _this.$notify({
           title: '上传成功',
           type: 'success'

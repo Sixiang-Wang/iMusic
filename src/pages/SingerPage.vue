@@ -232,7 +232,7 @@ export default {
       setSinger(params)
         .then(res => {
           if (res.code === 1) {
-            this.getData()
+            this.getData(this.currentPage)
             this.notify('添加成功', 'success')
           } else {
             this.notify(`添加失败:${res.msg}`, 'error')
