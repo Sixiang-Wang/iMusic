@@ -283,7 +283,7 @@ export default {
         this.isShowSelect = true;
         const svgRect = this.$refs.add.getBoundingClientRect();
         this.addPosition.top = svgRect.top + 40 + 'px';
-        this.addPosition.left = svgRect.left + 'px';
+        this.addPosition.left = svgRect.left - 30 + 'px';
         window.addEventListener('click', this.handleOutsideClick);
       }
     },
