@@ -236,7 +236,6 @@ export default {
         params.append('userId', this.userId);
         params.append('type', 1);
         params.append('songListId', this.songListId);
-        this.notify(params)
         setCollect(params).then(res =>
         {
           if (res.code === 1)
@@ -250,10 +249,8 @@ export default {
             deleteCollectSongList(this.userId, this.songListId);
             this.isCollect = '收藏';
             this.collectNum--;
-            this.notify('取消成功收藏', 'success');
           }
           else {
-            this.notify(this.userId + this.songListId);
             this.notify('收藏错误', 'error');
           }
         });
@@ -289,7 +286,7 @@ export default {
     addRank() {
       if (!this.loginIn)
       {
-        this.notify('请先登录', 'r');
+        this.notify('请先登录', 'warning');
       }
       else {
         let params = new URLSearchParams();

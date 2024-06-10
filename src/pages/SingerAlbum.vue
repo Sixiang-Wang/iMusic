@@ -102,7 +102,7 @@ export default {
     handleFollow() {
       if (!this.loginIn)
       {
-        this.notify('请先登录');
+        this.notify('请先登录','warning');
       }
       else if (this.isFollow === '关注')
       {
@@ -119,7 +119,6 @@ export default {
         deleteFollow(this.userId, this.singerId);
         this.isFollow = '关注';
         this.fans--;
-        this.notify('取消关注成功', 'success');
       }
       else {
         this.notify('关注错误', 'error');

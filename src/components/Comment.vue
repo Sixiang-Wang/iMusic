@@ -107,7 +107,7 @@ export default {
       }
       else if (!this.inputValue)
       {
-        this.notify('请输入内容');
+        this.notify('请输入内容','warning');
       }
       else {
         let params = new URLSearchParams();
@@ -119,7 +119,6 @@ export default {
         {
           if (res.code === 1)
           {
-            this.notify('评论成功');
             this.inputValue = '';
             this.getCommentList();
           }
@@ -155,7 +154,6 @@ export default {
       {
         if (res) {
           this.getCommentList();
-          this.notify('删除成功')
         }
         else {
           this.notify('删除失败')
@@ -193,7 +191,7 @@ export default {
     handleUp(commentId, index) {
       if (!this.loginIn)
       {
-        this.notify('请先登录');
+        this.notify('请先登录','warning');
       }
       else {
         existCommentUp(this.userId, commentId).then(res =>
@@ -203,7 +201,6 @@ export default {
             deleteCommentUp(this.userId, commentId);
             this.$set(this.up,commentId,this.up[commentId]-1);
             this.existUp(commentId,index);
-            this.notify('取消点赞成功');
           }
           else {
             let params = new URLSearchParams();
@@ -212,7 +209,6 @@ export default {
             addCommentUp(params);
             this.$set(this.up,commentId,this.up[commentId]+1);
             this.existUp(commentId,index);
-            this.notify('点赞成功');
           }
         });
       }

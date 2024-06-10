@@ -172,7 +172,7 @@ export default {
     createSongList() {
       if (!this.loginIn)
       {
-        this.notify('请先登录', 'r');
+        this.notify('请先登录', 'warning');
       }
       else {
         this.centerDialogVisible = true;

@@ -607,7 +607,6 @@ export default {
             } else if (res.code === 2) {
               this.$store.commit('setIsActive', false);
               deleteCollectSong(this.userId, this.id);
-              this.notify('取消成功', 'success');
             } else {
               this.notify('收藏失败', 'error');
             }

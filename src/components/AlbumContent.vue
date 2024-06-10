@@ -206,7 +206,6 @@ export default {
             else if (res.code === 2) {
               deleteCollectSong(this.userId, songId);
               item.collection = false;
-              this.notify('取消成功', 'success');
             }
             else {
               this.notify('收藏失败', 'error');
@@ -280,10 +279,8 @@ export default {
         if (res)
         {
           this.songList = this.songList.filter(song => song.id !== this.deleteSongId);
-          // this.$store.commit('setListOfSongs', list);
           this.deleteDialog = false;
           this.deleteSongId = '';
-          this.notify('删除成功', 'success');
         }
       })
     },

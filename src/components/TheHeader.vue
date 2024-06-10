@@ -118,7 +118,7 @@ export default {
     goSearch () {
       if (this.keywords==='')
       {
-        this.notify('请输入内容')
+        this.notify('请输入内容','warning')
       }
       else
       {
@@ -146,7 +146,6 @@ export default {
             this.$router.go(0);
           }, 500);
         } // 延迟1秒执行路由跳转
-        this.$notify({title : '退出成功' , type : 'success'});
 
       }
       else{
