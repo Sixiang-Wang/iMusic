@@ -27,7 +27,7 @@ public interface CommentMapper {
 
     public int deleteAllOfSong(Integer songId);
     public int deleteAllOfSongList(Integer songListId);
-
+    public int deleteAllOfUser(Integer userId);
     /**
      * 根据主键查询整个对象
      */
@@ -47,6 +47,8 @@ public interface CommentMapper {
      * 查询某个歌单下的所有评论
      */
     public List<Comment> commentOfSongListId(Integer songListId);
+
+    public List<Comment> commentOfUserId(Integer userId);
 
     public Integer updateUp(Integer id);
     public Integer sumUp(Integer id);

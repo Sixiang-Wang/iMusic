@@ -23,6 +23,8 @@ public interface CommentService {
      */
     public boolean delete(Integer id);
 
+    public boolean deleteAllOfUser(Integer userId);
+
     public boolean deleteAllOfSong(Integer songId);
 
 

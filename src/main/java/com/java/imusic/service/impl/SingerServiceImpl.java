@@ -1,11 +1,18 @@
 package com.java.imusic.service.impl;
 
+import com.java.imusic.config.PathConfig;
+import com.java.imusic.dao.FollowMapper;
 import com.java.imusic.dao.SingerMapper;
 import com.java.imusic.domain.Singer;
+import com.java.imusic.domain.Song;
+import com.java.imusic.service.FollowService;
 import com.java.imusic.service.SingerService;
+import com.java.imusic.service.SongService;
+import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -16,6 +23,10 @@ public class SingerServiceImpl implements SingerService {
 
     @Autowired
     private SingerMapper singerMapper;
+    @Autowired
+    private SongService songService;
+    @Autowired
+    private FollowMapper followMapper;
 
     /**
      * 增加
@@ -44,8 +55,21 @@ public class SingerServiceImpl implements SingerService {
      */
     @Override
     public boolean delete(Integer id) {
+        Singer singer = singerMapper.selectByPrimaryKey(id);
+        String singerPicUrl = singer.getPic();
+        if(!singerPicUrl.equals("/img/Pic/default_avatar.jpg")) {
+            File singerPic = new File(PathConfig.path +System.getProperty("file.separator") + singerPicUrl);
+            if (!singerPic.delete()) {
+                System.out.println(singerPicUrl + ":\n" + "歌手头像不存在或删除失败:SingerController-deleteSinger");
+            }
+        }
+        List<Song> songs = songService.songOfSingerId(id);
+        for (Song song : songs){
+            songService.delete(song.getId());
+        }
+        followMapper.deleteBySingerId(id);
+
         int ret = singerMapper.delete(id);
-        singerMapper.updateAutoIncrement();
         return ret>0;
     }
 
@@ -87,9 +111,11 @@ public class SingerServiceImpl implements SingerService {
         return singerMapper.singerOfSex(sex);
     }
 
+    @Override
     public Singer oneSingerOfName(String name){
         return singerMapper.oneSingerOfName(name);
     };
 
+    @Override
     public Integer lastSingerID(){return singerMapper.lastSingerID(); };
 }

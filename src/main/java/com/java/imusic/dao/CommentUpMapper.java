@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface CommentUpMapper {
     public int insert(CommentUp commentUp);
     public int delete(@Param("userId")Integer userId, @Param("commentId")Integer commentId);
-
+    public int deleteByCommentId(@Param("commentId")Integer commentId);
     public int exist(@Param("userId")Integer userId, @Param("commentId")Integer commentId);
 }

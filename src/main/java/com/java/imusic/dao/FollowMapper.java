@@ -23,6 +23,10 @@ public interface FollowMapper {
      */
     public int delete(Integer id);
 
+    public int deleteByUserId(Integer id);
+
+    public int deleteBySingerId(Integer id);
+
 
     /**
      * 根据主键查询整个对象

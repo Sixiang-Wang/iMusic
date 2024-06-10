@@ -138,6 +138,12 @@
         where id = #{id};
     </delete>
 
+    <delete id="deleteRecentSong" parameterType="java.lang.Integer">
+        delete
+        from recent_song
+        where song_id = #{songId};
+    </delete>
+
     <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.Integer">
         select

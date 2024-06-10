@@ -58,6 +58,18 @@
         where id = #{id}
     </delete>
 
+    <delete id="deleteByUserId" parameterType="java.lang.Integer">
+        delete
+        from follow
+        where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteBySingerId" parameterType="java.lang.Integer">
+        delete
+        from follow
+        where singer_id = #{singerId}
+    </delete>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap"
             parameterType="java.lang.Integer">
         select

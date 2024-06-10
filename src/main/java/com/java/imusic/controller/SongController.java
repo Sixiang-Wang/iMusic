@@ -2,6 +2,8 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
+import com.java.imusic.dao.CollectMapper;
+import com.java.imusic.dao.ComplaintMapper;
 import com.java.imusic.dao.SongMapper;
 import com.java.imusic.domain.*;
 import com.java.imusic.service.*;
@@ -39,6 +41,13 @@ public class SongController {
     private SingerService singerService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private CollectMapper collectMapper;
+    @Autowired
+    private ComplaintMapper complaintMapper;
+    @Autowired
+    private CommentService commentService;
+
     /**
      * 添加歌曲
      */
@@ -160,21 +169,7 @@ public class SongController {
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public Object deleteSong(HttpServletRequest request){
         String id = request.getParameter("id").trim();          //主键
-        Song song = songService.selectByPrimaryKey(Integer.parseInt(id));
-        String songUrl = song.getUrl();
-        String picUrl = song.getPic();
-        File songFile = new File("./"+songUrl);
-        File picFile = new File("./"+picUrl);
-        boolean flag = songService.delete(Integer.parseInt(id));
-        if(!songFile.delete()) {
-            System.out.println("歌曲源删除失败:SongController-deleteSong");
-        }
-        if(!picUrl.equals("/img/songPic/default.jpg")){
-            if(!picFile.delete()) {
-                System.out.println("歌曲图片删除失败:SongController-deleteSong");
-            }
-        }
-        return flag;
+        return songService.delete(Integer.parseInt(id));
     }
 
     @RequestMapping(value = "/invisible",method = RequestMethod.GET)
@@ -261,7 +256,7 @@ public class SongController {
             jsonObject.put("pic",storeAvatorPath);
 
             if(!oldPic.equals("/img/songPic/default.jpg")){
-                File oldPicFile = new File("./" + oldPic);
+                File oldPicFile = new File(PathConfig.path +System.getProperty("file.separator") + oldPic);
                 if(!oldPicFile.delete()) {
                     System.out.println("旧歌曲图片删除失败:SongController-updateSongPic");
                 }
@@ -316,7 +311,7 @@ public class SongController {
             jsonObject.put(Consts.MSG,"上传成功");
             jsonObject.put("song",storeSongPath);
 
-            File oldFile = new File("./"+oldUrl);
+            File oldFile = new File(PathConfig.path +System.getProperty("file.separator")+oldUrl);
 
             if(!oldFile.delete()) {
                 System.out.println("旧歌曲删除失败:SongController-updateSongUrl");

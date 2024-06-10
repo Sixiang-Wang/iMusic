@@ -20,6 +20,8 @@ public interface ComplaintMapper {
      * 删除
      */
     public int delete(Integer id);
+    public int deleteBySongId(Integer songId);
+    public int deleteBySongListId(Integer songListId);
     public Complaint selectByPrimaryKey(Integer id);
     public List<Complaint> allComplaint();
     public List<Complaint> allComplaintSongByUser(Integer userId);

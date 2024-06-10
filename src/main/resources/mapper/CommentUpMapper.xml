@@ -39,6 +39,11 @@
         and comment_id = #{commentId}
     </delete>
 
+    <delete id="deleteByCommentId">
+        delete from comment_up
+        where comment_id = #{commentId}
+    </delete>
+
     <select id="exist" resultType="java.lang.Integer">
         select count(*) from comment_up
         where user_id=#{userId}

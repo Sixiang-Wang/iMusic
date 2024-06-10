@@ -1,11 +1,18 @@
 package com.java.imusic.service.impl;
 
+import com.java.imusic.config.PathConfig;
+import com.java.imusic.dao.CollectMapper;
+import com.java.imusic.dao.ComplaintMapper;
+import com.java.imusic.dao.ListSongMapper;
 import com.java.imusic.dao.SongListMapper;
 import com.java.imusic.domain.SongList;
+import com.java.imusic.service.CommentService;
+import com.java.imusic.service.ListSongService;
 import com.java.imusic.service.SongListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -16,7 +23,14 @@ public class SongListServiceImpl implements SongListService {
 
     @Autowired
     private SongListMapper songListMapper;
-
+    @Autowired
+    private CollectMapper collectMapper;
+    @Autowired
+    private ComplaintMapper complaintMapper;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private ListSongMapper listSongMapper;
 
     /**
      * 增加
@@ -45,6 +59,19 @@ public class SongListServiceImpl implements SongListService {
      */
     @Override
     public boolean delete(Integer id) {
+        SongList songList = songListMapper.selectByPrimaryKey(id);
+        String oldPic = songList.getPic();
+        File oldPicFile = new File(PathConfig.path +System.getProperty("file.separator")+oldPic);
+        if(!oldPic.equals("/img/songListPic/default.jpg")){
+            if(!oldPicFile.delete()) {
+                System.out.println("删除歌单图片失败-deleteSongList");
+            }
+        }
+
+        collectMapper.deleteBySongListId(songList.getId());
+        listSongMapper.deleteBySongListId(songList.getId());
+        complaintMapper.deleteBySongId(songList.getId());
+        commentService.deleteAllOfSongList(songList.getId());
         return songListMapper.delete(id)>0;
     }
 

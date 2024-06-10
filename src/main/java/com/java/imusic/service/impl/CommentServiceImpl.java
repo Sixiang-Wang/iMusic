@@ -1,6 +1,7 @@
 package com.java.imusic.service.impl;
 
 import com.java.imusic.dao.CommentMapper;
+import com.java.imusic.dao.CommentUpMapper;
 import com.java.imusic.domain.Comment;
 import com.java.imusic.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private CommentUpMapper commentUpMapper;
     /**
      * 增加
      *
@@ -43,17 +46,36 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public boolean delete(Integer id) {
+        commentUpMapper.deleteByCommentId(id);
         return commentMapper.delete(id)>0;
     }
 
+    @Override
     public boolean deleteAllOfSong(Integer songId){
-       return commentMapper.deleteAllOfSong(songId) > 0;
+        List<Comment> commentList = commentMapper.commentOfSongId(songId);
+        commentList.forEach(comment -> {
+            commentUpMapper.deleteByCommentId(comment.getId());
+        });
+        return commentMapper.deleteAllOfSong(songId) > 0;
     }
 
 
-
+    @Override
     public boolean deleteAllOfSongList(Integer songListId){
+        List<Comment> commentList = commentMapper.commentOfSongListId(songListId);
+        commentList.forEach(comment -> {
+            commentUpMapper.deleteByCommentId(comment.getId());
+        });
         return commentMapper.deleteAllOfSongList(songListId) > 0;
+    }
+
+    @Override
+    public boolean deleteAllOfUser(Integer userId){
+        List<Comment> commentList = commentMapper.commentOfUserId(userId);
+        commentList.forEach(comment -> {
+            commentUpMapper.deleteByCommentId(comment.getId());
+        });
+        return commentMapper.deleteAllOfUser(userId)>0;
     }
     /**
      * 根据主键查询整个对象

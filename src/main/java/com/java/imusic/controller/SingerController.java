@@ -84,7 +84,9 @@ public class SingerController {
         singer.setName(name);
         singer.setSex(new Byte(sex));
         singer.setPic(pic);
-        if(singer.getSex()!=2) singer.setBirth(birthDate);
+        if(singer.getSex()!=2) {
+            singer.setBirth(birthDate);
+        }
         singer.setLocation(location);
         singer.setIntroduction(introduction);
         boolean flag = singerService.insert(singer);
@@ -153,7 +155,9 @@ public class SingerController {
         singer.setName(name);
         singer.setSex(new Byte(sex));
         singer.setBirth(birthDate);
-        if(singer.getSex()==2)singer.setBirth(null);
+        if(singer.getSex()==2) {
+            singer.setBirth(null);
+        }
         singer.setLocation(location);
         singer.setIntroduction(introduction);
         boolean flag = singerService.update(singer);
@@ -190,37 +194,7 @@ public class SingerController {
             jsonObject.put(Consts.MSG,"删除歌手失败");
             return jsonObject;
         }
-        String singerPicUrl = singer.getPic();
-        if(!singerPicUrl.equals("/img/Pic/default_avatar.jpg")) {
-            File singerPic = new File("./" + singerPicUrl);
-            if (!singerPic.delete())
-                System.out.println(singerPicUrl + ":\n" + "歌手头像不存在或删除失败:SingerController-deleteSinger");
-        }
-        List<Song> songs = songService.songOfSingerId(Integer.parseInt(id));
-        for (Song song : songs){
-            String songUrl = song.getUrl();
-            String picUrl = song.getPic();
-            File songFile = new File("./"+songUrl);
-            File picFile = new File("./"+picUrl);
 
-            //不想删除歌曲用我
-            song.setSingerId(-1);
-            songService.update(song);
-
-            //想删除歌曲用我
-            if(!songFile.delete())
-                System.out.println(songUrl+":\n"+"歌曲源不存在或删除失败:SingerController-deleteSinger");
-            if(!picUrl.equals("/img/songPic/default.jpg")){
-                if(!picFile.delete())
-                    System.out.println(picUrl+":\n"+"歌曲图片不存在或删除失败:SingerController-deleteSinger");
-            }
-
-            if(!songService.delete(song.getId())){
-                jsonObject.put(Consts.CODE,0);
-                jsonObject.put(Consts.MSG,"删除歌手歌曲失败");
-                return jsonObject;
-            };
-        }
         jsonObject.put(Consts.CODE,1);
         jsonObject.put(Consts.MSG,"删除成功");
         return jsonObject;
@@ -326,9 +300,10 @@ public class SingerController {
             jsonObject.put("pic",storeAvatorPath);
 
             if(oldPic!=null&&!oldPic.equals("/img/Pic/default_avatar.jpg")){
-                File singerPic = new File("./" + oldPic);
-                if (!singerPic.delete())
+                File singerPic = new File(PathConfig.path +System.getProperty("file.separator") + oldPic);
+                if (!singerPic.delete()) {
                     System.out.println(oldPic + ":\n" + "歌手头像不存在或删除失败:SingerController-deleteSinger");
+                }
             }
 
             return jsonObject;

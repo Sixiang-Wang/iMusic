@@ -7,10 +7,7 @@ import com.java.imusic.domain.Collect;
 import com.java.imusic.domain.Message;
 import com.java.imusic.domain.Song;
 import com.java.imusic.domain.SongList;
-import com.java.imusic.service.CollectService;
-import com.java.imusic.service.ListSongService;
-import com.java.imusic.service.MessageService;
-import com.java.imusic.service.SongListService;
+import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,10 @@ public class SongListController {
     private CollectMapper collectMapper;
     @Autowired
     private ListSongMapper listSongMapper;
-
+    @Autowired
+    private ComplaintMapper complaintMapper;
+    @Autowired
+    private CommentService commentService;
     /**
      * 添加歌单
      */
@@ -114,19 +114,7 @@ public class SongListController {
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public Object deleteSongList(HttpServletRequest request){
         Integer id = Integer.parseInt(request.getParameter("id").trim());
-        SongList songList = songListService.selectByPrimaryKey(id);
-        String oldPic = songList.getPic();
-        File oldPicFile = new File("./"+oldPic);
-        if(!oldPic.equals("/img/songListPic/default.jpg")){
-            if(!oldPicFile.delete()) {
-                System.out.println("删除歌单图片失败-deleteSongList");
-            }
-        }
-        collectMapper.deleteBySongListId(songList.getId());
-        listSongMapper.deleteBySongListId(songList.getId());
-
-        boolean flag = songListService.delete(id);
-        return flag;
+        return songListService.delete(id);
     }
 
     /**
@@ -227,7 +215,7 @@ public class SongListController {
             jsonObject.put(Consts.MSG,"上传成功");
             jsonObject.put("pic",storeAvatorPath);
 
-            File oldPicFile = new File("./"+oldPic);
+            File oldPicFile = new File(PathConfig.path +System.getProperty("file.separator")+oldPic);
             if(!oldPic.equals("/img/songListPic/default.jpg")){
                 if(!oldPicFile.delete()) {
                     System.out.println("删除歌单旧图片失败-deleteSongList");

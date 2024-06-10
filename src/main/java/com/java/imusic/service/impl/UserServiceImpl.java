@@ -1,11 +1,18 @@
 package com.java.imusic.service.impl;
 
+import com.java.imusic.dao.FollowMapper;
 import com.java.imusic.dao.UserMapper;
+import com.java.imusic.domain.Singer;
+import com.java.imusic.domain.Song;
 import com.java.imusic.domain.User;
+import com.java.imusic.service.CommentService;
+import com.java.imusic.service.SingerService;
 import com.java.imusic.service.UserService;
+import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -16,7 +23,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private SingerService singerService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private FollowMapper followMapper;
     /**
      * 增加
      *
@@ -44,6 +56,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean delete(Integer id) {
+        User user = userMapper.getUserWithID(id);
+        singerService.delete(user.getSingerId());
+        commentService.deleteAllOfUser(user.getId());
+        followMapper.deleteByUserId(user.getId());
         return userMapper.delete(id) > 0;
     }
 

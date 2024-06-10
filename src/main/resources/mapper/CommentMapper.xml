@@ -110,6 +110,11 @@
         where song_list_id=#{songListId}
     </delete>
 
+    <delete id="deleteAllOfUser" parameterType="java.lang.Integer">
+        delete from comment
+        where user_id=#{userId}
+    </delete>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
@@ -135,6 +140,13 @@
         <include refid="Base_Column_List"/>
         from comment
         where song_list_id = #{songListId}
+    </select>
+
+    <select id="commentOfUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where user_id = #{userId}
     </select>
 
     <update id="updateUp" parameterType="java.lang.Integer">

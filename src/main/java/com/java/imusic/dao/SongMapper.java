@@ -25,6 +25,8 @@ public interface SongMapper {
      */
     public int delete(Integer id);
 
+    public int deleteRecentSong(Integer songId);
+
     /**
      * 根据主键查询整个对象
      */

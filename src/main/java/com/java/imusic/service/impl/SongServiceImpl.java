@@ -1,12 +1,17 @@
 package com.java.imusic.service.impl;
 
+import com.java.imusic.config.PathConfig;
+import com.java.imusic.dao.CollectMapper;
+import com.java.imusic.dao.ComplaintMapper;
 import com.java.imusic.dao.SongMapper;
 import com.java.imusic.domain.Song;
+import com.java.imusic.service.CommentService;
 import com.java.imusic.service.SongService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -17,6 +22,12 @@ import java.util.List;
 public class SongServiceImpl implements SongService {
     @Autowired
     private SongMapper songMapper;
+    @Autowired
+    private CollectMapper collectMapper;
+    @Autowired
+    private ComplaintMapper complaintMapper;
+    @Autowired
+    private CommentService commentService;
 
     /**
      * 增加
@@ -45,6 +56,25 @@ public class SongServiceImpl implements SongService {
      */
     @Override
     public boolean delete(Integer id) {
+        Song song = songMapper.selectByPrimaryKey(id);
+        String songUrl = song.getUrl();
+        String picUrl = song.getPic();
+        File songFile = new File(PathConfig.path +System.getProperty("file.separator")+songUrl);
+        File picFile = new File(PathConfig.path +System.getProperty("file.separator")+picUrl);
+
+        collectMapper.deleteBySongId(song.getId());
+        complaintMapper.deleteBySongId(song.getId());
+        songMapper.deleteRecentSong(song.getId());
+        commentService.deleteAllOfSong(song.getId());
+
+        if(!songFile.delete()) {
+            System.out.println("歌曲源删除失败:SongController-deleteSong");
+        }
+        if(!picUrl.equals("/img/songPic/default.jpg")){
+            if(!picFile.delete()) {
+                System.out.println("歌曲图片删除失败:SongController-deleteSong");
+            }
+        }
         return songMapper.delete(id) > 0;
     }
 
