@@ -133,6 +133,7 @@ export default {
     '$route.query': {
       immediate: true,
       handler() {
+        this.currentPage = 1;
         this.getSongList();
       }
     }
