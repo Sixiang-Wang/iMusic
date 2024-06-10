@@ -296,7 +296,7 @@ export default {
           animation: {
             animateScale: true,
             animateRotate: true
-          }
+          },
         }
       });
     },

@@ -36,7 +36,8 @@
 <script>
 import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
-import {allComplaintAgainstUser, appealComplaint, songOfSongId} from "../api";
+import {allComplaintAgainstUser, appealComplaint, getSongListById, songOfSongId} from "../api";
+import complaint from "../assets/icon/complaint.vue";
 export default {
   name: 'appeal',
   mixins : [mixin],
@@ -64,7 +65,7 @@ export default {
             complaint.content = complaint.content.match(/^\s*\S+\s*/)[0].trim();
             return complaint;
           });
-          this.getSongsInfo(this.complaintList.map(complaint => complaint.songId));
+          this.getInfo(this.complaintList.map(complaint => ([complaint.type,(complaint.songId || complaint.songListId)])));
           // console.log(this.complaintList)
         })
         .catch(error => {
@@ -72,12 +73,27 @@ export default {
           // 可能需要调用错误处理逻辑
         });
     },
-    getSongsInfo(songIds) {
-      const promises = songIds.map(songId => songOfSongId(songId));
+    getInfo(songIds) {
+      if(songIds === null){
+        return;
+      }
+      const promises = songIds.map(songId => {
+        if(songId[0]===1){//是歌单
+          return getSongListById(songId[1]);
+        }
+        else{
+          return songOfSongId(songId[1]);
+        }
+      });
       Promise.all(promises)
         .then(songsInfo => {
           songsInfo.forEach((song, index) => {
-            this.songInfo.push(song.name);
+            if(song.name !== null && song.name !== undefined){
+              this.songInfo.push('歌曲：'+song.name);
+            }
+            else{
+              this.songInfo.push('歌单：' +song.title);
+            }
             // console.log(song.name)
           });
         })
