@@ -16,7 +16,13 @@
 
     <div class="most-favorited-playlist">
       <h2>用户被收藏最多的歌曲</h2>
-      <p>{{ mostFavoriteSongTitle }}</p>
+      <div v-if="mostFavoriteSong.title!==''" class="song-info">
+        <p>歌曲名: {{ mostFavoriteSong.title }}</p>
+        <img :src="mostFavoriteSong.picUrl" alt="歌曲封面">
+      </div>
+      <div v-else>
+        <p>暂时还没有歌曲哦~</p>
+      </div>
     </div>
 
     <div class="highest-rated-playlist">
@@ -57,7 +63,10 @@ export default {
         picUrl: '',
         playCount: 0
       },
-      mostFavoriteSongTitle: '',
+      mostFavoriteSong: {
+        title: '',
+        picUrl: '',
+      },
       highestRatedPlaylist: {
         title: '',
         picUrl : ''
@@ -96,13 +105,17 @@ export default {
         .then(res =>{
           // console.log(res);
           if(res === 0){
-            this.mostFavoriteSongTitle = '暂时还没有被收藏的歌曲哦~'
+            this.mostFavoriteSong.title = 0;
+            //'暂时还没有被收藏的歌曲哦~'
           }
           else if(res === -1){
-            this.mostFavoriteSongTitle = '暂时还没有被创作的歌曲哦~'
+            this.mostFavoriteSong.title = -1;
+            //'暂时还没有被创作的歌曲哦~'
           }
           else{
-            this.mostFavoriteSongTitle = this.replaceFName(res.name);
+            console.log(res);
+            this.mostFavoriteSong.title = this.replaceFName(res.name);
+            this.mostFavoriteSong.picUrl = this.attachImageUrl(res.pic);
           }
         })
         .catch(error => {

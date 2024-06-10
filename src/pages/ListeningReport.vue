@@ -30,7 +30,7 @@
     <!-- 本周热门歌曲列表 -->
     <div class="top-songs">
       <h2>本周热门歌曲</h2>
-      <canvas id="popularSongs" v-if="noData===false"></canvas>
+      <canvas id="popularSongs" v-if="noData===false" style="max-height: 40vh;width: auto"></canvas>
       <p v-else>暂无听歌数据</p>
     </div>
 
@@ -109,6 +109,7 @@ export default {
   data() {
     return {
       recentList : [],      // 最近播放列表
+      playData : [],      // 听歌数据
       listeningSongsList: [],   // 听歌列表(歌名与歌手名）
       listeningTimesList: [],    // 听歌次数列表
       selectedRating: 0, // 默认选中的星星
@@ -127,32 +128,6 @@ export default {
         title : '',
         singer : ''
       },
-      weeklyPlayData: {
-        labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        datasets: [{
-          label: '听歌时长',
-          data: [200, 450, 300, 480, 350, 600, 500], // 示例数据
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.4)',
-            'rgba(54, 162, 235, 0.4)',
-            'rgba(255, 206, 86, 0.4)',
-            'rgba(75, 192, 192, 0.4)',
-            'rgba(153, 102, 255, 0.4)',
-            'rgba(255, 159, 64, 0.4)',
-            'rgba(255, 99, 132, 0.4)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-            'rgba(255, 99, 132, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
       favoriteSingerName: '',
       popularSongs: [],
       newSingers: [],
@@ -170,14 +145,18 @@ export default {
     this.getNewSingers(this.userId);
     this.getNewSongLists(this.userId);
     this.createChart();// 听歌时长
-    this.createPieChart(); // 播放量前五的歌曲
+    // this.createPieChart(); // 播放量前五的歌曲
   },
   methods: {
     getOrderByCount(userId){
       getRecentSongOrderByCount(userId)
         .then(res => {
-          if(res === null){
+          if (res === null) {
             this.noData = true;
+            this.$nextTick(() => {
+              // 确保视图更新后执行 createPieChart
+              this.createPieChart();
+            });
             return;
           }
           this.recentList = res.data;
@@ -193,9 +172,14 @@ export default {
           }
           // console.log(this.listeningSongsList);
           // console.log(this.listeningTimesList);
+          this.$nextTick(() => {
+            // 确保视图更新后执行 createPieChart
+            this.createPieChart();
+          });
         })
         .catch(error => {
           console.log('getRecentSongOrderByCount failed' + error);
+          this.noData = true;
         })
     },
     getNewSingers(userId){
@@ -219,9 +203,39 @@ export default {
         })
     },
     createChart() {
+      for (let i = 0; i < 7; i++) {
+        // 生成0到50的随机整数
+        let randomNumber = Math.floor(Math.random() * 66); // 51是50+1，因为包含0和50
+        this.playData.push(randomNumber);
+      }
       new Chart(document.getElementById('weeklyListeningChart'), {
         type: 'bar',
-        data: this.weeklyPlayData,
+        data: {
+          labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            datasets: [{
+            label: '听歌时长',
+            data: this.playData, // 示例数据
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.4)',
+              'rgba(54, 162, 235, 0.4)',
+              'rgba(255, 206, 86, 0.4)',
+              'rgba(75, 192, 192, 0.4)',
+              'rgba(153, 102, 255, 0.4)',
+              'rgba(255, 159, 64, 0.4)',
+              'rgba(255, 99, 132, 0.4)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
         options: {
           scales: {
             xAxes: [{
@@ -260,6 +274,10 @@ export default {
       });
     },
     createPieChart(){
+      if (!this.listeningSongsList || !this.listeningTimesList) {
+        console.error('Data is not ready for creating pie chart.');
+        return;
+      }
       new Chart(document.getElementById('popularSongs'), {
         type: 'pie',
         data: {
@@ -298,7 +316,7 @@ export default {
             animateRotate: true
           },
         }
-      });
+      })
     },
     submitSurvey(){
       document.querySelectorAll('input[type="radio"][name="rating"]').forEach(radio => {
