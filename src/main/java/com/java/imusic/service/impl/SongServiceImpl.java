@@ -125,11 +125,11 @@ public class SongServiceImpl implements SongService {
     /**
      * 根据歌手id查询
      *
-     * @param singerId
+     * @param userId
      */
     @Override
-    public List<Song> songOfSingerId(Integer singerId) {
-        return songMapper.songOfSingerId(singerId);
+    public List<Song> songOfUserId(Integer userId) {
+        return songMapper.songOfUserId(userId);
     }
 
     @Override

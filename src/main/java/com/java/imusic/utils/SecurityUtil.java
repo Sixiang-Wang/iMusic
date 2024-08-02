@@ -26,6 +26,9 @@ public class SecurityUtil {
 
     }
     public static String decrypt(String password){
+        if (password==null){
+            return null;
+        }
         Key key = new SecretKeySpec(secretKey.getBytes(), ALGORITHM);
         Cipher cipher = null;
         byte[] decryptedValue64 = null;

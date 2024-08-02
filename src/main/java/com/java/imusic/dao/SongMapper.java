@@ -50,9 +50,8 @@ public interface SongMapper {
     public List<Song> likeSongOfName(String name);
 
     /**
-     * 根据歌手id查询
+     * 根据用户id查询
      */
-    public List<Song> songOfSingerId(Integer singerId);
     public List<Song> songOfUserId(Integer userId);
 
     /**

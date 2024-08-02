@@ -1,14 +1,13 @@
 package com.java.imusic.service.impl;
 
+import com.java.imusic.config.PathConfig;
 import com.java.imusic.dao.FollowMapper;
 import com.java.imusic.dao.UserMapper;
-import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.Song;
 import com.java.imusic.domain.User;
 import com.java.imusic.service.CommentService;
-import com.java.imusic.service.SingerService;
+import com.java.imusic.service.SongService;
 import com.java.imusic.service.UserService;
-import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +23,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private SingerService singerService;
-    @Autowired
     private CommentService commentService;
     @Autowired
     private FollowMapper followMapper;
+    @Autowired
+    private SongService songService;
     /**
      * 增加
      *
@@ -56,10 +55,24 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean delete(Integer id) {
-        User user = userMapper.getUserWithID(id);
-        singerService.delete(user.getSingerId());
-        commentService.deleteAllOfUser(user.getId());
+        User user = userMapper.selectByPrimaryKey(id);
+        String userPicUrl = user.getProfilePicture();
+        if(!userPicUrl.equals("/img/Pic/default_avatar.jpg")) {
+            File userPic = new File(PathConfig.path +System.getProperty("file.separator") + userPicUrl);
+            if (!userPic.delete()) {
+                System.out.println(userPicUrl + ":\n" + "用户头像不存在或删除失败 报错来源:UserServiceImpl-delete");
+            }
+        }
+
+        List<Song> songs = songService.songOfUserId(id);
+        for (Song song : songs){
+            songService.delete(song.getId());
+        }
+
+        followMapper.deleteBySingerId(id);
         followMapper.deleteByUserId(user.getId());
+
+        commentService.deleteAllOfUser(user.getId());
         return userMapper.delete(id) > 0;
     }
 
@@ -135,15 +148,25 @@ public class UserServiceImpl implements UserService {
      * @since 2023/3/3 22:47
      */
     @Override
-    public User getUserWithName(String name){
+    public User getOneUserWithName(String name){
+        return userMapper.getOneUserWithName(name);
+    };
+
+    @Override
+    public List<User> getUserWithName(String name){
         return userMapper.getUserWithName(name);
     };
 
+    @Override
+    public List<User> getUserWithSex(Integer sex){
+        return userMapper.getUserWithSex(sex);
+    };
 
     /**
      * 找到用户ID最大值
      * @return Integer
      */
+    @Override
     public Integer lastUserID(){return userMapper.lastUserID(); };
 
     /**
@@ -151,6 +174,7 @@ public class UserServiceImpl implements UserService {
      * @param id
      * @return User
      */
+    @Override
     public User getUserWithID(Integer id){
         return userMapper.getUserWithID(id);
     };

@@ -66,7 +66,13 @@ public interface UserService {
      * @param name:  用户id
      * @return com.java.imusic.domain.User
      */
-    User getUserWithName(String name);
+    User getOneUserWithName(String name);
+
+
+    List<User> getUserWithName(String name);
+
+
+    List<User> getUserWithSex(Integer sex);
 
     /**
      * 找到用户ID最大值

@@ -142,10 +142,9 @@
     <select id="allComplaintSongAgainstUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
             c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
-        from complaint c,song s,singer s2
+        from complaint c,song s
         where c.song_id = s.id and type = 0
-        and s.singer_id = s2.id
-        and s2.user_id = #{userId}
+        and s.user_id = #{userId}
     </select>
 
     <select id="allComplaintSongListAgainstUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">

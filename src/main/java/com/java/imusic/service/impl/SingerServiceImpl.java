@@ -5,10 +5,8 @@ import com.java.imusic.dao.FollowMapper;
 import com.java.imusic.dao.SingerMapper;
 import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.Song;
-import com.java.imusic.service.FollowService;
 import com.java.imusic.service.SingerService;
 import com.java.imusic.service.SongService;
-import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +61,7 @@ public class SingerServiceImpl implements SingerService {
                 System.out.println(singerPicUrl + ":\n" + "歌手头像不存在或删除失败:SingerController-deleteSinger");
             }
         }
-        List<Song> songs = songService.songOfSingerId(id);
+        List<Song> songs = songService.songOfUserId(id);
         for (Song song : songs){
             songService.delete(song.getId());
         }

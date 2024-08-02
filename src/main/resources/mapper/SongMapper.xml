@@ -5,7 +5,7 @@
 <mapper namespace="com.java.imusic.dao.SongMapper">
     <resultMap id="BaseResultMap" type="com.java.imusic.domain.Song">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="singer_id" jdbcType="VARCHAR" property="singerId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="introduction" jdbcType="VARCHAR"
                 property="introduction"/>
@@ -26,11 +26,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,singer_id,name,introduction,create_time,update_time,pic,url,style,visible
+        id,user_id,name,introduction,create_time,update_time,pic,url,style,visible
     </sql>
 
     <sql id="Blob_Column_List">
-        id,singer_id,name,introduction,create_time,update_time,pic,lyric,url,style,visible
+        id,user_id,name,introduction,create_time,update_time,pic,lyric,url,style,visible
     </sql>
 
     <insert id="insert" parameterType="com.java.imusic.domain.Song">
@@ -39,8 +39,8 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="singerId != null">
-                singer_id,
+            <if test="userId != null">
+                user_id,
             </if>
             <if test="name != null">
                 name,
@@ -68,8 +68,8 @@
             <if test="id != null">
                 #{id},
             </if>
-            <if test="singerId != null">
-                #{singerId},
+            <if test="userId != null">
+                #{userId},
             </if>
             <if test="name != null">
                 #{name},
@@ -97,8 +97,8 @@
     <update id="update" parameterType="com.java.imusic.domain.Song">
         update song
         <set>
-            <if test="singerId != null">
-                singer_id = #{singerId},
+            <if test="userId != null">
+                user_id = #{userId},
             </if>
             <if test="name != null">
                 name = #{name},
@@ -192,24 +192,16 @@
         and visible = 1
     </select>
 
-    <select id="songOfSingerId" resultMap="ResultMapWithBLOBs"
+    <select id="songOfUserId" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.Integer">
         select
         <include refid="Blob_Column_List"/>
         from song
-        where singer_id = #{singerId}
+        where user_id = #{userId}
         and visible = 1
     </select>
 
-    <select id="songOfUserId" resultMap="ResultMapWithBLOBs"
-            parameterType="java.lang.Integer">
-        select
-            s.id,s.singer_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible
-        from song s,singer s2
-        where s.singer_id = s2.id
-        and s2.user_id = #{userId}
-        and s.visible = 1
-    </select>
+
 
     <select id="songOfStyle" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.String">
@@ -239,10 +231,9 @@
     <select id="popularSongOfUser" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.Integer">
         select
-            s.id,s.singer_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
-        from song s,singer s2
-        where s.singer_id = s2.id
-        and s2.user_id = #{userId}
+            s.id,s.user_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
+        from song s
+        where s.user_id = #{userId}
         and visible = 1
         order by nums desc
         limit 1
@@ -250,11 +241,10 @@
 
     <select id="popularCollectedSongOfUser" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.Integer">
-        select s.id,s.singer_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
-        from song s,singer s2,`collect` c
-        where s.singer_id = s2.id
+        select s.id,s.user_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
+        from song s,`collect` c
+        where s.user_id = #{userId}
           and c.song_id = s.id
-          and s2.user_id = #{userId}
           and visible = 1
         group by s.id
         order by count(*) desc

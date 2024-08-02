@@ -4,7 +4,6 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
 import com.java.imusic.domain.Singer;
-import com.java.imusic.domain.Song;
 import com.java.imusic.domain.User;
 import com.java.imusic.service.SingerService;
 import com.java.imusic.service.SongService;
@@ -40,8 +39,8 @@ public class UserController {
     private CipherBean cipher;
     @Autowired
     private UserService userService;
-    @Autowired
-    private SingerService singerService;
+    //@Autowired
+    //private SingerService singerService;
     @Autowired
     private SongService songService;
     /**
@@ -76,9 +75,9 @@ public class UserController {
             jsonObject.put(Consts.MSG, "用户名已存在");
             return jsonObject;
         }
-        User user2 = userService.getUserWithName(name);
-        Singer singer2 = singerService.oneSingerOfName(name);
-        if (user2 != null || singer2 != null) {
+        User user2 = userService.getOneUserWithName(name);
+
+        if (user2 != null) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "昵称已被占用");
             return jsonObject;
@@ -130,26 +129,7 @@ public class UserController {
 
         Integer userID = userService.lastUserID();
 
-        Singer singer = new Singer();
-
-        singer.setName(name);
-        singer.setBirth(birthDate);
-        singer.setIntroduction(introduction);
-        singer.setPic(profilePicture);
-        singer.setSex(new Byte(sex));
-        singer.setLocation(location);
-        singer.setUserID(userID);
-
-        flag = singerService.insert(singer);
-        if (!flag) {   //保存成功
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "添加用户歌手失败");
-            return jsonObject;
-        }
-
-        Integer singerId = singerService.lastSingerID();
         user.setId(userID);
-        user.setSingerId(singerId);
 
         flag = userService.update(user);
         if (!flag) {   //保存成功
@@ -199,9 +179,9 @@ public class UserController {
             jsonObject.put(Consts.MSG, "用户名已存在");
             return jsonObject;
         }
-        User user2 = userService.getUserWithName(name);
-        Singer singer1 = singerService.oneSingerOfName(name);
-        if ((user2 != null && !user2.getName().equals(nameOrigin)) || (singer1 != null && !singer1.getName().equals(nameOrigin))) {
+        User user2 = userService.getOneUserWithName(name);
+
+        if ((user2 != null && !user2.getName().equals(nameOrigin)) ) {
             jsonObject.put(Consts.CODE, 0);
             jsonObject.put(Consts.MSG, "昵称已被占用");
             return jsonObject;
@@ -239,20 +219,6 @@ public class UserController {
             return jsonObject;
         }
 
-        Singer singer = new Singer();
-        singer.setId(user.getSingerId());
-        singer.setSex(new Byte(sex));
-        singer.setBirth(birthDate);
-        singer.setIntroduction(introduction);
-        singer.setLocation(location);
-        singer.setName(name);
-
-        flag = singerService.update(singer);
-        if (!flag) {   //保存成功
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "用户对应歌手修改失败");
-            return jsonObject;
-        }
 
         jsonObject.put(Consts.CODE, 1);
         jsonObject.put(Consts.MSG, "修改成功");
@@ -317,6 +283,39 @@ public class UserController {
     }
 
     /**
+     * 精准获取名字对应用户
+     * @param request
+     * @return User
+     */
+    @RequestMapping(value = "/getOneUserWithName", method = RequestMethod.GET)
+    public User getOneUserWithName(HttpServletRequest request){
+        String name = request.getParameter("name").trim();
+        return userService.getOneUserWithName(name);
+    };
+
+    /**
+     * 模糊搜索名字对应用户
+     * @param request
+     * @return List<User>
+     */
+    @RequestMapping(value = "/getUserWithName", method = RequestMethod.GET)
+    public List<User> getUserWithName(HttpServletRequest request){
+        String name = request.getParameter("name").trim();
+        return userService.getUserWithName(name);
+    };
+
+    /**
+     * 获取性别对应用户
+     * @param request
+     * @return List<User>
+     */
+    @RequestMapping(value = "/getUsersWithSex", method = RequestMethod.GET)
+    public List<User> getUsersWithSex(HttpServletRequest request){
+        Integer sex = Integer.parseInt(request.getParameter("sex").trim());
+        return userService.getUserWithSex(sex);
+    };
+
+    /**
      * 更新前端用户图片
      */
     @RequestMapping(value = "/updateUserPic", method = RequestMethod.POST)
@@ -344,29 +343,23 @@ public class UserController {
             profilePictureFile.transferTo(dest);
             User user = userService.getUserWithID(id);
             user.setProfilePicture(storeProfilePicturePath);
-            Singer singer = singerService.selectByPrimaryKey(user.getSingerId());
-            String oldPic = singer.getPic();
-            singer.setId(user.getSingerId());
-            singer.setPic(storeProfilePicturePath);
+
+            String oldPic = user.getProfilePicture();
+
             boolean flag = userService.update(user);
             if (!flag) {
                 jsonObject.put(Consts.CODE, 0);
                 jsonObject.put(Consts.MSG, "上传用户图片失败");
                 return jsonObject;
             }
-            flag = singerService.update(singer);
-            if (!flag) {
-                jsonObject.put(Consts.CODE, 0);
-                jsonObject.put(Consts.MSG, "更新用户歌手图片失败");
-                return jsonObject;
-            }
+
             jsonObject.put(Consts.CODE, 1);
             jsonObject.put(Consts.MSG, "上传成功");
             jsonObject.put("profilePicture", storeProfilePicturePath);
 
             if(oldPic!=null&&!oldPic.equals("/img/Pic/default_avatar.jpg")){
-                File singerPic = new File(filePath+System.getProperty("file.separator") + oldPic);
-                if (!singerPic.delete()) {
+                File userPic = new File(filePath+System.getProperty("file.separator") + oldPic);
+                if (!userPic.delete()) {
                     System.out.println(oldPic + ":\n" + "歌手头像不存在或删除失败:SingerController-deleteSinger");
                 }
             }

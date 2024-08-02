@@ -28,11 +28,6 @@ public interface SingerMapper {
     public int delete(Integer id);
 
     /**
-     * 用于防止在删除大量歌手后，自增编号不连续
-     */
-    @Select("alter table singer auto_increment=1;")
-    public void updateAutoIncrement();
-    /**
      * 根据主键查询整个对象
      */
     public Singer selectByPrimaryKey(Integer id);

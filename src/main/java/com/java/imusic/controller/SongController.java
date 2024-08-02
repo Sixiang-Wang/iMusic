@@ -7,7 +7,6 @@ import com.java.imusic.dao.ComplaintMapper;
 import com.java.imusic.dao.SongMapper;
 import com.java.imusic.domain.*;
 import com.java.imusic.service.*;
-import com.java.imusic.service.impl.SongServiceImpl;
 import com.java.imusic.utils.Consts;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class SongController {
     @Getter
     private static SongController songController;
     @Autowired
-    private SingerService singerService;
+    private SingerService userService;
     @Autowired
     private MessageService messageService;
     @Autowired
@@ -56,13 +55,13 @@ public class SongController {
 
         JSONObject jsonObject = new JSONObject();
         //获取前端传来的参数
-        String singerId = request.getParameter("singerId").trim();  //所属歌手id
+        String userId = request.getParameter("userId").trim();  //所属歌手id
         String name = request.getParameter("name").trim();          //歌名
         String introduction = request.getParameter("introduction").trim();          //简介
         String pic = "/img/songPic/default.jpg";                     //默认图片
         String lyric = request.getParameter("lyric").trim();     //歌词
         String style = request.getParameter("style").trim();     //风格
-        String singerName = singerService.selectByPrimaryKey(Integer.parseInt(singerId)).getName();
+        String userName = userService.selectByPrimaryKey(Integer.parseInt(userId)).getName();
         //上传歌曲文件
         if(mpFile.isEmpty()){
             jsonObject.put(Consts.CODE,0);
@@ -87,7 +86,7 @@ public class SongController {
         try {
             mpFile.transferTo(dest);
             Song song = new Song();
-            song.setSingerId(Integer.parseInt(singerId));
+            song.setUserId(Integer.parseInt(userId));
             song.setName(name);
             song.setIntroduction(introduction);
             song.setPic(pic);
@@ -97,12 +96,12 @@ public class SongController {
 
             boolean flag = songService.insert(song);
             if(flag){
-                List<Follow> followList = followService.getBySingerId(Integer.parseInt(singerId));
+                List<Follow> followList = followService.getBySingerId(Integer.parseInt(userId));
                 followList.forEach(follow->{
                     Message message = new Message();
                     message.setTo(follow.getUserId());
                     message.setFrom(-1);
-                    message.setText("您关注的歌手 "+singerName+" 发布了新歌《"+name+"》!");
+                    message.setText("您关注的歌手 "+userName+" 发布了新歌《"+name+"》!");
                     message.setIsRead(0);
                     message.setType(0);
                     messageService.insert(message);
@@ -126,10 +125,10 @@ public class SongController {
     /**
      * 根据歌手id查询歌曲
      */
-    @RequestMapping(value = "/singer/detail",method = RequestMethod.GET)
-    public Object songOfSingerId(HttpServletRequest request){
-        String singerId = request.getParameter("singerId");
-        return songService.songOfSingerId(Integer.parseInt(singerId));
+    @RequestMapping(value = "/user/detail",method = RequestMethod.GET)
+    public Object songOfUserId(HttpServletRequest request){
+        String userId = request.getParameter("userId");
+        return songService.songOfUserId(Integer.parseInt(userId));
     }
 
     /**
@@ -180,7 +179,7 @@ public class SongController {
         boolean flag = songService.update(song);
         if(flag){
             Message message = new Message();
-            message.setTo(singerService.selectByPrimaryKey(song.getSingerId()).getUserID());
+            message.setTo(userService.selectByPrimaryKey(song.getUserId()).getUserID());
             message.setFrom(-1);
             message.setText("您的歌曲《"+song.getName()+"》已被下架");
             message.setIsRead(0);
@@ -203,7 +202,7 @@ public class SongController {
         boolean flag = songService.update(song);
         if(flag){
             Message message = new Message();
-            message.setTo(singerService.selectByPrimaryKey(song.getSingerId()).getUserID());
+            message.setTo(userService.selectByPrimaryKey(song.getUserId()).getUserID());
             message.setFrom(-1);
             message.setText("您的歌曲《"+song.getName()+"》已恢复");
             message.setIsRead(0);
@@ -474,8 +473,8 @@ public class SongController {
         Integer songId = Integer.parseInt(request.getParameter("songId"));
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Song song = songService.selectByPrimaryKey(songId);
-        Singer singer = singerService.selectByPrimaryKey(song.getSingerId());
-        if(singer.getUserID().equals(userId)){
+        Singer user = userService.selectByPrimaryKey(song.getUserId());
+        if(user.getUserID().equals(userId)){
             return true;
         }else{
             return false;

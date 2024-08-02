@@ -10,12 +10,10 @@ import com.java.imusic.service.RecentSongService;
 import com.java.imusic.service.SongListService;
 import com.java.imusic.service.SongService;
 import com.java.imusic.vo.RecentSongVo;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.rmi.CORBA.Util;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -199,7 +197,7 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         List<Singer> singerByCollectSong = new ArrayList<>();
         tmpList.forEach(item -> {
             if (item.getSongId() != null) {
-                singerByCollectSong.add(singerMapper.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getSingerId()));
+                singerByCollectSong.add(singerMapper.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getUserId()));
             }
         });
 

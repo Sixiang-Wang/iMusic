@@ -51,7 +51,7 @@ public interface SongService {
     /**
      * 根据歌手id查询
      */
-    public List<Song> songOfSingerId(Integer singerId);
+    public List<Song> songOfUserId(Integer singerId);
 
     /**
      * 查询播放次数排前列的歌曲

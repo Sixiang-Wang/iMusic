@@ -28,8 +28,6 @@ public class ComplaintController {
     @Autowired
     private SongListService songListService;
 
-    @Autowired
-    private SingerService singerService;
 
     @Autowired
     private MessageService messageService;
@@ -52,7 +50,7 @@ public class ComplaintController {
         complaint.setType(new Byte(type));
         if(new Byte(type) ==0){
             Song song = songService.selectByPrimaryKey(Integer.parseInt(songId));
-            Integer tmp = singerService.selectByPrimaryKey(song.getSingerId()).getUserID();
+            Integer tmp = song.getUserId();
             if(tmp!=null&&tmp>0){
                 to = tmp;
                 textB.append("歌曲《").append(song.getName()).append("》");
@@ -144,7 +142,7 @@ public class ComplaintController {
             Byte type = complaint.getType();
             if(type ==0){
                 Song song = songService.selectByPrimaryKey(complaint.getSongId());
-                Integer tmp = singerService.selectByPrimaryKey(song.getSingerId()).getUserID();
+                Integer tmp = song.getUserId();
                 if(tmp!=null&&tmp>0){
                     to = tmp;
                     textB.append("您歌曲《").append(song.getName()).append("》受到举报下架。请您遵守iMusic社区规定，上传合规歌曲");
@@ -182,7 +180,7 @@ public class ComplaintController {
             Byte type = complaint.getType();
             if(type ==0){
                 Song song = songService.selectByPrimaryKey(complaint.getSongId());
-                Integer tmp = singerService.selectByPrimaryKey(song.getSingerId()).getUserID();
+                Integer tmp = song.getUserId();
                 if(tmp!=null&&tmp>0){
                     to = tmp;
                     textB.append("您歌曲《").append(song.getName()).append("》相关举报已处理完毕:\n 管理员认为您的歌曲符合社区规定。");

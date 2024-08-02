@@ -72,7 +72,12 @@ public interface UserMapper {
      * @return com.java.imusic.domain.User
      * @since 2023/3/3 22:47
      */
-    User getUserWithName(@Param("name") String name);
+    User getOneUserWithName(@Param("name") String name);
+
+
+    public List<User> getUserWithName(@Param("name") String name);
+
+    public List<User> getUserWithSex(Integer sex);
 
     /**
      * 找到用户ID最大值

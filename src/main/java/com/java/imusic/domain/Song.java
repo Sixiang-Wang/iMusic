@@ -13,7 +13,7 @@ public class Song implements Serializable {
     /*主键*/
     private Integer id;
     //歌手id
-    private Integer singerId;
+    private Integer userId;
     /*歌名*/
     private String name;
     /*简介*/
@@ -76,12 +76,12 @@ public class Song implements Serializable {
         this.id = id;
     }
 
-    public Integer getSingerId() {
-        return singerId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setSingerId(Integer singerId) {
-        this.singerId = singerId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getName() {
