@@ -4,6 +4,7 @@ import com.java.imusic.config.PathConfig;
 import com.java.imusic.dao.CollectMapper;
 import com.java.imusic.dao.ComplaintMapper;
 import com.java.imusic.dao.SongMapper;
+import com.java.imusic.dao.UserMapper;
 import com.java.imusic.domain.Song;
 import com.java.imusic.service.CommentService;
 import com.java.imusic.service.SongService;
@@ -28,6 +29,8 @@ public class SongServiceImpl implements SongService {
     private ComplaintMapper complaintMapper;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 增加
@@ -146,4 +149,28 @@ public class SongServiceImpl implements SongService {
     public List<Song> songOfStyle(String style){
         return songMapper.songOfStyle(style);
     };
+
+    /**
+     * 增加歌曲名字前面的用户名前缀
+     * @param song
+     * @return
+     */
+    @Override
+    public Song addPrefix(Song song){
+        song.setName(userMapper.getUserWithID(song.getUserId()).getName() + "-" + song.getName());
+        return song;
+    }
+
+    /**
+     * 增加列表中歌曲名字前面的用户名前缀
+     * @param songs
+     * @return
+     */
+    @Override
+    public List<Song> addPrefix(List<Song> songs){
+        songs.forEach(song -> {
+            song.setName(userMapper.getUserWithID(song.getUserId()).getName() + "-" + song.getName());
+        });
+        return songs;
+    }
 }

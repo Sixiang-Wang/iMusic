@@ -10,10 +10,7 @@ import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -125,10 +122,16 @@ public class SongController {
     /**
      * 根据歌手id查询歌曲
      */
-    @RequestMapping(value = "/user/detail",method = RequestMethod.GET)
+    @RequestMapping(value = "/songOfUserId",method = RequestMethod.GET)
     public Object songOfUserId(HttpServletRequest request){
         String userId = request.getParameter("userId");
         return songService.songOfUserId(Integer.parseInt(userId));
+    }
+
+    @RequestMapping(value = "/songOfUserId/addPrefix",method = RequestMethod.GET)
+    public Object songOfUserIdAddPrefix(HttpServletRequest request){
+        String userId = request.getParameter("userId");
+        return songService.addPrefix(songService.songOfUserId(Integer.parseInt(userId)));
     }
 
     /**
@@ -192,6 +195,10 @@ public class SongController {
     @RequestMapping(value = "/allInvisible",method = RequestMethod.GET)
     public Object allInvisibleSong(HttpServletRequest request){
         return songMapper.allInvisible();
+    }
+    @RequestMapping(value = "/allInvisible/addPrefix",method = RequestMethod.GET)
+    public Object allInvisibleSongAddPrefix(HttpServletRequest request){
+        return songService.addPrefix(songMapper.allInvisible());
     }
 
     @RequestMapping(value = "/visible",method = RequestMethod.GET)
@@ -381,6 +388,12 @@ public class SongController {
         return songService.selectByPrimaryKey(Integer.parseInt(songId));
     }
 
+    @RequestMapping(value = "/detail/addPrefix",method = RequestMethod.GET)
+    public Object detailAddPrefix(HttpServletRequest request){
+        String songId = request.getParameter("songId");
+        return songService.addPrefix(songService.selectByPrimaryKey(Integer.parseInt(songId)));
+    }
+
     /**
      * 根据歌曲id增加歌曲播放次数
      */
@@ -398,6 +411,11 @@ public class SongController {
         String songName = request.getParameter("songName");
         return songService.songOfName(songName);
     }
+    @RequestMapping(value = "/songOfSongName/addPrefix",method = RequestMethod.GET)
+    public Object songOfSongNameAddPrefix(HttpServletRequest request){
+        String songName = request.getParameter("songName");
+        return songService.addPrefix(songService.songOfName(songName));
+    }
 
     /**
      * 根据歌手名字模糊查询歌曲
@@ -407,6 +425,11 @@ public class SongController {
         String songName = request.getParameter("songName");
         return songService.likeSongOfName(songName);
     }
+    @RequestMapping(value = "/likeSongOfName/addPrefix",method = RequestMethod.GET)
+    public Object likeSongOfNameAddPrefix(HttpServletRequest request){
+        String songName = request.getParameter("songName");
+        return songService.addPrefix(songService.likeSongOfName(songName));
+    }
 
     /**
      * 查询所有歌曲
@@ -414,6 +437,10 @@ public class SongController {
     @RequestMapping(value = "/allSong",method = RequestMethod.GET)
     public Object allSong(HttpServletRequest request){
         return songService.allSong();
+    }
+    @RequestMapping(value = "/allSong/addPrefix",method = RequestMethod.GET)
+    public Object allSongAddPrefix(HttpServletRequest request){
+        return songService.addPrefix(songService.allSong());
     }
 
     /**
@@ -423,6 +450,10 @@ public class SongController {
     public Object topSong(HttpServletRequest request){
         return songService.topSong();
     }
+    @RequestMapping(value = "/topSong/addPrefix",method = RequestMethod.GET)
+    public Object topSongAddPrefix(HttpServletRequest request){
+        return songService.addPrefix(songService.topSong());
+    }
 
     @RequestMapping(value = "/songOfStyle",method = RequestMethod.GET)
     public Object songOfStyle(HttpServletRequest request){
@@ -431,6 +462,14 @@ public class SongController {
             return songMapper.songOfOtherStyle();
         }
         return songService.songOfStyle("%"+style+"%");
+    }
+    @RequestMapping(value = "/songOfStyle/addPrefix",method = RequestMethod.GET)
+    public Object songOfStyleAddPrefix(HttpServletRequest request){
+        String style = request.getParameter("style");
+        if ("其他".equals(style)|| "其它".equals(style)){
+            return songMapper.songOfOtherStyle();
+        }
+        return songService.addPrefix(songService.songOfStyle("%"+style+"%"));
     }
 
     /**
@@ -447,6 +486,15 @@ public class SongController {
         }
         return songMapper.popularSongOfUser(userId);
     }
+    @RequestMapping(value = "/popularSongOfUser/addPrefix",method = RequestMethod.GET)
+    public Object popularSongOfUserAddPrefix(HttpServletRequest request){
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        List<Song> songs = songMapper.songOfUserId(userId);
+        if(songs==null||songs.isEmpty()){
+            return -1;
+        }
+        return songService.addPrefix(songMapper.popularSongOfUser(userId));
+    }
 
     /**
      * 某用户被收藏最多的歌
@@ -461,6 +509,15 @@ public class SongController {
             return -1;
         }
         return songMapper.popularCollectedSongOfUser(userId);
+    }
+    @RequestMapping(value = "/popularCollectedSongOfUser/addPrefix",method = RequestMethod.GET)
+    public Object popularCollectedSongOfUserAddPrefix(HttpServletRequest request){
+        Integer userId = Integer.parseInt(request.getParameter("userId"));
+        List<Song> songs = songMapper.songOfUserId(userId);
+        if(songs==null||songs.isEmpty()){
+            return -1;
+        }
+        return songService.addPrefix(songMapper.popularCollectedSongOfUser(userId));
     }
 
     /**
@@ -480,6 +537,7 @@ public class SongController {
             return false;
         }
     }
+
 }
 
 

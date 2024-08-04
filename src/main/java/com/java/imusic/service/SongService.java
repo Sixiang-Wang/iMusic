@@ -59,4 +59,18 @@ public interface SongService {
 	public List<Song> topSong();
 
     public List<Song> songOfStyle(String style);
+
+    /**
+     * 增加歌曲名字前面的用户名前缀
+     * @param song
+     * @return
+     */
+    public Song addPrefix(Song song);
+
+    /**
+     * 增加列表中歌曲名字前面的用户名前缀
+     * @param songs
+     * @return
+     */
+    public List<Song> addPrefix(List<Song> songs);
 }
