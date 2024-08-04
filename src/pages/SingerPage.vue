@@ -12,8 +12,8 @@
       <el-table-column type="selection" width="40"></el-table-column>
       <el-table-column label="歌手图片" width="110" align="center">
         <template slot-scope="scope">
-          <div class="singer-img">
-            <img :src="getUrl(scope.row.pic)" style="width:100%"/>
+          <div class="user-img">
+            <img :src="getUrl(scope.row.profilePicture)" style="width:100%"/>
           </div>
           <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeAvatorUpload"
                      :on-success="handleAvatorSuccess" >
@@ -88,7 +88,7 @@
       </el-form>
       <span slot="footer">
                 <el-button size="mini" @click="centerDialogVisible = false">取消</el-button>
-                <el-button size="mini" @click="addSinger">确定</el-button>
+                <el-button size="mini" @click="addUser">确定</el-button>
             </span>
     </el-dialog>
 
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import {setSinger, getAllSinger, updateSinger, delSinger, existFollow} from '../api/index'
+import {setUser, getAllUser, updateUser, delUser, existFollow} from '../api/index'
 import {mixin} from '../mixins/index'
 import th from 'element-ui/src/locale/lang/th'
 
@@ -204,7 +204,7 @@ export default {
       }
       this.tempData = []
       this.tableData = []
-      getAllSinger().then(res => {
+      getAllUser().then(res => {
         this.tempData = res
         this.tableData = res
         let len = res.length
@@ -215,7 +215,7 @@ export default {
       })
     },
     //添加歌手
-    addSinger () {
+    addUser () {
       let d = this.registerForm.birth
       let datetime = null
       if (d) {
@@ -224,12 +224,12 @@ export default {
       let params = new URLSearchParams()
       params.append('name', this.registerForm.name)
       params.append('sex', this.registerForm.sex)
-      params.append('pic', '/img/singerPic/default_avatar.jpg')
+      params.append('pic', '/img/Pic/default_avatar.jpg')
       params.append('birth', datetime)
       params.append('location', this.registerForm.location)
       params.append('introduction', this.registerForm.introduction)
 
-      setSinger(params)
+      setUser(params)
         .then(res => {
           if (res.code === 1) {
             this.getData(this.currentPage)
@@ -273,7 +273,7 @@ export default {
       params.append('location', this.form.location)
       params.append('introduction', this.form.introduction)
 
-      updateSinger(params)
+      updateUser(params)
         .then(res => {
           if (res.code === 1) {
             this.getData(this.currentPage)
@@ -289,11 +289,11 @@ export default {
     },
     //更新图片
     uploadUrl (id) {
-      return `${this.$store.state.HOST}/singer/updateSingerPic?id=${id}`
+      return `${this.$store.state.HOST}/user/updateUserPic?id=${id}`
     },
     //删除一名歌手
     deleteRow () {
-      delSinger(this.idx)
+      delUser(this.idx)
         .then(res => {
           if (res.code === 1) {
             this.getData(this.currentPage)
@@ -320,7 +320,7 @@ export default {
   margin-bottom: 5px;
 }
 
-.singer-img {
+.user-img {
   width: 100%;
   height: 80px;
   border-radius: 5px;

@@ -32,7 +32,7 @@
 
 <script>
 import {mixin} from '../mixins/index'
-import {songOfSongId, getCollectSongOfUserId, deleteCollection} from '../api/index'
+import {songOfSongIdPlus, getCollectSongOfUserId, deleteCollection} from '../api/index'
 
 export default {
   mixins: [mixin],
@@ -81,7 +81,7 @@ export default {
     //根据歌曲id查询歌曲对象，放到tempData和tableData里面
     getSong (id) {
       let songId = id
-      songOfSongId(songId)
+      songOfSongIdPlus(songId)
         .then(res => {
           this.tempData.push(res)
           this.tableData.push(res)

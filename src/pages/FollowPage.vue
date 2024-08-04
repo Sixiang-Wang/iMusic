@@ -36,7 +36,7 @@ import {
 
   getFollowByUserId,
 
-  getSingerById, deleteFollow
+  getUserById, deleteFollow, getUserOfId
 } from '../api/index'
 
 export default {
@@ -76,7 +76,7 @@ export default {
       this.tableData = []
       getFollowByUserId(this.$route.query.id).then(res => {
         for (let item of res) {
-          getSingerById(item.singerId).then(singer => {
+          getUserOfId(item.singerId).then(singer => {
             item.name = singer.name
             this.tempData.push(item)
             this.tableData.push(item)

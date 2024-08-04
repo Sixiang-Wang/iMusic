@@ -1,7 +1,7 @@
 <template>
   <div class="table">
     <div class="crumbs">
-      <i class="el-icon-tickets"></i>歌曲信息-{{singerName}}
+      <i class="el-icon-tickets"></i>歌曲信息-{{userName}}
     </div>
     <div class="sub-title">
       <div v-if="toggle != false">
@@ -150,20 +150,20 @@
 import {mixin} from '../mixins/index'
 import {mapGetters} from 'vuex'
 import '@/assets/js/iconfont.js'
-import {songOfSingerId, updateSong, delSong, allSong} from '../api/index'
+import {songOfUserId, updateSong, delSong, allSong, addPrefix, songOfSongId} from '../api/index'
 
 export default {
   mixins: [mixin],
   data () {
     return {
-      singerId: '',               // 歌手id
-      singerName: '',             //歌手名
+      userId: '',               // 歌手id
+      userName: '',             //歌手名
       centerDialogVisible: false, //添加弹窗是否显示
       editVisible: false,         //编辑弹窗是否显示
       delVisible: false,          //删除弹窗是否显示
       registerForm: {      //添加框
         name: '',
-        singerName: '',
+        userName: '',
         introduction: '',
         lyric: '',
         style: ''
@@ -211,8 +211,8 @@ export default {
     }
   },
   created () {
-    this.singerId = this.$route.query.id
-    this.singerName = this.$route.query.name
+    this.userId = this.$route.query.id
+    this.userName = this.$route.query.name
     this.getData()
   },
   destroyed () {
@@ -228,7 +228,7 @@ export default {
       if (!cur) cur = 1
       this.tempData = []
       this.tableData = []
-      songOfSingerId(this.singerId).then(res => {
+      songOfUserId(this.userId).then(res => {
         this.tempData = res
         this.tableData = res
         let len = res.length
@@ -242,8 +242,8 @@ export default {
     addSong () {
       let _this = this
       var form = new FormData(document.getElementById('tf'))
-      form.append('singerId', this.singerId)
-      form.set('name', this.singerName + '-' + form.get('name'))
+      form.append('userId', this.userId)
+      form.set('name', this.userName + '-' + form.get('name'))
       if (!form.get('lyric')) {
         form.set('lyric', '[00:00:00]暂无歌词')
       }
@@ -279,6 +279,9 @@ export default {
         lyric: row.lyric,
         style: row.style
       }
+      songOfSongId(row.id).then(song => {
+        this.form.name = song.name
+      })
     },
     //保存编辑页面修改的数据
     editSave () {

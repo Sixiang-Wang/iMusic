@@ -35,7 +35,7 @@
           {{ attachBirth(scope.row.birth) }}
         </template>
       </el-table-column>
-      <el-table-column prop="introduction" label="签名" align="center">
+      <el-table-column prop="introduction" label="简介" align="center">
         <template slot-scope="scope">
           <ul style="max-height:100px;overflow-y: auto">
             {{scope.row.introduction}}
@@ -43,6 +43,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="location" label="地区" width="100" align="center"></el-table-column>
+      <el-table-column label="歌曲管理" width="110" align="center">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="songEdit(scope.row.id,scope.row.name)">歌曲管理</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="收藏" width="80" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="getCollect(data[scope.$index].id)">收藏</el-button>
@@ -427,6 +432,9 @@ export default {
     },
     getFollow (id) {
       this.$router.push({path: '/follow', query: {id}})
+    },
+    songEdit (id, name) {
+      this.$router.push({path: `/Song`, query: {id, name}})
     }
   }
 }

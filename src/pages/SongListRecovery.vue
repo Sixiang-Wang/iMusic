@@ -53,13 +53,6 @@ import {mixin} from '../mixins/index'
 import {mapGetters} from 'vuex'
 import '@/assets/js/iconfont.js'
 import {
-  updateSong,
-  delSong,
-  allSong,
-  oneSingerOfName,
-  invisibleSong,
-  visibleSong,
-  allInvisible,
   allInvisibleSongList, delSongList, visibleSongList
 } from '../api/index'
 

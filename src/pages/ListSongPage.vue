@@ -46,7 +46,7 @@
 
 <script>
 import {mixin} from '../mixins/index'
-import {listSongDetail, songOfSongId, songOfSongName, listSongAdd, delListSong} from '../api/index'
+import {listSongDetail, songOfSongIdPlus, songOfSongName, listSongAdd, delListSong} from '../api/index'
 
 export default {
   mixins: [mixin],
@@ -98,7 +98,7 @@ export default {
     },
     //根据歌曲id查询歌曲对象，放到tempData和tableData里面
     getSong (id) {
-      songOfSongId(id)
+      songOfSongIdPlus(id)
         .then(res => {
           this.tempData.push(res)
           this.tableData.push(res)

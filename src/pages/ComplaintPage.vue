@@ -69,19 +69,12 @@ import {mixin} from '../mixins/index'
 import {mapGetters} from 'vuex'
 import '@/assets/js/iconfont.js'
 import {
-  updateSong,
-  delSong,
-  allSong,
-  oneSingerOfName,
   invisibleSong,
-  visibleSong,
-  allInvisible,
   allComplaint,
   deleteComplaint,
   getUserOfId,
-  songOfSongId,
+  songOfSongIdPlus,
   songListOfSongListId,
-  addMessage,
   ignoreComplaint,
   invisibleSongList
 } from '../api/index'
@@ -157,7 +150,7 @@ export default {
           const user = await getUserOfId(item.userId)
           item.userName = user.name
           if (item.type === 0) {
-            const song = await songOfSongId(item.songId)
+            const song = await songOfSongIdPlus(item.songId)
             item.name = song.name
           } else {
             const songList = await songListOfSongListId(item.songListId)

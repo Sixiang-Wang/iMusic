@@ -5,38 +5,39 @@ export const getLoginStatus = (params) => post(`admin/login/status`, params)
 
 export const preLogin = () => post(`admin/login/preLogin`)
 export const logout = () => post(`admin/login/logout`)
-// ============歌手相关================
-// 查询歌手
-export const getAllSinger = () => get(`singer/allSinger`)
 
-export const getSingerById = (singerId) => get(`singer/selectByPrimaryKey?id=${singerId}`)
-
-export const oneSingerOfName = (name) => get(`singer/oneSingerOfName?name=${name}`)
-// 添加歌手
-export const setSinger = (params) => post(`singer/add`, params)
-// 编辑歌手
-export const updateSinger = (params) => post(`singer/update`, params)
-// 删除歌手
-export const delSinger = (id) => get(`singer/delete?id=${id}`)
-
+// ============用户相关================
+// 查询用户
+export const getAllUser = () => get(`user/allUser`)
+// 添加用户
+export const setUser = (params) => post(`user/add`, params)
+// 编辑用户
+export const updateUser = (params) => post(`user/update`, params)
+// 删除用户
+export const delUser = (id) => get(`user/delete?id=${id}`)
+// 根据用户id查询该用户的详细信息
+export const getUserOfId = (id) => get(`/user/selectByPrimaryKey?id=${id}`)
+export const getOneUserWithName = (name) => get(`/user/getOneUserWithName?name=${name}`)
+export const getUserWithName = (name) => get(`/user/getUserWithName?name=${name}`)
+export const getUserWithSex = (sex) => get(`/user/getUserWithSex?sex=${sex}`)
 // ============歌曲相关================
 // 根据歌手id查询歌曲
-export const songOfSingerId = (id) => get(`song/singer/detail?singerId=${id}`)
+export const songOfUserId = (id) => get(`song/songOfUserId/addPrefix?userId=${id}`)
 // 编辑歌曲
 export const updateSong = (params) => post(`song/update`, params)
 // 删除歌曲
 export const delSong = (id) => get(`song/delete?id=${id}`)
 // 根据歌曲id查询歌曲对象
 export const songOfSongId = (id) => get(`song/detail?songId=${id}`)
+export const songOfSongIdPlus = (id) => get(`song/detail/addPrefix?songId=${id}`)
 // 根据歌曲名获取歌曲对象
 export const songOfSongName = (songName) => get(`song/songOfSongName?songName=${songName}`)
 // 查询所有歌曲
-export const allSong = () => get(`song/allSong`)
-export const allInvisible = () => get(`song/allInvisible`)
+export const allSong = () => get(`song/allSong/addPrefix`)
+export const allInvisible = () => get(`song/allInvisible/addPrefix`)
 export const songOfStyle = (style) => get(`song/songOfStyle?style=${style}`)
 export const invisibleSong = (id) => get(`song/invisible?id=${id}`)
 export const visibleSong = (id) => get(`song/visible?id=${id}`)
-
 // ============歌单相关================
 export const songListOfSongListId = (id) => get(`songList/selectByPrimaryKey?id=${id}`)
 // 查询歌单
@@ -59,18 +60,6 @@ export const listSongAdd = (params) => post(`listSong/add`, params)
 // 删除歌单的歌曲
 export const delListSong = (songId, songListId) => get(`listSong/delete?songId=${songId}&songListId=${songListId}`)
 
-// ============用户相关================
-// 查询用户
-export const getAllUser = () => get(`user/allUser`)
-// 添加用户
-export const setUser = (params) => post(`user/add`, params)
-// 编辑用户
-export const updateUser = (params) => post(`user/update`, params)
-// 删除用户
-export const delUser = (id) => get(`user/delete?id=${id}`)
-// 根据用户id查询该用户的详细信息
-export const getUserOfId = (id) => get(`/user/selectByPrimaryKey?id=${id}`)
-
 // ===============收藏===================
 // 指定用户的收藏列表
 export const getCollectOfUserId = (userId) => get(`/collect/collectOfUserId?userId=${userId}`)
@@ -88,6 +77,8 @@ export const deleteComment = (id) => get(`comment/delete?id=${id}`)
 //
 export const sendMail = (to) => get(`/mail/sendMail?to=${to}`)
 
+// Follow
+//
 export const getFollowByUserId = (userId) => get(`/follow/getByUserId?userId=${userId}`)
 export const deleteFollow = (id) => get(`/follow/delete?id=${id}`)
 export const existFollow = (userId, singerId) => get(`/follow/existFollow?userId=${userId}&singerId=${singerId}`)

@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import {getAllUser, allSong, getAllSinger, getAllSongList} from '../api/index'
+import {getAllUser, allSong, getAllSongList} from '../api/index'
 
 export default {
   data () {
@@ -174,7 +174,7 @@ export default {
       })
     },
     getSinger () {                      //歌手数量
-      getAllSinger().then(res => {
+      getAllUser().then(res => {
         this.singerCount = res.length
         this.singerSex.rows[0]['总数'] = this.setSex(0, res)
         this.singerSex.rows[1]['总数'] = this.setSex(1, res)
