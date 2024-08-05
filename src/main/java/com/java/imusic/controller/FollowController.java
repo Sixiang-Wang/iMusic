@@ -143,15 +143,4 @@ public class FollowController {
         return followService.getCountBySingerId(singerId);
     }
 
-    /**
-     * 查用户粉丝数量
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/getFansCountByUserId", method = RequestMethod.GET)
-    public Object getFansCountByUserId(HttpServletRequest request) {
-        Integer userId = Integer.parseInt(request.getParameter("userId").trim());
-        User user = userService.getUserWithID(userId);
-        return followService.getCountBySingerId(user.getSingerId());
-    }
 }

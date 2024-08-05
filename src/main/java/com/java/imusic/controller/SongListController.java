@@ -3,13 +3,10 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
 import com.java.imusic.dao.*;
-import com.java.imusic.domain.Collect;
 import com.java.imusic.domain.Message;
-import com.java.imusic.domain.Song;
 import com.java.imusic.domain.SongList;
 import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,7 +49,7 @@ public class SongListController {
     public Object addSongList(HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
         String title = request.getParameter("title").trim();      //标题
-        String pic = request.getParameter("pic").trim();        //歌单图片
+        String pic = "/img/songListPic/default.jpg";
         String introduction = request.getParameter("introduction").trim();//简介
         String style = request.getParameter("style").trim();    //风格
         String userIdS = request.getParameter("userId");
@@ -148,7 +145,7 @@ public class SongListController {
      * 根据标题精确查询歌单列表
      */
     @RequestMapping(value = "/songListOfTitle",method = RequestMethod.GET)
-    public Object songListOfName(HttpServletRequest request){
+    public Object songListOfTitle(HttpServletRequest request){
         String title = request.getParameter("title").trim();          //歌单标题
         return songListService.songListOfTitle(title);
     }

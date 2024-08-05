@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
             songService.delete(song.getId());
         }
 
+
         followMapper.deleteBySingerId(id);
         followMapper.deleteByUserId(user.getId());
 

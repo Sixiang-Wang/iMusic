@@ -151,7 +151,6 @@ public class UserController {
         JSONObject jsonObject = new JSONObject();
         String id = request.getParameter("id").trim();          //主键
         String username = request.getParameter("username").trim();     //账号
-        String usernameOrigin = request.getParameter("usernameOrigin").trim(); //原来账号
         String passwordFont = request.getParameter("password").trim();     //密码
         String password = SecurityUtil.encrypt(passwordFont);
         String sex = request.getParameter("sex").trim();               //性别
@@ -161,7 +160,7 @@ public class UserController {
         String introduction = request.getParameter("introduction").trim();//签名
         String location = request.getParameter("location").trim();      //地区
         String name = request.getParameter("name").trim();             //昵称
-        String nameOrigin = request.getParameter("nameOrigin").trim(); //原来昵称
+
 
         if (username == null || username.isEmpty()) {
             jsonObject.put(Consts.CODE, 0);
@@ -173,6 +172,10 @@ public class UserController {
             jsonObject.put(Consts.MSG, "密码不能为空");
             return jsonObject;
         }
+        User userOrigin = userService.getUserWithID(Integer.parseInt(id));
+        String usernameOrigin = userOrigin.getUsername();
+        String nameOrigin = userOrigin.getName();//原来昵称
+
         User user1 = userService.getByUsername(username);
         if (user1 != null && !user1.getUsername().equals(usernameOrigin)) {
             jsonObject.put(Consts.CODE, 0);

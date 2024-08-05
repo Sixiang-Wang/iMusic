@@ -2,12 +2,16 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.domain.ListSong;
+import com.java.imusic.domain.Song;
 import com.java.imusic.service.ListSongService;
+import com.java.imusic.service.SongService;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 歌单的歌曲管理controller
@@ -18,6 +22,8 @@ public class ListSongController {
 
     @Autowired
     private ListSongService listSongService;
+    @Autowired
+    private SongService songService;
 
     /**
      * 给歌单添加歌曲
@@ -50,6 +56,17 @@ public class ListSongController {
     public Object detail(HttpServletRequest request) {
         String songListId = request.getParameter("songListId");
         return listSongService.listSongOfSongListId(Integer.parseInt(songListId));
+    }
+
+    @RequestMapping(value = "/allSong", method = RequestMethod.GET)
+    public Object allSong(HttpServletRequest request) {
+        String songListId = request.getParameter("songListId");
+        List<ListSong> listSongs =  listSongService.listSongOfSongListId(Integer.parseInt(songListId));
+        List<Song> songs = new ArrayList<>();
+        listSongs.forEach(listSong -> {
+            songs.add(songService.selectByPrimaryKey(listSong.getSongId()));
+        });
+        return songs;
     }
 
 

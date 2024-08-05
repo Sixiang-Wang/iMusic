@@ -404,7 +404,7 @@ public class SongController {
     }
 
     /**
-     * 根据歌手名字精确查询歌曲
+     * 根据名字精确查询歌曲
      */
     @RequestMapping(value = "/songOfSongName",method = RequestMethod.GET)
     public Object songOfSongName(HttpServletRequest request){
