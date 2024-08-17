@@ -40,7 +40,7 @@
           <div class = "reason-group" v-for = "(group, index) in reasonGroups" :key = "index">
             <h4>{{ group.title }}</h4>
             <div class = "reason-list">
-              <div v-for = "(reason, reasonIndex) in group.reasons" :key = "reasonIndex">
+              <div  style="margin: 15px" v-for = "(reason, reasonIndex) in group.reasons" :key = "reasonIndex">
                 <input
                   type = "checkbox"
                   :id = "`reason${index}${reasonIndex}`"
@@ -104,10 +104,11 @@ import AlbumContent from "../components/AlbumContent.vue";
 import Comment from "../components/Comment.vue";
 import CollectIcon from "../assets/icon/collectIcon.vue";
 import ComplainIcon from "../assets/icon/complaint.vue";
-
+import {reasonGroup} from "../assets/data/reasonGroup";
+import IMusic from "../assets/icon/iMusic.vue";
 export default {
   name: 'song-list-album',
-  components: {ComplainIcon, CollectIcon, AlbumContent, Comment},
+  components: {IMusic, ComplainIcon, CollectIcon, AlbumContent, Comment,reasonGroup},
   mixins: [mixin],
   data() {
     return {
@@ -123,57 +124,7 @@ export default {
       showModal: false,
       selectedReasons: [],
       description: '',
-      reasonGroups: [
-        {
-          title: '违反法律法规',
-          reasons: [
-            {value: '违法违禁', label: '违法违禁'},
-            {value: '赌博诈骗', label: '赌博诈骗'},
-            {value: '盗搬我的稿件', label: '盗搬我的稿件'},
-            {value: '侵权申诉', label: '侵权申诉'},
-            // ... 可以继续添加更多
-          ],
-        },
-        {
-          title: '谣言及不实信息',
-          reasons: [
-            {value: '涉政谣言', label: '涉政谣言'},
-            {value: '涉社会事件谣言', label: '涉社会事件谣言'},
-            {value: '虚假不实信息', label: '虚假不实信息'},
-            // ... 可以继续添加更多
-          ],
-        },
-        {
-          title: '不规范行为',
-          reasons: [
-            {value: '违规推广', label: '违规推广'},
-            {value: '转载', label: '转载'},
-            {value: '自制错误', label: '自制错误'},
-            {value: '其他不规范行为', label: '其他不规范行为'},
-            // ... 可以继续添加更多
-          ],
-        },
-        {
-          title: '不友好行为',
-          reasons: [
-            {value: '人身攻击', label: '人身攻击'},
-            {value: '引战', label: '引战'},
-            // ... 可以继续添加更多不友好行为
-          ],
-        },
-        {
-          title: '公共秩序与道德',
-          reasons: [
-            {value: '色情低俗', label: '色情低俗'},
-            {value: '危险行为', label: '危险行为'},
-            {value: '观感不适', label: '观感不适'},
-            {value: '血腥暴力', label: '血腥暴力'},
-            {value: '青少年不良信息', label: '青少年不良信息'},
-            {value: '其他', label: '其他'},
-            // ... 可以继续添加更多公共秩序与道德问题
-          ],
-        },
-      ],
+      reasonGroups: reasonGroup,
     }
   },
   computed: {
@@ -236,7 +187,6 @@ export default {
         params.append('userId', this.userId);
         params.append('type', 1);
         params.append('songListId', this.songListId);
-        this.notify(params)
         setCollect(params).then(res =>
         {
           if (res.code === 1)
@@ -250,10 +200,8 @@ export default {
             deleteCollectSongList(this.userId, this.songListId);
             this.isCollect = '收藏';
             this.collectNum--;
-            this.notify('取消成功收藏', 'success');
           }
           else {
-            this.notify(this.userId + this.songListId);
             this.notify('收藏错误', 'error');
           }
         });
@@ -289,7 +237,7 @@ export default {
     addRank() {
       if (!this.loginIn)
       {
-        this.notify('请先登录', 'r');
+        this.notify('请先登录', 'warning');
       }
       else {
         let params = new URLSearchParams();
@@ -371,4 +319,5 @@ export default {
 </script>
 <style lang = "scss" scoped>
 @import "../assets/css/song-list-album.scss";
+@import "../assets/css/complain.scss";
 </style>

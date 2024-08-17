@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       styles: ['全部','流行','说唱','摇滚','金属','民谣','电子','古典','ACG','其他'],
-      active: '',
+      active: '全部',
     }
   },
   methods: {

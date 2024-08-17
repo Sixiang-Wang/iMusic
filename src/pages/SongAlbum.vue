@@ -253,7 +253,6 @@ export default {
             deleteCollectSong(this.userId, this.songId);
             this.isCollect = '收藏';
             this.favor--;
-            this.notify('取消成功收藏', 'success');
           }
           else {
             this.notify('收藏错误', 'error');

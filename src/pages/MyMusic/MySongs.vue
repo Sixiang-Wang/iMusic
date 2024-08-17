@@ -281,7 +281,6 @@ export default {
               self.songs = res
             });
             self.addForm = {};
-            self.notify(res.msg, 'success')
           }
           else {
             self.notify('保存失败', 'error')

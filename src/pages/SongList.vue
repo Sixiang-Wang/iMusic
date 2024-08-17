@@ -99,7 +99,7 @@ export default {
     createSongList() {
       if (!this.loginIn)
       {
-        this.notify('请先登录','r');
+        this.notify('请先登录','warning');
       }
       else
       {
@@ -133,6 +133,7 @@ export default {
     '$route.query': {
       immediate: true,
       handler() {
+        this.currentPage = 1;
         this.getSongList();
       }
     }
