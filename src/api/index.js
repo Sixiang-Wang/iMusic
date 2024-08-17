@@ -1,7 +1,147 @@
 import {get, post} from "./http"
-import songList from "../pages/SongList.vue";
 import Axios from "axios";
-import style from "../components/Style.vue";
+import {id} from "html-webpack-plugin/lib/chunksorter";
+
+
+// ============收藏================
+
+// 添加新收藏
+// 参数：userId 用户Id；type 类型（0为歌曲，1为歌单）；songId 歌曲Id；songListId 歌单Id
+export const addCollection = (params) => post(`collect/add`,params);
+
+// 删除收藏歌曲
+// 参数：userId 用户Id；songId 歌曲Id
+export const deleteCollectSong = (userId , songId) => get(`collect/deleteCollectSong?userId=${userId}&songId=${songId}`);
+
+// 删除收藏歌单
+// 参数：userId 用户Id；songListId 歌单Id
+export const deleteCollectSongList = (userId , songListId) => get(`collect/deleteCollectSongList?userId=${userId}&songId=${songListId}`);
+
+// 获取全部收藏（包含歌曲和歌单）
+// 参数：无
+// 返回值：List`<Collect>`
+export const getAllCollection = () => get(`collect/allCollect`);
+
+// 获取指定用户的全部歌曲收藏
+// 参数：userId
+// 返回值：List`<Collect>`
+export const getCollectSongOfUser =(userId)=>get(`collect/collectSongOfUserId?userId=${userId}`);
+
+// 获取指定用户的全部歌单收藏
+// 参数：userId
+// 返回值：List`<Collect>`
+export const getCollectSongListOfUser =(userId) => get(`collect/collectSongListOfUserId?userId=${userId}`);
+
+// 获取指定**歌曲**的总收藏量
+// 参数：songId
+// 返回值：Integer
+export const getCollectNumOfSong = (songId) => get(`collect/songCollectNum?songId=${songId}`);
+
+// 获取指定**歌单**的总收藏量
+// 参数：songId
+// 返回值：Integer
+export const getCollectNumOfSongList = (songListId) => get(`collect/songListCollectNum?songListId=${songListId}`);
+
+
+// 判断指定**歌曲**是否被指定**用户**收藏
+// 参数：userId、songId
+// 返回值：boolean
+export const getExistCollectSong = (userId , songId) =>get(`collect/existCollectSong?userId=${userId}&songId=${songId}`);
+
+// 判断指定**歌单**是否被指定**用户**收藏
+// 参数：userId、songListId
+// 返回值：boolean
+export const getExistCollectSongList = (userId , songListId) => get(`collect//existCollectSongList?userIs=${userId}&songListId=${songListId}`);
+
+// ============评论================
+
+// 添加评论
+// 参数：userId 用户Id；type 类型（0为歌曲，1为歌单）；songId 歌曲Id；songListId 歌单Id；content 内容
+export const addComment = (params) => post(`comment/add`, params);
+
+// 更改制定id的评论
+// 参数：id 评论的id；userId 用户Id；type 类型（0为歌曲，1为歌单）；songId 歌曲Id；songListId 歌单Id；content 内容
+export const updateComment = (params) =>post(`comment/update`,params);
+
+// 删除id对应的评论
+// 参数：id
+export const deleteComment = (id) => get(`comment/delete?id=${id}`);
+
+// 得到对应评论
+// 参数：id
+export const getComment = (id) => get(`comment/selectByPrimaryKey?id=${id}`);
+
+// 获取全部评论
+export const getAllComment = () => get(`comment/allComment`);
+
+// 获取当前歌曲的全部评论
+export const getCommentOfSong = (songId) => get(`comment/commentOfSongId?songId=${songId}`);
+
+// 获取当前歌单的全部评论
+export const getCommentOfSongList = (songListId) => get(`comment/commentOfSongListId?songListId=${songListId}`);
+
+// ============投诉================
+
+// 投诉歌单、歌曲
+// 参数：userId 用户Id；type 类型（0为歌曲，1为歌单）；songId 歌曲Id；songListId 歌单Id；content 内容
+export const addComplaint = (params) => post(`complaint/add`, params);
+
+// 修改投诉内容
+// 参数：userId 用户Id；type 类型（0为歌曲，1为歌单）；songId 歌曲Id；songListId 歌单Id；content 内容
+export const updateComplaint = (params) => post(`complaint/update`, params);
+
+// 删除id对应投诉
+// 参数：id 投诉的id
+export const deleteComplaint = (id) => get(`complaint/delete?id=${id}`);
+
+// 根据id得到对应投诉
+export const getComplaint = (id) => get(`complaint/selectByPrimaryKey?id=${id}`);
+
+// 获取全部投诉
+export const getAllComplaint = () =>get(`complaint/allComment`);
+
+// 用户发起的所有投诉
+export const allComplaintByUser = (userId) => get(`/complaint/allComplaintByUser?userId=${userId}`);
+// 用户所有被投诉的（歌曲
+export const allComplaintAgainstUser = (userId) => get(`/complaint/allComplaintAgainstUser?userId=${userId}`);
+
+// 发起申诉
+// 参数：id（投诉id）、appeal（申诉内容）
+export const appealComplaint = (params) => post(`/complaint/appealComplaint`, params);
+
+// ============关注================
+
+
+
+
+
+
+
+
+
+
+
+// 是否已点赞
+export const existCommentUp = (userId, commentId) => get(`commentUp/exist?userId=${userId}&commentId=${commentId}`);
+// 点赞提交
+export const addCommentUp = (params) => post(`commentUp/add`, params);
+
+export const deleteComment = (id) => get(`comment/delete?id=${id}`);
+// 取消点赞
+export const deleteCommentUp = (userId, commentId) => get(`commentUp/delete?userId=${userId}&commentId=${commentId}`);
+// 评论的点赞数量
+export const getUpCount = (commentId) => get(`commentUp/sumUp?commentId=${commentId}`);
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ============歌手相关=============
@@ -100,24 +240,7 @@ export const commitRank = (param) => post(`rank/add`, param);
 export const getRankOfSongListId = (songListId) => get(`rank/rankOfSongListId?songListId=${songListId}`)
 export const getRankOfSongListIdAndUserId = (params) => post(`rank/rankOfSongListIdAndUserId`, params)
 // =============== 评论 ==================
-// 提交评论
-export const setComment = (params) => post(`comment/add`, params);
-// 点赞
-export const setLike = (params) => post(`comment/like`, params);
-// 返回当前歌单或歌曲的评论区列表
-export const getCommentOfSong = (songId) => get(`comment/commentOfSongId?songId=${songId}`);
 
-export const getCommentOfSongList = (songListId) => get(`comment/commentOfSongListId?songListId=${songListId}`);
-// 是否已点赞
-export const existCommentUp = (userId, commentId) => get(`commentUp/exist?userId=${userId}&commentId=${commentId}`);
-// 点赞提交
-export const addCommentUp = (params) => post(`commentUp/add`, params);
-
-export const deleteComment = (id) => get(`comment/delete?id=${id}`);
-// 取消点赞
-export const deleteCommentUp = (userId, commentId) => get(`commentUp/delete?userId=${userId}&commentId=${commentId}`);
-// 评论的点赞数量
-export const getUpCount = (commentId) => get(`commentUp/sumUp?commentId=${commentId}`);
 
 // =============== 收藏 ==================
 // 判断歌曲是否已收藏
@@ -169,17 +292,6 @@ export const getRecentSongOrderByCount = (id) => get(`recentSong/recentSongOrder
 export const recommendSongList = (id) => get(`recentSong/recommendSongList/${id}`);
 // 推荐歌手
 export const recommendSinger = (id) => get(`recentSong/recommendSinger/${id}`);
-
-// ================== 投诉与申诉 ===============
-
-// 投诉歌单、歌曲
-export const addComplaint = (params) => post(`complaint/add`, params);
-
-// 用户所有被投诉的（歌曲
-export const allComplaintAgainstUser = (userId) => get(`/complaint/allComplaintAgainstUser?userId=${userId}`);
-
-// 申诉
-export const appealComplaint = (params) => post(`/complaint/appealComplaint`, params);
 
 // ================ 消息提醒 ==============
 
