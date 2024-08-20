@@ -34,7 +34,7 @@ public class SongController {
     @Getter
     private static SongController songController;
     @Autowired
-    private SingerService userService;
+    private UserService userService;
     @Autowired
     private MessageService messageService;
     @Autowired
@@ -182,7 +182,7 @@ public class SongController {
         boolean flag = songService.update(song);
         if(flag){
             Message message = new Message();
-            message.setTo(userService.selectByPrimaryKey(song.getUserId()).getUserID());
+            message.setTo(song.getUserId());
             message.setFrom(-1);
             message.setText("您的歌曲《"+song.getName()+"》已被下架");
             message.setIsRead(0);
@@ -209,7 +209,7 @@ public class SongController {
         boolean flag = songService.update(song);
         if(flag){
             Message message = new Message();
-            message.setTo(userService.selectByPrimaryKey(song.getUserId()).getUserID());
+            message.setTo(song.getUserId());
             message.setFrom(-1);
             message.setText("您的歌曲《"+song.getName()+"》已恢复");
             message.setIsRead(0);
@@ -530,8 +530,8 @@ public class SongController {
         Integer songId = Integer.parseInt(request.getParameter("songId"));
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Song song = songService.selectByPrimaryKey(songId);
-        Singer user = userService.selectByPrimaryKey(song.getUserId());
-        if(user.getUserID().equals(userId)){
+        User user = userService.selectByPrimaryKey(song.getUserId());
+        if(user.getId().equals(userId)){
             return true;
         }else{
             return false;
