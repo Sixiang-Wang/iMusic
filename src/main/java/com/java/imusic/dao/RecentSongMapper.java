@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.java.imusic.domain.RecentSong;
 import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.SongList;
+import com.java.imusic.domain.User;
 import com.java.imusic.vo.RecentSongVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -28,7 +29,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
      */
     @Select("select DISTINCT\n" +
             "            s.id,\n" +
-            "            s.singer_id,\n" +
+            "            s.user_id,\n" +
             "            s.name,\n" +
             "            s2.name,\n" +
             "            s.introduction,\n" +
@@ -39,7 +40,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "        from\n" +
             "            recent_song r\n" +
             "                inner join song s on r.song_id = s.id\n" +
-            "                inner join singer s2 on s.singer_id = s2.id\n" +
+            "                inner join user s2 on s.user_id = s2.id\n" +
             "        where\n" +
             "            r.user_id = #{id}\n" +
             "        order by r.update_time desc,\n" +
@@ -52,7 +53,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
      */
     @Select("SELECT DISTINCT\n" +
             "    s.id,\n" +
-            "    s.singer_id,\n" +
+            "    s.user_id,\n" +
             "    s.name,\n" +
             "    s2.name,\n" +
             "    s.introduction,\n" +
@@ -63,7 +64,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "FROM\n" +
             "    recent_song r\n" +
             "INNER JOIN song s ON r.song_id = s.id\n" +
-            "INNER JOIN singer s2 ON s.singer_id = s2.id\n" +
+            "INNER JOIN user s2 ON s.user_id = s2.id\n" +
             "WHERE\n" +
             "    r.user_id = #{id}\n" +
             "ORDER BY r.count DESC")
@@ -92,15 +93,15 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "            s2.id,\n" +
             "            s2.name,\n" +
             "            s2.sex,\n" +
-            "            s2.pic,\n" +
+            "            s2.profilePicture,\n" +
             "            s2.birth,\n" +
             "            s2.location,\n" +
             "            s2.introduction\n" +
             "        from recent_song r\n" +
             "            inner join song s on r.song_id = s.id\n" +
-            "            inner join singer s2 on s.singer_id = s2.id\n" +
+            "            inner join user s2 on s.user_id = s2.id\n" +
             "        where r.user_id = #{userId}")
-    List<Singer> getSingerByRecentSong(Integer userId);
+    List<User> getSingerByRecentSong(Integer userId);
 
 }
 

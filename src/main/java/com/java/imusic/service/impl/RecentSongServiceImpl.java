@@ -34,7 +34,7 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     private RecentSongMapper recentSongMapper;
 
     @Resource
-    private SingerMapper singerMapper;
+    private UserMapper userMapperser;
 
     @Resource
     private CollectMapper collectMapper;
@@ -188,23 +188,23 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
      */
     @Override
     public Result recommendSinger(Integer id) {
-        HashSet<Singer> singerHashSet = new HashSet<>();
-        List<Singer> singerByRecentSong = recentSongMapper.getSingerByRecentSong(id);
+        HashSet<User> singerHashSet = new HashSet<>();
+        List<User> singerByRecentSong = recentSongMapper.getSingerByRecentSong(id);
         if (!singerByRecentSong.isEmpty()) {
             singerHashSet.addAll(singerByRecentSong);
         }
         List<Collect> tmpList = collectMapper.collectOfUserId(id);
-        List<Singer> singerByCollectSong = new ArrayList<>();
+        List<User> singerByCollectSong = new ArrayList<>();
         tmpList.forEach(item -> {
             if (item.getSongId() != null) {
-                singerByCollectSong.add(singerMapper.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getUserId()));
+                singerByCollectSong.add(userMapperser.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getUserId()));
             }
         });
 
         if (!singerByCollectSong.isEmpty()) {
-            for (Singer singer : singerByCollectSong) {
+            for (User singer : singerByCollectSong) {
                 int flag = 0;
-                for (Singer singer1 : singerHashSet) {
+                for (User singer1 : singerHashSet) {
                     if (singer1.getId().equals(singer.getId())) {
                         flag = 1;
                         break;
@@ -216,15 +216,15 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
             }
         }
         if (singerHashSet.size() < 10) {
-            List<Singer> singerList = singerMapper.allSinger();
+            List<User> singerList = userMapperser.allUser();
             if (!singerList.isEmpty()) {
-                for (Singer singer : singerList) {
+                for (User singer : singerList) {
                     if (singerHashSet.size() == 10) {
                         break;
                     }
 
                     int flag = 0;
-                    for (Singer singer1 : singerHashSet) {
+                    for (User singer1 : singerHashSet) {
                         if (singer1.getId().equals(singer.getId())) {
                             flag = 1;
                             break;

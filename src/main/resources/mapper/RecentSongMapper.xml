@@ -23,7 +23,7 @@
     <select id="getRecentSongByUserId" resultType="com.java.imusic.vo.RecentSongVo">
         select
             s.id,
-            s.singer_id,
+            s.user_id,
             s.name,
             s2.name,
             s.introduction,
@@ -34,7 +34,7 @@
         from
             recent_song r
                 inner join song s on r.song_id = s.id
-                inner join singer s2 on s.singer_id = s2.id
+                inner join singer s2 on s.user_id = s2.id
         where
             r.user_id = #{id}
         order by r.update_time desc,
@@ -66,7 +66,7 @@
             s2.introduction
         from recent_song r
             inner join song s on r.song_id = s.id
-            inner join singer s2 on s.singer_id = s2.id
+            inner join singer s2 on s.user_id = s2.id
         where r.user_id = #{userId}
     </select>
 
