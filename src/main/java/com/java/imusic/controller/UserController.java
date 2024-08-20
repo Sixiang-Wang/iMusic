@@ -3,9 +3,7 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
-import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.User;
-import com.java.imusic.service.SingerService;
 import com.java.imusic.service.SongService;
 import com.java.imusic.service.UserService;
 import com.java.imusic.utils.CipherBean;
