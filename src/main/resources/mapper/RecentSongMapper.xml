@@ -55,7 +55,7 @@
         where r.user_id = #{userId}
     </select>
 
-    <select id="getSingerByRecentSong" resultType="com.java.imusic.domain.Singer">
+    <select id="getSingerByRecentSong" resultType="com.java.imusic.domain.User">
         select
             s2.id,
             s2.name,

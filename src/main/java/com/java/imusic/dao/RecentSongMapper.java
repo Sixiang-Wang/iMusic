@@ -2,13 +2,11 @@ package com.java.imusic.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.java.imusic.domain.RecentSong;
-import com.java.imusic.domain.Singer;
 import com.java.imusic.domain.SongList;
 import com.java.imusic.domain.User;
 import com.java.imusic.vo.RecentSongVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.mybatis.spring.annotation.MapperScan;
 
 import java.util.List;
 
