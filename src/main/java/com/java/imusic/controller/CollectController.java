@@ -63,10 +63,13 @@ public class CollectController {
         Collect collect = new Collect();
         collect.setUserId(Integer.parseInt(userId));
         collect.setType(typeByte);
-        if(typeByte == 0)
+        if(typeByte == 0) {
             collect.setSongId(Integer.parseInt(songId));
-        else if(typeByte == 1)
+        }
+        else if(typeByte == 1){
             collect.setSongListId(Integer.parseInt(songListId));
+        }
+
 
         boolean flag = collectService.insert(collect);
         if (flag) {   //保存成功
