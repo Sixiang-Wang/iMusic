@@ -3,15 +3,14 @@
     <ul class="section-content">
       <li class="content-item" v-for="(item,index) in contentList" :key="index">
         <div class="kuo" @click="goAlbum(item)">
-          <img class="item-img" :src="attachImageUrl(item.pic)" alt="">
+          <img class="item-img" :src="attachImageUrl(item.pic || item.profilePicture)" alt="">
           <div class="mask">
             <svg class="icon">
               <use xlink:href="#icon-bofang"></use>
             </svg>
           </div>
         </div>
-        <p v-if="item.singerId" class="item-name">{{ replaceFName(item.name) }}</p>
-        <p v-else class="item-name">{{ item.name || item.title }}</p>
+        <p class="item-name">{{ item.name || item.title }}</p>
       </li>
     </ul>
   </div>
@@ -21,6 +20,7 @@
 import {mixin} from '../mixins/index'
 
 export default {
+  type: '',
   name: 'content-list',
   mixins: [mixin],
   props: ['contentList'],
@@ -28,12 +28,13 @@ export default {
     goAlbum(item) {
       this.$store.commit('setTempList', item);
       console.log("res:", item);
-      if (item.singerId) {
+      this.notify(item);
+      if (item.lyric) {
         this.$router.push({path: `/song-album/${item.id}`});
-      } else if (item.name) {
-        this.$router.push({path: `/singer-album/${item.id}`});
-      } else {
+      } else if (item.title) {
         this.$router.push({path: `/song-list-album/${item.id}`});
+      } else {
+        this.$router.push({path: `/singer-album/${item.id}`});
       }
     },
     // 获取名字后半部分-- 歌名

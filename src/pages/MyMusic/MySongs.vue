@@ -103,7 +103,7 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {delSong, getUserOfId, songOfSingerId, updateSong} from "../../api";
+import {delSong, getUserOfId, songOfUserId, updateSong} from "../../api";
 import {mixin} from "../../mixins";
 export default {
   data() {
@@ -114,7 +114,6 @@ export default {
       songs: [],
       songId: '',
       name: '', //用户昵称
-      singerId: '',
       addForm: {      // 添加歌曲的框
         songName: '',
         introduction: '',
@@ -140,11 +139,10 @@ export default {
   },
   mounted() {
     getUserOfId(this.userId).then(res => {
-      this.singerId = res.singerId;
       this.name = res.name;
-      songOfSingerId(this.singerId).then(res => {
-        this.songs = res;
-      });
+    })
+    songOfUserId(this.userId).then(res => {
+      this.songs = res;
     })
   },
   methods: {
@@ -184,7 +182,7 @@ export default {
     handleSongSuccess (res) {
       let self = this;
       if (res.code === 1) {
-        songOfSingerId(self.singerId).then(res => {
+        songOfUserId(self.userId).then(res => {
           self.songs = res
         });
         self.notify('上传成功', 'success')
@@ -194,7 +192,7 @@ export default {
     },
     handleAvatarSuccess (res) {
       if (res.code === 1) {
-        songOfSingerId(this.singerId).then(res => {
+        songOfUserId(this.userId).then(res => {
           this.songs = res
         });
         this.notify('上传成功', 'success')
@@ -222,7 +220,7 @@ export default {
         {
           this.songId = '';
           this.delVisible = false;
-          songOfSingerId(this.singerId).then(res => {
+          songOfUserId(this.userId).then(res => {
             this.songs = res
           });
           this.notify('删除成功','success')
@@ -245,7 +243,7 @@ export default {
       updateSong(params)
         .then(res => {
           if (res.code === 1) {
-            songOfSingerId(this.singerId).then(res => {
+            songOfUserId(this.userId).then(res => {
               this.songs = res;
             });
             this.notify('修改成功', 'success')
@@ -261,7 +259,7 @@ export default {
     addSong() {
       let self = this;
       let form = new FormData(document.getElementById('tf'));
-      form.append('singerId', this.singerId);
+      form.append('userId', this.userId);
       form.set('name', this.name+ '-' + form.get('songName'));
       if (!form.get('lyric')) {
         form.set('lyric', '[00:00:00]暂无歌词');
@@ -277,7 +275,7 @@ export default {
         if (req.readyState === 4 && req.status === 200) {
           let res = JSON.parse(req.response)
           if (res.code) {
-            songOfSingerId(self.singerId).then(res => {
+            songOfUserId(self.userId).then(res => {
               self.songs = res
             });
             self.addForm = {};

@@ -22,12 +22,13 @@
           </span>
           <span class = "item-title">
               <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric,songList)">
-                {{ replaceFName(item.name) }}
+                {{ item.name }}
               </span>
           </span>
           <span class = "item-name">
-            <span @click = "goSinger(replaceLName(item.name))">
-              {{ replaceLName(item.name) }}
+            <span>
+<!--              {{getSingerName(item.userId)}}-->
+<!--              {{ singerNames[index] }}-->
             </span>
           </span>
           <span class = "item-intro">
@@ -115,7 +116,7 @@ import {
   setCollect,
   existCollectSong,
   selectSongListByUserId,
-  addListSong, getSongListById, deleteListSong, addComplaint
+  addListSong, getSongListById, deleteListSong, addComplaint, getSingerById
 } from "../api";
 import {mapGetters} from "vuex";
 import AddIcon from "../assets/icon/addIcon.vue";
@@ -135,6 +136,7 @@ export default {
   },
   data() {
     return {
+
       deleteDialog: false,
       isMySongList: false,
       isShowSelect: false,
@@ -154,22 +156,17 @@ export default {
       reasonGroups: reasonGroup,
     }
   },
+
   mounted() {
-    if (this.loginIn)
-    {
-      selectSongListByUserId(this.userId).then(res =>
-      {
-        res.forEach(item =>
-        {
+    if (this.loginIn) {
+      selectSongListByUserId(this.userId).then(res => {
+        res.forEach(item => {
           this.selectData.push({id: item.id, pic: item.pic, title: item.title})
         })
       })
-      if (this.$route.params.id)
-      {
-        getSongListById(this.$route.params.id).then(res =>
-        {
-          if (res.userId === this.userId && this.$route.path.includes('song-list-album'))
-          {
+      if (this.$route.params.id) {
+        getSongListById(this.$route.params.id).then(res => {
+          if (res.userId === this.userId && this.$route.path.includes('song-list-album')) {
             this.isMySongList = true;
           }
         })
@@ -178,13 +175,10 @@ export default {
   },
   methods: {
     isCollected(item) {
-      if (!this.loginIn)
-      {
+      if (!this.loginIn) {
         this.$set(item, 'collection', false);
-      }
-      else {
-        existCollectSong(this.userId, item.id).then(res =>
-        {
+      } else {
+        existCollectSong(this.userId, item.id).then(res => {
           this.$set(item, 'collection', res);
         })
       }
@@ -197,28 +191,24 @@ export default {
         params.append('type', 0);
         params.append('songId', songId);
         setCollect(params)
-          .then(res =>
-          {
+          .then(res => {
             if (res.code === 1) {
               item.collection = true;
               this.notify('收藏成功', 'success');
-            }
-            else if (res.code === 2) {
+            } else if (res.code === 2) {
               deleteCollectSong(this.userId, songId);
               item.collection = false;
-            }
-            else {
+            } else {
               this.notify('收藏失败', 'error');
             }
           })
-      }
-      else {
+      } else {
         this.notify('请先进行登录', 'warning');
       }
     },
+
     goSinger(name) {
-      getOneSingerByName(name).then(res =>
-      {
+      getOneSingerByName(name).then(res => {
         this.$store.commit('setTempList', res);
         this.$router.push({path: `/singer-album/${res.id}`});
       })
@@ -230,21 +220,17 @@ export default {
       let params = new URLSearchParams();
       params.append('songId', this.selectSongId);
       params.append('songListId', songListId);
-      addListSong(params).then(res =>
-      {
-        if (res.code)
-        {
+      addListSong(params).then(res => {
+        if (res.code) {
           this.hideSelectBox();
           this.notify('添加成功', 'success');
         }
       })
     },
     showSelect(event, index, songId) {
-      if (!this.loginIn)
-      {
+      if (!this.loginIn) {
         this.notify('请先登录', 'warning');
-      }
-      else {
+      } else {
         this.isShowSelect = true;
         this.addIndex = index;
         this.selectSongId = songId;
@@ -274,10 +260,8 @@ export default {
       this.deleteSongId = '';
     },
     confirmDelete() {
-      deleteListSong(this.deleteSongId, this.$route.params.id).then(res =>
-      {
-        if (res)
-        {
+      deleteListSong(this.deleteSongId, this.$route.params.id).then(res => {
+        if (res) {
           this.songList = this.songList.filter(song => song.id !== this.deleteSongId);
           this.deleteDialog = false;
           this.deleteSongId = '';
@@ -285,8 +269,8 @@ export default {
       })
     },
     showComplaintModal() {
-      if(!this.loginIn){
-        this.notify('请先登录','warning');
+      if (!this.loginIn) {
+        this.notify('请先登录', 'warning');
         return;
       }
       this.showModal = true; // 显示弹窗
@@ -310,20 +294,16 @@ export default {
       // console.log('提交举报:' + this.selectedReasons.join(',')+'\n提交举报内容:'+this.description);
       // 发送请求
       addComplaint(params)
-        .then(res =>
-        {
+        .then(res => {
           this.$notify({title: '投诉成功', type: 'success'});
-          setTimeout(() =>
-          {
+          setTimeout(() => {
             this.showModal = false;
           }, 1000); // 1000毫秒即1秒
         })
-        .catch(error =>
-        {
+        .catch(error => {
           console.log(error);
           this.$notify({title: '投诉失败', type: 'error'}); // 可以增加一个通知函数用于显示错误通知
-          setTimeout(() =>
-          {
+          setTimeout(() => {
             this.showModal = false;
           }, 1000); // 1000毫秒即1秒
         });
@@ -338,7 +318,7 @@ export default {
         this.selectedReasons.splice(3);
       }
     },
-  },
+  }
 }
 </script>
 

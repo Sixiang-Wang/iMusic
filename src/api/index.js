@@ -2,18 +2,18 @@ import {get, post} from "./http"
 import songList from "../pages/SongList.vue";
 import Axios from "axios";
 import style from "../components/Style.vue";
-///hahah
+
 
 // ============歌手相关=============
 // 查询歌手
-export const getAllSinger = () => get(`singer/allSinger`);
+export const getAllSinger = () => get(`user/allUser`);
 
-export const getSingerById = (id) => get(`singer/selectByPrimaryKey?id=${id}`)
+export const getSingerById = (id) => get(`user/selectByPrimaryKey?id=${id}`)
 
-export const getOneSingerByName = (name) => get(`singer/oneSingerOfName?name=${name}`)
+export const getOneSingerByName = (name) => get(`user/getOneUserWithName?name=${name}`)
 // ============歌曲相关=============
 // 根据歌手id查询歌曲
-export const songOfSingerId = (id) => get(`song/singer/detail?singerId=${id}`);
+export const songOfUserId = (id) => get(`song/songOfUserId?userId=${id}`);
 // 根据歌曲id查询歌曲对象
 export const songOfSongId = (id) => get(`song/detail?songId=${id}`)
 // 编辑歌曲

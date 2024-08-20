@@ -9,10 +9,11 @@
 </template>
 
 <script>
+
 import Swiper from '../components/Swiper.vue'
 import {getAllSinger, getAllSongList, getTopSong, preLogin} from '../api/index'
 import ContentList from '../components/ContentList'
-import {mixin} from '../mixins'
+import {mixin} from '../mixins/index'
 import {mapGetters} from "vuex";
 
 export default {
@@ -50,9 +51,7 @@ export default {
             this.$store.commit('setUserId' , res.userId);
             this.$store.commit('setUsername', res.username);
             this.$store.commit('setAvatar', res.avatar);
-            this.$notify({
-              title: '自动登陆成功'
-            })
+            this.notify('自动登陆成功','success')
           }
         }))
       }

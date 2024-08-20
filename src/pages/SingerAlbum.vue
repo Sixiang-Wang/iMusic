@@ -45,7 +45,7 @@
 <script>
 import {mixin} from "../mixins";
 import {mapGetters} from "vuex";
-import {addFollow, deleteFollow, existFollow, getFansCountBySingerId, getSingerById, songOfSingerId} from "../api";
+import {addFollow, deleteFollow, existFollow, getFansCountBySingerId, getSingerById, songOfUserId} from "../api";
 import AlbumContent from "../components/AlbumContent.vue";
 
 export default {
@@ -79,7 +79,7 @@ export default {
     getSingerById(this.singerId).then(res =>
     {
       this.singer = res;
-      this.pic = this.singer.pic;
+      this.pic = this.singer.profilePicture;
       this.initialize();
     })
     getFansCountBySingerId(this.singerId).then(res => {
@@ -125,7 +125,7 @@ export default {
       }
     },
     getSongList() {
-      songOfSingerId(this.singerId).then(res =>
+      songOfUserId(this.singerId).then(res =>
       {
         this.songList = res;
       }).catch(error =>
