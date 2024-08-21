@@ -15,7 +15,7 @@ export const getOneSingerByName = (name) => get(`user/getOneUserWithName?name=${
 // 根据歌手id查询歌曲
 export const songOfUserId = (id) => get(`song/songOfUserId?userId=${id}`);
 // 根据歌曲id查询歌曲对象
-export const songOfSongId = (id) => get(`song/detail?songId=${id}`)
+export const songOfSongId = (id) => get(`song/detail/addPrefix?songId=${id}`)
 // 编辑歌曲
 export const updateSong = (params) => post(`song/update`, params);
 // 删除歌曲

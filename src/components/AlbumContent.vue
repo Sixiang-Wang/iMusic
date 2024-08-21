@@ -14,6 +14,7 @@
       </li>
       <li v-for = "(item,index) in songList" :key = "index">
         {{ isCollected(item) }}
+        {{ getSingerName(item) }}
         <div class = "song-item">
           <span class = "item-index">
             <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric,songList)">
@@ -21,14 +22,13 @@
             </span>
           </span>
           <span class = "item-title">
-              <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric,songList)">
-                {{ item.name }}
-              </span>
+            <span @click = "toplay(item.id,item.url,item.pic,index,item.name,item.lyric,songList)">
+              {{ item.name }}
+            </span>
           </span>
           <span class = "item-name">
-            <span>
-<!--              {{getSingerName(item.userId)}}-->
-<!--              {{ singerNames[index] }}-->
+            <span @click="goSinger(item.singerName)">
+              {{ item.singerName }}
             </span>
           </span>
           <span class = "item-intro">
@@ -136,7 +136,6 @@ export default {
   },
   data() {
     return {
-
       deleteDialog: false,
       isMySongList: false,
       isShowSelect: false,
@@ -174,6 +173,11 @@ export default {
     }
   },
   methods: {
+    getSingerName(item) {
+        getSingerById(item.userId).then(res => {
+          this.$set(item, 'singerName', res.name);
+        })
+    },
     isCollected(item) {
       if (!this.loginIn) {
         this.$set(item, 'collection', false);
@@ -318,7 +322,7 @@ export default {
         this.selectedReasons.splice(3);
       }
     },
-  }
+  },
 }
 </script>
 
