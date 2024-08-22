@@ -27,7 +27,7 @@ import java.util.List;
 public class SongListController {
 
     @Autowired
-    private SongListService songListService;
+    SongListService songListService;
     @Autowired
     private RankMapper rankMapper;
     @Autowired
@@ -48,6 +48,7 @@ public class SongListController {
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Object addSongList(HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
         String title = request.getParameter("title").trim();      //标题
         String pic = "/img/songListPic/default.jpg";
         String introduction = request.getParameter("introduction").trim();//简介
@@ -66,6 +67,11 @@ public class SongListController {
         songList.setIntroduction(introduction);
         songList.setStyle(style);
         songList.setUserId(userId);
+
+        if (id!=null&&!id.isEmpty()){
+            songList.setId(Integer.parseInt(id));
+        }
+
         boolean flag = songListService.insert(songList);
         if(flag){   //保存成功
             jsonObject.put(Consts.CODE,1);

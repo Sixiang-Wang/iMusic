@@ -52,6 +52,7 @@ public class SongController {
 
         JSONObject jsonObject = new JSONObject();
         //获取前端传来的参数
+        String id = request.getParameter("id");
         String userId = request.getParameter("userId").trim();  //所属歌手id
         String name = request.getParameter("name").trim();          //歌名
         String introduction = request.getParameter("introduction").trim();          //简介
@@ -90,6 +91,10 @@ public class SongController {
             song.setLyric(lyric);
             song.setUrl(storeUrlPath);
             song.setStyle(style);
+
+            if (id!=null&&!id.isEmpty()){
+                song.setId(Integer.parseInt(id));
+            }
 
             boolean flag = songService.insert(song);
             if(flag){

@@ -47,13 +47,14 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addUser(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
+
         String username = request.getParameter("username").trim();     //账号
         String passwordFont = request.getParameter("password").trim();     //密码
         //加密
         String password = SecurityUtil.encrypt(passwordFont);
 
         String sex = request.getParameter("sex").trim();               //性别
-        String phoneNum = request.getParameter("phoneNum").trim();     //手机号
         String email = request.getParameter("email").trim();           //电子邮箱
         String birth = request.getParameter("birth").trim();           //生日
         String introduction = request.getParameter("introduction").trim();//签名
@@ -108,7 +109,6 @@ public class UserController {
         user.setUsername(username);
         user.setPassword(password);
         user.setSex(new Byte(sex));
-        user.setPhoneNum(phoneNum);
         user.setEmail(email);
         user.setBirth(birthDate);
         user.setIntroduction(introduction);
@@ -118,6 +118,10 @@ public class UserController {
         //user.setSingerID(singerId);
         //user.setId(userID);
 
+        if (id!=null&&!id.isEmpty()){
+            user.setId(Integer.parseInt(id));
+        }
+        System.out.println(user.getId());
         boolean flag = userService.insert(user);
         if (!flag) {   //保存成功
             jsonObject.put(Consts.CODE, 0);
@@ -125,16 +129,7 @@ public class UserController {
             return jsonObject;
         }
 
-        Integer userID = userService.lastUserID();
 
-        user.setId(userID);
-
-        flag = userService.update(user);
-        if (!flag) {   //保存成功
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "用户保存失败");
-            return jsonObject;
-        }
 
         jsonObject.put(Consts.CODE, 1);
         jsonObject.put(Consts.MSG, "添加成功");
@@ -152,7 +147,6 @@ public class UserController {
         String passwordFont = request.getParameter("password").trim();     //密码
         String password = SecurityUtil.encrypt(passwordFont);
         String sex = request.getParameter("sex").trim();               //性别
-        String phoneNum = request.getParameter("phoneNum").trim();     //手机号
         String email = request.getParameter("email").trim();           //电子邮箱
         String birth = request.getParameter("birth").trim();           //生日
         String introduction = request.getParameter("introduction").trim();//签名
@@ -207,7 +201,6 @@ public class UserController {
         user.setUsername(username);
         user.setPassword(password);
         user.setSex(new Byte(sex));
-        user.setPhoneNum(phoneNum);
         user.setEmail(email);
         user.setBirth(birthDate);
         user.setIntroduction(introduction);
@@ -267,6 +260,11 @@ public class UserController {
     public Object getByUsername(HttpServletRequest request) {
         String username = request.getParameter("username").trim();          //username
         User user =  userService.getByUsername(username);
+        if(user==null){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Consts.MSG,"没有这名用户");
+            return jsonObject;
+        }
         user.setPassword(SecurityUtil.decrypt(user.getPassword()));
         return user;
     }
@@ -313,7 +311,7 @@ public class UserController {
     @RequestMapping(value = "/getUsersWithSex", method = RequestMethod.GET)
     public List<User> getUsersWithSex(HttpServletRequest request){
         Integer sex = Integer.parseInt(request.getParameter("sex").trim());
-        return userService.getUserWithSex(sex);
+        return userService.getUsersWithSex(sex);
     };
 
     /**
@@ -410,32 +408,6 @@ public class UserController {
         return jsonObject;
     }
 
-
-    /**
-     * 手机登录
-     *
-     * @param phoneNum: 手机号码
-     * @return cn.dev33.satoken.util.SaResult
-     * @since 2023/3/2 23:12
-     */
-    @PostMapping("/{phoneNum}")
-    public Object loginWithPhoneNum(@PathVariable("phoneNum") String phoneNum, HttpSession session) {
-        //只要访问这个接口,就直接先给退出登录,清除cookie
-        JSONObject jsonObject = new JSONObject();
-        User user = userService.getUserWithPhoneNum(phoneNum);
-        if (user!=null) {
-            log.error("=============查询到了user {}", user);
-            user.setPassword("***");
-            //设置登录状态
-            jsonObject.put(Consts.CODE, 1);
-            jsonObject.put(Consts.MSG, "登录成功");
-        }
-        else {
-            jsonObject.put(Consts.CODE, 0);
-            jsonObject.put(Consts.MSG, "登录失败");
-        }
-        return jsonObject;
-    }
 
     /**
      * 退出登录

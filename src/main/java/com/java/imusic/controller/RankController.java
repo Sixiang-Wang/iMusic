@@ -31,6 +31,7 @@ public class RankController {
     @RequestMapping(value = "/rank/add",method = RequestMethod.POST)
     public Object add(HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
         String songListId = request.getParameter("songListId");
         String userId = request.getParameter("userId");
         String score = request.getParameter("score");
@@ -55,6 +56,11 @@ public class RankController {
         }
 
         rank.setScore(Integer.parseInt(score));
+
+        if (id!=null&&!id.isEmpty()){
+            rank.setId(Integer.parseInt(id));
+        }
+
         boolean flag = rankService.insert(rank);
         if(flag){
             jsonObject.put(Consts.CODE,1);

@@ -32,11 +32,17 @@ public class ListSongController {
     public Object addListSong(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         //获取前端传来的参数
+        String id = request.getParameter("id");
         String songId = request.getParameter("songId").trim();  //歌曲id
         String songListId = request.getParameter("songListId").trim(); //歌单id
         ListSong listSong = new ListSong();
         listSong.setSongId(Integer.parseInt(songId));
         listSong.setSongListId(Integer.parseInt(songListId));
+
+        if (id!=null&&!id.isEmpty()){
+            listSong.setId(Integer.parseInt(id));
+        }
+
         boolean flag = listSongService.insert(listSong);
         if (flag) {
             jsonObject.put(Consts.CODE, 1);
