@@ -30,6 +30,7 @@ public class MessageController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addMessage(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
         Integer to = Integer.parseInt(request.getParameter("to"));
         String text = request.getParameter("text");
         String typeS = request.getParameter("type");
@@ -51,6 +52,10 @@ public class MessageController {
         message.setText(text);
         message.setIsRead(0);
         message.setType(type);
+
+        if (id!=null&&!id.isEmpty()){
+            message.setId(Integer.parseInt(id));
+        }
 
         boolean flag = messageService.insert(message);
 

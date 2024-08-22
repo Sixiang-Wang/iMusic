@@ -24,6 +24,7 @@ public class FollowController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addFollow(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Integer singerId = Integer.parseInt(request.getParameter("singerId"));
 
@@ -37,6 +38,10 @@ public class FollowController {
         Follow follow = new Follow();
         follow.setUserId(userId);
         follow.setSingerId(singerId);
+
+        if (id!=null&&!id.isEmpty()){
+            follow.setId(Integer.parseInt(id));
+        }
 
         boolean flag = followService.insert(follow)>0;
         if(!flag){

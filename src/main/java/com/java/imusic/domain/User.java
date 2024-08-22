@@ -17,8 +17,6 @@ public class User {
     private String password;
     /*性别*/
     private Byte sex;
-    /*手机号*/
-    private String phoneNum;
     /*电子邮箱*/
     private String email;
     /*生日*/
