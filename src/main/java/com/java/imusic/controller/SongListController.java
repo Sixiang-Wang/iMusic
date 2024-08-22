@@ -27,7 +27,7 @@ import java.util.List;
 public class SongListController {
 
     @Autowired
-    private SongListService songListService;
+    SongListService songListService;
     @Autowired
     private RankMapper rankMapper;
     @Autowired

@@ -125,7 +125,6 @@ public class CollectController {
     @RequestMapping(value = "/collectSongOfUserId", method = RequestMethod.GET)
     public Object collectSongOfUserId(HttpServletRequest request) {
         String uId = request.getParameter("userId");
-
         int userId = -1;
         if (!uId.isEmpty()) {
             userId = Integer.parseInt(uId);
@@ -135,7 +134,7 @@ public class CollectController {
             List<Collect> list = collectService.collectOfUserId(userId);
             List<Song> collectSong = new ArrayList<>();
             for (Collect collect : list) {
-                if(collect.getType()==0){
+                if(collect.getType()==0) {
                     collectSong.add(songService.selectByPrimaryKey(collect.getSongId()));
                 }
             }
@@ -151,7 +150,6 @@ public class CollectController {
     @RequestMapping(value = "/collectSongListOfUserId", method = RequestMethod.GET)
     public Object collectSongListOfUserId(HttpServletRequest request) {
         String uId = request.getParameter("userId");
-
         int userId = -1;
         if (!uId.isEmpty()) {
             userId = Integer.parseInt(uId);
