@@ -72,7 +72,7 @@ public interface UserService {
     List<User> getUserWithName(String name);
 
 
-    List<User> getUserWithSex(Integer sex);
+    List<User> getUsersWithSex(Integer sex);
 
     /**
      * 找到用户ID最大值

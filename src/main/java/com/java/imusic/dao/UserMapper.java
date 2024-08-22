@@ -77,7 +77,7 @@ public interface UserMapper {
 
     public List<User> getUserWithName(@Param("name") String name);
 
-    public List<User> getUserWithSex(Integer sex);
+    public List<User> getUsersWithSex(Integer sex);
 
     /**
      * 找到用户ID最大值

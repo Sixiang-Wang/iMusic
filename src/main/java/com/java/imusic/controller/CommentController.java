@@ -27,6 +27,7 @@ public class CommentController {
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Object addComment(HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
         String userId = request.getParameter("userId");           //用户id
         String type = request.getParameter("type");               //评论类型（0歌曲1歌单）
         String songId = request.getParameter("songId");           //歌曲id
@@ -41,6 +42,10 @@ public class CommentController {
             comment.setSongId(Integer.parseInt(songId));
         }else{
             comment.setSongListId(Integer.parseInt(songListId));
+        }
+
+        if (id!=null&&!id.isEmpty()){
+            comment.setId(Integer.parseInt(id));
         }
         comment.setContent(content);
         boolean flag = commentService.insert(comment);

@@ -159,8 +159,8 @@ public class UserServiceImpl implements UserService {
     };
 
     @Override
-    public List<User> getUserWithSex(Integer sex){
-        return userMapper.getUserWithSex(sex);
+    public List<User> getUsersWithSex(Integer sex){
+        return userMapper.getUsersWithSex(sex);
     };
 
     /**

@@ -31,6 +31,8 @@ public class CommentUpController {
         CommentUp commentUp = new CommentUp();
         commentUp.setUserId(userId);
         commentUp.setCommentId(commentId);
+
+
         boolean flag = commentUpService.insert(commentUp);
         commentMapper.updateUp(commentId);
         if(flag){   //保存成功

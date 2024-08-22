@@ -38,6 +38,8 @@ public class CollectController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addCollect(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
+
         String userId = request.getParameter("userId");           //用户id
         String type = request.getParameter("type");               //收藏类型（0歌曲1歌单）
         String songId = request.getParameter("songId");           //歌曲id
@@ -70,6 +72,9 @@ public class CollectController {
             collect.setSongListId(Integer.parseInt(songListId));
         }
 
+        if (id!=null&&!id.isEmpty()){
+            collect.setId(Integer.parseInt(id));
+        }
 
         boolean flag = collectService.insert(collect);
         if (flag) {   //保存成功
