@@ -95,7 +95,9 @@ public class UserController {
             try {
                 birthDate = dateFormat.parse(birth);
             } catch (ParseException e) {
-                e.printStackTrace();
+                jsonObject.put(Consts.CODE, 0);
+                jsonObject.put(Consts.MSG, "添加用户失败");
+                return jsonObject;
             }
         } else {
             birthDate = null;
