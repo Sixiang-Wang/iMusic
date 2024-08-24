@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # 部署名字
+  name: client
+spec:
+  replicas: 1
+  # 用来查找关联的 Pod，所有标签都匹配才行
+  selector:
+    matchLabels:
+      app: client
+  # 定义 Pod 相关数据
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      # 定义容器，可以多个
+      containers:
+      - name: client # 容器名字
+        image: registry.cn-beijing.aliyuncs.com/imusic/client:1.1 # 镜像
