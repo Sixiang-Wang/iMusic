@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.imusic.mapper.RecentSongMapper">
+
+    <resultMap id="BaseResultMap" type="com.java.imusic.domain.RecentSong">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="songId" column="song_id" jdbcType="INTEGER"/>
+            <result property="count" column="count" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getAllRecentSong" resultType="com.java.imusic.domain.RecentSong">
+        select
+            id, user_id, song_id, count, create_time, update_time
+        from
+            recent_song
+    </select>
+
+    <select id="getRecentSongByUserId" resultType="com.java.imusic.vo.RecentSongVo">
+        select
+            s.id,
+            s.user_id,
+            s.name,
+            s2.name,
+            s.introduction,
+            s.pic,
+            s.lyric,
+            s.url,
+            r.count
+        from
+            recent_song r
+                inner join song s on r.song_id = s.id
+                inner join user s2 on s.user_id = s2.id
+        where
+            r.user_id = #{id}
+        order by r.update_time desc,
+                 r.count desc
+    </select>
+
+    <select id="getSongListByRecentSong" resultType="com.java.imusic.domain.SongList">
+        select
+            sl.id,
+            sl.title,
+            sl.pic,
+            sl.introduction,
+            sl.style
+        from recent_song r
+            inner join song s on r.song_id = s.id
+            inner join list_song ls on s.id = ls.song_id
+            inner join song_list sl on ls.song_list_id = sl.id
+        where r.user_id = #{userId}
+    </select>
+
+    <select id="getSingerByRecentSong" resultType="com.java.imusic.domain.User">
+        select
+            s2.id,
+            s2.name,
+            s2.sex,
+            s2.pic,
+            s2.birth,
+            s2.location,
+            s2.introduction
+        from recent_song r
+            inner join song s on r.song_id = s.id
+            inner join user s2 on s.user_id = s2.id
+        where r.user_id = #{userId}
+    </select>
+
+</mapper>
