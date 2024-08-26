@@ -3,7 +3,6 @@ package com.java.imusic.common;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 //import java.io.Serial;
 import java.io.Serializable;
 
