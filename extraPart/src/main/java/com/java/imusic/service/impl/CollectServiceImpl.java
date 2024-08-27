@@ -38,6 +38,11 @@ public class CollectServiceImpl implements CollectService {
         return collectMapper.delete(id)>0;
     }
 
+    @Override
+    public boolean deleteBySongId(Integer songId) {
+        return collectMapper.deleteBySongId(songId)>0;
+    }
+
     /**
      * 根据用户id和歌曲id删除
      *

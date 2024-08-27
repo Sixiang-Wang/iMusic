@@ -300,6 +300,12 @@ public class ComplaintController {
         return complaintList;
     }
 
+    @RequestMapping(value = "/deleteBySongId",method = RequestMethod.GET)
+    public Object deleteBySongId(HttpServletRequest request) {
+        String songId = request.getParameter("songId");
+        return complaintService.deleteBySongId(Integer.parseInt(songId));
+    }
+
     @RequestMapping(value = "/allComplaintAgainstUser",method = RequestMethod.GET)
     public Object allComplaintAgainstUser(HttpServletRequest request){
         Integer userId = Integer.parseInt(request.getParameter("userId").trim());

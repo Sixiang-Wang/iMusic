@@ -29,7 +29,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public boolean deleteBySongId(Integer songId) {
-        return false;
+        return complaintMapper.deleteBySongId(songId)>0;
     }
 
     @Override
