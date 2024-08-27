@@ -88,6 +88,12 @@ public class CollectController {
         return jsonObject;
     }
 
+    @RequestMapping(value = "/deleteBySongId", method = RequestMethod.GET)
+    public Object deleteBySongId(HttpServletRequest request) {
+        String songId = request.getParameter("songId");
+        return collectService.deleteBySongId(Integer.parseInt(songId));
+    }
+
     /**
      * 删除收藏
      */
