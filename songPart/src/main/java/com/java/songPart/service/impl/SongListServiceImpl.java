@@ -6,6 +6,7 @@ import com.java.songPart.dao.ListSongMapper;
 import com.java.songPart.dao.SongListMapper;
 import com.java.songPart.domain.SongList;
 import com.java.songPart.service.SongListService;
+import com.java.songPart.utils.Port;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -63,10 +64,22 @@ public class SongListServiceImpl implements SongListService {
             }
         }
 
-        collectMapper.deleteBySongListId(songList.getId());
+//        collectMapper.deleteBySongListId(songList.getId());
+        restTemplate.getForObject(
+                Port.url_base+Port.port_extra+"/deleteBySongListId?songLiatId="+songList.getId(),
+                Boolean.class
+        );
         listSongMapper.deleteBySongListId(songList.getId());
-        complaintMapper.deleteBySongId(songList.getId());
-        commentService.deleteAllOfSongList(songList.getId());
+        restTemplate.getForObject(
+                Port.url_base+Port.port_extra+"/deleteBySongListId?songListId="+songList.getId(),
+                Boolean.class
+        );
+//        complaintMapper.deleteBySongId(songList.getId());
+//        commentService.deleteAllOfSongList(songList.getId());
+        restTemplate.getForObject(
+                Port.url_base+Port.port_comment+"/deleteBySongListId?songListId="+songList.getId(),
+                Boolean.class
+        );
         return songListMapper.delete(id)>0;
     }
 

@@ -8,11 +8,14 @@ import com.java.songPart.domain.Message;
 import com.java.songPart.domain.SongList;
 import com.java.songPart.service.SongListService;
 import com.java.songPart.utils.Consts;
+import com.java.songPart.utils.Port;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +38,9 @@ public class SongListController {
 
     @Autowired
     private ListSongMapper listSongMapper;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * 添加歌单
@@ -261,7 +267,17 @@ public class SongListController {
             message.setText("您的歌单《"+songList.getTitle()+"》已被下架");
             message.setIsRead(0);
             message.setType(0);
-            messageService.insert(message);
+            String messageUrl="http://localhost:"+ Port.port_message +
+                    "/message/add?to="+message.getTo()+
+                    "&from="+message.getFrom()+
+                    "&text="+message.getText();
+            restTemplate.exchange(
+                    messageUrl,
+                    HttpMethod.POST,
+                    null,
+                    JSONObject.class
+            );
+//            messageService.insert(message);
         }
         return flag;
     }
@@ -284,7 +300,17 @@ public class SongListController {
             message.setText("您的歌单《"+songList.getTitle()+"》已被恢复");
             message.setIsRead(0);
             message.setType(0);
-            messageService.insert(message);
+            String messageUrl="http://localhost:"+ Port.port_message +
+                    "/message/add?to="+message.getTo()+
+                    "&from="+message.getFrom()+
+                    "&text="+message.getText();
+            restTemplate.exchange(
+                    messageUrl,
+                    HttpMethod.POST,
+                    null,
+                    JSONObject.class
+            );
+//            messageService.insert(message);
         }
         return flag;
     }
