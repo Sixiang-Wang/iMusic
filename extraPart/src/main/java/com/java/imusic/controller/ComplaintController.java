@@ -2,6 +2,7 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.UrlConfig;
+import com.java.imusic.dao.ComplaintMapper;
 import com.java.imusic.domain.*;
 import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
@@ -24,6 +25,8 @@ public class ComplaintController {
 
     @Autowired
     private ComplaintService complaintService;
+    @Autowired
+    private ComplaintMapper complaintMapper;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -298,6 +301,11 @@ public class ComplaintController {
         return complaintService.deleteBySongId(Integer.parseInt(songId));
     }
 
+    @RequestMapping(value = "/deleteBySongListId", method = RequestMethod.GET)
+    public Object deleteBySongListId(HttpServletRequest request) {
+        String songListId = request.getParameter("songListId");
+        return complaintMapper.deleteBySongListId(Integer.parseInt(songListId));
+    }
 
 
     @RequestMapping(value = "/appealComplaint",method = RequestMethod.POST)

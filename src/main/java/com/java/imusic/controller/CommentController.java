@@ -119,6 +119,13 @@ public class CommentController {
         return commentService.deleteAllOfSong(Integer.parseInt(songId));
     }
 
+    @RequestMapping(value = "/deleteBySongListId",method = RequestMethod.GET)
+    public Object deleteBySongListId(HttpServletRequest request){
+        String songListId = request.getParameter("songListId").trim();
+        return commentService.deleteAllOfSongList(Integer.parseInt(songListId));
+    }
+
+
     /**
      * 根据主键查询整个对象
      */

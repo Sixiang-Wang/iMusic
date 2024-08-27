@@ -51,6 +51,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Boolean deleteBySongId(Integer songId){
+        return commentMapper.deleteBySongId(songId)>0;
+    }
+
+    @Override
     public boolean deleteAllOfSong(Integer songId){
         List<Comment> commentList = commentMapper.commentOfSongId(songId);
         commentList.forEach(comment -> {

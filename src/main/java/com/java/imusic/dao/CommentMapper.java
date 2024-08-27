@@ -33,6 +33,8 @@ public interface CommentMapper {
      */
     public Comment selectByPrimaryKey(Integer id);
 
+    public int deleteBySongId(Integer songId);
+
     /**
      * 查询所有评论
      */
