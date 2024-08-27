@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java.imusic.dao.SongListMapper">
-    <resultMap id="BaseResultMap" type="com.java.imusic.domain.SongList" >
+<mapper namespace="com.java.songPart.dao.SongListMapper">
+    <resultMap id="BaseResultMap" type="com.java.songPart.domain.SongList" >
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="pic" jdbcType="VARCHAR" property="pic"/>
@@ -12,7 +12,7 @@
         <result column="visible" jdbcType="INTEGER" property="visible"/>
     </resultMap>
 
-    <resultMap id="ResultMapWithBLOBs" type="com.java.imusic.domain.SongList" extends="BaseResultMap">
+    <resultMap id="ResultMapWithBLOBs" type="com.java.songPart.domain.SongList" extends="BaseResultMap">
         <result column="introduction" jdbcType="LONGVARCHAR" property="introduction"/>
     </resultMap>
 
@@ -24,7 +24,7 @@
         id,title,pic,style,introduction,user_id,visible
     </sql>
 
-    <insert id="insert" parameterType="com.java.imusic.domain.SongList">
+    <insert id="insert" parameterType="com.java.songPart.domain.SongList">
         insert into song_list
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -70,7 +70,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.java.imusic.domain.SongList">
+    <update id="update" parameterType="com.java.songPart.domain.SongList">
         update song_list
         <set>
             <if test="title != null">
