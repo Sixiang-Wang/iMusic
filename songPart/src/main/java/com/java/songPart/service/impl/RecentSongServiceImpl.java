@@ -8,10 +8,13 @@ import com.java.songPart.dao.*;
 import com.java.songPart.service.RecentSongService;
 import com.java.songPart.service.SongListService;
 import com.java.songPart.service.SongService;
-import com.java.songPart.service.UserService;
+import com.java.songPart.utils.Port;
 import com.java.songPart.vo.RecentSongVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -33,8 +36,6 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     @Resource
     private RecentSongMapper recentSongMapper;
 
-    @Resource
-    private UserMapper userMapperser;
 
     @Resource
     private SongListMapper songListMapper;
@@ -46,7 +47,8 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     private SongService songService;
 
     @Autowired
-    private UserService UserService;
+    private RestTemplate restTemplate;
+
 
     /**
      * 添加歌曲最近播放记录
@@ -136,13 +138,21 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     public Result recommendSongList(Integer id) {
         HashSet<SongList> songListHashSet = new HashSet<>();
         List<SongList> songListByRecentSong = recentSongMapper.getSongListByRecentSong(id);
-        List<Collect> tmpList = collectMapper.collectOfUserId(id);
+
+//        List<Collect> tmpList = collectMapper.collectOfUserId(id);
+        List<Collect> tmpList = restTemplate.getForObject(
+                Port.url_base + Port.port_base + "/collect/collectOfUserId?userId=" + id,
+                List.class
+        );
         List<SongList> allCollectSongListByConsumerId = new ArrayList<>();
-        tmpList.forEach(item -> {
-            if (item.getSongListId() != null) {
-                allCollectSongListByConsumerId.add(songListService.selectByPrimaryKey(item.getSongListId()));
-            }
-        });
+        if (tmpList != null)
+        {
+            tmpList.forEach(item -> {
+                if (item.getSongListId() != null) {
+                    allCollectSongListByConsumerId.add(songListService.selectByPrimaryKey(item.getSongListId()));
+                }
+            });
+        }
 
         if (!allCollectSongListByConsumerId.isEmpty()) {
             songListHashSet.addAll(allCollectSongListByConsumerId);
@@ -195,13 +205,25 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         if (!singerByRecentSong.isEmpty()) {
             singerHashSet.addAll(singerByRecentSong);
         }
-        List<Collect> tmpList = collectMapper.collectOfUserId(id);
+        List<Collect> tmpList = restTemplate.getForObject(
+                Port.url_base + Port.port_base + "/collect/collectOfUserId?userId=" + id,
+                List.class
+        );
+//        List<Collect> tmpList = collectMapper.collectOfUserId(id);
         List<User> singerByCollectSong = new ArrayList<>();
-        tmpList.forEach(item -> {
-            if (item.getSongId() != null) {
-                singerByCollectSong.add(userMapperser.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getUserId()));
-            }
-        });
+        if (tmpList != null)
+        {
+            tmpList.forEach(item -> {
+                if (item.getSongId() != null) {
+                    User user = restTemplate.getForObject(
+                            Port.url_base+Port.port_base+"/user/selectByPrimaryKey?id="+songService.selectByPrimaryKey(item.getSongId()).getUserId(),
+                            User.class
+                    );
+//                    singerByCollectSong.add(userMapperser.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getUserId()));
+                    singerByCollectSong.add(user);
+                }
+            });
+        }
 
         if (!singerByCollectSong.isEmpty()) {
             for (User singer : singerByCollectSong) {
@@ -218,21 +240,31 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
             }
         }
         if (singerHashSet.size() < 10) {
-            List<User> singerList = userMapperser.allUser();
-            if (!singerList.isEmpty()) {
-                for (User singer : singerList) {
-                    if (singerHashSet.size() == 10) {
+//            List<User> singerList = userMapperser.allUser();
+            List<User> singerList = restTemplate.getForObject(
+                    Port.url_base+Port.port_base+"/user/allUser",
+                    List.class
+            );
+            if (singerList != null && !singerList.isEmpty())
+            {
+                for (User singer : singerList)
+                {
+                    if (singerHashSet.size() == 10)
+                    {
                         break;
                     }
 
                     int flag = 0;
-                    for (User singer1 : singerHashSet) {
-                        if (singer1.getId().equals(singer.getId())) {
+                    for (User singer1 : singerHashSet)
+                    {
+                        if (singer1.getId().equals(singer.getId()))
+                        {
                             flag = 1;
                             break;
                         }
                     }
-                    if (0 == flag) {
+                    if (0 == flag)
+                    {
                         singerHashSet.add(singer);
                     }
                 }
@@ -244,8 +276,15 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     // 添加歌手名
     private List<RecentSongVo> addSingerName(List<RecentSongVo> recentSong) {
         for (RecentSongVo recentSongVo : recentSong) {
-            User user = UserService.getUserWithID(recentSongVo.getSingerId());
-            recentSongVo.setSingerName(user.getName());
+            User user = restTemplate.getForObject(
+                    Port.url_base+Port.port_base+"/user/selectByPrimaryKey?id="+recentSongVo.getSingerId(),
+                    User.class
+            );
+//            User user = UserService.getUserWithID(recentSongVo.getSingerId());
+            if (user != null)
+            {
+                recentSongVo.setSingerName(user.getName());
+            }
         }
         return recentSong;
     }
@@ -254,7 +293,11 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     private List<User> getUserListById(List<Integer> idList) {
         List<User> userList = new ArrayList<>();
         for (Integer id : idList) {
-            userList.add(UserService.getUserWithID(id));
+            User user = restTemplate.getForObject(
+                    Port.url_base+Port.port_base+"/user/selectByPrimaryKey?id="+id,
+                    User.class
+            );
+            userList.add(user);
         }
         return userList;
     }
