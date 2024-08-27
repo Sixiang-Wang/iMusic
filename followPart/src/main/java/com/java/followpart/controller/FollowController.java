@@ -2,32 +2,33 @@ package com.java.followpart.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.followpart.domain.Follow;
-import com.java.followpart.domain.User;
 import com.java.followpart.service.FollowService;
-import com.java.followpart.service.UserService;
-import com.java.imusic.service.impl.FollowServiceImpl;
-import com.java.imusic.utils.Consts;
+import com.java.followpart.service.impl.FollowServiceImpl;
+import com.java.followpart.utils.Consts;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/follow")
+@RequiredArgsConstructor
 public class FollowController {
     @Autowired
     private FollowService followService;
-    @Autowired
-    private UserService userService;
+
+    private final RestTemplate restTemplate;
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addFollow(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         String id = request.getParameter("id");
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Integer singerId = Integer.parseInt(request.getParameter("singerId"));
-
 
         if(followService.existFollow(userId,singerId)){
             jsonObject.put(Consts.CODE, 0);
