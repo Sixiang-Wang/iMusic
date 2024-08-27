@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.java</groupId>
-    <artifactId>iMusicServer</artifactId>
+    <artifactId>followpartServer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>iMusic</name>
-    <description>iMusic</description>
+    <name>followpart</name>
+    <description>followpart</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -131,7 +131,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.java.imusic.IMusicApplication</mainClass>
+                    <mainClass>com.java.followpart.followpartApplication</mainClass>
                     <skip>false</skip>
                     <executable>true</executable>
                     <fork>true</fork>
