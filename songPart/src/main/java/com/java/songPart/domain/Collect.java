@@ -1,7 +1,7 @@
 package com.java.songPart.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+//import java.util.Date;
 
 /**
  * 收藏
@@ -12,7 +12,7 @@ public class Collect implements Serializable {
     private Byte type;      //收藏类型（0歌曲1歌单）
     private Integer songId; //歌曲id
     private Integer songListId; //歌单id
-    private Date createTime;    //收藏时间
+    private String createTime;    //收藏时间
 
     public Integer getId() {
         return id;
@@ -54,11 +54,11 @@ public class Collect implements Serializable {
         this.songListId = songListId;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

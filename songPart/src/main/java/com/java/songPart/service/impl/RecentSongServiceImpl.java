@@ -138,15 +138,15 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     public Result recommendSongList(Integer id) {
         HashSet<SongList> songListHashSet = new HashSet<>();
         List<SongList> songListByRecentSong = recentSongMapper.getSongListByRecentSong(id);
-
-//        List<Collect> tmpList = collectMapper.collectOfUserId(id);
-        List<Collect> tmpList = restTemplate.getForObject(
+        List<Collect> tmpList = restTemplate.exchange(
                 Port.url_base + Port.port_base + "/collect/collectOfUserId?userId=" + id,
-                List.class
-        );
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Collect>>() {
+                }
+        ).getBody();
         List<SongList> allCollectSongListByConsumerId = new ArrayList<>();
-        if (tmpList != null)
-        {
+        if (tmpList != null) {
             tmpList.forEach(item -> {
                 if (item.getSongListId() != null) {
                     allCollectSongListByConsumerId.add(songListService.selectByPrimaryKey(item.getSongListId()));
@@ -205,21 +205,23 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         if (!singerByRecentSong.isEmpty()) {
             singerHashSet.addAll(singerByRecentSong);
         }
-        List<Collect> tmpList = restTemplate.getForObject(
+        List<Collect> tmpList = restTemplate.exchange(
                 Port.url_base + Port.port_base + "/collect/collectOfUserId?userId=" + id,
-                List.class
-        );
-//        List<Collect> tmpList = collectMapper.collectOfUserId(id);
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Collect>>() {
+                }
+        ).getBody();
+
+
         List<User> singerByCollectSong = new ArrayList<>();
-        if (tmpList != null)
-        {
+        if (tmpList != null) {
             tmpList.forEach(item -> {
                 if (item.getSongId() != null) {
                     User user = restTemplate.getForObject(
-                            Port.url_base+Port.port_base+"/user/selectByPrimaryKey?id="+songService.selectByPrimaryKey(item.getSongId()).getUserId(),
+                            Port.url_base + Port.port_base + "/user/selectByPrimaryKey?id=" + songService.selectByPrimaryKey(item.getSongId()).getUserId(),
                             User.class
                     );
-//                    singerByCollectSong.add(userMapperser.selectByPrimaryKey(songService.selectByPrimaryKey(item.getSongId()).getUserId()));
                     singerByCollectSong.add(user);
                 }
             });
@@ -240,31 +242,27 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
             }
         }
         if (singerHashSet.size() < 10) {
-//            List<User> singerList = userMapperser.allUser();
-            List<User> singerList = restTemplate.getForObject(
-                    Port.url_base+Port.port_base+"/user/allUser",
-                    List.class
-            );
-            if (singerList != null && !singerList.isEmpty())
-            {
-                for (User singer : singerList)
-                {
-                    if (singerHashSet.size() == 10)
-                    {
+            List<User> singerList = restTemplate.exchange(
+                    Port.url_base + Port.port_base + "/user/allUser",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<User>>() {
+                    }
+            ).getBody();
+            if (singerList != null && !singerList.isEmpty()) {
+                for (User singer : singerList) {
+                    if (singerHashSet.size() == 10) {
                         break;
                     }
 
                     int flag = 0;
-                    for (User singer1 : singerHashSet)
-                    {
-                        if (singer1.getId().equals(singer.getId()))
-                        {
+                    for (User singer1 : singerHashSet) {
+                        if (singer1.getId().equals(singer.getId())) {
                             flag = 1;
                             break;
                         }
                     }
-                    if (0 == flag)
-                    {
+                    if (0 == flag) {
                         singerHashSet.add(singer);
                     }
                 }
@@ -277,12 +275,10 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     private List<RecentSongVo> addSingerName(List<RecentSongVo> recentSong) {
         for (RecentSongVo recentSongVo : recentSong) {
             User user = restTemplate.getForObject(
-                    Port.url_base+Port.port_base+"/user/selectByPrimaryKey?id="+recentSongVo.getSingerId(),
+                    Port.url_base + Port.port_base + "/user/selectByPrimaryKey?id=" + recentSongVo.getSingerId(),
                     User.class
             );
-//            User user = UserService.getUserWithID(recentSongVo.getSingerId());
-            if (user != null)
-            {
+            if (user != null) {
                 recentSongVo.setSingerName(user.getName());
             }
         }
@@ -294,11 +290,12 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         List<User> userList = new ArrayList<>();
         for (Integer id : idList) {
             User user = restTemplate.getForObject(
-                    Port.url_base+Port.port_base+"/user/selectByPrimaryKey?id="+id,
+                    Port.url_base + Port.port_base + "/user/selectByPrimaryKey?id=" + id,
                     User.class
             );
             userList.add(user);
         }
         return userList;
     }
+
 }

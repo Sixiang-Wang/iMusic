@@ -21,7 +21,7 @@ public class User {
     /*电子邮箱*/
     private String email;
     /*生日*/
-    private Date birth;
+    private String birth;
     /*签名*/
     private String introduction;
     /*地区*/
@@ -29,10 +29,11 @@ public class User {
     /*头像*/
     private String profilePicture;
     /*创建时间*/
-    private Date createTime;
+    private String createTime;
     /*更新时间*/
-    private Date updateTime;
+    private String updateTime;
     /*用户昵称*/
+    @Getter
     private String name;
     private Integer singerId;
 
