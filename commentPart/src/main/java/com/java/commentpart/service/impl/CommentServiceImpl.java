@@ -114,4 +114,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> commentOfSongListId(Integer songListId) {
         return commentMapper.commentOfSongListId(songListId);
     }
+
+    @Override
+    public Boolean deleteBySongId(Integer songId){
+        return commentMapper.deleteBySongId(songId)>0;
+    }
 }

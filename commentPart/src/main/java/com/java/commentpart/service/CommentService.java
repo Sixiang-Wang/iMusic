@@ -51,5 +51,5 @@ public interface CommentService {
      */
     public List<Comment> commentOfSongListId(Integer songListId);
 
-    public Boolean deleteBySongId(int i);
+    public Boolean deleteBySongId(Integer id);
 }
