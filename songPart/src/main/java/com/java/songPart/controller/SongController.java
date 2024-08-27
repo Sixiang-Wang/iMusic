@@ -561,7 +561,7 @@ public class SongController {
         if(songs==null||songs.isEmpty()){
             return -1;
         }
-        return songMapper.popularCollectedSongOfUser(userId);
+        return songs.toArray()[0];
     }
     @RequestMapping(value = "/popularCollectedSongOfUser/addPrefix",method = RequestMethod.GET)
     public Object popularCollectedSongOfUserAddPrefix(HttpServletRequest request){
@@ -570,7 +570,7 @@ public class SongController {
         if(songs==null||songs.isEmpty()){
             return -1;
         }
-        return songService.addPrefix(songMapper.popularCollectedSongOfUser(userId));
+        return songs.toArray()[0];
     }
 
     /**
