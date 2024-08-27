@@ -241,7 +241,7 @@ public class SongListController {
     @RequestMapping(value = "/bestSongListOfUser",method = RequestMethod.GET)
     public Object bestSongListOfUser(HttpServletRequest request){
         String userId = request.getParameter("userId");
-        SongList songList =  rankMapper.bestSongListOfUser(Integer.parseInt(userId));
+        SongList songList = null;
         if(songList == null){
             List<SongList> songListList = songListService.selectByUserId(Integer.parseInt(userId));
             if(songListList==null || songListList.isEmpty()) {

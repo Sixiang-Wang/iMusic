@@ -85,15 +85,6 @@
         limit 1
     </select>
 
-    <select id="bestSongListOfUser" resultType="com.java.imusic.domain.SongList" parameterType="java.lang.Integer">
-        select s.id,s.title,s.pic,s.style,s.user_id
-        from `rank` r,song_list s
-        where s.user_id = #{userId}
-        and r.song_list_id = s.id
-        group by r.song_list_id
-        order by AVG(r.score) desc
-        limit 1
-    </select>
 </mapper>
 
 
