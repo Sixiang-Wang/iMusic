@@ -50,4 +50,6 @@ public interface CommentService {
      * 查询某个歌单下的所有评论
      */
     public List<Comment> commentOfSongListId(Integer songListId);
+
+    public Boolean deleteBySongId(int i);
 }
