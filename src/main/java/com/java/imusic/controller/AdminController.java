@@ -26,8 +26,6 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-import static sun.security.x509.CertificateAlgorithmId.ALGORITHM;
-
 
 @RestController
 @CrossOrigin
