@@ -1,12 +1,15 @@
 package com.java.songPart.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.java.songPart.config.PathConfig;
 import com.java.songPart.dao.ListSongMapper;
 import com.java.songPart.dao.SongListMapper;
 import com.java.songPart.domain.SongList;
 import com.java.songPart.service.SongListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.util.List;
@@ -21,6 +24,8 @@ public class SongListServiceImpl implements SongListService {
     private SongListMapper songListMapper;
     @Autowired
     private ListSongMapper listSongMapper;
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * 增加
