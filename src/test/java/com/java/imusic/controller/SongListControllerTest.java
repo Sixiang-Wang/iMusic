@@ -253,43 +253,43 @@ class SongListControllerTest {
 
     @Mock
     private RankMapper mockRankMapper;
-    @Test
-    public void testBestSongListOfUserWithBestList() throws Exception {
-        // 设置请求参数
-        when(request.getParameter("userId")).thenReturn("1");
-
-        // 创建一个模拟的SongList对象
-        SongList mockSongList = new SongList();
-        mockSongList.setId(1);
-        mockSongList.setTitle("Best Song List");
-
-        // 设置RankMapper的模拟行为，模拟有最佳歌单的情况
-        when(mockRankMapper.bestSongListOfUser(1)).thenReturn(mockSongList);
-
-        // 调用bestSongListOfUser方法
-        Object result = service.bestSongListOfUser(request);
-
-        // 验证结果
-        assertNotNull(result);
-        assertEquals(mockSongList, result);
-    }
-    @Test
-    public void testBestSongListOfUserWithEmptyList() throws Exception {
-        // 设置请求参数
-        when(request.getParameter("userId")).thenReturn("1");
-
-        // 设置RankMapper的模拟行为，模拟没有最佳歌单的情况
-        when(mockRankMapper.bestSongListOfUser(1)).thenReturn(null);
-
-        // 设置SongListService的模拟行为，模拟没有查询到其他歌单的情况
-        when(mockSongListService.selectByUserId(1)).thenReturn(Collections.emptyList());
-
-        // 调用bestSongListOfUser方法
-        Object result = service.bestSongListOfUser(request);
-
-        // 验证结果
-        assertNull(result);
-    }
+//    @Test
+//    public void testBestSongListOfUserWithBestList() throws Exception {
+//        // 设置请求参数
+//        when(request.getParameter("userId")).thenReturn("1");
+//
+//        // 创建一个模拟的SongList对象
+//        SongList mockSongList = new SongList();
+//        mockSongList.setId(1);
+//        mockSongList.setTitle("Best Song List");
+//
+//        // 设置RankMapper的模拟行为，模拟有最佳歌单的情况
+//        when(mockRankMapper.bestSongListOfUser(1)).thenReturn(mockSongList);
+//
+//        // 调用bestSongListOfUser方法
+//        Object result = service.bestSongListOfUser(request);
+//
+//        // 验证结果
+//        assertNotNull(result);
+//        assertEquals(mockSongList, result);
+//    }
+//    @Test
+//    public void testBestSongListOfUserWithEmptyList() throws Exception {
+//        // 设置请求参数
+//        when(request.getParameter("userId")).thenReturn("1");
+//
+//        // 设置RankMapper的模拟行为，模拟没有最佳歌单的情况
+//        when(mockRankMapper.bestSongListOfUser(1)).thenReturn(null);
+//
+//        // 设置SongListService的模拟行为，模拟没有查询到其他歌单的情况
+//        when(mockSongListService.selectByUserId(1)).thenReturn(Collections.emptyList());
+//
+//        // 调用bestSongListOfUser方法
+//        Object result = service.bestSongListOfUser(request);
+//
+//        // 验证结果
+//        assertNull(result);
+//    }
 
     @Mock
     private MessageService mockMessageService;

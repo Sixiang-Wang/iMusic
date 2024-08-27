@@ -218,17 +218,18 @@ public class SongController {
             message.setText("您的歌曲《"+song.getName()+"》已被下架");
             message.setIsRead(0);
             message.setType(0);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/json");
 
-            HttpEntity<Message> requestEntity = new HttpEntity<>(message, headers);
-
-            // 发送 POST 请求
-            restTemplate.postForObject(
-                    Port.url_base+ Port.port_base+"/message/add",
-                    requestEntity,
-                    Void.class
+            String messageUrl="http://localhost:"+ Port.port_base +
+                    "/message/add?to="+message.getTo()+
+                    "&from="+message.getFrom()+
+                    "&text="+message.getText();
+            restTemplate.exchange(
+                    messageUrl,
+                    HttpMethod.POST,
+                    null,
+                    JSONObject.class
             );
+            // 发送 POST 请求
 //            messageService.insert(message);
         }
         return flag;
@@ -256,15 +257,14 @@ public class SongController {
             message.setText("您的歌曲《"+song.getName()+"》已恢复");
             message.setIsRead(0);
             message.setType(0);
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/json");
-
-            HttpEntity<Message> requestEntity = new HttpEntity<>(message, headers);
-
-            // 发送 POST 请求
-            restTemplate.postForObject(
-                    Port.url_base+ Port.port_base+"/message/add",
-                    requestEntity,
+            String messageUrl="http://localhost:"+ Port.port_base +
+                    "/message/add?to="+message.getTo()+
+                    "&from="+message.getFrom()+
+                    "&text="+message.getText();
+            restTemplate.exchange(
+                    messageUrl,
+                    HttpMethod.POST,
+                    null,
                     JSONObject.class
             );
 //            messageService.insert(message);
