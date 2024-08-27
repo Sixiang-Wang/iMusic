@@ -9,6 +9,7 @@ import com.java.imusic.service.CollectService;
 import com.java.imusic.service.RecentSongService;
 import com.java.imusic.service.SongListService;
 import com.java.imusic.service.SongService;
+import com.java.imusic.service.UserService;
 import com.java.imusic.vo.RecentSongVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,9 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
 
     @Autowired
     private SongService songService;
+
+    @Autowired
+    private UserService UserService;
 
     /**
      * 添加歌曲最近播放记录
@@ -109,11 +113,13 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     public Result getRecentSongByUserId(Integer id) {
         try {
             List<RecentSongVo> recentSongByUserId = recentSongMapper.getRecentSongByUserId(id);
+            recentSongByUserId = addSingerName(recentSongByUserId);
             return Result.ok("查询成功", recentSongByUserId);
         } catch (Exception e) {
             return Result.error("查找最近听歌数据时发生错误: " + e.getMessage());
         }
     }
+
 
     /**
      * 获取指定用户最近播放列表，按播放量降序排列
@@ -122,11 +128,13 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     public Result getRecentSongByUserIdOrderByCountDesc(Integer id) {
         try {
             List<RecentSongVo> recentSongByUserId = recentSongMapper.getRecentSongByUserIdOrderByCountDesc(id);
+            recentSongByUserId = addSingerName(recentSongByUserId);
             return Result.ok("查询成功", recentSongByUserId);
         } catch (Exception e) {
             return Result.error("查找听歌数据时发生错误: " + e.getMessage());
         }
     }
+
 
     /**
      * 推荐歌单
@@ -189,7 +197,8 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     @Override
     public Result recommendSinger(Integer id) {
         HashSet<User> singerHashSet = new HashSet<>();
-        List<User> singerByRecentSong = recentSongMapper.getSingerByRecentSong(id);
+        List<Integer> singerIdByRecentSong = recentSongMapper.getSingerByRecentSong(id);
+        List<User> singerByRecentSong = getUserListById(singerIdByRecentSong);
         if (!singerByRecentSong.isEmpty()) {
             singerHashSet.addAll(singerByRecentSong);
         }
@@ -237,5 +246,23 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
             }
         }
         return Result.ok("查询成功", singerHashSet);
+    }
+
+    // 添加歌手名
+    private List<RecentSongVo> addSingerName(List<RecentSongVo> recentSong) {
+        for (RecentSongVo recentSongVo : recentSong) {
+            User user = UserService.getUserWithID(recentSongVo.getSingerId());
+            recentSongVo.setSingerName(user.getName());
+        }
+        return recentSong;
+    }
+
+    // 根据Id列表获取User列表
+    private List<User> getUserListById(List<Integer> idList) {
+        List<User> userList = new ArrayList<>();
+        for (Integer id : idList) {
+            userList.add(UserService.getUserWithID(id));
+        }
+        return userList;
     }
 }

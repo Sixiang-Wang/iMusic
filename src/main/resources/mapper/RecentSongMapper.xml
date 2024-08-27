@@ -25,7 +25,7 @@
             s.id,
             s.user_id,
             s.name,
-            s2.name,
+            r.update_time,
             s.introduction,
             s.pic,
             s.lyric,
@@ -34,7 +34,6 @@
         from
             recent_song r
                 inner join song s on r.song_id = s.id
-                inner join user s2 on s.user_id = s2.id
         where
             r.user_id = #{id}
         order by r.update_time desc,
@@ -55,18 +54,11 @@
         where r.user_id = #{userId}
     </select>
 
-    <select id="getSingerByRecentSong" resultType="com.java.imusic.domain.User">
+    <select id="getSingerByRecentSong" resultType="java.lang.Integer">
         select
-            s2.id,
-            s2.name,
-            s2.sex,
-            s2.pic,
-            s2.birth,
-            s2.location,
-            s2.introduction
+            s.user_id
         from recent_song r
             inner join song s on r.song_id = s.id
-            inner join user s2 on s.user_id = s2.id
         where r.user_id = #{userId}
     </select>
 

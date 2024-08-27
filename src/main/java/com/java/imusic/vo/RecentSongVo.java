@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 //import java.io.Serial;
 import java.io.Serializable;
@@ -18,23 +20,31 @@ public class RecentSongVo implements Serializable {
     /**
      * 主键
      */
+    @Setter
+    @Getter
     @JsonSerialize(using = ToStringSerializer.class)
     private Integer id;
 
     /**
      * 歌手id
      */
+    @Setter
+    @Getter
     @JsonSerialize(using = ToStringSerializer.class)
     private Integer singerId;
 
     /**
      * 歌名
      */
+    @Setter
+    @Getter
     private String name;
 
     /**
      * 歌手名
      */
+    @Setter
+    @Getter
     private String singerName;
 
     /**
@@ -62,6 +72,6 @@ public class RecentSongVo implements Serializable {
      */
     private Integer playCount;
 
-//    @Serial
+    //    @Serial
 //    private static final long serialVersionUID = 1L;
 }

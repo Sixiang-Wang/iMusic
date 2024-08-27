@@ -29,7 +29,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "            s.id,\n" +
             "            s.user_id,\n" +
             "            s.name,\n" +
-            "            s2.name,\n" +
+            "            r.update_time,\n" +
             "            s.introduction,\n" +
             "            s.pic,\n" +
             "            s.lyric,\n" +
@@ -38,7 +38,6 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "        from\n" +
             "            recent_song r\n" +
             "                inner join song s on r.song_id = s.id\n" +
-            "                inner join user s2 on s.user_id = s2.id\n" +
             "        where\n" +
             "            r.user_id = #{id}\n" +
             "        order by r.update_time desc,\n" +
@@ -53,7 +52,7 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "    s.id,\n" +
             "    s.user_id,\n" +
             "    s.name,\n" +
-            "    s2.name,\n" +
+            "    r.update_time,\n" +
             "    s.introduction,\n" +
             "    s.pic,\n" +
             "    s.lyric,\n" +
@@ -62,7 +61,6 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
             "FROM\n" +
             "    recent_song r\n" +
             "INNER JOIN song s ON r.song_id = s.id\n" +
-            "INNER JOIN user s2 ON s.user_id = s2.id\n" +
             "WHERE\n" +
             "    r.user_id = #{id}\n" +
             "ORDER BY r.count DESC")
@@ -88,18 +86,11 @@ public interface RecentSongMapper extends BaseMapper<RecentSong> {
      * 由最近播放歌曲查询其歌手信息
      */
     @Select("select DISTINCT\n" +
-            "            s2.id,\n" +
-            "            s2.name,\n" +
-            "            s2.sex,\n" +
-            "            s2.profilePicture,\n" +
-            "            s2.birth,\n" +
-            "            s2.location,\n" +
-            "            s2.introduction\n" +
+            "            s.user_id\n" +
             "        from recent_song r\n" +
             "            inner join song s on r.song_id = s.id\n" +
-            "            inner join user s2 on s.user_id = s2.id\n" +
             "        where r.user_id = #{userId}")
-    List<User> getSingerByRecentSong(Integer userId);
+    List<Integer> getSingerByRecentSong(Integer userId);
 
 }
 
