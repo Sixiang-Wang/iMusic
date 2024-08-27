@@ -48,7 +48,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
@@ -131,7 +130,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.java.imusic.IMusicApplication</mainClass>
+                    <mainClass>com.java.imusic.UserPartApplication</mainClass>
                     <skip>false</skip>
                     <executable>true</executable>
                     <fork>true</fork>

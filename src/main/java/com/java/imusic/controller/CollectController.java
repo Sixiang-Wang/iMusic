@@ -103,10 +103,6 @@ public class CollectController {
         String songListId = request.getParameter("songListId");           //歌曲id
         return collectService.deleteByUserIdSongListId(Integer.parseInt(userId), Integer.parseInt(songListId));
     }
-
-
-
-
     /**
      * 查询所有收藏
      */
