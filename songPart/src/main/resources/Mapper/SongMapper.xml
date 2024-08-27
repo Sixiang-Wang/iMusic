@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.songPart.dao.SongMapper">
+    <resultMap id="BaseResultMap" type="com.java.songPart.domain.Song">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="introduction" jdbcType="VARCHAR"
+                property="introduction"/>
+        <result column="create_time" jdbcType="TIMESTAMP"
+                property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP"
+                property="updateTime"/>
+        <result column="pic" jdbcType="VARCHAR" property="pic"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="style" jdbcType="VARCHAR" property="style"/>
+        <result column="visible" jdbcType="INTEGER" property="visible"/>
+        <result column="nums" jdbcType="INTEGER" property="nums"/>
+    </resultMap>
+
+    <resultMap id="ResultMapWithBLOBs" type="com.java.songPart.domain.Song"
+               extends="BaseResultMap">
+        <result column="lyric" jdbcType="LONGVARCHAR" property="lyric"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,name,introduction,create_time,update_time,pic,url,style,visible
+    </sql>
+
+    <sql id="Blob_Column_List">
+        id,user_id,name,introduction,create_time,update_time,pic,lyric,url,style,visible
+    </sql>
+
+    <insert id="insert" parameterType="com.java.songPart.domain.Song">
+        insert into song
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="introduction != null">
+                introduction,
+            </if>
+            create_time,update_time,
+            <if test="pic != null">
+                pic,
+            </if>
+            <if test="lyric != null">
+                lyric,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="style != null">
+                style,
+            </if>
+            visible,
+            nums,
+        </trim>
+        <trim prefix=" values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="introduction != null">
+                #{introduction},
+            </if>
+            now(),now(),
+            <if test="pic != null">
+                #{pic},
+            </if>
+            <if test="lyric != null">
+                #{lyric},
+            </if>
+            <if test="url != null">
+                #{url},
+            </if>
+            <if test="style != null">
+                #{style},
+            </if>
+            1,0,
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.java.songPart.domain.Song">
+        update song
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="introduction != null">
+                introduction = #{introduction},
+            </if>
+            update_time = now(),
+            <if test="pic != null">
+                pic = #{pic},
+            </if>
+            <if test="lyric != null">
+                lyric = #{lyric},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="style != null">
+                style = #{style},
+            </if>
+            <if test="visible != null">
+                visible = #{visible},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="addNums" parameterType="java.lang.Integer">
+        update song
+        set nums=nums + 1
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete
+        from song
+        where id = #{id};
+    </delete>
+
+    <delete id="deleteRecentSong" parameterType="java.lang.Integer">
+        delete
+        from recent_song
+        where song_id = #{songId};
+    </delete>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where id=#{id};
+    </select>
+
+    <select id="allSong" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where visible = 1
+    </select>
+
+    <select id="allInvisible" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where visible = 0
+    </select>
+
+    <select id="topSong" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where visible = 1
+        order by nums desc
+    </select>
+
+    <select id="songOfName" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.String">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where name = #{name}
+        and visible = 1
+    </select>
+
+    <select id="likeSongOfName" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.String">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where name like #{name}
+        and visible = 1
+    </select>
+
+    <select id="songOfUserId" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where user_id = #{userId}
+        and visible = 1
+    </select>
+
+
+
+    <select id="songOfStyle" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.String">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where style like #{style}
+        and visible = 1
+    </select>
+
+    <select id="songOfOtherStyle" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.String">
+        select
+        <include refid="Blob_Column_List"/>
+        from song
+        where `style` not like '%摇滚%'
+        and `style` not like '%流行%'
+        and `style` not like '%说唱%'
+        and `style` not like '%金属%'
+        and `style` not like '%民谣%'
+        and `style` not like '%电子%'
+        and `style` not like '%古典%'
+        and `style` not like '%ACG%'
+        and visible = 1
+    </select>
+
+    <select id="popularSongOfUser" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.Integer">
+        select
+            s.id,s.user_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
+        from song s
+        where s.user_id = #{userId}
+        and visible = 1
+        order by nums desc
+        limit 1
+    </select>
+
+    <select id="popularCollectedSongOfUser" resultMap="ResultMapWithBLOBs"
+            parameterType="java.lang.Integer">
+        select s.id,s.user_id,s.name,s.introduction,s.create_time,s.update_time,s.pic,s.lyric,s.url,s.style,s.visible,s.nums
+        from song s,`collect` c
+        where s.user_id = #{userId}
+          and c.song_id = s.id
+          and visible = 1
+        group by s.id
+        order by count(*) desc
+        limit 1
+    </select>
+</mapper>
+
+

@@ -1,8 +1,6 @@
 package com.java.songPart.service.impl;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.songPart.config.PathConfig;
 import com.java.songPart.dao.SongMapper;
 import com.java.songPart.domain.Song;
@@ -10,7 +8,6 @@ import com.java.songPart.domain.User;
 import com.java.songPart.service.SongService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
