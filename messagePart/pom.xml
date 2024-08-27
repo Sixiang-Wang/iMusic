@@ -5,7 +5,7 @@
     <groupId>com.java</groupId>
     <artifactId>iMusicServer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>iMusic</name>
+    <name>messagePart</name>
     <description>iMusic</description>
     <properties>
         <java.version>1.8</java.version>

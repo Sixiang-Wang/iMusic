@@ -3,7 +3,6 @@ package com.java.imusic.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.service.AdminService;
 import com.java.imusic.utils.Consts;
-import com.java.imusic.utils.MailUtil;
 import com.java.imusic.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,23 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-
-import static sun.security.x509.CertificateAlgorithmId.ALGORITHM;
-
 
 @RestController
 @CrossOrigin

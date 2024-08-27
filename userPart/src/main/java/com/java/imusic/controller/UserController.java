@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.PathConfig;
 import com.java.imusic.domain.User;
 import com.java.imusic.service.UserService;
-import com.java.imusic.utils.CipherBean;
 import com.java.imusic.utils.Consts;
 import com.java.imusic.utils.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +31,6 @@ import java.util.List;
 @RequestMapping("/user")
 @Slf4j
 public class UserController {
-    @Autowired
-    private CipherBean cipher;
     @Autowired
     private UserService userService;
     /**
