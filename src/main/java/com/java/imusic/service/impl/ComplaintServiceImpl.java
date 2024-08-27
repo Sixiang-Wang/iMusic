@@ -28,6 +28,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    public boolean deleteBySongId(Integer songId) {
+        return false;
+    }
+
+    @Override
     public Complaint selectByPrimaryKey(Integer id) {
         return complaintMapper.selectByPrimaryKey(id);
     }

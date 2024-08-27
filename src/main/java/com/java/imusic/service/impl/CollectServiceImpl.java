@@ -41,9 +41,12 @@ public class CollectServiceImpl implements CollectService {
     /**
      * 根据用户id和歌曲id删除
      *
-     * @param userId
      * @param songId
      */
+    @Override
+    public boolean deleteBySongId(Integer songId) {
+        return collectMapper.deleteBySongId(songId)>0;
+    }
     @Override
     public boolean deleteByUserIdSongId(Integer userId, Integer songId) {
         return collectMapper.deleteByUserIdSongId(userId,songId)>0;

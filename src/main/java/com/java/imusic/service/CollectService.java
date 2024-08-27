@@ -19,6 +19,8 @@ public interface CollectService {
      */
     public boolean delete(Integer id);
 
+    boolean deleteBySongId(Integer songId);
+
     /**
      * 根据用户id和歌曲id删除
      */

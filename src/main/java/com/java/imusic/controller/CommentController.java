@@ -111,6 +111,15 @@ public class CommentController {
     }
 
     /**
+     * 删除某首歌的全部评论
+     */
+    @RequestMapping(value = "/deleteBySongId",method = RequestMethod.GET)
+    public Object deleteBySongId(HttpServletRequest request){
+        String songId = request.getParameter("songId").trim();
+        return commentService.deleteAllOfSong(Integer.parseInt(songId));
+    }
+
+    /**
      * 根据主键查询整个对象
      */
     @RequestMapping(value = "/selectByPrimaryKey",method = RequestMethod.GET)

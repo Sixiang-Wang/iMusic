@@ -90,6 +90,12 @@ public class CollectController {
     /**
      * 删除收藏
      */
+    @RequestMapping(value = "/deleteBySongId", method = RequestMethod.GET)
+    public Object deleteBySongId(HttpServletRequest request) {
+        String songId = request.getParameter("songId");
+        return collectService.deleteBySongId(Integer.parseInt(songId));
+    }
+
     @RequestMapping(value = "/deleteCollectSong", method = RequestMethod.GET)
     public Object deleteCollectSong(HttpServletRequest request) {
         String userId = request.getParameter("userId");           //用户id

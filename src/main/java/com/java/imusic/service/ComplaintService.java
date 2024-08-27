@@ -19,6 +19,7 @@ public interface ComplaintService {
      * 删除
      */
     public boolean delete(Integer id);
+    public boolean deleteBySongId(Integer songId);
     public Complaint selectByPrimaryKey(Integer id);
     public List<Complaint> allComplaint();
     public List<Complaint> allComplaintSongByUser(Integer userId);

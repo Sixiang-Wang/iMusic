@@ -172,6 +172,11 @@ public class ComplaintController {
         return flag;
     }
 
+    @RequestMapping(value = "/deleteBySongId",method = RequestMethod.GET)
+    public Object deleteBySongId(HttpServletRequest request) {
+        String songId = request.getParameter("songId");
+        return complaintService.deleteBySongId(Integer.parseInt(songId));
+    }
     /**
      * 删除
      */
