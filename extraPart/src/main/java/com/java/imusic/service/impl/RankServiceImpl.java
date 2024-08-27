@@ -25,7 +25,7 @@ public class RankServiceImpl implements RankService {
         return rankMapper.insert(rank)>0;
     }
 
-
+    @Override
     public boolean update(Rank rank){ return rankMapper.update(rank)>0; }
     /**
      * 查总分

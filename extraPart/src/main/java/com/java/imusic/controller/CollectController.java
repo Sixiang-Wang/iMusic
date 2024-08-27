@@ -2,6 +2,7 @@ package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.java.imusic.config.UrlConfig;
+import com.java.imusic.dao.CollectMapper;
 import com.java.imusic.domain.Collect;
 import com.java.imusic.domain.Song;
 import com.java.imusic.domain.SongList;
@@ -30,6 +31,8 @@ public class CollectController {
     public static int cfCount = 5;
     @Autowired
     private CollectService collectService;
+    @Autowired
+    private CollectMapper collectMapper;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -92,6 +95,11 @@ public class CollectController {
     public Object deleteBySongId(HttpServletRequest request) {
         String songId = request.getParameter("songId");
         return collectService.deleteBySongId(Integer.parseInt(songId));
+    }
+    @RequestMapping(value = "/deleteBySongListId", method = RequestMethod.GET)
+    public Object deleteBySongListId(HttpServletRequest request) {
+        String songListId = request.getParameter("songListId");
+        return collectMapper.deleteBySongListId(Integer.parseInt(songListId));
     }
 
     /**

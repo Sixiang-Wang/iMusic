@@ -2,14 +2,15 @@ package com.java.songPart.controller;
 
 import com.alibaba.fastjson.JSONObject;
 
-import com.java.songPart.config.PathConfig;
-import com.java.songPart.dao.SongMapper;
 import com.java.songPart.domain.Follow;
 import com.java.songPart.domain.Message;
-import com.java.songPart.domain.Song;
 import com.java.songPart.domain.User;
-import com.java.songPart.service.SongService;
 import com.java.songPart.utils.Consts;
+import com.java.songPart.utils.Port;
+import com.java.songPart.config.PathConfig;
+import com.java.songPart.dao.SongMapper;
+import com.java.songPart.domain.Song;
+import com.java.songPart.service.SongService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,9 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import static com.java.songPart.utils.Port.port_base;
-import static com.java.songPart.utils.Port.url_base;
 
 /**
  * 歌曲管理controller
@@ -66,7 +64,7 @@ public class SongController {
         String lyric = request.getParameter("lyric").trim();     //歌词
         String style = request.getParameter("style").trim();     //风格
 //        String userName = userService.selectByPrimaryKey(Integer.parseInt(userId)).getName();
-        String url = url_base+port_base+"/user/selectByPrimaryKey?id="+Integer.parseInt(userId);
+        String url = Port.url_base+ Port.port_base+"/user/selectByPrimaryKey?id="+Integer.parseInt(userId);
         User user = restTemplate.getForObject(url, User.class);
 
         //上传歌曲文件
@@ -109,7 +107,7 @@ public class SongController {
 
             if(flag){
                 List<Follow> followList = restTemplate.exchange(
-                        url_base+port_base+"/follow/getBySingerId?singerId="+Integer.parseInt(userId),
+                        Port.url_base+ Port.port_base+"/follow/getBySingerId?singerId="+Integer.parseInt(userId),
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<List<Follow>>() {}
@@ -130,7 +128,7 @@ public class SongController {
 
                     // 发送 POST 请求
                     restTemplate.postForObject(
-                            url_base+port_base+"/message/add",
+                            Port.url_base+ Port.port_base+"/message/add",
                             requestEntity,
                             Void.class
                     );
@@ -227,7 +225,7 @@ public class SongController {
 
             // 发送 POST 请求
             restTemplate.postForObject(
-                    url_base+port_base+"/message/add",
+                    Port.url_base+ Port.port_base+"/message/add",
                     requestEntity,
                     Void.class
             );
@@ -265,9 +263,9 @@ public class SongController {
 
             // 发送 POST 请求
             restTemplate.postForObject(
-                    url_base+port_base+"/message/add",
+                    Port.url_base+ Port.port_base+"/message/add",
                     requestEntity,
-                    Void.class
+                    JSONObject.class
             );
 //            messageService.insert(message);
         }
@@ -563,7 +561,7 @@ public class SongController {
         if(songs==null||songs.isEmpty()){
             return -1;
         }
-        return songMapper.popularCollectedSongOfUser(userId);
+        return songs.toArray()[0];
     }
     @RequestMapping(value = "/popularCollectedSongOfUser/addPrefix",method = RequestMethod.GET)
     public Object popularCollectedSongOfUserAddPrefix(HttpServletRequest request){
@@ -572,7 +570,7 @@ public class SongController {
         if(songs==null||songs.isEmpty()){
             return -1;
         }
-        return songService.addPrefix(songMapper.popularCollectedSongOfUser(userId));
+        return songs.toArray()[0];
     }
 
     /**
@@ -586,7 +584,7 @@ public class SongController {
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Song song = songService.selectByPrimaryKey(songId);
 //        User user = userService.selectByPrimaryKey(song.getUserId());
-        String url = url_base+port_base+"/user/selectByPrimaryKey?id="+userId;
+        String url = Port.url_base+ Port.port_base+"/user/selectByPrimaryKey?id="+userId;
         User user = restTemplate.getForObject(url, User.class);
         assert user != null;
         if(user.getId().equals(userId)){

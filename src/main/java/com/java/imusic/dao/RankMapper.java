@@ -27,7 +27,6 @@ public interface RankMapper {
 
     public Rank getRank(Rank rank);
 
-    public SongList bestSongListOfUser(Integer userId);
 }
 
 

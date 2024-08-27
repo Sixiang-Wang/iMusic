@@ -40,24 +40,4 @@ public class ComplaintServiceImpl implements ComplaintService {
     public List<Complaint> allComplaint() {
         return complaintMapper.allComplaint();
     }
-
-    @Override
-    public List<Complaint> allComplaintSongByUser(Integer userId) {
-        return complaintMapper.allComplaintSongByUser(userId);
-    }
-
-    @Override
-    public List<Complaint> allComplaintSongListByUser(Integer userId) {
-        return complaintMapper.allComplaintSongListByUser(userId);
-    }
-
-    @Override
-    public List<Complaint> allComplaintSongAgainstUser(Integer userId) {
-        return complaintMapper.allComplaintSongAgainstUser(userId);
-    }
-
-    @Override
-    public List<Complaint> allComplaintSongListAgainstUser(Integer userId) {
-        return complaintMapper.allComplaintSongListAgainstUser(userId);
-    }
 }

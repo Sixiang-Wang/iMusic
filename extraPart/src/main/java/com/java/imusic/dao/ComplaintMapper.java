@@ -23,8 +23,5 @@ public interface ComplaintMapper {
     public int deleteBySongListId(Integer songListId);
     public Complaint selectByPrimaryKey(Integer id);
     public List<Complaint> allComplaint();
-    public List<Complaint> allComplaintSongByUser(Integer userId);
-    public List<Complaint> allComplaintSongListByUser(Integer userId);
-    public List<Complaint> allComplaintSongAgainstUser(Integer userId);
-    public List<Complaint> allComplaintSongListAgainstUser(Integer userId);
+
 }

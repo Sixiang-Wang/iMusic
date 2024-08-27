@@ -1,6 +1,7 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.java.imusic.dao.ComplaintMapper;
 import com.java.imusic.domain.*;
 import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
@@ -21,6 +22,8 @@ public class ComplaintController {
 
     @Autowired
     private ComplaintService complaintService;
+    @Autowired
+    private ComplaintMapper complaintMapper;
 
     @Autowired
     private SongService songService;
@@ -177,6 +180,12 @@ public class ComplaintController {
         String songId = request.getParameter("songId");
         return complaintService.deleteBySongId(Integer.parseInt(songId));
     }
+
+    @RequestMapping(value = "/deleteBySongListId", method = RequestMethod.GET)
+    public Object deleteBySongListId(HttpServletRequest request) {
+        String songListId = request.getParameter("songListId");
+        return complaintMapper.deleteBySongListId(Integer.parseInt(songListId));
+    }
     /**
      * 删除
      */
@@ -232,23 +241,6 @@ public class ComplaintController {
         return complaintService.allComplaint();
     }
 
-    @RequestMapping(value = "/allComplaintByUser",method = RequestMethod.GET)
-    public Object allComplaintByUser(HttpServletRequest request){
-        Integer userId = Integer.parseInt(request.getParameter("userId").trim());
-        List<Complaint> complaintList = complaintService.allComplaintSongByUser(userId);
-        List<Complaint> complaintList2 = complaintService.allComplaintSongListByUser(userId);
-        complaintList.addAll(complaintList2);
-        return complaintList;
-    }
-
-    @RequestMapping(value = "/allComplaintAgainstUser",method = RequestMethod.GET)
-    public Object allComplaintAgainstUser(HttpServletRequest request){
-        Integer userId = Integer.parseInt(request.getParameter("userId").trim());
-        List<Complaint> complaintList = complaintService.allComplaintSongAgainstUser(userId);
-        List<Complaint> complaintList2 = complaintService.allComplaintSongListAgainstUser(userId);
-        complaintList.addAll(complaintList2);
-        return complaintList;
-    }
 
     @RequestMapping(value = "/appealComplaint",method = RequestMethod.POST)
     public Object appealComplaint(HttpServletRequest request){

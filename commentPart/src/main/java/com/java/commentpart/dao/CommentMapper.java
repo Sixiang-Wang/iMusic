@@ -25,6 +25,8 @@ public interface CommentMapper {
      */
     public int delete(Integer id);
 
+    public int deleteBySongId(Integer songId);
+
     public int deleteAllOfSong(Integer songId);
     public int deleteAllOfSongList(Integer songListId);
     public int deleteAllOfUser(Integer userId);

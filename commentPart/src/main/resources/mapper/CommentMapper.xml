@@ -115,6 +115,11 @@
         where user_id=#{userId}
     </delete>
 
+    <delete id="deleteBySongId" parameterType="java.lang.Integer">
+        delete from comment
+        where songId=#{songId}
+    </delete>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>

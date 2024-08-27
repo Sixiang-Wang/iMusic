@@ -122,39 +122,6 @@
         <include refid="Base_Column_List"/>
         from complaint
     </select>
-
-    <select id="allComplaintSongByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
-        from complaint c,song s
-        where (c.song_id = s.id and type = 0)
-        and c.user_id = #{userId}
-    </select>
-
-    <select id="allComplaintSongListByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
-        from complaint c,song_list s
-        where (c.song_list_id = s.id and type = 1)
-        and c.user_id = #{userId}
-    </select>
-
-    <select id="allComplaintSongAgainstUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
-        from complaint c,song s
-        where c.song_id = s.id and type = 0
-        and s.user_id = #{userId}
-    </select>
-
-    <select id="allComplaintSongListAgainstUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-            c.id,c.user_id,c.type,c.song_id,c.song_list_id,c.content,c.create_time
-        from complaint c,song_list s
-        where c.song_list_id = s.id and type = 1
-        and s.user_id = #{userId}
-    </select>
-
 </mapper>
 
 

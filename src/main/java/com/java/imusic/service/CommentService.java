@@ -27,7 +27,7 @@ public interface CommentService {
 
     public boolean deleteAllOfSong(Integer songId);
 
-
+    public Boolean deleteBySongId(Integer id);
 
     public boolean deleteAllOfSongList(Integer songListId);
 
