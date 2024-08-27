@@ -119,6 +119,11 @@ public class CommentController {
         return commentService.selectByPrimaryKey(Integer.parseInt(id));
     }
 
+    @RequestMapping(value = "/deleteBySongId",method = RequestMethod.GET)
+    public Object deleteBySongId(HttpServletRequest request) {
+        String songId = request.getParameter("songId");
+        return commentService.deleteBySongId(Integer.parseInt(songId));
+    }
     /**
      * 查询所有评论
      */
