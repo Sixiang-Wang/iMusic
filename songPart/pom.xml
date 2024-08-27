@@ -102,6 +102,12 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.java</groupId>
+            <artifactId>iMusicServer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <!--        mybatisplus+数据库相关结束-->
 
     </dependencies>
