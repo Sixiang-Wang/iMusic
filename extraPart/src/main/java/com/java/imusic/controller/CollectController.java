@@ -158,7 +158,7 @@ public class CollectController {
 
                     List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
                     if(instances.isEmpty()){return null;}
-                    ServiceInstance instance = instances.get(RandomUtils.nextInt(1,instances.size()));
+                    ServiceInstance instance = instances.get(0);
 
                     Song song = restTemplate.exchange(
                             instance.getUri()+"/song/detail?songId="+collect.getSongId(),
@@ -194,8 +194,11 @@ public class CollectController {
             for (Collect collect : list) {
                 if(collect.getType()==1){
 
+                    List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+                    if(instances.isEmpty()){return null;}
+                    ServiceInstance instance = instances.get(0);
                     SongList songList = restTemplate.exchange(
-                            "http://localhost:"+ UrlConfig.songPort+"/songList/selectByPrimaryKey?id="+collect.getSongListId(),
+                            instance.getUri()+"/songList/selectByPrimaryKey?id="+collect.getSongListId(),
                             HttpMethod.GET,
                             null,
                             SongList.class

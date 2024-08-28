@@ -7,6 +7,8 @@ import com.java.imusic.domain.*;
 import com.java.imusic.service.*;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +31,8 @@ public class ComplaintController {
     private ComplaintMapper complaintMapper;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     /**
      * 添加评论
@@ -49,8 +53,11 @@ public class ComplaintController {
         complaint.setType(new Byte(type));
         if(new Byte(type) ==0){
 
+            List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
             Song song = restTemplate.exchange(
-                    "http://localhost:"+UrlConfig.songPort+"/song/detail?songId="+Integer.parseInt(songId),
+                    instance.getUri()+"/song/detail?songId="+Integer.parseInt(songId),
                     HttpMethod.GET,
                     null,
                     Song.class
@@ -64,8 +71,11 @@ public class ComplaintController {
             complaint.setSongId(Integer.parseInt(songId));
         }else{
 
+            List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
             SongList songList = restTemplate.exchange(
-                    "http://localhost:"+UrlConfig.songPort+"/songList/selectByPrimaryKey?id="+Integer.parseInt(songListId),
+                    instance.getUri()+"/songList/selectByPrimaryKey?id="+Integer.parseInt(songListId),
                     HttpMethod.GET,
                     null,
                     SongList.class
@@ -95,7 +105,10 @@ public class ComplaintController {
                 message.setIsRead(0);
                 message.setType(1);
 
-                String messageUrl="http://localhost:"+ UrlConfig.messagePort +
+                List<ServiceInstance> instances = discoveryClient.getInstances("messagePart");
+                if(instances.isEmpty()){return null;}
+                ServiceInstance instance = instances.get(0);
+                String messageUrl=instance.getUri() +
                         "/message/add?to="+message.getTo()+
                         "&from="+message.getFrom()+
                         "&text="+message.getText();
@@ -170,8 +183,12 @@ public class ComplaintController {
             StringBuilder textB = new StringBuilder("举报已被处理: ");
             Byte type = complaint.getType();
             if(type ==0){
+
+                List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+                if(instances.isEmpty()){return null;}
+                ServiceInstance instance = instances.get(0);
                 Song song = restTemplate.exchange(
-                        "http://localhost:"+UrlConfig.songPort+"/song/detail?songId="+complaint.getSongId(),
+                        instance.getUri()+"/song/detail?songId="+complaint.getSongId(),
                         HttpMethod.GET,
                         null,
                         Song.class
@@ -184,8 +201,11 @@ public class ComplaintController {
                 }
             }else{
 
+                List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+                if(instances.isEmpty()){return null;}
+                ServiceInstance instance = instances.get(0);
                 SongList songList = restTemplate.exchange(
-                        "http://localhost:"+UrlConfig.songPort+"/songList/selectByPrimaryKey?id="+complaint.getSongListId(),
+                        instance.getUri()+"/songList/selectByPrimaryKey?id="+complaint.getSongListId(),
                         HttpMethod.GET,
                         null,
                         SongList.class
@@ -203,7 +223,11 @@ public class ComplaintController {
             message.setText(textB.toString());
             message.setIsRead(0);
             message.setType(0);
-            String messageUrl="http://localhost:"+ UrlConfig.messagePort +
+
+            List<ServiceInstance> instances = discoveryClient.getInstances("messagePart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
+            String messageUrl=instance.getUri() +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();
@@ -230,8 +254,12 @@ public class ComplaintController {
             StringBuilder textB = new StringBuilder("举报已被处理: ");
             Byte type = complaint.getType();
             if(type ==0){
+
+                List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+                if(instances.isEmpty()){return null;}
+                ServiceInstance instance = instances.get(0);
                 Song song = restTemplate.exchange(
-                        "http://localhost:"+UrlConfig.songPort+"/song/detail?songId="+complaint.getSongId(),
+                        instance.getUri()+"/song/detail?songId="+complaint.getSongId(),
                         HttpMethod.GET,
                         null,
                         Song.class
@@ -243,8 +271,12 @@ public class ComplaintController {
                     textB.append("您歌曲《").append(song.getName()).append("》相关举报已处理完毕:\n 管理员认为您的歌曲符合社区规定。");
                 }
             }else{
+
+                List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+                if(instances.isEmpty()){return null;}
+                ServiceInstance instance = instances.get(0);
                 SongList songList = restTemplate.exchange(
-                        "http://localhost:"+UrlConfig.songPort+"/songList/selectByPrimaryKey?id="+complaint.getSongListId(),
+                        instance.getUri()+"/songList/selectByPrimaryKey?id="+complaint.getSongListId(),
                         HttpMethod.GET,
                         null,
                         SongList.class
@@ -263,7 +295,10 @@ public class ComplaintController {
             message.setIsRead(0);
             message.setType(0);
 
-            String messageUrl="http://localhost:"+ UrlConfig.messagePort +
+            List<ServiceInstance> instances = discoveryClient.getInstances("messagePart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
+            String messageUrl=instance.getUri() +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();

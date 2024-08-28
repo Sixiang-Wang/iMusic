@@ -6,6 +6,7 @@ import com.java.userpart.domain.Song;
 import com.java.userpart.domain.User;
 import com.java.userpart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -70,8 +71,11 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+        if(instances.isEmpty()){return false;}
+        ServiceInstance instance = instances.get(0);
         ResponseEntity<List<Song>> response = restTemplate.exchange(
-                "http://localhost:1145/song/songOfUserId?userId="+id,
+                instance.getUri()+"/song/songOfUserId?userId="+id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Song>>() {}
@@ -81,10 +85,11 @@ public class UserServiceImpl implements UserService {
         }
         List<Song> songs = response.getBody();
         System.out.println(songs);
+
         if (songs != null) {
             for (Song song : songs){
                 restTemplate.exchange(
-                        "http://localhost:1145/song/delete?id="+song.getId(),
+                        instance.getUri()+"/song/delete?id="+song.getId(),
                         HttpMethod.GET,
                         null,
                         Boolean.class

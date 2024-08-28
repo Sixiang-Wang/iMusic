@@ -11,6 +11,8 @@ import com.java.songPart.service.SongService;
 import com.java.songPart.utils.Port;
 import com.java.songPart.vo.RecentSongVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,8 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
 
     /**
@@ -138,8 +142,12 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     public Result recommendSongList(Integer id) {
         HashSet<SongList> songListHashSet = new HashSet<>();
         List<SongList> songListByRecentSong = recentSongMapper.getSongListByRecentSong(id);
+
+        List<ServiceInstance> extraInstances = discoveryClient.getInstances("extraPart");
+        if(extraInstances.isEmpty()){return null;}
+        ServiceInstance extraInstance = extraInstances.get(0);
         List<Collect> tmpList = restTemplate.exchange(
-                Port.url_base + Port.port_base + "/collect/collectOfUserId?userId=" + id,
+                extraInstance.getUri() + "/collect/collectOfUserId?userId=" + id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Collect>>() {
@@ -205,8 +213,13 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         if (!singerByRecentSong.isEmpty()) {
             singerHashSet.addAll(singerByRecentSong);
         }
+
+        List<ServiceInstance> extraInstances = discoveryClient.getInstances("extraPart");
+        if(extraInstances.isEmpty()){return null;}
+        ServiceInstance extraInstance = extraInstances.get(0);
+
         List<Collect> tmpList = restTemplate.exchange(
-                Port.url_base + Port.port_base + "/collect/collectOfUserId?userId=" + id,
+                extraInstance.getUri() + "/collect/collectOfUserId?userId=" + id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Collect>>() {
@@ -218,8 +231,12 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
         if (tmpList != null) {
             tmpList.forEach(item -> {
                 if (item.getSongId() != null) {
+
+                    List<ServiceInstance> userInstances = discoveryClient.getInstances("userPart");
+                    if(userInstances.isEmpty()){return;}
+                    ServiceInstance userInstance = userInstances.get(0);
                     User user = restTemplate.getForObject(
-                            Port.url_base + Port.port_base + "/user/selectByPrimaryKey?id=" + songService.selectByPrimaryKey(item.getSongId()).getUserId(),
+                            userInstance.getUri() + "/user/selectByPrimaryKey?id=" + songService.selectByPrimaryKey(item.getSongId()).getUserId(),
                             User.class
                     );
                     singerByCollectSong.add(user);
@@ -242,8 +259,12 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
             }
         }
         if (singerHashSet.size() < 10) {
+
+            List<ServiceInstance> userInstances = discoveryClient.getInstances("userPart");
+            if(userInstances.isEmpty()){return null;}
+            ServiceInstance userInstance = userInstances.get(0);
             List<User> singerList = restTemplate.exchange(
-                    Port.url_base + Port.port_base + "/user/allUser",
+                    userInstance.getUri() + "/user/allUser",
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<User>>() {
@@ -273,9 +294,12 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
 
     // 添加歌手名
     private List<RecentSongVo> addSingerName(List<RecentSongVo> recentSong) {
+        List<ServiceInstance> userInstances = discoveryClient.getInstances("userPart");
+        if(userInstances.isEmpty()){return null;}
+        ServiceInstance userInstance = userInstances.get(0);
         for (RecentSongVo recentSongVo : recentSong) {
             User user = restTemplate.getForObject(
-                    Port.url_base + Port.port_base + "/user/selectByPrimaryKey?id=" + recentSongVo.getSingerId(),
+                    userInstance.getUri() + "/user/selectByPrimaryKey?id=" + recentSongVo.getSingerId(),
                     User.class
             );
             if (user != null) {
@@ -288,9 +312,12 @@ public class RecentSongServiceImpl extends ServiceImpl<RecentSongMapper, RecentS
     // 根据Id列表获取User列表
     private List<User> getUserListById(List<Integer> idList) {
         List<User> userList = new ArrayList<>();
+        List<ServiceInstance> userInstances = discoveryClient.getInstances("userPart");
+        if(userInstances.isEmpty()){return null;}
+        ServiceInstance userInstance = userInstances.get(0);
         for (Integer id : idList) {
             User user = restTemplate.getForObject(
-                    Port.url_base + Port.port_base + "/user/selectByPrimaryKey?id=" + id,
+                    userInstance.getUri() + "/user/selectByPrimaryKey?id=" + id,
                     User.class
             );
             userList.add(user);

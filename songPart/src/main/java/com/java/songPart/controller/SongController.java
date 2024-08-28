@@ -13,6 +13,8 @@ import com.java.songPart.domain.Song;
 import com.java.songPart.service.SongService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +46,8 @@ public class SongController {
     private RestTemplate restTemplate;
     @Getter
     private static SongController songController;
-
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
 
 
@@ -64,7 +67,11 @@ public class SongController {
         String lyric = request.getParameter("lyric").trim();     //歌词
         String style = request.getParameter("style").trim();     //风格
 //        String userName = userService.selectByPrimaryKey(Integer.parseInt(userId)).getName();
-        String url = Port.url_base+ Port.port_base+"/user/selectByPrimaryKey?id="+Integer.parseInt(userId);
+
+        List<ServiceInstance> instances = discoveryClient.getInstances("userPart");
+        if(instances.isEmpty()){return null;}
+        ServiceInstance instance = instances.get(0);
+        String url = instance.getUri()+"/user/selectByPrimaryKey?id="+Integer.parseInt(userId);
         User user = restTemplate.getForObject(url, User.class);
 
         //上传歌曲文件
@@ -106,8 +113,12 @@ public class SongController {
             boolean flag = songService.insert(song);
 
             if(flag){
+                List<ServiceInstance> followInstances = discoveryClient.getInstances("followPart");
+                if(followInstances.isEmpty()){return null;}
+                ServiceInstance followInstance = followInstances.get(0);
+
                 List<Follow> followList = restTemplate.exchange(
-                        Port.url_base+ Port.port_base+"/follow/getBySingerId?singerId="+Integer.parseInt(userId),
+                        followInstances+"/follow/getBySingerId?singerId="+Integer.parseInt(userId),
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<List<Follow>>() {}
@@ -126,9 +137,13 @@ public class SongController {
 
                     HttpEntity<Message> requestEntity = new HttpEntity<>(message, headers);
 
+                    List<ServiceInstance> messageInstances = discoveryClient.getInstances("messagePart");
+
+                    if(messageInstances.isEmpty()){return;}
+                    ServiceInstance messageInstance = messageInstances.get(0);
                     // 发送 POST 请求
                     restTemplate.postForObject(
-                            Port.url_base+ Port.port_base+"/message/add",
+                            messageInstance.getUri()+"/message/add",
                             requestEntity,
                             Void.class
                     );
@@ -219,7 +234,10 @@ public class SongController {
             message.setIsRead(0);
             message.setType(0);
 
-            String messageUrl="http://localhost:"+ Port.port_base +
+            List<ServiceInstance> instances = discoveryClient.getInstances("messagePart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
+            String messageUrl=instance.getUri() +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();
@@ -257,7 +275,11 @@ public class SongController {
             message.setText("您的歌曲《"+song.getName()+"》已恢复");
             message.setIsRead(0);
             message.setType(0);
-            String messageUrl="http://localhost:"+ Port.port_base +
+
+            List<ServiceInstance> instances = discoveryClient.getInstances("messagePart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
+            String messageUrl=instance.getUri() +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();
@@ -584,7 +606,11 @@ public class SongController {
         Integer userId = Integer.parseInt(request.getParameter("userId"));
         Song song = songService.selectByPrimaryKey(songId);
 //        User user = userService.selectByPrimaryKey(song.getUserId());
-        String url = Port.url_base+ Port.port_base+"/user/selectByPrimaryKey?id="+userId;
+
+        List<ServiceInstance> instances = discoveryClient.getInstances("userPart");
+        if(instances.isEmpty()){return null;}
+        ServiceInstance instance = instances.get(0);
+        String url = instance.getUri()+"/user/selectByPrimaryKey?id="+userId;
         User user = restTemplate.getForObject(url, User.class);
         assert user != null;
         if(user.getId().equals(userId)){

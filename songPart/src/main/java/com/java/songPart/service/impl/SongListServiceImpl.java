@@ -8,6 +8,8 @@ import com.java.songPart.domain.SongList;
 import com.java.songPart.service.SongListService;
 import com.java.songPart.utils.Port;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +29,8 @@ public class SongListServiceImpl implements SongListService {
     private ListSongMapper listSongMapper;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     /**
      * 增加
@@ -64,20 +68,28 @@ public class SongListServiceImpl implements SongListService {
             }
         }
 
-//        collectMapper.deleteBySongListId(songList.getId());
+
+        List<ServiceInstance> extraInstances = discoveryClient.getInstances("extraPart");
+        if(extraInstances.isEmpty()){return false;}
+        ServiceInstance extraInstance = extraInstances.get(0);
+        List<ServiceInstance> commentInstances = discoveryClient.getInstances("commentPart");
+        if(commentInstances.isEmpty()){return false;}
+        ServiceInstance commentInstance = commentInstances.get(0);
+
+        //        collectMapper.deleteBySongListId(songList.getId());
         restTemplate.getForObject(
-                Port.url_base+Port.port_extra+"/deleteBySongListId?songListId="+songList.getId(),
+                extraInstance.getUri()+"/collect/deleteBySongListId?songListId="+songList.getId(),
                 Boolean.class
         );
         listSongMapper.deleteBySongListId(songList.getId());
         restTemplate.getForObject(
-                Port.url_base+Port.port_extra+"/deleteBySongListId?songListId="+songList.getId(),
+                extraInstance.getUri()+"/complaint/deleteBySongListId?songListId="+songList.getId(),
                 Boolean.class
         );
 //        complaintMapper.deleteBySongId(songList.getId());
 //        commentService.deleteAllOfSongList(songList.getId());
         restTemplate.getForObject(
-                Port.url_base+Port.port_comment+"/deleteBySongListId?songListId="+songList.getId(),
+                commentInstance.getUri()+"/comment/deleteBySongListId?songListId="+songList.getId(),
                 Boolean.class
         );
         return songListMapper.delete(id)>0;

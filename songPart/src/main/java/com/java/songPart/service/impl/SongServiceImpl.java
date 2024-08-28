@@ -8,6 +8,8 @@ import com.java.songPart.domain.User;
 import com.java.songPart.service.SongService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +27,8 @@ public class SongServiceImpl implements SongService {
     private RestTemplate restTemplate;
     @Autowired
     private SongMapper songMapper;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     /**
      * 增加
@@ -59,9 +63,16 @@ public class SongServiceImpl implements SongService {
         File songFile = new File(PathConfig.path +System.getProperty("file.separator")+songUrl);
         File picFile = new File(PathConfig.path +System.getProperty("file.separator")+picUrl);
 
+        List<ServiceInstance> extraInstances = discoveryClient.getInstances("extraPart");
+        if(extraInstances.isEmpty()){return false;}
+        ServiceInstance extraInstance = extraInstances.get(0);
+        List<ServiceInstance> commentInstances = discoveryClient.getInstances("commentPart");
+        if(commentInstances.isEmpty()){return false;}
+        ServiceInstance commentInstance = commentInstances.get(0);
+
 //        collectMapper.deleteBySongId(song.getId());
         restTemplate.exchange(
-                "http://101.201.173.110:1145/collect/deleteBySongId?songId="+song.getId(),
+                extraInstance.getUri()+"/collect/deleteBySongId?songId="+song.getId(),
                 HttpMethod.GET,
                 null,
                 Boolean.class
@@ -70,7 +81,7 @@ public class SongServiceImpl implements SongService {
 
 //        complaintMapper.deleteBySongId(song.getId());
         restTemplate.exchange(
-                "http://101.201.173.110:1145/complaint/deleteBySongId?songId="+song.getId(),
+                extraInstance.getUri()+"/complaint/deleteBySongId?songId="+song.getId(),
                 HttpMethod.GET,
                 null,
                 Boolean.class
@@ -79,7 +90,7 @@ public class SongServiceImpl implements SongService {
 
 //        commentService.deleteAllOfSong(song.getId());
         restTemplate.exchange(
-                "http://101.201.173.110:1145/comment/deleteBySongId?songId="+song.getId(),
+                commentInstance.getUri()+"/comment/deleteBySongId?songId="+song.getId(),
                 HttpMethod.GET,
                 null,
                 Boolean.class
@@ -172,7 +183,11 @@ public class SongServiceImpl implements SongService {
      */
     @Override
     public Song addPrefix(Song song){
-        String url = "http://101.201.173.110:1145/user/selectByPrimaryKey?id="+song.getUserId();
+        List<ServiceInstance> userInstances = discoveryClient.getInstances("userPart");
+        if(userInstances.isEmpty()){return null;}
+        ServiceInstance userInstance = userInstances.get(0);
+
+        String url = userInstance.getUri()+"/user/selectByPrimaryKey?id="+song.getUserId();
         User user = restTemplate.getForObject(url, User.class);
         if (user != null)
         {
@@ -191,7 +206,11 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<Song> addPrefix(List<Song> songs){
         songs.forEach(song -> {
-            String url = "http://101.201.173.110:1145/user/selectByPrimaryKey?id="+song.getUserId();
+
+            List<ServiceInstance> userInstances = discoveryClient.getInstances("userPart");
+            if(userInstances.isEmpty()){return;}
+            ServiceInstance userInstance = userInstances.get(0);
+            String url = userInstance.getUri()+"/user/selectByPrimaryKey?id="+song.getUserId();
             User user = restTemplate.getForObject(url, User.class);
             if (user != null)
             {

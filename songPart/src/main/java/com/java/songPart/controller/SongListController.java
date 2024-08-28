@@ -10,6 +10,8 @@ import com.java.songPart.service.SongListService;
 import com.java.songPart.utils.Consts;
 import com.java.songPart.utils.Port;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +43,9 @@ public class SongListController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     /**
      * 添加歌单
@@ -267,7 +272,11 @@ public class SongListController {
             message.setText("您的歌单《"+songList.getTitle()+"》已被下架");
             message.setIsRead(0);
             message.setType(0);
-            String messageUrl="http://localhost:"+ Port.port_base +
+
+            List<ServiceInstance> instances = discoveryClient.getInstances("messagePart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
+            String messageUrl=instance.getUri() +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();
@@ -300,7 +309,11 @@ public class SongListController {
             message.setText("您的歌单《"+songList.getTitle()+"》已被恢复");
             message.setIsRead(0);
             message.setType(0);
-            String messageUrl="http://localhost:"+ Port.port_base +
+
+            List<ServiceInstance> instances = discoveryClient.getInstances("messagePart");
+            if(instances.isEmpty()){return null;}
+            ServiceInstance instance = instances.get(0);
+            String messageUrl=instance.getUri() +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();
