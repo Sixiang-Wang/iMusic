@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java.imusic.dao.UserMapper">
-    <resultMap id="BaseResultMap" type="com.java.imusic.domain.User">
+<mapper namespace="com.java.userpart.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.java.userpart.domain.User">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
@@ -26,7 +26,7 @@
         id,username,password,sex,email,birth,introduction,location,profilePicture,create_time,update_time,name,singer_id
     </sql>
 
-    <insert id="insert" parameterType="com.java.imusic.domain.User">
+    <insert id="insert" parameterType="com.java.userpart.domain.User">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -102,7 +102,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.java.imusic.domain.User">
+    <update id="update" parameterType="com.java.userpart.domain.User">
         update user
         <set>
             <if test="username != null">
