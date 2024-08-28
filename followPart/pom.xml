@@ -249,7 +249,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.java.imusic.UserPartApplication</mainClass>
+                    <mainClass>com.java.followpart.UserPartApplication</mainClass>
                     <skip>false</skip>
                     <executable>true</executable>
                     <fork>true</fork>

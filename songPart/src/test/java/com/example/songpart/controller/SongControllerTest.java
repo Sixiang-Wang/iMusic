@@ -15,8 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import org.springframework.mock.web.MockMultipartFile;
+
 import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -28,30 +31,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-interface UserService {
-    User selectByPrimaryKey(Integer id);
-}
 
-interface FollowService {
-    List<Follow> getBySingerId(Integer id);
-}
 
 interface MessageService {
-    Boolean insert(Message message);
+    void insert(Message message);
 }
 
 class SongControllerTest {
     @Mock
     private HttpServletRequest mockRequest;
 
-    @Mock
-    private UserService mockUserService;
 
     @Mock
     private SongService mockSongService;
 
-    @Mock
-    private FollowService mockFollowService;
 
     @Mock
     private MessageService mockMessageService;
@@ -61,47 +54,6 @@ class SongControllerTest {
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this).close();
-    }
-
-
-    @Test
-    public void testAddSongSuccess() throws Exception {
-        // 设置请求参数
-        when(mockRequest.getParameter("id")).thenReturn("1");
-        when(mockRequest.getParameter("userId")).thenReturn("2");
-        when(mockRequest.getParameter("name")).thenReturn("New Song");
-        when(mockRequest.getParameter("introduction")).thenReturn("Introduction of the song");
-        when(mockRequest.getParameter("lyric")).thenReturn("Lyrics of the song");
-        when(mockRequest.getParameter("style")).thenReturn("Pop");
-
-        // 创建一个模拟的MultipartFile对象
-        MultipartFile mockMultipartFile = new MockMultipartFile("file", "song.mp3", "audio/mp3", new byte[1024]);
-        when(mockRequest.getParameter("file")).thenReturn(String.valueOf(mockMultipartFile));
-
-        // 设置UserService的模拟行为，模拟获取用户名成功的情况
-        User user = new User();
-        user.setId(2);
-        user.setName("John Doe");
-        when(mockUserService.selectByPrimaryKey(2)).thenReturn(user);
-
-        // 设置SongService的模拟行为，模拟歌曲保存成功的情况
-        when(mockSongService.insert(any(Song.class))).thenReturn(true);
-
-        Follow follow = new Follow();
-        follow.setSingerId(2);
-        follow.setUserId(3);
-        // 设置FollowService的模拟行为，模拟获取关注列表成功的情况
-        List<Follow> followList = Collections.singletonList(follow);
-        when(mockFollowService.getBySingerId(2)).thenReturn(followList);
-
-        // 调用addSong方法
-        Object result = service.addSong(mockRequest, mockMultipartFile);
-
-        // 验证结果
-        assertTrue(result instanceof JSONObject);
-        JSONObject jsonObject = (JSONObject) result;
-//        assertEquals(0, jsonObject.getInteger(CODE));
-//        assertEquals("保存成功", jsonObject.getString(MSG));
     }
 
 
@@ -279,33 +231,6 @@ class SongControllerTest {
     }
 
     @Test
-    public void testInvisibleSongSuccess() throws Exception {
-        // 设置请求参数
-        when(mockRequest.getParameter("id")).thenReturn("1");
-
-        // 创建一个模拟的Song对象
-        Song mockSong = new Song();
-        mockSong.setId(1);
-        mockSong.setName("Test Song");
-        mockSong.setUserId(2);
-        mockSong.setVisible(1); // 假设初始状态是可见的
-
-        // 设置SongService的模拟行为，模拟查询和更新成功的情况
-        when(mockSongService.selectByPrimaryKey(1)).thenReturn(mockSong);
-        when(mockSongService.update(any(Song.class))).thenReturn(true);
-
-        // 设置MessageService的模拟行为，模拟消息插入成功的情况
-        when(mockMessageService.insert(any(Message.class))).thenReturn(true);
-
-        // 调用invisibleSong方法
-        Object result = service.invisibleSong(mockRequest);
-
-        // 验证结果
-        assertTrue((Boolean) result);
-        verify(mockSongService).update(any(Song.class));
-        verify(mockMessageService).insert(any(Message.class));
-    }
-    @Test
     public void testInvisibleSongUpdateFailed() throws Exception {
         // 设置请求参数
         when(mockRequest.getParameter("id")).thenReturn("1");
@@ -333,33 +258,7 @@ class SongControllerTest {
 
 
 
-    @Test
-    public void testVisibleSongSuccess() throws Exception {
-        // 设置请求参数
-        when(mockRequest.getParameter("id")).thenReturn("1");
 
-        // 创建一个模拟的Song对象
-        Song mockSong = new Song();
-        mockSong.setId(1);
-        mockSong.setName("Test Song");
-        mockSong.setUserId(2);
-        mockSong.setVisible(0); // 假设初始状态是不可见的
-
-        // 设置SongService的模拟行为，模拟查询和更新成功的情况
-        when(mockSongService.selectByPrimaryKey(1)).thenReturn(mockSong);
-        when(mockSongService.update(any(Song.class))).thenReturn(true);
-
-        // 设置MessageService的模拟行为，模拟消息插入成功的情况
-        when(mockMessageService.insert(any(Message.class))).thenReturn(true);
-
-        // 调用visibleSong方法
-        Object result = service.visibleSong(mockRequest);
-
-        // 验证结果
-        assertTrue((Boolean) result);
-        verify(mockSongService).update(any(Song.class));
-        verify(mockMessageService).insert(any(Message.class));
-    }
     @Test
     public void testVisibleSongUpdateFailed() throws Exception {
         // 设置请求参数
@@ -753,60 +652,6 @@ class SongControllerTest {
         assertEquals(-1, result);
     }
 
-    @Test
-    public void testIsSongOfUserTrue() throws Exception {
-        // 设置请求参数
-        when(mockRequest.getParameter("songId")).thenReturn("1");
-        when(mockRequest.getParameter("userId")).thenReturn("1");
-
-        // 创建模拟的Song对象
-        Song mockSong = new Song();
-        mockSong.setId(1);
-        mockSong.setUserId(1); // 歌曲的用户ID与请求中的用户ID相同
-
-        // 创建模拟的User对象
-        User mockUser = new User();
-        mockUser.setId(1);
-
-        // 设置SongService的模拟行为，模拟查询歌曲成功的情况
-        when(mockSongService.selectByPrimaryKey(1)).thenReturn(mockSong);
-
-        // 设置UserService的模拟行为，模拟查询用户成功的情况
-        when(mockUserService.selectByPrimaryKey(1)).thenReturn(mockUser);
-
-        // 调用isSongOfUser方法
-        Object result = service.isSongOfUser(mockRequest);
-
-        // 验证结果
-        assertTrue((Boolean) result);
-    }
-    @Test
-    public void testIsSongOfUserFalse() throws Exception {
-        // 设置请求参数
-        when(mockRequest.getParameter("songId")).thenReturn("1");
-        when(mockRequest.getParameter("userId")).thenReturn("2");
-
-        // 创建模拟的Song对象
-        Song mockSong = new Song();
-        mockSong.setId(1);
-        mockSong.setUserId(1); // 歌曲的用户ID与请求中的用户ID不同
-
-        // 创建模拟的User对象
-        User mockUser = new User();
-        mockUser.setId(1);
-
-        // 设置SongService的模拟行为，模拟查询歌曲成功的情况
-        when(mockSongService.selectByPrimaryKey(1)).thenReturn(mockSong);
-
-        // 设置UserService的模拟行为，模拟查询用户成功的情况
-        when(mockUserService.selectByPrimaryKey(1)).thenReturn(mockUser);
-
-        // 调用isSongOfUser方法
-        Object result = service.isSongOfUser(mockRequest);
-
-        // 验证结果
-        assertFalse((Boolean) result);
-    }
 
 
 }

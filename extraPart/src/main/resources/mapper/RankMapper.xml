@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java.imusic.dao.RankMapper">
-    <resultMap id="BaseResultMap" type="com.java.imusic.domain.Rank" >
+<mapper namespace="com.java.extraPart.dao.RankMapper">
+    <resultMap id="BaseResultMap" type="com.java.extraPart.domain.Rank" >
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="song_list_id" jdbcType="INTEGER" property="songListId"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
@@ -14,7 +14,7 @@
         id,song_list_id,user_id,score
     </sql>
 
-    <insert id="insert" parameterType="com.java.imusic.domain.Rank">
+    <insert id="insert" parameterType="com.java.extraPart.domain.Rank">
         insert into `rank`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -46,7 +46,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.java.imusic.domain.Rank">
+    <update id="update" parameterType="com.java.extraPart.domain.Rank">
         update `rank`
         <set>
             <if test="id != null">
@@ -77,7 +77,7 @@
         where song_list_id = #{songListId}
     </select>
 
-    <select id="getRank" resultType="com.java.imusic.domain.Rank" parameterType="com.java.imusic.domain.Rank">
+    <select id="getRank" resultType="com.java.extraPart.domain.Rank" parameterType="com.java.extraPart.domain.Rank">
         select *
         from `rank`
         where song_list_id = #{songListId}

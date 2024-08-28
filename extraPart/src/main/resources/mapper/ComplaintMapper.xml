@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java.imusic.dao.ComplaintMapper">
-    <resultMap id="BaseResultMap" type="com.java.imusic.domain.Complaint" >
+<mapper namespace="com.java.extraPart.dao.ComplaintMapper">
+    <resultMap id="BaseResultMap" type="com.java.extraPart.domain.Complaint" >
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="type" jdbcType="TINYINT" property="type"/>
@@ -18,7 +18,7 @@
         id,user_id,type,song_id,song_list_id,content,create_time,appeal
     </sql>
 
-    <insert id="insert" parameterType="com.java.imusic.domain.Complaint">
+    <insert id="insert" parameterType="com.java.extraPart.domain.Complaint">
         insert into complaint
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -70,7 +70,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.java.imusic.domain.Complaint">
+    <update id="update" parameterType="com.java.extraPart.domain.Complaint">
         update complaint
         <set>
             <if test="userId != null">
