@@ -11,11 +11,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -24,6 +28,11 @@ class CollectControllerTest {
     @Mock
     private HttpServletRequest request;
 
+    @Mock
+    private HttpSession session;
+
+    @Mock
+    private HttpServletResponse response;
 
     @Mock
     private CollectService collectService;

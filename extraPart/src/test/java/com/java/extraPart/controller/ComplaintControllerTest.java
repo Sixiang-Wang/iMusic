@@ -1,9 +1,9 @@
-package com.java.imusic.controller;
+package com.java.extraPart.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.java.imusic.domain.*;
-import com.java.imusic.service.ComplaintService;
-import com.java.imusic.utils.Consts;
+import com.java.extraPart.domain.*;
+import com.java.extraPart.service.ComplaintService;
+import com.java.extraPart.utils.Consts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
