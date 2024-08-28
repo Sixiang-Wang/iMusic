@@ -10,8 +10,8 @@
     <description>iMusic</description>
     <modules>
         <module>userPart</module>
-        <module>commentPart</module>
-        <module>followPart</module>
+        <module>songPart</module>
+        <module>extraPart</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
