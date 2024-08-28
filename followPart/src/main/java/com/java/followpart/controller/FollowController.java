@@ -21,7 +21,8 @@ public class FollowController {
     @Autowired
     private FollowService followService;
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Object addFollow(HttpServletRequest request) {
