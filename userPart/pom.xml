@@ -37,24 +37,12 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- 数据库驱动包管理 -->
-<!--            <dependency>-->
-<!--                <groupId>mysql</groupId>-->
-<!--                <artifactId>mysql-connector-java</artifactId>-->
-<!--                <version>${mysql.version}</version>-->
-<!--            </dependency>-->
             <!-- mybatis plus 管理 -->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>3.4.0</version>
             </dependency>
-            <!--hutool工具包-->
-<!--            <dependency>-->
-<!--                <groupId>cn.hutool</groupId>-->
-<!--                <artifactId>hutool-all</artifactId>-->
-<!--                <version>${hutool.version}</version>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -205,13 +193,6 @@
             <version>0.9.1</version>
         </dependency>
 
-        <!-- Jakarta Persistence API -->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.persistence</groupId>-->
-<!--            <artifactId>jakarta.persistence-api</artifactId>-->
-<!--            <version>2.2.3</version>-->
-<!--        </dependency>-->
-
         <!-- MyBatis SQL mapper framework -->
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -220,55 +201,17 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Bouncy Castle for Cryptography -->
-<!--        <dependency>-->
-<!--            <groupId>org.bouncycastle</groupId>-->
-<!--            <artifactId>bcprov-jdk15on</artifactId>-->
-<!--            <version>1.52</version>-->
-<!--        </dependency>-->
-
-        <!-- Auth0 Java JWT -->
-<!--        <dependency>-->
-<!--            <groupId>com.auth0</groupId>-->
-<!--            <artifactId>java-jwt</artifactId>-->
-<!--            <version>3.2.0</version>-->
-<!--        </dependency>-->
-
         <!-- Spring Security Crypto -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
-        <!-- Spring Security RSA -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-rsa</artifactId>-->
-<!--            <version>1.0.9.RELEASE</version>-->
-<!--        </dependency>-->
-
-        <!-- MySQL JDBC Driver -->
-<!--        <dependency>-->
-<!--            <groupId>mysql</groupId>-->
-<!--            <artifactId>mysql-connector-java</artifactId>-->
-<!--        </dependency>-->
-
         <!-- MyBatis Plus Boot Starter -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
-
-        <!-- Spring Boot Data Redis Starter -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-<!--            <version>2021.0.4.0</version>-->
-<!--        </dependency>-->
 
     </dependencies>
 
