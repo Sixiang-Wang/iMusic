@@ -1,6 +1,7 @@
 package com.java.imusic.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.nacos.common.utils.RandomUtils;
 import com.java.imusic.config.UrlConfig;
 import com.java.imusic.dao.CollectMapper;
 import com.java.imusic.domain.Collect;
@@ -9,9 +10,9 @@ import com.java.imusic.domain.SongList;
 import com.java.imusic.service.CollectService;
 import com.java.imusic.utils.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,8 @@ public class CollectController {
     private CollectMapper collectMapper;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     /**
      * 添加收藏
@@ -153,8 +156,12 @@ public class CollectController {
             for (Collect collect : list) {
                 if(collect.getType()==0){
 
+                    List<ServiceInstance> instances = discoveryClient.getInstances("songPart");
+                    if(instances.isEmpty()){return null;}
+                    ServiceInstance instance = instances.get(RandomUtils.nextInt(1,instances.size()));
+
                     Song song = restTemplate.exchange(
-                            "http://localhost:"+ UrlConfig.songPort+"/song/detail?songId="+collect.getSongId(),
+                            instance.getUri()+"/song/detail?songId="+collect.getSongId(),
                             HttpMethod.GET,
                             null,
                             Song.class
