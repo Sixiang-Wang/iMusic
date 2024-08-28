@@ -11,10 +11,7 @@
     <modules>
         <module>userPart</module>
         <module>commentPart</module>
-        <module>extraPart</module>
         <module>followPart</module>
-        <module>messagePart</module>
-        <module>songPart</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
