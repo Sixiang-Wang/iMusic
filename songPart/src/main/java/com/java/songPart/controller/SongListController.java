@@ -267,7 +267,7 @@ public class SongListController {
             message.setText("您的歌单《"+songList.getTitle()+"》已被下架");
             message.setIsRead(0);
             message.setType(0);
-            String messageUrl="http://localhost:"+ Port.port_message +
+            String messageUrl="http://localhost:"+ Port.port_base +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();
@@ -300,7 +300,7 @@ public class SongListController {
             message.setText("您的歌单《"+songList.getTitle()+"》已被恢复");
             message.setIsRead(0);
             message.setType(0);
-            String messageUrl="http://localhost:"+ Port.port_message +
+            String messageUrl="http://localhost:"+ Port.port_base +
                     "/message/add?to="+message.getTo()+
                     "&from="+message.getFrom()+
                     "&text="+message.getText();

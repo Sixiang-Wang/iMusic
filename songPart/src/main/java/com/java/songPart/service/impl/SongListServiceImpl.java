@@ -66,7 +66,7 @@ public class SongListServiceImpl implements SongListService {
 
 //        collectMapper.deleteBySongListId(songList.getId());
         restTemplate.getForObject(
-                Port.url_base+Port.port_extra+"/deleteBySongListId?songLiatId="+songList.getId(),
+                Port.url_base+Port.port_extra+"/deleteBySongListId?songListId="+songList.getId(),
                 Boolean.class
         );
         listSongMapper.deleteBySongListId(songList.getId());
