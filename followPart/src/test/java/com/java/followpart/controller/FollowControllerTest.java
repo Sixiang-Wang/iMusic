@@ -29,11 +29,6 @@ class FollowControllerTest {
     @Mock
     private HttpServletRequest request;
 
-    @Mock
-    private HttpSession session;
-
-    @Mock
-    private HttpServletResponse response;
 
     @Mock
     private FollowService followService;
