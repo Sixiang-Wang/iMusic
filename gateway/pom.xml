@@ -19,12 +19,6 @@
 
 
     <dependencies>
-        <!--common-->
-        <dependency>
-            <groupId>com.java</groupId>
-            <artifactId>iMusicServer</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
 
         <!--网关-->
         <dependency>
@@ -65,7 +59,6 @@
     </dependencyManagement>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
