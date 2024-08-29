@@ -97,7 +97,7 @@
         <include refid="Base_Column_List"/>
         from list_song
         where song_list_id=#{songListId}
-        GROUP BY song_id
+        ORDER BY song_id
     </select>
 
 </mapper>
