@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@MapperScan("com.java.imusic.dao")
+@MapperScan("com.java.extraPart.dao")
 public class ExtraPartApplication {
 
     public static void main(String[] args) {
