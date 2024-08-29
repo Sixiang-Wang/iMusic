@@ -1,13 +1,11 @@
-package com.example.songpart.controller;
+package com.java.songpart.controller;
 
 import com.alibaba.fastjson.JSONObject;
 
 import com.java.songPart.controller.SongController;
 import com.java.songPart.dao.SongMapper;
-import com.java.songPart.domain.Follow;
 import com.java.songPart.domain.Message;
 import com.java.songPart.domain.Song;
-import com.java.songPart.domain.User;
 import com.java.songPart.service.SongService;
 import com.java.songPart.utils.Consts;
 import org.junit.jupiter.api.BeforeEach;

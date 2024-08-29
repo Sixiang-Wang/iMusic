@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 class UserControllerTest {
 
     @InjectMocks
@@ -129,7 +131,7 @@ class UserControllerTest {
         when(request.getParameter("sex")).thenReturn("1");
         when(request.getParameter("phoneNum")).thenReturn("1234567890");
         when(request.getParameter("email")).thenReturn("test@example.com");
-        when(request.getParameter("birth")).thenReturn("invalid");
+        when(request.getParameter("birth")).thenReturn("");
         when(request.getParameter("introduction")).thenReturn("Hello world!");
         when(request.getParameter("location")).thenReturn("Test City");
         when(request.getParameter("name")).thenReturn("Test Name");

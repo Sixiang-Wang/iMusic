@@ -1,4 +1,4 @@
-package com.example.songpart;
+package com.java.songpart;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
