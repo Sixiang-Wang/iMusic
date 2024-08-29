@@ -249,7 +249,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.java.commentpart.UserPartApplication</mainClass>
+                    <mainClass>com.java.commentpart.CommentPartApplication</mainClass>
                     <skip>false</skip>
                     <executable>true</executable>
                     <fork>true</fork>

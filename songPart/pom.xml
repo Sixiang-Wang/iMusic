@@ -233,7 +233,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.java.songPart.UserPartApplication</mainClass>
+                    <mainClass>com.java.songPart.SongPartApplication</mainClass>
                     <skip>false</skip>
                     <executable>true</executable>
                     <fork>true</fork>
