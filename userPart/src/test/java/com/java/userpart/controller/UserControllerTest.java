@@ -1,8 +1,7 @@
-package com.java.userPart.controller;
+package com.java.userpart.controller;
 
 import com.alibaba.fastjson.JSONObject;
 
-import com.java.userpart.controller.UserController;
 import com.java.userpart.domain.User;
 import com.java.userpart.service.UserService;
 import com.java.userpart.utils.Consts;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+
 class UserControllerTest {
 
     @InjectMocks

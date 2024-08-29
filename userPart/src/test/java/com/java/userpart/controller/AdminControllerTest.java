@@ -1,8 +1,7 @@
-package com.java.userPart.controller;
+package com.java.userpart.controller;
 
 import com.alibaba.fastjson.JSONObject;
 
-import com.java.userpart.controller.AdminController;
 import com.java.userpart.service.AdminService;
 import com.java.userpart.utils.Consts;
 import com.java.userpart.utils.SecurityUtil;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+
 class AdminControllerTest {
 
     @Mock

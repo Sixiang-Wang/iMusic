@@ -1,9 +1,8 @@
-package com.java.userPart.controller;
+package com.java.userpart.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
 
-import com.java.userpart.controller.MailController;
 import com.java.userpart.utils.MailUtil;
 import org.json.JSONException;
 import org.junit.Before;
@@ -21,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 public class MailControllerTest {
 
     @Mock
