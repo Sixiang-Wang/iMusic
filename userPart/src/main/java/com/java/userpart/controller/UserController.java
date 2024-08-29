@@ -80,6 +80,11 @@ public class UserController {
         }
 
         //把生日转换成Date格式
+        if(birth.isEmpty()){
+            jsonObject.put(Consts.CODE, 0);
+            jsonObject.put(Consts.MSG, "添加用户失败");
+            return jsonObject;
+        }
         String tmpDate = request.getParameter("birth").trim();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date birthDate = new Date();
