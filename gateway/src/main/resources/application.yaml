@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 1145
 spring:
   application:
     name: gateway
@@ -32,3 +32,5 @@ spring:
           uri: lb://extraPart
           predicates:
             - Path=/rank/**,/collect/**,/complaint/**
+  main:
+    web-application-type: reactive
