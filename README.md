@@ -1,6 +1,7 @@
 # music
 
-> A Vue.js project
+> 这是iMusic的前端分支
+> 后端和后台管理系统请查看其他分支
 
 ## Build Setup
 
